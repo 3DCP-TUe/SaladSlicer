@@ -17,7 +17,7 @@ namespace SaladSlicer.Gh.Components
               "E", // Component nickname
               "An example component description.", // Description
               "Salad Slicer", // Category
-              "Subcategory") // Subcategory
+              "Example Components") // Subcategory
         {
         }
 
@@ -67,6 +67,14 @@ namespace SaladSlicer.Gh.Components
         public override GH_Exposure Exposure
         {
             get { return GH_Exposure.primary; }
+        }
+
+        /// <summary>
+        /// Gets whether this object is obsolete.
+        /// </summary>
+        public override bool Obsolete
+        {
+            get { return false; }
         }
 
         /// <summary>

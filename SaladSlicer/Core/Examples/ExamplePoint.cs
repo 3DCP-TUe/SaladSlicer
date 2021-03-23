@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SaladSlicer.Core.Geometry
+namespace SaladSlicer.Core.Examples
 {
     /// <summary>
     /// Represents a simple example class of a point
