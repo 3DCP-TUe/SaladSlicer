@@ -57,6 +57,7 @@
     <Compile Include="Core\Enumerations\Enumerations.cs" />
     <Compile Include="Core\Examples\ExamplePoint.cs" />
     <Compile Include="Core\Utils\Helpermethods.cs" />
+    <Compile Include="Gh\Components\Utilities\TranposeSurfaceComponent.cs" />
     <Compile Include="Gh\Components\ExampleComponent.cs" />
     <Compile Include="Gh\Goos\GH_Example.cs" />
     <Compile Include="Gh\Parameters\ExampleParam.cs" />
