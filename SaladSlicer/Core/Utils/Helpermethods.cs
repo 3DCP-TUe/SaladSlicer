@@ -1,7 +1,6 @@
 ﻿// System Libs
 using System;
 using System.IO;
-using System.Collections.Generic;
 using System.Runtime.Serialization.Formatters.Binary;
 
 namespace SaladSlicer.Core.Utils
@@ -46,6 +45,26 @@ namespace SaladSlicer.Core.Utils
                 stream.Seek(0, SeekOrigin.Begin);
                 return (Object)formatter.Deserialize(stream);
             }
+        }
+
+        /// <summary>
+        /// Converts a velocity specified in mm/s to mm/min.
+        /// </summary>
+        /// <param name="velocity"> The velocity in mm/s. </param>
+        /// <returns> The velocity in mm/min. </returns>
+        public static double MillimetersSecondToMillimetersMinute(double velocity)
+        {
+            return velocity * 60.0;
+        }
+
+        /// <summary>
+        /// Converts a velocity specified mm/min to mm/s.
+        /// </summary>
+        /// <param name="velocity"> The velocity in mm/min. </param>
+        /// <returns> The velocity in mm/s. </returns>
+        public static double MillimetersMinuteToMillimetersSecond(double velocity)
+        {
+            return velocity / 60.0;
         }
     }
 }
