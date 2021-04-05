@@ -7,6 +7,9 @@ using Rhino.Geometry;
 
 namespace SaladSlicer.Gh.Components.Utilities
 {
+    /// <summary>
+    /// Represents the component that tranposes a surface (swap U and V). 
+    /// </summary>
     public class TransposeSurfaceComponent : GH_Component
     {
         /// <summary>

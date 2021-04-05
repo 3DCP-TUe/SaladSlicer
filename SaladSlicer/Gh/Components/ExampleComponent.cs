@@ -7,6 +7,9 @@ using Rhino.Geometry;
 
 namespace SaladSlicer.Gh.Components
 {
+    /// <summary>
+    /// Represent a component that constructs a line between two points. 
+    /// </summary>
     public class ExampleComponent : GH_Component
     {
         /// <summary>
