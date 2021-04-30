@@ -54,9 +54,14 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\CodeGeneration\ProgramGenerator.cs" />
+    <Compile Include="Core\CodeGeneration\CodeLine.cs" />
+    <Compile Include="Core\CodeGeneration\IGCode.cs" />
     <Compile Include="Core\Enumerations\Enumerations.cs" />
     <Compile Include="Core\Examples\ExamplePoint.cs" />
     <Compile Include="Core\Utils\Helpermethods.cs" />
+    <Compile Include="Gh\Components\CodeGeneration\CodeLineComponent.cs" />
+    <Compile Include="Gh\Components\CodeGeneration\ProgramGeneratorComponent.cs" />
     <Compile Include="Gh\Components\Utilities\ConvertVelocityMmsMmminComponent.cs" />
     <Compile Include="Gh\Components\Utilities\ConvertVelocityMmminMmsComponent.cs" />
     <Compile Include="Gh\Components\Utilities\TranposeSurfaceComponent.cs" />
@@ -80,6 +85,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\ExampleIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Core\Slicers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
