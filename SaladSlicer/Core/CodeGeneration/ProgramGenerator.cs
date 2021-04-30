@@ -22,6 +22,9 @@ namespace SaladSlicer.Core.CodeGeneration
         #endregion
 
         #region constructors
+        /// <summary>
+        /// Initializes a new instance of the Program Generator class.
+        /// </summary>
         public ProgamGenerator()
         {
 
@@ -29,6 +32,11 @@ namespace SaladSlicer.Core.CodeGeneration
         #endregion
 
         #region methods
+        /// <summary>
+        /// Returns the G-code program as list with code lines.
+        /// </summary>
+        /// <param name="_objects"> The objects to gerenator the program for. </param>
+        /// <returns> The program as a list with code lines. </returns>
         public List<string> CreateProgram(List<IGCode> _objects)
         {
             _program.Clear();
@@ -49,11 +57,11 @@ namespace SaladSlicer.Core.CodeGeneration
         #endregion
 
         #region properties
+        /// <summary>
+        /// Gets a value indicating whether or not the object is valid.
+        /// </summary>
         public bool IsValid
         {
-            /// <summary>
-            /// Gets a value indicating whether or not the object is valid.
-            /// </summary>
             get
             {
                 if (_program == null) { return false; }
