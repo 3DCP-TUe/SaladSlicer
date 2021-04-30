@@ -5,7 +5,9 @@
 
 // System Libs
 using System;
+using System.IO;
 using System.Collections.Generic;
+using System.Windows.Forms;
 // Grasshopper Libs
 using Grasshopper.Kernel;
 // Salad Slicer Libs
@@ -18,6 +20,10 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
     /// </summary>
     public class ProgramGeneratorComponent : GH_Component
     {
+        #region fields
+        private List<string> _program = new List<string>();
+        #endregion
+
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
@@ -58,12 +64,13 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
             // Access the input parameters individually. 
             if (!DA.GetDataList(0, objects)) return;
 
-            // Create the line
+            // Create the program
+            _program.Clear();
             ProgamGenerator programGenerator = new ProgamGenerator();
-            List<string> program = programGenerator.CreateProgram(objects);
+            _program = programGenerator.CreateProgram(objects);
 
             // Assign the output parameters
-            DA.SetDataList(0, program);
+            DA.SetDataList(0, _program);
         }
 
         /// <summary>
@@ -71,7 +78,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         public override GH_Exposure Exposure
         {
-            get { return GH_Exposure.primary; }
+            get { return GH_Exposure.septenary; }
         }
 
         /// <summary>
@@ -98,5 +105,56 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         {
             get { return new Guid("A387F8ED-44EF-4157-983C-41C88042A67F"); }
         }
+
+        #region save program to file
+        /// <summary>
+        /// Adds the additional items to the context menu of the component. 
+        /// </summary>
+        /// <param name="menu"> The context menu of the component. </param>
+        protected override void AppendAdditionalComponentMenuItems(ToolStripDropDown menu)
+        {
+            Menu_AppendSeparator(menu);
+            Menu_AppendItem(menu, "Save Program to file", MenuItemClickSaveProgramFile);
+        }
+
+        /// <summary>
+        /// Handles the event when the custom menu item "Save Program to file" is clicked. 
+        /// </summary>
+        /// <param name="sender"> The object that raises the event. </param>
+        /// <param name="e"> The event data. </param>
+        private void MenuItemClickSaveProgramFile(object sender, EventArgs e)
+        {
+            SaveProgram();
+        }
+        
+        /// <summary>
+        /// Saves the program to a file
+        /// </summary>
+        private void SaveProgram()
+        {
+            // Create save file dialog
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.CheckFileExists = false;
+            saveFileDialog.CheckPathExists = true;
+            saveFileDialog.DefaultExt = "mod";
+            saveFileDialog.Filter = "NC Program File|*.mpf";
+            saveFileDialog.Title = "Save a Program file";
+
+            // If result of dialog is OK the file can be saved
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                // Check the file name
+                if (saveFileDialog.FileName != "")
+                {
+                    // Write RAPID code to file
+                    using (StreamWriter writer = new StreamWriter(saveFileDialog.FileName, false))
+                    {
+                        for (int i = 0; i != _program.Count; i++)
+                        writer.WriteLine(_program[i]);
+                    }
+                }
+            }
+        }
+        #endregion
     }
 }
