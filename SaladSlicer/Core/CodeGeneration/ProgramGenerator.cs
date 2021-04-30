@@ -52,6 +52,13 @@ namespace SaladSlicer.Core.CodeGeneration
                 _objects[i].ToProgram(this);
             }
 
+            // Program end
+            _program.Add(" ");
+            _program.Add("M30");
+            _program.Add(" ");
+            _program.Add(" ");
+            _program.Add(" ");
+
             return _program;
         }
         #endregion
