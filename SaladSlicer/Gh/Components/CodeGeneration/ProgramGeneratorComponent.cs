@@ -59,7 +59,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             // Declare variable of input parameters
-            List<IGCode> objects = new List<IGCode>();
+            List<IProgram> objects = new List<IProgram>();
 
             // Access the input parameters individually. 
             if (!DA.GetDataList(0, objects)) return;

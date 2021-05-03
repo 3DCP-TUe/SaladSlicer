@@ -17,7 +17,7 @@ namespace SaladSlicer.Core.Slicers
     /// <summary>
     /// Represents the Planar 2D Slicer class.
     /// </summary>
-    public class Planar2DSlicer : IGCode
+    public class Planar2DSlicer : IProgram
     {
         #region fields
         private Curve _baseContour;

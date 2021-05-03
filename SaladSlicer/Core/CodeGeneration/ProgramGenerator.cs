@@ -42,7 +42,7 @@ namespace SaladSlicer.Core.CodeGeneration
         /// </summary>
         /// <param name="_objects"> The objects to gerenator the program for. </param>
         /// <returns> The program as a list with code lines. </returns>
-        public List<string> CreateProgram(List<IGCode> _objects)
+        public List<string> CreateProgram(List<IProgram> _objects)
         {
             _program.Clear();
 

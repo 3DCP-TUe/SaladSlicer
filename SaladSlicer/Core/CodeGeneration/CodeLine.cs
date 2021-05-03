@@ -14,7 +14,7 @@ namespace SaladSlicer.Core.CodeGeneration
     /// Represents a custom (user definied) Code Line.
     /// </summary>
     [Serializable()]
-    public class CodeLine : IGCode, ISerializable
+    public class CodeLine : IProgram, ISerializable
     {
         #region fields
         private string _code;

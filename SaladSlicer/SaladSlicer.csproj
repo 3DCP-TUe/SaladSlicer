@@ -56,7 +56,7 @@
   <ItemGroup>
     <Compile Include="Core\CodeGeneration\ProgramGenerator.cs" />
     <Compile Include="Core\CodeGeneration\CodeLine.cs" />
-    <Compile Include="Core\CodeGeneration\IGCode.cs" />
+    <Compile Include="Core\CodeGeneration\IProgram.cs" />
     <Compile Include="Core\Enumerations\Enumerations.cs" />
     <Compile Include="Core\Examples\ExamplePoint.cs" />
     <Compile Include="Core\Slicers\Planar2DSlicer.cs" />

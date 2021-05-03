@@ -6,9 +6,9 @@
 namespace SaladSlicer.Core.CodeGeneration
 {
     /// <summary>
-    /// Represents the interface for all classes that can generate G-code.
+    /// Represents the interface for all classes that can generate code lines for a program.
     /// </summary>
-    public interface IGCode
+    public interface IProgram
     {
         #region constructors
 
