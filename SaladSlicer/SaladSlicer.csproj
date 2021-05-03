@@ -59,7 +59,9 @@
     <Compile Include="Core\CodeGeneration\IGCode.cs" />
     <Compile Include="Core\Enumerations\Enumerations.cs" />
     <Compile Include="Core\Examples\ExamplePoint.cs" />
+    <Compile Include="Core\Slicers\Planar2DSlicer.cs" />
     <Compile Include="Core\Utils\Helpermethods.cs" />
+    <Compile Include="Gh\Components\Slicers\Planar2DSlicerComponent.cs" />
     <Compile Include="Gh\Components\CodeGeneration\CodeLineComponent.cs" />
     <Compile Include="Gh\Components\CodeGeneration\ProgramGeneratorComponent.cs" />
     <Compile Include="Gh\Components\Utilities\ConvertVelocityMmsMmminComponent.cs" />
@@ -86,9 +88,7 @@
   <ItemGroup>
     <None Include="Resources\ExampleIcon.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Core\Slicers\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
