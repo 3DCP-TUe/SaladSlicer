@@ -66,7 +66,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
 
             // Create the program
             _program.Clear();
-            ProgamGenerator programGenerator = new ProgamGenerator();
+            ProgramGenerator programGenerator = new ProgramGenerator();
             _program = programGenerator.CreateProgram(objects);
 
             // Assign the output parameters
