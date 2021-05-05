@@ -63,9 +63,29 @@ namespace SaladSlicer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap _2_5D {
+            get {
+                object obj = ResourceManager.GetObject("_2_5D", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap ExampleIcon {
             get {
                 object obj = ResourceManager.GetObject("ExampleIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap TwoHalfD {
+            get {
+                object obj = ResourceManager.GetObject("TwoHalfD", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -8,25 +8,24 @@ using System;
 // Grasshopper Libs
 using Grasshopper.Kernel;
 // Salad Slicer Libs
-using SaladSlicer.Core.CodeGeneration;
-using Rhino.Geometry;
+using SaladSlicer.Core.Slicers;
 
 namespace SaladSlicer.Gh.Components.CodeGeneration
 {
     /// <summary>
     /// Represent a component that generates a custom Code Line.
     /// </summary>
-    public class AbsoluteCoordinateComponent : GH_Component
+    public class DeconstructProgramObjectComponent : GH_Component
     {
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public AbsoluteCoordinateComponent()
-          : base("Absolute Coordinate", // Component name
-              "Ac", // Component nickname
-              "Defines a point", // Description
+        public DeconstructProgramObjectComponent()
+          : base("Deconstruct Program Object", // Component name
+              "DPO", // Component nickname
+              "Deconstructs a Program Object", // Description
               "Salad Slicer", // Category
-              "Code Generation") // Subcategory
+              "Deconstruct") // Subcategory
         {
         }
 
@@ -35,7 +34,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddPlaneParameter("Plane", "P", "Plane.", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Program Object", "PO", "Program Object.", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -43,7 +42,10 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddGenericParameter("Program Line", "PL", "Absolute Coordinate as a Program Line.", GH_ParamAccess.item);
+            pManager.AddCurveParameter("Path", "Pa", "Path of the Program Object.", GH_ParamAccess.item);
+            pManager.AddPlaneParameter("Planes", "Pl", "Planes of the Program Object.", GH_ParamAccess.list);
+            pManager.AddPlaneParameter("Start plane", "S", "Star plane of the Program Object.", GH_ParamAccess.item);
+            pManager.AddPlaneParameter("End plane", "E", "End plane of the Program Object.", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -53,16 +55,18 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             // Declare variable of input parameters
-            Plane plane = new Plane();
-
+            Planar2DSlicer programObject = new Planar2DSlicer();
+            
             // Access the input parameters individually. 
-            if (!DA.GetData(0, ref plane)) return;
+            if (!DA.GetData(0, ref programObject)) return;
 
+            
             // Create the code line
-            AbsoluteCoordinate absoluteCoordinate = new AbsoluteCoordinate(plane);
-
             // Assign the output parameters
-            DA.SetData(0, absoluteCoordinate);
+            DA.SetData(0, programObject.GetInterpolatedPath());
+            DA.SetDataList(1, programObject.Frames);
+            DA.SetData(2, programObject.FrameAtStart);
+            DA.SetData(3, programObject.FrameAtEnd);
         }
 
         /// <summary>
@@ -95,7 +99,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("18B7308A-C2F7-48A2-9E67-4BE31EC607E8"); }
+            get { return new Guid("ACF32A02-B093-4D72-822C-C51D5310C8CE"); }
         }
-    }
+    } 
 }

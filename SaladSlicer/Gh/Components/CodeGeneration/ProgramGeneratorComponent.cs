@@ -41,7 +41,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddGenericParameter("Program Objects", "PO", "All objects that can generate NC program lines", GH_ParamAccess.list);
+            pManager.AddGenericParameter("Program Objects/Lines", "PO", "All Program Objects and Program Lines that can generate a NC program", GH_ParamAccess.list);
         }
 
         /// <summary>
