@@ -14,27 +14,27 @@ namespace SaladSlicer.Core.CodeGeneration
     /// <summary>
     /// Represents a custom (user definied) Code Line.
     /// </summary>
-    public class AbsoluteCoordinate : IProgram
+    public class FeedRate : IProgram
     {
         #region fields
-        private Plane _plane;
+        private double _feedRate;
         #endregion
 
         #region constructors
         /// <summary>
         /// Initializes an empty instance of the AbsoluteCoordinate class.
         /// </summary>         
-        public AbsoluteCoordinate()
+        public FeedRate()
         {
-            _plane = Plane.Unset;
+            _feedRate = double.NaN;
         }
         /// <summary>
         /// Initializes a new instance of the AbsoluteCoordinate class.
         /// </summary>
-        /// <param name="plane">Plane representing the origin of the point and optionally the direction (x-axis) of the movement</param>
-        public AbsoluteCoordinate(Plane plane)
+        /// <param name="feedRate">Double representing the speed of movement</param>
+        public FeedRate(double feedRate)
         {
-            _plane = plane;
+            _feedRate = feedRate;
         }
 
 
@@ -47,7 +47,7 @@ namespace SaladSlicer.Core.CodeGeneration
         /// <returns> A string that represents the current object. </returns>
         public override string ToString()
         {
-            return ($"X{_plane.OriginX:0.###} Y{_plane.OriginY:0.###} Z{_plane.OriginZ:0.###}");
+            return $"Set FeedRate [mm/min] (F{_feedRate:0.###})";
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace SaladSlicer.Core.CodeGeneration
         /// <param name="programGenerator"> The program generator. </param>
         public void ToProgram(ProgramGenerator programGenerator)
         {
-            programGenerator.Program.Add($"X{_plane.OriginX:0.###} Y{_plane.OriginY:0.###} Z{_plane.OriginZ:0.###}");
+            programGenerator.Program.Add($"F{_feedRate:0.###}; FeedRate in mm/min");
         }
         #endregion
 
@@ -68,7 +68,7 @@ namespace SaladSlicer.Core.CodeGeneration
             /// </summary>
             get
             { 
-                if (_plane != null) { return false; } 
+                if (_feedRate == double.NaN) { return false; } 
                 return true;
             }
         }

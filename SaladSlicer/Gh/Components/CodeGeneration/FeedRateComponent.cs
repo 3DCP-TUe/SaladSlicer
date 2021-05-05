@@ -16,15 +16,15 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
     /// <summary>
     /// Represent a component that generates a custom Code Line.
     /// </summary>
-    public class AbsoluteCoordinateComponent : GH_Component
+    public class FeedRateComponent : GH_Component
     {
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public AbsoluteCoordinateComponent()
-          : base("Absolute Coordinate", // Component name
-              "Ac", // Component nickname
-              "Defines a point", // Description
+        public FeedRateComponent()
+          : base("Set Feedrate", // Component name
+              "F", // Component nickname
+              "Defines a feedrate. This feedrate will be overwritten when a new feedrate is defined", // Description
               "Salad Slicer", // Category
               "Code Generation") // Subcategory
         {
@@ -35,7 +35,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddPlaneParameter("Plane", "P", "Plane.", GH_ParamAccess.item);
+            pManager.AddNumberParameter("Feedrate", "F", "Feedrate.", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddGenericParameter("Program Object", "PO", "Absolute Coordinate as a Program Object.", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Program Object", "PO", "Feedrate as a Program Object.", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -53,16 +53,16 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             // Declare variable of input parameters
-            Plane plane = new Plane();
+            double feedRate = new double();
 
             // Access the input parameters individually. 
-            if (!DA.GetData(0, ref plane)) return;
+            if (!DA.GetData(0, ref feedRate)) return;
 
             // Create the code line
-            AbsoluteCoordinate absoluteCoordinate = new AbsoluteCoordinate(plane);
+            FeedRate programObject = new FeedRate(feedRate);
 
             // Assign the output parameters
-            DA.SetData(0, absoluteCoordinate);
+            DA.SetData(0, programObject);
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("18B7308A-C2F7-48A2-9E67-4BE31EC607E8"); }
+            get { return new Guid("D07E167C-5294-4FB9-AE80-71526A415C8B"); }
         }
     }
 }

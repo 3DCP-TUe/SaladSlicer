@@ -54,6 +54,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\CodeGeneration\FeedRate.cs" />
     <Compile Include="Core\CodeGeneration\AbsoluteCoordinate.cs" />
     <Compile Include="Core\CodeGeneration\ProgramGenerator.cs" />
     <Compile Include="Core\CodeGeneration\CodeLine.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="Core\Examples\ExamplePoint.cs" />
     <Compile Include="Core\Slicers\Planar2DSlicer.cs" />
     <Compile Include="Core\Utils\Helpermethods.cs" />
+    <Compile Include="Gh\Components\CodeGeneration\FeedRateComponent.cs" />
     <Compile Include="Gh\Components\CodeGeneration\AbsoluteCoordinateComponent.cs" />
     <Compile Include="Gh\Components\Slicers\Planar2DSlicerComponent.cs" />
     <Compile Include="Gh\Components\CodeGeneration\CodeLineComponent.cs" />

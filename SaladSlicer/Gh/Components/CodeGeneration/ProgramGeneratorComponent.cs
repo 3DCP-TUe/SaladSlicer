@@ -41,7 +41,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddGenericParameter("Objects", "O", "All objects that can generator G-code", GH_ParamAccess.list);
+            pManager.AddGenericParameter("Program Objects", "PO", "All objects that can generate NC program lines", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddTextParameter("Progam", "P", "The program as a list with code lines", GH_ParamAccess.list);
+            pManager.AddTextParameter("Program", "P", "The program as a list with code lines", GH_ParamAccess.list);
         }
 
         /// <summary>
