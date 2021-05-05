@@ -49,7 +49,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddGenericParameter("Slicer", "S", "2.5D Slicer object.", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Program Object", "PO", "2.5D Slicer object.", GH_ParamAccess.item);
         }
 
         /// <summary>
