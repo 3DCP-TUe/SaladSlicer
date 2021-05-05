@@ -66,6 +66,7 @@
     <Compile Include="Gh\Components\CodeGeneration\ProgramGeneratorComponent.cs" />
     <Compile Include="Gh\Components\Utilities\ConvertVelocityMmsMmminComponent.cs" />
     <Compile Include="Gh\Components\Utilities\ConvertVelocityMmminMmsComponent.cs" />
+    <Compile Include="Gh\Components\Utilities\PlaneVisualizerComponent.cs" />
     <Compile Include="Gh\Components\Utilities\TransposeSurfaceComponent.cs" />
     <Compile Include="Gh\Components\ExampleComponent.cs" />
     <Compile Include="Gh\Goos\GH_Example.cs" />
