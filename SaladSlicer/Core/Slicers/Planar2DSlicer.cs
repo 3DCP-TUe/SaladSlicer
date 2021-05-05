@@ -17,12 +17,13 @@ namespace SaladSlicer.Core.Slicers
     /// <summary>
     /// Represents the Planar 2D Slicer class.
     /// </summary>
-    public class Planar2DSlicer : IProgram
+    public class Planar2DSlicer : IProgram,IObject
     {
         #region fields
         private Curve _baseContour;
         private double _distance;
         private List<Curve> _path = new List<Curve>();
+        private Curve _interpolatedPath;
         private List<Curve> _contours = new List<Curve>();
         private List<double> _heights = new List<double>();
         private List<Plane> _frames = new List<Plane>();
@@ -118,6 +119,7 @@ namespace SaladSlicer.Core.Slicers
             this.CreateContours();
             this.CreatePath();
             this.CreateFrames();
+            _interpolatedPath = this.GetInterpolatedPath();
         }
 
         /// <summary>
@@ -441,6 +443,13 @@ namespace SaladSlicer.Core.Slicers
         {
             get { return _path; }
         }
+        /// <summary>
+        /// Gets the interpolated path as a single curve
+        /// </summary>
+        public Curve InterpolatedPath
+        {
+            get { return _interpolatedPath; }
+        }
 
         /// <summary>
         /// Gets the frames of the path.
@@ -481,6 +490,8 @@ namespace SaladSlicer.Core.Slicers
         {
             get { return _frames[_frames.Count - 1].Origin; }
         }
+
+
         #endregion
     }
 }
