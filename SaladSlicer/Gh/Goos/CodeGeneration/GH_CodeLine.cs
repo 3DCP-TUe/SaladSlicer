@@ -10,6 +10,9 @@ using SaladSlicer.Core.CodeGeneration;
 
 namespace SaladSlicer.Gh.Goos.CodeGeneration
 {
+    /// <summary>
+    /// Represents the GH_CodeLine class.
+    /// </summary>
     public class GH_CodeLine : GH_Goo<CodeLine>
     {
         #region (de)serialisation
