@@ -112,11 +112,11 @@ namespace SaladSlicer.Core.CodeGeneration
         #endregion
 
         #region properties
+        /// <summary>
+        /// Gets a value indicating whether or not the object is valid.
+        /// </summary>
         public bool IsValid
         {
-            /// <summary>
-            /// Gets a value indicating whether or not the object is valid.
-            /// </summary>
             get
             { 
                 if (_code == null) { return false; } 
