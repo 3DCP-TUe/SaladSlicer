@@ -69,7 +69,7 @@
     <Compile Include="Gh\Components\Utilities\PlaneVisualizerComponent.cs" />
     <Compile Include="Gh\Components\Utilities\TransposeSurfaceComponent.cs" />
     <Compile Include="Gh\Components\ExampleComponent.cs" />
-    <Compile Include="Gh\Goos\GH_Example.cs" />
+    <Compile Include="Gh\Goos\CodeGeneration\GH_CodeLine.cs" />
     <Compile Include="Gh\Parameters\ExampleParam.cs" />
     <Compile Include="Gh\Utils\HelperMethods.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
