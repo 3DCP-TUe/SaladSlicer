@@ -86,14 +86,14 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
                 return false;
             }
 
-            //Cast to Code Line
+            // Cast to Code Line
             if (typeof(Q).IsAssignableFrom(typeof(CodeLine)))
             {
                 target = (Q)(object)Value;
                 return true;
             }
 
-            //Cast to Code Line Goo
+            // Cast to Code Line Goo
             if (typeof(Q).IsAssignableFrom(typeof(GH_CodeLine)))
             {
                 target = (Q)(object)new GH_CodeLine(Value);

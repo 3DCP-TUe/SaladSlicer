@@ -111,7 +111,7 @@ namespace SaladSlicer.Gh.Components.Utilities
         }
 
         /// <summary>
-        /// This methods displays the three vectors of all the planes in the list.
+        /// Displays the three vectors of all the planes in the list.
         /// </summary>
         /// <param name="args"> Preview display arguments for IGH_PreviewObjects. </param>
         public override void DrawViewportMeshes(IGH_PreviewArgs args)

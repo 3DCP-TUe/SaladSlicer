@@ -5,6 +5,7 @@
 
 // System Libs
 using System;
+using System.Windows.Forms;
 using System.Collections.Generic;
 // Grasshopper Libs
 using Grasshopper.Kernel;
@@ -58,29 +59,50 @@ namespace SaladSlicer.Gh.CodeGeneration.Parameters
         }
         #endregion
 
-        // We do not allow users to pick parameters, therefore the following 4 methods disable all this ui.
-        #region disable pick parameters
+        #region disable pick parameters (we do not allow users to pick parameters)
+        /// <summary>
+        /// Returns a canceled result. 
+        /// Picking items is disabled for this parameter.
+        /// </summary>
+        /// <param name="values"> Empty list. </param>
+        /// <returns> Canceled result. </returns>
         protected override GH_GetterResult Prompt_Plural(ref List<GH_CodeLine> values)
         {
             return GH_GetterResult.cancel;
         }
 
+        /// <summary>
+        /// Returns a canceled result. 
+        /// Picking items is disabled for this parameter. 
+        /// </summary>
+        /// <param name="value"> Null item.  </param>
+        /// <returns> Canceled result. </returns>
         protected override GH_GetterResult Prompt_Singular(ref GH_CodeLine value)
         {
             return GH_GetterResult.cancel;
         }
 
-        protected override System.Windows.Forms.ToolStripMenuItem Menu_CustomSingleValueItem()
+        /// <summary>
+        /// Returns a hidden tool strip menu item for picking a single item.
+        /// Picking items is disabled for this parameter.
+        /// </summary>
+        /// <returns> A hidden  tool strip menu item. </returns>
+        protected override ToolStripMenuItem Menu_CustomSingleValueItem()
         {
-            System.Windows.Forms.ToolStripMenuItem item = new System.Windows.Forms.ToolStripMenuItem();
+            ToolStripMenuItem item = new ToolStripMenuItem();
             item.Text = "Not available";
             item.Visible = false;
             return item;
         }
 
-        protected override System.Windows.Forms.ToolStripMenuItem Menu_CustomMultiValueItem()
+        /// <summary>
+        /// Returns a hidden tool strip menu item for picking multiple items.
+        /// Picking items is disabled for this parameter.
+        /// </summary>
+        /// <returns> A hidden tool strip menu item. </returns>
+        protected override ToolStripMenuItem Menu_CustomMultiValueItem()
         {
-            System.Windows.Forms.ToolStripMenuItem item = new System.Windows.Forms.ToolStripMenuItem();
+            ToolStripMenuItem item = new ToolStripMenuItem();
             item.Text = "Not available";
             item.Visible = false;
             return item;
