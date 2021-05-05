@@ -121,9 +121,6 @@
   <data name="ExampleIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ExampleIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="TwoHalfD" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\TwoHalfD.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="_2_5D" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\2.5d.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
