@@ -89,9 +89,12 @@ namespace SaladSlicer.Gh.CodeGeneration.Parameters
         /// <returns> A hidden  tool strip menu item. </returns>
         protected override ToolStripMenuItem Menu_CustomSingleValueItem()
         {
-            ToolStripMenuItem item = new ToolStripMenuItem();
-            item.Text = "Not available";
-            item.Visible = false;
+            ToolStripMenuItem item = new ToolStripMenuItem
+            {
+                Text = "Not available",
+                Visible = false
+            };
+
             return item;
         }
 
@@ -102,9 +105,12 @@ namespace SaladSlicer.Gh.CodeGeneration.Parameters
         /// <returns> A hidden tool strip menu item. </returns>
         protected override ToolStripMenuItem Menu_CustomMultiValueItem()
         {
-            ToolStripMenuItem item = new ToolStripMenuItem();
-            item.Text = "Not available";
-            item.Visible = false;
+            ToolStripMenuItem item = new ToolStripMenuItem
+            {
+                Text = "Not available",
+                Visible = false
+            };
+
             return item;
         }
         #endregion

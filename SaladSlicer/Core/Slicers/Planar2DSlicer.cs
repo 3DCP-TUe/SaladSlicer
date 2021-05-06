@@ -22,11 +22,11 @@ namespace SaladSlicer.Core.Slicers
         #region fields
         private Curve _baseContour;
         private double _distance;
-        private List<Curve> _path = new List<Curve>();
+        private readonly List<Curve> _path = new List<Curve>();
         private Curve _interpolatedPath;
-        private List<Curve> _contours = new List<Curve>();
+        private readonly List<Curve> _contours = new List<Curve>();
         private List<double> _heights = new List<double>();
-        private List<Plane> _frames = new List<Plane>();
+        private readonly List<Plane> _frames = new List<Plane>();
         private double _changeParameter;
         private double _changeLength;
         #endregion
@@ -490,8 +490,6 @@ namespace SaladSlicer.Core.Slicers
         {
             get { return _frames[_frames.Count - 1].Origin; }
         }
-
-
         #endregion
     }
 }

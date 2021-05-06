@@ -13,7 +13,7 @@ using SaladSlicer.Core.Slicers;
 namespace SaladSlicer.Gh.Components.CodeGeneration
 {
     /// <summary>
-    /// Represent a component that generates a custom Code Line.
+    /// Represent a component that deconstruct a Porgram Object.
     /// </summary>
     public class DeconstructProgramObjectComponent : GH_Component
     {
@@ -60,8 +60,6 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
             // Access the input parameters individually. 
             if (!DA.GetData(0, ref programObject)) return;
 
-            
-            // Create the code line
             // Assign the output parameters
             DA.SetData(0, programObject.GetInterpolatedPath());
             DA.SetDataList(1, programObject.Frames);

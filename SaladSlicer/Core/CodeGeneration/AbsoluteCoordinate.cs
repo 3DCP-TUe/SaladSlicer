@@ -12,7 +12,7 @@ using Rhino.Geometry;
 namespace SaladSlicer.Core.CodeGeneration
 {
     /// <summary>
-    /// Represents a custom (user definied) Code Line.
+    /// Represents an Absolute Coordinate.
     /// </summary>
     public class AbsoluteCoordinate : IProgram
     {
@@ -28,16 +28,15 @@ namespace SaladSlicer.Core.CodeGeneration
         {
             _plane = Plane.Unset;
         }
+
         /// <summary>
         /// Initializes a new instance of the AbsoluteCoordinate class.
         /// </summary>
-        /// <param name="plane">Plane representing the origin of the point and optionally the direction (x-axis) of the movement</param>
+        /// <param name="plane">Plane representing the origin of the point and optionally the direction (x-axis) of the movement.</param>
         public AbsoluteCoordinate(Plane plane)
         {
             _plane = plane;
         }
-
-
         #endregion
 
         #region methods
@@ -61,11 +60,11 @@ namespace SaladSlicer.Core.CodeGeneration
         #endregion
 
         #region properties
+        /// <summary>
+        /// Gets a value indicating whether or not the object is valid.
+        /// </summary>
         public bool IsValid
         {
-            /// <summary>
-            /// Gets a value indicating whether or not the object is valid.
-            /// </summary>
             get
             { 
                 if (_plane != null) { return false; } 
@@ -73,6 +72,14 @@ namespace SaladSlicer.Core.CodeGeneration
             }
         }
 
+        /// <summary>
+        /// Gets or sets the plane.
+        /// </summary>
+        public Plane Plane
+        {
+            get { return _plane; }
+            set { _plane = value; }
+        }
         #endregion
     }
 }

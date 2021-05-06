@@ -63,9 +63,9 @@ namespace SaladSlicer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap _2_5D {
+        internal static System.Drawing.Bitmap ExampleIcon {
             get {
-                object obj = ResourceManager.GetObject("_2_5D", resourceCulture);
+                object obj = ResourceManager.GetObject("ExampleIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -73,9 +73,9 @@ namespace SaladSlicer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap ExampleIcon {
+        internal static System.Drawing.Bitmap Planar2DSlicerIcon {
             get {
-                object obj = ResourceManager.GetObject("ExampleIcon", resourceCulture);
+                object obj = ResourceManager.GetObject("Planar2DSlicerIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

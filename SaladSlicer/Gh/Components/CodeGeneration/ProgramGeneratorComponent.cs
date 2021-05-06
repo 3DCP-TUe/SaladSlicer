@@ -133,12 +133,14 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         private void SaveProgram()
         {
             // Create save file dialog
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.CheckFileExists = false;
-            saveFileDialog.CheckPathExists = true;
-            saveFileDialog.DefaultExt = "mod";
-            saveFileDialog.Filter = "NC Program File|*.mpf";
-            saveFileDialog.Title = "Save a Program file";
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                CheckFileExists = false,
+                CheckPathExists = true,
+                DefaultExt = "mpf",
+                Filter = "NC Program File|*.mpf",
+                Title = "Save a Program file"
+            };
 
             // If result of dialog is OK the file can be saved
             if (saveFileDialog.ShowDialog() == DialogResult.OK)

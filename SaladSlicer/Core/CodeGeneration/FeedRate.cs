@@ -3,16 +3,10 @@
 // Free Software Foundation. For more information and the LICENSE file, 
 // see <https://github.com/3DCP-TUe/SaladSlicer>.
 
-// System Libs
-using System;
-using System.Runtime.Serialization;
-using System.Security.Permissions;
-using Rhino.Geometry;
-
 namespace SaladSlicer.Core.CodeGeneration
 {
     /// <summary>
-    /// Represents a custom (user definied) Code Line.
+    /// Represents the Feed Rate.
     /// </summary>
     public class FeedRate : IProgram
     {
@@ -22,22 +16,21 @@ namespace SaladSlicer.Core.CodeGeneration
 
         #region constructors
         /// <summary>
-        /// Initializes an empty instance of the AbsoluteCoordinate class.
+        /// Initializes an empty instance of the FeedRate class.
         /// </summary>         
         public FeedRate()
         {
             _feedRate = double.NaN;
         }
+
         /// <summary>
-        /// Initializes a new instance of the AbsoluteCoordinate class.
+        /// Initializes a new instance of the FeedRate class.
         /// </summary>
-        /// <param name="feedRate">Double representing the speed of movement</param>
+        /// <param name="feedRate">Double representing the velocity of movement.</param>
         public FeedRate(double feedRate)
         {
             _feedRate = feedRate;
         }
-
-
         #endregion
 
         #region methods
@@ -47,7 +40,7 @@ namespace SaladSlicer.Core.CodeGeneration
         /// <returns> A string that represents the current object. </returns>
         public override string ToString()
         {
-            return $"Set FeedRate [mm/min] (F{_feedRate:0.###})";
+            return $"Set Feedrate (F{_feedRate:0.###} mm/min)";
         }
 
         /// <summary>
@@ -61,11 +54,11 @@ namespace SaladSlicer.Core.CodeGeneration
         #endregion
 
         #region properties
+        /// <summary>
+        /// Gets a value indicating whether or not the object is valid.
+        /// </summary>
         public bool IsValid
         {
-            /// <summary>
-            /// Gets a value indicating whether or not the object is valid.
-            /// </summary>
             get
             { 
                 if (_feedRate == double.NaN) { return false; } 
@@ -73,6 +66,14 @@ namespace SaladSlicer.Core.CodeGeneration
             }
         }
 
+        /// <summary>
+        /// Gets or sets the feedrate in mm/min.
+        /// </summary>
+        public double Feedrate
+        {
+            get { return _feedRate; }
+            set { _feedRate = value; }
+        }
         #endregion
     }
 }

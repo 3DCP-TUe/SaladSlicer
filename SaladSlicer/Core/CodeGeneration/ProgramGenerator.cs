@@ -14,7 +14,7 @@ namespace SaladSlicer.Core.CodeGeneration
     public class ProgramGenerator
     {
         #region fields
-        private List<string> _program = new List<string>();
+        private readonly List<string> _program = new List<string>();
         #endregion
 
         #region constructors

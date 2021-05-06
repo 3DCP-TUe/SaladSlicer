@@ -36,31 +36,32 @@ namespace SaladSlicer.Core.CodeGeneration
         /// <summary>
         /// Get the path of the Object
         /// </summary>
-        Curve InterpolatedPath
-        {
-            get;
-        }
+        Curve InterpolatedPath { get; }
+
         /// <summary>
         /// Gets the frames of the object.
         /// </summary>
-        List<Plane> Frames
-        {
-            get;
-        }
+        List<Plane> Frames { get; }
+
         /// <summary>
-        /// Gets the start frame.
+        /// Gets frame at the start of the path.
         /// </summary>
-        Plane FrameAtStart
-        {
-            get;
-        }
+        Plane FrameAtStart { get; }
+
         /// <summary>
-        /// Gets the end frame.
+        /// Gets frame at the end of the path.
         /// </summary>
-        Plane FrameAtEnd
-        {
-            get;
-        }
+        Plane FrameAtEnd { get; }
+
+        /// <summary>
+        /// Gets point at the start of the path.
+        /// </summary>
+        Point3d PointAtStart { get; }
+
+        /// <summary>
+        /// Gets point at the end of the path.
+        /// </summary>
+        Point3d PointAtEnd { get; }
         #endregion
     }
 }

@@ -21,7 +21,7 @@ namespace SaladSlicer.Gh.Components.Utilities
     public class PlaneVisualizerComponent : GH_Component
     {
         #region fields
-        private List<Plane> _planes = new List<Plane>();
+        private readonly List<Plane> _planes = new List<Plane>();
         #endregion
 
         /// <summary>
@@ -59,11 +59,10 @@ namespace SaladSlicer.Gh.Components.Utilities
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             // Declare variable of input parameters
-            GH_Structure<GH_Plane> inputPlanes;
             _planes.Clear();
 
             // Access the input parameters individually. 
-            if (!DA.GetDataTree(0, out inputPlanes)) { return; }
+            if (!DA.GetDataTree(0, out GH_Structure<GH_Plane> inputPlanes)) { return; }
 
             // Flatten the datatree to a list
             for (int i = 0; i < inputPlanes.Branches.Count; i++)
