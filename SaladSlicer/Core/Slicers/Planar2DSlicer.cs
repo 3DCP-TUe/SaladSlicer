@@ -17,7 +17,7 @@ namespace SaladSlicer.Core.Slicers
     /// <summary>
     /// Represents the Planar 2D Slicer class.
     /// </summary>
-    public class Planar2DSlicer : IProgram,IObject
+    public class Planar2DSlicer : IProgram, IObject
     {
         #region fields
         private Curve _baseContour;
@@ -99,6 +99,15 @@ namespace SaladSlicer.Core.Slicers
         {
             return new Planar2DSlicer(this);
         }
+
+        /// <summary>
+        /// Returns an exact duplicate of this Planar 2D Slicer instance as an IObject.
+        /// </summary>
+        /// <returns> The exact duplicate of this Planar 2D Slicer instance as an IObject. </returns>
+        public IObject DuplicateObject()
+        {
+            return this.Duplicate() as IObject;
+        }
         #endregion
 
         #region methods
@@ -119,7 +128,7 @@ namespace SaladSlicer.Core.Slicers
             this.CreateContours();
             this.CreatePath();
             this.CreateFrames();
-            _interpolatedPath = this.GetInterpolatedPath();
+            this.CreateInterpolatedPath();
         }
 
         /// <summary>
@@ -129,7 +138,7 @@ namespace SaladSlicer.Core.Slicers
         {
             _contours.Clear();
 
-            for (int i = 0; i != _heights.Count; i++)
+            for (int i = 0; i < _heights.Count; i++)
             {
                 Curve contour = _baseContour.DuplicateCurve();
                 contour.Domain = new Interval(0, contour.GetLength());
@@ -177,7 +186,7 @@ namespace SaladSlicer.Core.Slicers
                 parameters = new List<double>() { param1, param2, contourLength };
             }
             
-            for (int i = 0; i != _contours.Count; i++)
+            for (int i = 0; i < _contours.Count; i++)
             {
                 Curve[] splitted = _contours[i].Split(parameters);
 
@@ -230,7 +239,7 @@ namespace SaladSlicer.Core.Slicers
 
                 _path.Add(curve1.DuplicateCurve());
 
-                if (i != _contours.Count - 1)
+                if (i < _contours.Count - 1)
                 {
                     _path.Add(curve2.DuplicateCurve());
                 }
@@ -244,7 +253,7 @@ namespace SaladSlicer.Core.Slicers
         {
             _frames.Clear();
 
-            for (int i = 0; i != _path.Count; i++)
+            for (int i = 0; i < _path.Count; i++)
             {
                 bool includeEnds = false;
 
@@ -294,7 +303,7 @@ namespace SaladSlicer.Core.Slicers
             // WORK OFFSET?
 
             // Coords
-            for (int i = 0; i != _frames.Count; i++)
+            for (int i = 0; i < _frames.Count; i++)
             {
                 Point3d point = _frames[i].Origin;
                 programGenerator.Program.Add($"X{point.X:0.###} Y{point.Y:0.###} Z{point.Z:0.###}");
@@ -307,12 +316,11 @@ namespace SaladSlicer.Core.Slicers
         }
 
         /// <summary>
-        /// Returns the interpolated path.
+        /// Creates the interpolated path.
         /// </summary>
-        /// <returns> The interpolated path. </returns>
-        public Curve GetInterpolatedPath()
+        public void CreateInterpolatedPath()
         {
-            return Curve.CreateInterpolatedCurve(this.GetPoints(), 3);
+            _interpolatedPath = Curve.CreateInterpolatedCurve(this.GetPoints(), 3);
         }
 
         /// <summary>
@@ -323,7 +331,7 @@ namespace SaladSlicer.Core.Slicers
         {
             double length = 0.0;
 
-            for (int i = 0; i != _path.Count; i++)
+            for (int i = 0; i < _path.Count; i++)
             {
                 length += _path[i].GetLength();
             }
@@ -338,7 +346,7 @@ namespace SaladSlicer.Core.Slicers
         {
             List<Point3d> points = new List<Point3d>();
 
-            for (int i = 0; i != _frames.Count; i++)
+            for (int i = 0; i < _frames.Count; i++)
             {
                 points.Add(_frames[i].Origin);
             }
@@ -353,9 +361,20 @@ namespace SaladSlicer.Core.Slicers
         /// <returns> True on success, false on failure. </returns>
         public bool Transform(Transform xform)
         {
-            //TODO
+            _baseContour.Transform(xform);
+            _interpolatedPath.Transform(xform);
 
-            return false;
+            for (int i = 0; i < _frames.Count; i++)
+            {
+                _frames[i].Transform(xform);
+            }
+
+            for (int i = 0; i < _path.Count; i++)
+            {
+                _path[i].Transform(xform);
+            }
+
+            return true;
         }
         #endregion
 

@@ -15,7 +15,11 @@ namespace SaladSlicer.Core.CodeGeneration
     public interface IObject
     {
         #region constructors
-
+        /// <summary>
+        /// Returns an exact duplicate of this IObject.
+        /// </summary>
+        /// <returns> The exact duplicate of this IObject. </returns>
+        IObject DuplicateObject();
         #endregion
 
         #region methods
@@ -25,6 +29,12 @@ namespace SaladSlicer.Core.CodeGeneration
         /// <param name="programGenerator"> The program generator. </param>
         void ToProgram(ProgramGenerator programGenerator);
 
+        /// <summary>
+        /// Transforms the geometry.
+        /// </summary>
+        /// <param name="xform"> Transformation to apply to geometry. </param>
+        /// <returns> True on success, false on failure. </returns>
+        bool Transform(Transform xform);
         #endregion
 
         #region properties
