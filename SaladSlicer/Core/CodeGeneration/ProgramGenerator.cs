@@ -54,7 +54,7 @@ namespace SaladSlicer.Core.CodeGeneration
             _program.Add(" ");
 
             // G-code of different objects
-            for (int i = 0; i != _objects.Count; i++)
+            for (int i = 0; i < _objects.Count; i++)
             {
                 _objects[i].ToProgram(this);
             }

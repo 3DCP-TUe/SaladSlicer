@@ -61,13 +61,13 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
         /// <returns></returns>
         public override string ToString()
         {
-            if (Value == null)
+            if (this.Value == null)
             {
                 return "Null Code Line";
             }
             else
             {
-                return Value.ToString();
+                return this.Value.ToString();
             }
         }
 
@@ -80,7 +80,7 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
         public override bool CastTo<Q>(ref Q target)
         {
             // Check null type
-            if (Value == null) 
+            if (this.Value == null) 
             { 
                 target = default;
                 return false;
@@ -89,14 +89,14 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
             // Cast to Code Line
             if (typeof(Q).IsAssignableFrom(typeof(CodeLine)))
             {
-                target = (Q)(object)Value;
+                target = (Q)(object)this.Value;
                 return true;
             }
 
             // Cast to Code Line Goo
             if (typeof(Q).IsAssignableFrom(typeof(GH_CodeLine)))
             {
-                target = (Q)(object)new GH_CodeLine(Value);
+                target = (Q)(object)new GH_CodeLine(this.Value);
                 return true;
             }
 
@@ -121,15 +121,15 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
             // Cast from Code Line
             if (typeof(CodeLine).IsAssignableFrom(source.GetType()))
             {
-                Value = source as CodeLine;
+                this.Value = source as CodeLine;
                 return true;
             }
 
             // Cast from Text
             if (typeof(GH_String).IsAssignableFrom(source.GetType()))
             {
-                GH_String goo = (GH_String)source;
-                Value = new CodeLine(goo.Value);
+                GH_String goo = source as GH_String;
+                this.Value = new CodeLine(goo.Value);
                 return true;
             }
 
@@ -146,8 +146,8 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
         {
             get
             {
-                if (Value == null) { return false; }
-                return Value.IsValid;
+                if (this.Value == null) { return false; }
+                return this.Value.IsValid;
             }
         }
 
@@ -159,8 +159,8 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
         {
             get
             {
-                if (Value == null) { return "No internal Code Line instance"; }
-                if (Value.IsValid) { return string.Empty; }
+                if (this.Value == null) { return "No internal Code Line instance"; }
+                if (this.Value.IsValid) { return string.Empty; }
                 return "Invalid Code Line instance: Did you define a Text?";
             }
         }

@@ -151,7 +151,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
                     // Write RAPID code to file
                     using (StreamWriter writer = new StreamWriter(saveFileDialog.FileName, false))
                     {
-                        for (int i = 0; i != _program.Count; i++)
+                        for (int i = 0; i < _program.Count; i++)
                         writer.WriteLine(_program[i]);
                     }
                 }
