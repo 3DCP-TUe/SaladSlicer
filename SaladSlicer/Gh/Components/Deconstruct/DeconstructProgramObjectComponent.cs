@@ -8,7 +8,9 @@ using System;
 // Grasshopper Libs
 using Grasshopper.Kernel;
 // Salad Slicer Libs
+using SaladSlicer.Core.CodeGeneration;
 using SaladSlicer.Core.Slicers;
+using SaladSlicer.Gh.Parameters.CodeGeneration;
 
 namespace SaladSlicer.Gh.Components.CodeGeneration
 {
@@ -34,7 +36,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddGenericParameter("Program Object", "PO", "Program Object.", GH_ParamAccess.item);
+            pManager.AddParameter(new Param_Object(), "Program Object", "PO", "Program Object.", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -55,7 +57,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             // Declare variable of input parameters
-            Planar2DSlicer programObject = new Planar2DSlicer();
+            IObject programObject = new Planar2DSlicer();
             
             // Access the input parameters individually. 
             if (!DA.GetData(0, ref programObject)) return;

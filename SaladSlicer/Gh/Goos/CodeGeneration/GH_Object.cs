@@ -112,6 +112,20 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
                 return true;
             }
 
+            // Cast to IProgram
+            if (typeof(Q).IsAssignableFrom(typeof(IProgram)))
+            {
+                target = (Q)(object)this.Value;
+                return true;
+            }
+
+            // Cast to IProgram Goo
+            // if (typeof(Q).IsAssignableFrom(typeof(GH_Program)))
+            // {
+            //     target = (Q)(object)new GH_Program(this.Value);
+            //     return true;
+            // }
+
             // Invalid cast
             target = default;
             return false;

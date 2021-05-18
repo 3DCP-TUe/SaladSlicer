@@ -77,6 +77,7 @@
     <Compile Include="Gh\Components\ExampleComponent.cs" />
     <Compile Include="Gh\Goos\CodeGeneration\GH_Object.cs" />
     <Compile Include="Gh\Goos\CodeGeneration\GH_CodeLine.cs" />
+    <Compile Include="Gh\Parameters\CodeGeneration\Param_Object.cs" />
     <Compile Include="Gh\Parameters\CodeGeneration\Param_CodeLine.cs" />
     <Compile Include="Gh\Utils\HelperMethods.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

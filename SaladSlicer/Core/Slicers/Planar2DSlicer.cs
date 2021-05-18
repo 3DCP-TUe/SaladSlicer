@@ -89,6 +89,7 @@ namespace SaladSlicer.Core.Slicers
             _path = slicer.Path.ConvertAll(curve => curve.DuplicateCurve());
             _contours = slicer.Contours.ConvertAll(curve => curve.DuplicateCurve());
             _frames = new List<Plane>(slicer.Frames);
+            _interpolatedPath = slicer.InterpolatedPath.DuplicateCurve();
         }
 
         /// <summary>
@@ -363,17 +364,24 @@ namespace SaladSlicer.Core.Slicers
         {
             _baseContour.Transform(xform);
             _interpolatedPath.Transform(xform);
-
+            
             for (int i = 0; i < _frames.Count; i++)
             {
-                _frames[i].Transform(xform);
+                Plane frame = _frames[i];
+                frame.Transform(xform);
+                _frames[i] = frame;
             }
-
+            
             for (int i = 0; i < _path.Count; i++)
             {
                 _path[i].Transform(xform);
             }
-
+            
+            for (int i = 0; i < _contours.Count; i++)
+            {
+                _contours[i].Transform(xform);
+            }
+            
             return true;
         }
         #endregion
