@@ -168,28 +168,34 @@ namespace SaladSlicer.Core.Slicers
             Curve dum1;
             Curve dum2;
 
-            if (splitLocation < 0.5 * _changeLength)
+            if (splitLocation == 0)
             {
-                param1 = splitLocation - 0.5 * _changeLength + contourLength;
-                param2 = splitLocation + 0.5 * _changeLength;
-                parameters = new List<double>() { param1, param2, contourLength };
+                param1 = 0.0;
+                param2 = _changeLength;
+                parameters = new List<double>() { param2, contourLength };
             }
-            else if (contourLength - splitLocation < 0.5 *_changeLength)
+            else if (splitLocation == contourLength)
             {
-                param1 = splitLocation - 0.5 * _changeLength;
-                param2 = splitLocation + 0.5 * _changeLength - contourLength;
+                param1 = _changeLength;
+                param2 = contourLength;
+                parameters = new List<double>() { param1, contourLength };
+            }
+            else if (contourLength - splitLocation < _changeLength)
+            {
+                param1 = splitLocation;
+                param2 = splitLocation + _changeLength - contourLength;
                 parameters = new List<double>() { param2, param1, contourLength };
             }
             else
             {
-                param1 = splitLocation - 0.5 * _changeLength;
-                param2 = splitLocation + 0.5 * _changeLength;
+                param1 = splitLocation;
+                param2 = splitLocation + _changeLength;
                 parameters = new List<double>() { param1, param2, contourLength };
             }
             
             for (int i = 0; i < _contours.Count; i++)
             {
-                Curve[] splitted = _contours[i].Split(parameters);
+                Curve[] split = _contours[i].Split(parameters);
 
                 if (i < _contours.Count - 1)
                 {
@@ -202,20 +208,20 @@ namespace SaladSlicer.Core.Slicers
                     point2 = _contours[i].PointAt(param2);
                 }
 
-                if (splitLocation < 0.5 * _changeLength )
+                if (splitLocation == 0 | splitLocation == contourLength)
                 {
-                    curve1 = splitted[1];
-                    dum1 = Curve.JoinCurves(new List<Curve>() { splitted[2], splitted[0] })[0];
+                    curve1 = split[1];
+                    dum1 = split[0];
                 }
-                else if (contourLength - splitLocation < 0.5 * _changeLength)
+                else if (contourLength - splitLocation < _changeLength)
                 {
-                    curve1 = splitted[1];
-                    dum1 = Curve.JoinCurves(new List<Curve>() { splitted[2], splitted[0] })[0];
+                    curve1 = split[1];
+                    dum1 = Curve.JoinCurves(new List<Curve>() { split[2], split[0] })[0];
                 }
                 else
                 {
-                    curve1 = Curve.JoinCurves(new List<Curve>() { splitted[0], splitted[2] })[0];
-                    dum1 = splitted[1];
+                    curve1 = Curve.JoinCurves(new List<Curve>() { split[0], split[2] })[0];
+                    dum1 = split[1];
                 }
 
                 dum2 = new Line(point1, point2).ToNurbsCurve();
