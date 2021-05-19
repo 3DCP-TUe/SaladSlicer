@@ -64,6 +64,7 @@
     <Compile Include="Core\Examples\ExamplePoint.cs" />
     <Compile Include="Core\Slicers\CurveSlicer.cs" />
     <Compile Include="Core\Slicers\Planar2DSlicer.cs" />
+    <Compile Include="Core\Slicers\Planar3DSlicer.cs" />
     <Compile Include="Core\Utils\Helpermethods.cs" />
     <Compile Include="Gh\Components\CodeGeneration\FeedRateComponent.cs" />
     <Compile Include="Gh\Components\CodeGeneration\AbsoluteCoordinateComponent.cs" />
