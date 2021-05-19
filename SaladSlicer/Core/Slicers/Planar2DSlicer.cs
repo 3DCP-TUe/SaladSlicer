@@ -168,16 +168,16 @@ namespace SaladSlicer.Core.Slicers
             Curve dum1;
             Curve dum2;
 
-            if (splitLocation < _changeLength)
+            if (splitLocation < 0.5 * _changeLength)
             {
-                param1 = contourLength - splitLocation - 0.5 * _changeLength;
+                param1 = splitLocation - 0.5 * _changeLength + contourLength;
                 param2 = splitLocation + 0.5 * _changeLength;
                 parameters = new List<double>() { param1, param2, contourLength };
             }
-            else if (contourLength - splitLocation < _changeLength)
+            else if (contourLength - splitLocation < 0.5 *_changeLength)
             {
                 param1 = splitLocation - 0.5 * _changeLength;
-                param2 = contourLength - splitLocation + 0.5 * _changeLength;
+                param2 = splitLocation + 0.5 * _changeLength - contourLength;
                 parameters = new List<double>() { param2, param1, contourLength };
             }
             else
@@ -202,12 +202,12 @@ namespace SaladSlicer.Core.Slicers
                     point2 = _contours[i].PointAt(param2);
                 }
 
-                if (splitLocation < _changeLength )
+                if (splitLocation < 0.5 * _changeLength )
                 {
                     curve1 = splitted[1];
                     dum1 = Curve.JoinCurves(new List<Curve>() { splitted[2], splitted[0] })[0];
                 }
-                else if (contourLength - splitLocation < _changeLength)
+                else if (contourLength - splitLocation < 0.5 * _changeLength)
                 {
                     curve1 = splitted[1];
                     dum1 = Curve.JoinCurves(new List<Curve>() { splitted[2], splitted[0] })[0];
@@ -236,7 +236,7 @@ namespace SaladSlicer.Core.Slicers
                     points.Add(new Point3d(p1.X, p1.Y, p2.Z));
                 }
 
-                curve2 = Curve.CreateInterpolatedCurve(points, 3);
+                curve2 = Curve.CreateInterpolatedCurve(points, 3, CurveKnotStyle.Chord);
 
                 _path.Add(curve1.DuplicateCurve());
 
@@ -321,7 +321,7 @@ namespace SaladSlicer.Core.Slicers
         /// </summary>
         public void CreateInterpolatedPath()
         {
-            _interpolatedPath = Curve.CreateInterpolatedCurve(this.GetPoints(), 3);
+            _interpolatedPath = Curve.CreateInterpolatedCurve(this.GetPoints(), 3, CurveKnotStyle.Chord);
         }
 
         /// <summary>
