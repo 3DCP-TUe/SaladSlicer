@@ -62,6 +62,7 @@
     <Compile Include="Core\CodeGeneration\IProgram.cs" />
     <Compile Include="Core\Enumerations\Enumerations.cs" />
     <Compile Include="Core\Examples\ExamplePoint.cs" />
+    <Compile Include="Core\Slicers\Planar3DSlicer.cs" />
     <Compile Include="Core\Slicers\Planar2DSlicer.cs" />
     <Compile Include="Core\Utils\Helpermethods.cs" />
     <Compile Include="Gh\Components\CodeGeneration\FeedRateComponent.cs" />
