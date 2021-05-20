@@ -151,7 +151,7 @@ namespace SaladSlicer.Core.Slicers
         /// </summary>
         public void CreateInterpolatedPath()
         {
-            _interpolatedPath = Curve.CreateInterpolatedCurve(this.GetPoints(), 3);
+            _interpolatedPath = Curve.CreateInterpolatedCurve(this.GetPoints(), 3,CurveKnotStyle.Chord);
         }
 
         /// <summary>
