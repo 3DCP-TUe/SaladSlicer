@@ -49,6 +49,8 @@ namespace SaladSlicer.Core.Slicers
         {
             _curve = slicer.Curve;
             _distance = slicer.Distance;
+            _interpolatedPath = slicer.InterpolatedPath;
+            _frames = slicer.Frames;
         }
 
         /// <summary>
