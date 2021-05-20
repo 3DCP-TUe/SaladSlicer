@@ -47,10 +47,10 @@ namespace SaladSlicer.Core.Slicers
 
         public CurveSlicer(CurveSlicer slicer)
         {
-            _curve = slicer.Curve;
+            _curve = slicer.Curve.DuplicateCurve();
             _distance = slicer.Distance;
-            _interpolatedPath = slicer.InterpolatedPath;
-            _frames = slicer.Frames;
+            _interpolatedPath = slicer.InterpolatedPath.DuplicateCurve();
+            _frames = new List<Plane>(slicer.Frames);
         }
 
         /// <summary>
