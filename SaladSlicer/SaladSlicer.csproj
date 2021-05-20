@@ -54,6 +54,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Geometry\JoinCurves.cs" />
     <Compile Include="Core\CodeGeneration\FeedRate.cs" />
     <Compile Include="Core\CodeGeneration\AbsoluteCoordinate.cs" />
     <Compile Include="Core\CodeGeneration\IObject.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="Gh\Components\CodeGeneration\ProgramGeneratorComponent.cs" />
     <Compile Include="Gh\Components\Utilities\ConvertVelocityMmsMmminComponent.cs" />
     <Compile Include="Gh\Components\Utilities\ConvertVelocityMmminMmsComponent.cs" />
+    <Compile Include="Gh\Components\Geometry\JoinCurvesComponent.cs" />
     <Compile Include="Gh\Components\Utilities\PlaneVisualizerComponent.cs" />
     <Compile Include="Gh\Components\Utilities\TransposeSurfaceComponent.cs" />
     <Compile Include="Gh\Components\ExampleComponent.cs" />
