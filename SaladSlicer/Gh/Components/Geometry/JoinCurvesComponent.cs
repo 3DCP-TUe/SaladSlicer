@@ -17,12 +17,11 @@ using SaladSlicer.Core.Geometry;
 namespace SaladSlicer.Gh.Components.Geometry
 {
     /// <summary>
-    /// Represents the component that visualizes the orientation of a plane. 
+    /// Represents the component that joins curves using linear interpolation. 
     /// </summary>
     public class JoinCurvesComponent : GH_Component
     {
         #region fields
-        private readonly List<Plane> _planes = new List<Plane>();
         #endregion
 
         /// <summary>
@@ -44,6 +43,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         {
             pManager.AddCurveParameter("Curves", "C", "List of curves", GH_ParamAccess.list);
             pManager.AddBooleanParameter("Alternate", "A", "Reverses the direction of every other curve", GH_ParamAccess.item,false);
+            pManager.AddTextParameter("Connection type", "T", "Sets the type of connection [Linear, OutsideArc]", GH_ParamAccess.item, "Linear");
         }
 
         /// <summary>
@@ -63,15 +63,29 @@ namespace SaladSlicer.Gh.Components.Geometry
             // Declare variable of input parameters
             List<Curve> curves = new List<Curve>();
             bool reverse = new bool();
+            string type = "";
+            Curve joinedCurve;
 
             // Access the input parameters individually. 
             if (!DA.GetDataList(0, curves)) return;
             if (!DA.GetData(1, ref reverse)) return;
-
+            if (!DA.GetData(2, ref type)) return;
             // Create the code line
 
             // Assign the output parameters
-            DA.SetData(0, JoinCurves.JoinLinear(curves,reverse));
+            if (type == "Linear")
+            {
+                joinedCurve = Curves.JoinLinear(curves, reverse);
+            }
+            else if (type == "OutsideArc")
+            {
+                joinedCurve = Curves.JoinOutsideArc(curves, reverse);
+            }
+            else
+            {
+                joinedCurve = Line.Unset.ToNurbsCurve();
+            }
+            DA.SetData(0, joinedCurve);
         }
 
         /// <summary>

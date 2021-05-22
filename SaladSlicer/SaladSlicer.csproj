@@ -54,7 +54,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\Geometry\JoinCurves.cs" />
+    <Compile Include="Core\Geometry\Curves.cs" />
     <Compile Include="Core\CodeGeneration\FeedRate.cs" />
     <Compile Include="Core\CodeGeneration\AbsoluteCoordinate.cs" />
     <Compile Include="Core\CodeGeneration\IObject.cs" />
