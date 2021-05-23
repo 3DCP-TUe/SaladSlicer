@@ -45,6 +45,15 @@ namespace SaladSlicer.Core.Geometry
             Curve joinedCurve = MergeCurves(curvesCopy, transitions);
             return joinedCurve;
         }
+
+        public static Curve JoinOutsideInterpolated(List<Curve> curves, bool reverse)
+        {
+            List<Curve> curvesCopy = curves.ConvertAll(curve => curve.DuplicateCurve());
+            if (reverse == true) { curvesCopy = ReverseEveryOther(curvesCopy); }
+            List<Curve> transitions = OutsideInterpolatedTransitions(curvesCopy);
+            Curve joinedCurve = MergeCurves(curvesCopy, transitions);
+            return joinedCurve;
+        }
         /// <summary>
         /// Reverses every other curve in a list of curves, starting with the second.
         /// </summary>
@@ -127,6 +136,24 @@ namespace SaladSlicer.Core.Geometry
                     endFrames[i].XAxis,
                     startFrames[i + 1].Origin);
                 transitions.Add(arc.ToNurbsCurve());
+            }
+            return transitions;
+        }
+
+        public static List<Curve> OutsideInterpolatedTransitions(List<Curve> curves)
+        {
+            List<Curve> transitions = new List<Curve>();
+            List<Plane> startFrames = GetStartFrames(curves);
+            List<Plane> endFrames = GetEndFrames(curves);
+            for (int i = 0; i < curves.Count - 1; i++)
+            {
+                Point3d[] points = { endFrames[i].Origin, startFrames[i + 1].Origin };
+                Curve curve = Curve.CreateInterpolatedCurve(points,
+                                                            3,
+                                                            CurveKnotStyle.Chord,
+                                                            endFrames[i].XAxis,
+                                                            startFrames[i + 1].XAxis);
+                transitions.Add(curve.ToNurbsCurve());
             }
             return transitions;
         }
