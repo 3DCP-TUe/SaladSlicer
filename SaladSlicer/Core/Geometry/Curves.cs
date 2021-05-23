@@ -79,7 +79,7 @@ namespace SaladSlicer.Core.Geometry
             
             return numberClosed;
         }
-        public static List<Curve> CutTransitionEnd(List<Curve> curves, double cutLength, double cutParameter)
+        public static List<Curve> CutTransitionEnd(List<Curve> curves, double cutLength)
         {
             List<Curve> curvesCopy = curves.ConvertAll(curve => curve.DuplicateCurve());
             for (int i = 0; i < curves.Count; i++)
