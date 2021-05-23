@@ -64,7 +64,11 @@ namespace SaladSlicer.Core.Geometry
             return joinedCurve;
         }
         #endregion
-
+        /// <summary>
+        /// Returns the number of closed curves in a list of curves
+        /// </summary>
+        /// <param name="curves">The list of curves</param>
+        /// <returns></returns>
         public static double NumberClosed(List<Curve> curves)
         {
             double numberClosed = 0 ;
@@ -79,6 +83,12 @@ namespace SaladSlicer.Core.Geometry
             
             return numberClosed;
         }
+        /// <summary>
+        /// Cuts of the end of every curve in a list of curves
+        /// </summary>
+        /// <param name="curves">List of curves</param>
+        /// <param name="cutLength">Length to be cut off</param>
+        /// <returns></returns>
         public static List<Curve> CutTransitionEnd(List<Curve> curves, double cutLength)
         {
             List<Curve> curvesCopy = curves.ConvertAll(curve => curve.DuplicateCurve());
@@ -93,7 +103,7 @@ namespace SaladSlicer.Core.Geometry
         /// <summary>
         /// Reverses every other curve in a list of curves, starting with the second.
         /// </summary>
-        /// <param name="curves"></param>
+        /// <param name="curves">List of curves</param>
         /// <returns></returns>
         public static List<Curve> ReverseEveryOther(List<Curve> curves)
         {
