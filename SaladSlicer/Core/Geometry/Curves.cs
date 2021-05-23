@@ -18,10 +18,13 @@ namespace SaladSlicer.Core.Geometry
     public static class Curves
     {
         #region methods
+        
+        #region join
         /// <summary>
         /// Joins start and end points of a list of curves linearly and returns a curve
         /// </summary>
-        /// <param name="curves">List of curves</param>
+        /// <param name="curves">The list of curves</param>
+        /// <param name="reverse">Reverse every other curve if true</param>
         /// <returns></returns>
         public static Curve JoinLinear(List<Curve> curves, bool reverse)
         {
@@ -34,8 +37,8 @@ namespace SaladSlicer.Core.Geometry
         /// <summary>
         /// Joins start and end points of a list of curves using arcs that connect outside of the original curves.
         /// </summary>
-        /// <param name="curves"></param>
-        /// <param name="reverse"></param>
+        /// <param name="curves">The list of curves</param>
+        /// <param name="reverse">Reverse every other curve if true</param>
         /// <returns></returns>
         public static Curve JoinOutsideArc(List<Curve> curves, bool reverse)
         {
@@ -46,6 +49,12 @@ namespace SaladSlicer.Core.Geometry
             return joinedCurve;
         }
 
+        /// <summary>
+        /// Joins start and end points of a list of curves using interpolated curves outside of the original curves
+        /// </summary>
+        /// <param name="curves">The list of curves</param>
+        /// <param name="reverse">Reverse every other curve if true</param>
+        /// <returns></returns>
         public static Curve JoinOutsideInterpolated(List<Curve> curves, bool reverse)
         {
             List<Curve> curvesCopy = curves.ConvertAll(curve => curve.DuplicateCurve());
@@ -53,6 +62,33 @@ namespace SaladSlicer.Core.Geometry
             List<Curve> transitions = OutsideInterpolatedTransitions(curvesCopy);
             Curve joinedCurve = MergeCurves(curvesCopy, transitions);
             return joinedCurve;
+        }
+        #endregion
+
+        public static double NumberClosed(List<Curve> curves)
+        {
+            double numberClosed = 0 ;
+            for (int i = 0; i < curves.Count; i++)
+            {
+                bool close = curves[i].IsClosed;
+                if (close == true)
+                {
+                    numberClosed = numberClosed + 1;
+                }
+            }
+            
+            return numberClosed;
+        }
+        public static List<Curve> CutTransitionEnd(List<Curve> curves, double cutLength, double cutParameter)
+        {
+            List<Curve> curvesCopy = curves.ConvertAll(curve => curve.DuplicateCurve());
+            for (int i = 0; i < curves.Count; i++)
+            {
+                curvesCopy[i].LengthParameter(curvesCopy[i].GetLength()-cutLength, out double param3);
+                Curve[] tempCurves = curvesCopy[i].Split(param3);
+                curvesCopy[i] = tempCurves[0];
+            }
+            return curvesCopy;
         }
         /// <summary>
         /// Reverses every other curve in a list of curves, starting with the second.
@@ -102,7 +138,7 @@ namespace SaladSlicer.Core.Geometry
             return endFrames;
         }
 
-        
+        #region transitions
         /// <summary>
         /// Creates linear transitions between start and endpoints of a list of curves
         /// </summary>
@@ -157,7 +193,7 @@ namespace SaladSlicer.Core.Geometry
             }
             return transitions;
         }
-
+        #endregion
         /// <summary>
         /// Joins a list of curves and a list of transitions and return a single curve
         /// </summary>
