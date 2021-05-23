@@ -43,7 +43,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         {
             pManager.AddCurveParameter("Curves", "C", "List of curves", GH_ParamAccess.list);
             pManager.AddBooleanParameter("Alternate", "A", "Reverses the direction of every other curve", GH_ParamAccess.item,false);
-            pManager.AddTextParameter("Connection type", "T", "Sets the type of connection [Linear, OutsideArc]", GH_ParamAccess.item, "Linear");
+            pManager.AddTextParameter("Connection type", "T", "Sets the type of connection [Linear,OutsideInterpolated]", GH_ParamAccess.item, "OutsideInterpolated");
         }
 
         /// <summary>
@@ -77,9 +77,9 @@ namespace SaladSlicer.Gh.Components.Geometry
             {
                 joinedCurve = Curves.JoinLinear(curves, reverse);
             }
-            else if (type == "OutsideArc")
+            else if (type == "OutsideInterpolated")
             {
-                joinedCurve = Curves.JoinOutsideArc(curves, reverse);
+                joinedCurve = Curves.JoinOutsideInterpolated(curves, reverse);
             }
             else
             {
