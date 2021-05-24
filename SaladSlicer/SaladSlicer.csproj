@@ -54,7 +54,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\Geometry\JoinCurves.cs" />
+    <Compile Include="Core\Geometry\Curves.cs" />
     <Compile Include="Core\CodeGeneration\FeedRate.cs" />
     <Compile Include="Core\CodeGeneration\AbsoluteCoordinate.cs" />
     <Compile Include="Core\CodeGeneration\IObject.cs" />
@@ -70,13 +70,14 @@
     <Compile Include="Gh\Components\CodeGeneration\FeedRateComponent.cs" />
     <Compile Include="Gh\Components\CodeGeneration\AbsoluteCoordinateComponent.cs" />
     <Compile Include="Gh\Components\Deconstruct\DeconstructProgramObjectComponent.cs" />
+    <Compile Include="Gh\Components\Geometry\JoinClosedCurvesComponent.cs" />
     <Compile Include="Gh\Components\Slicers\CurveSlicerComponent.cs" />
     <Compile Include="Gh\Components\Slicers\Planar2DSlicerComponent.cs" />
     <Compile Include="Gh\Components\CodeGeneration\CodeLineComponent.cs" />
     <Compile Include="Gh\Components\CodeGeneration\ProgramGeneratorComponent.cs" />
     <Compile Include="Gh\Components\Utilities\ConvertVelocityMmsMmminComponent.cs" />
     <Compile Include="Gh\Components\Utilities\ConvertVelocityMmminMmsComponent.cs" />
-    <Compile Include="Gh\Components\Geometry\JoinCurvesComponent.cs" />
+    <Compile Include="Gh\Components\Geometry\JoinOpenCurvesComponent.cs" />
     <Compile Include="Gh\Components\Utilities\PlaneVisualizerComponent.cs" />
     <Compile Include="Gh\Components\Utilities\TransposeSurfaceComponent.cs" />
     <Compile Include="Gh\Components\ExampleComponent.cs" />

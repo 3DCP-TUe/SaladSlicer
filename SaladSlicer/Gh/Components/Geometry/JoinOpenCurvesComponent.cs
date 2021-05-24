@@ -17,21 +17,20 @@ using SaladSlicer.Core.Geometry;
 namespace SaladSlicer.Gh.Components.Geometry
 {
     /// <summary>
-    /// Represents the component that visualizes the orientation of a plane. 
+    /// Represents the component that joins curves using linear interpolation. 
     /// </summary>
-    public class JoinCurvesComponent : GH_Component
+    public class JoinOpenCurvesComponent : GH_Component
     {
         #region fields
-        private readonly List<Plane> _planes = new List<Plane>();
         #endregion
 
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public JoinCurvesComponent()
-          : base("Join Curves", // Component name
-              "JC", // Component nickname
-              "Joins a list of curves linearly between end and start points. Alternation false keeps the original directions of the curves, while alternation true flips every other curve in the list.", // Description
+        public JoinOpenCurvesComponent()
+          : base("Join Open Curves", // Component name
+              "JOC", // Component nickname
+              "Joins a list of open curves between end and start points. Alternation false keeps the original directions of the curves, while alternation true flips every other curve in the list.", // Description
               "Salad Slicer", // Category
               "Geometry") // Subcategory
         {
@@ -43,7 +42,8 @@ namespace SaladSlicer.Gh.Components.Geometry
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddCurveParameter("Curves", "C", "List of curves", GH_ParamAccess.list);
-            pManager.AddBooleanParameter("Alternate", "A", "Reverses the direction of every other curve", GH_ParamAccess.item,false);
+            pManager.AddBooleanParameter("Alternate", "A", "Reverses the direction of every other curve", GH_ParamAccess.item,true);
+            pManager.AddTextParameter("Connection type", "T", "Sets the type of connection [Linear,OutsideInterpolated]", GH_ParamAccess.item, "OutsideInterpolated");
         }
 
         /// <summary>
@@ -63,15 +63,30 @@ namespace SaladSlicer.Gh.Components.Geometry
             // Declare variable of input parameters
             List<Curve> curves = new List<Curve>();
             bool reverse = new bool();
+            string type = "";
+            Curve joinedCurve;
 
             // Access the input parameters individually. 
             if (!DA.GetDataList(0, curves)) return;
             if (!DA.GetData(1, ref reverse)) return;
-
+            if (!DA.GetData(2, ref type)) return;
             // Create the code line
+            
+            if (type == "Linear")
+            {
+                joinedCurve = Curves.JoinLinear(curves, reverse);
+            }
+            else if (type == "OutsideInterpolated")
+            {
+                joinedCurve = Curves.JoinOutsideInterpolated(curves, reverse);
+            }
+            else
+            {
+                joinedCurve = Line.Unset.ToNurbsCurve();
+            }
 
             // Assign the output parameters
-            DA.SetData(0, JoinCurves.JoinLinear(curves,reverse));
+            DA.SetData(0, joinedCurve);
         }
 
         /// <summary>
