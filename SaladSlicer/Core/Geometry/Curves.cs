@@ -5,10 +5,9 @@
 
 // System Libs
 using System;
-using System.Runtime.Serialization;
-using System.Security.Permissions;
-using Rhino.Geometry;
 using System.Collections.Generic;
+// Rhino Libs
+using Rhino.Geometry;
 
 namespace SaladSlicer.Core.Geometry
 {
@@ -220,6 +219,93 @@ namespace SaladSlicer.Core.Geometry
                 curve1 = Curve.JoinCurves(new List<Curve>() {curve1, curves[i+1] })[0];
             }
             return curve1;
+        }
+
+        /// <summary>
+        /// Returns the curve with a starting point at the given parameters. Requiers a closed curve. 
+        /// </summary>
+        /// <param name="curve">The closed curve to change the point at start from.</param>
+        /// <param name="param">The parameter of the new point at start.</param>
+        /// <returns>The closed curve with a new point at start.</returns>
+        public static Curve SetStartPointAtParam(Curve curve, double param)
+        {
+            Curve result = curve.DuplicateCurve();
+
+            if (param > result.Domain.T0 & param < result.Domain.T1 & result.IsClosed == true)
+            {
+                Curve[] split = curve.Split(param);
+                result = Curve.JoinCurves(new List<Curve>() { split[1].ToNurbsCurve(), split[0].ToNurbsCurve() })[0];
+                result.Domain = curve.Domain;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Returns a single curve from a list with unconnected curves. 
+        /// Interpolates between the curves at a given location and transition length.
+        /// Used to join the contours in a 2.5D object.
+        /// </summary>
+        /// <param name="curves">List with closed curves to interpolate between.</param>
+        /// <param name="length">The length over the transition between two curves.</param>
+        /// <param name="param">The parameter of the transition location.</param>
+        /// <param name="precision">The precision of the transition.</param>
+        /// <returns>The connected curve with interpolated transitions.</returns>
+        public static Curve JoinInterpolatedTransitions(List<Curve> curves, double length = 100.0, double param = 0.0, double precision = 20.0)
+        {
+            Curve result = Curve.JoinCurves(InterpolatedTransitions(curves, length, param, precision))[0];
+            result.Domain = new Interval(0, result.GetLength());
+
+            return result;
+        }
+
+        /// <summary>
+        /// Returns a list connected curves from a list with unconnected curves. 
+        /// Interpolates between the curves at a given location and transition length.
+        /// Used to join the contours in a 2.5D object.
+        /// </summary>
+        /// <param name="curves">List with closed curves to interpolate between.</param>
+        /// <param name="length">The length over the transition between two curves.</param>
+        /// <param name="param">The parameter of the transition location (0-1).</param>
+        /// <param name="precision">The precision of the transition.</param>
+        /// <returns>The list with connected curves.</returns>
+        public static List<Curve> InterpolatedTransitions(List<Curve> curves, double length = 100.0, double param = 0.0, double precision = 20.0)
+        {
+            List<Curve> result = new List<Curve>();
+
+            for (int i = 0; i < curves.Count; i++)
+            {
+                curves[i].Domain = new Interval(0, 1);
+                curves[i] = SetStartPointAtParam(curves[i], param);
+
+                curves[i].Domain = new Interval(0, curves[i].GetLength());
+                double splitParam = curves[i].GetLength() - length;
+                Curve[] splitCurves = curves[i].Split(splitParam);
+                Point3d splitPoint = curves[i].PointAt(splitParam);
+
+                result.Add(splitCurves[0].DuplicateCurve());
+
+                if (i < curves.Count - 1)
+                {
+                    int n = Math.Max((int)(splitCurves[1].GetLength() / precision), 8);
+                    double heightChange = curves[i + 1].PointAtStart.Z - splitPoint.Z;
+                    double delta = heightChange / n;
+
+                    double[] parameters = splitCurves[1].DivideByCount(n, true);
+                    double heightStart = splitPoint.Z;
+                    List<Point3d> points = new List<Point3d>();
+
+                    for (int j = 0; j < parameters.Length; j++)
+                    {
+                        Point3d point = splitCurves[1].PointAt(parameters[j]);
+                        points.Add(new Point3d(point.X, point.Y, heightStart + j * delta));
+                    }
+
+                    result.Add(Curve.CreateInterpolatedCurve(points, 3, CurveKnotStyle.Chord));
+                }
+            }
+
+            return result;
         }
         #endregion
 

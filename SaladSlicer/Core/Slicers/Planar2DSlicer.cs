@@ -11,6 +11,7 @@ using System.Linq;
 using Rhino.Geometry;
 // Slicer Salad Libs
 using SaladSlicer.Core.CodeGeneration;
+using SaladSlicer.Core.Geometry;
 
 namespace SaladSlicer.Core.Slicers
 {
@@ -22,7 +23,7 @@ namespace SaladSlicer.Core.Slicers
         #region fields
         private Curve _baseContour;
         private double _distance;
-        private readonly List<Curve> _path = new List<Curve>();
+        private List<Curve> _path = new List<Curve>();
         private Curve _interpolatedPath;
         private readonly List<Curve> _contours = new List<Curve>();
         private List<double> _heights = new List<double>();
@@ -154,103 +155,7 @@ namespace SaladSlicer.Core.Slicers
         private void CreatePath()
         {
             _path.Clear();
-
-            double contourLength = _baseContour.GetLength();
-            double splitLocation = _changeParameter * contourLength;
-
-            List<double> parameters;
-            Point3d point1;
-            Point3d point2;
-            double param1;
-            double param2;
-            Curve curve1;
-            Curve curve2;
-            Curve dum1;
-            Curve dum2;
-
-            if (splitLocation == 0)
-            {
-                param1 = 0.0;
-                param2 = _changeLength;
-                parameters = new List<double>() { param2, contourLength };
-            }
-            else if (splitLocation == contourLength)
-            {
-                param1 = _changeLength;
-                param2 = contourLength;
-                parameters = new List<double>() { param1, contourLength };
-            }
-            else if (contourLength - splitLocation < _changeLength)
-            {
-                param1 = splitLocation;
-                param2 = splitLocation + _changeLength - contourLength;
-                parameters = new List<double>() { param2, param1, contourLength };
-            }
-            else
-            {
-                param1 = splitLocation;
-                param2 = splitLocation + _changeLength;
-                parameters = new List<double>() { param1, param2, contourLength };
-            }
-            
-            for (int i = 0; i < _contours.Count; i++)
-            {
-                Curve[] split = _contours[i].Split(parameters);
-
-                if (i < _contours.Count - 1)
-                {
-                    point1 = _contours[i].PointAt(param1);
-                    point2 = _contours[i + 1].PointAt(param2);
-                }
-                else
-                {
-                    point1 = _contours[i].PointAt(param1);
-                    point2 = _contours[i].PointAt(param2);
-                }
-
-                if (splitLocation == 0 | splitLocation == contourLength)
-                {
-                    curve1 = split[1];
-                    dum1 = split[0];
-                }
-                else if (contourLength - splitLocation < _changeLength)
-                {
-                    curve1 = split[1];
-                    dum1 = Curve.JoinCurves(new List<Curve>() { split[2], split[0] })[0];
-                }
-                else
-                {
-                    curve1 = Curve.JoinCurves(new List<Curve>() { split[0], split[2] })[0];
-                    dum1 = split[1];
-                }
-
-                dum2 = new Line(point1, point2).ToNurbsCurve();
-
-                int n = (int)(dum1.GetLength() / _distance) * 2;
-                n = Math.Max(2, n);
-
-                double[] t1 = dum1.DivideByCount(n, true);
-                double[] t2 = dum2.DivideByCount(n, true);
-
-                List<Point3d> points = new List<Point3d>();
-
-                for (int j = 0; j != n + 1; j++)
-                {
-                    Point3d p1 = dum1.PointAt(t1[j]);
-                    Point3d p2 = dum2.PointAt(t2[j]);
-
-                    points.Add(new Point3d(p1.X, p1.Y, p2.Z));
-                }
-
-                curve2 = Curve.CreateInterpolatedCurve(points, 3, CurveKnotStyle.Chord);
-
-                _path.Add(curve1.DuplicateCurve());
-
-                if (i < _contours.Count - 1)
-                {
-                    _path.Add(curve2.DuplicateCurve());
-                }
-            }
+            _path = Curves.InterpolatedTransitions(_contours, _changeLength, _changeParameter, 0.25 * _distance);
         }
 
         /// <summary>
