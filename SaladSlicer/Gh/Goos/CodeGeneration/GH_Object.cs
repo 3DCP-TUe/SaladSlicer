@@ -126,6 +126,20 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
             //     return true;
             // }
 
+            // Cast to Curve
+            if (typeof(Q).IsAssignableFrom(typeof(Curve)))
+            {
+                target = (Q)(object)this.Value.InterpolatedPath;
+                return true;
+            }
+
+            // Cast to Curve Goo
+            if (typeof(Q).IsAssignableFrom(typeof(GH_Curve)))
+            {
+                target = (Q)(object)new GH_Curve(this.Value.InterpolatedPath);
+                return true;
+            }
+
             // Invalid cast
             target = default;
             return false;
