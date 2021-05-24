@@ -42,10 +42,10 @@ namespace SaladSlicer.Gh.Components.Geometry
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddCurveParameter("Curves", "C", "List of curves", GH_ParamAccess.list);
-            pManager.AddNumberParameter("Startparamter", "S", "A parameter thet redefines the startpoint of the curves [0 to 1]", GH_ParamAccess.item, 0);
+            pManager.AddNumberParameter("Startparameter", "S", "A parameter thet redefines the startpoint of the curves [0 to 1]", GH_ParamAccess.item, 0);
             pManager.AddNumberParameter("Changelength", "L", "Sets the length over which to connect to the next layer", GH_ParamAccess.item, 100);
             pManager.AddBooleanParameter("Alternate", "A", "Reverses the direction of every other curve", GH_ParamAccess.item,false);
-            pManager.AddTextParameter("Connection type", "T", "Sets the type of connection [Linear,OutsideInterpolated]", GH_ParamAccess.item, "OutsideInterpolated");
+            pManager.AddTextParameter("Connection type", "T", "Sets the type of connection [Linear,Interpolation]", GH_ParamAccess.item, "Interpolation");
 
         }
 
@@ -77,18 +77,21 @@ namespace SaladSlicer.Gh.Components.Geometry
             if (!DA.GetData(2, ref changeLength)) return;
             if (!DA.GetData(3, ref reverse)) return;
             if (!DA.GetData(4, ref type)) return;
-            
+
+            // Check input values
+            if (startParameter < 0.0) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Parameter value is not in the range of 0 to 1."); }
+            if (startParameter > 1.0) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Parameter value is not in the range of 0 to 1."); }
+            if (curves[0].GetLength() < changeLength) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "The length of the layer change exceeds the length of the base contour."); }
+            if (Curves.NumberClosed(curves) != curves.Count) { AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "One or more curves are not closed"); }
+           
             // Create the code line
             List<Curve> curvesCopy = curves.ConvertAll(curve => curve.DuplicateCurve());
-            if (Curves.NumberClosed(curves) == curves.Count)//Checks if all curves are closed
-            {
-                curvesCopy=Curves.CutTransitionEnd(curves,changeLength, startParameter);
-            }
+            curvesCopy = Curves.CutTransitionEnd(curves, changeLength);
             if (type == "Linear")
             {
                 joinedCurve = Curves.JoinLinear(curvesCopy, reverse);
             }
-            else if (type == "OutsideInterpolated")
+            else if (type == "Interpolation")
             {
                 joinedCurve = Curves.JoinOutsideInterpolated(curvesCopy, reverse);
             }

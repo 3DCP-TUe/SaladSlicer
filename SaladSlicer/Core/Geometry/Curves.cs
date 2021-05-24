@@ -89,7 +89,7 @@ namespace SaladSlicer.Core.Geometry
         /// <param name="curves">List of curves</param>
         /// <param name="cutLength">Length to be cut off</param>
         /// <returns></returns>
-        public static List<Curve> CutTransitionEnd(List<Curve> curves, double cutLength)
+        public static List<Curve> CutTransitionEnd(List<Curve> curves, double cutLength)//Doesn't allow for changelength 0
         {
             List<Curve> curvesCopy = curves.ConvertAll(curve => curve.DuplicateCurve());
             for (int i = 0; i < curves.Count; i++)
