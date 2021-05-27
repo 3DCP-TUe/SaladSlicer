@@ -54,11 +54,11 @@ namespace SaladSlicer.Core.Geometry
         /// <param name="curves">The list of curves</param>
         /// <param name="reverse">Reverse every other curve if true</param>
         /// <returns></returns>
-        public static Curve JoinOutsideInterpolated(List<Curve> curves, bool reverse)
+        public static Curve JoinBezier(List<Curve> curves, bool reverse)
         {
             List<Curve> curvesCopy = curves.ConvertAll(curve => curve.DuplicateCurve());
             if (reverse == true) { curvesCopy = ReverseEveryOther(curvesCopy); }
-            List<Curve> transitions = OutsideInterpolatedTransitions(curvesCopy);
+            List<Curve> transitions = BezierTransitions(curvesCopy);
             Curve joinedCurve = MergeCurves(curvesCopy, transitions);
             return joinedCurve;
         }
@@ -76,7 +76,7 @@ namespace SaladSlicer.Core.Geometry
                 bool close = curves[i].IsClosed;
                 if (close == true)
                 {
-                    numberClosed = numberClosed + 1;
+                    numberClosed++;
                 }
             }
             
@@ -185,7 +185,7 @@ namespace SaladSlicer.Core.Geometry
             return transitions;
         }
 
-        public static List<Curve> OutsideInterpolatedTransitions(List<Curve> curves)
+        public static List<Curve> BezierTransitions(List<Curve> curves)
         {
             List<Curve> transitions = new List<Curve>();
             List<Plane> startFrames = GetStartFrames(curves);
@@ -222,7 +222,7 @@ namespace SaladSlicer.Core.Geometry
         }
 
         /// <summary>
-        /// Returns the curve with a starting point at the given parameters. Requiers a closed curve. 
+        /// Returns the curve with a starting point at the given parameters. Requires a closed curve. 
         /// </summary>
         /// <param name="curve">The closed curve to change the point at start from.</param>
         /// <param name="param">The parameter of the new point at start.</param>
