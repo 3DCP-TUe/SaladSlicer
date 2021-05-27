@@ -50,7 +50,7 @@ namespace SaladSlicer.Gh.Components.Geometry
             pManager.AddNumberParameter("Startparameter", "S", "A parameter thet redefines the startpoint of the curves [0 to 1]", GH_ParamAccess.item, 0);
             pManager.AddNumberParameter("Changelength", "L", "Sets the length over which to connect to the next layer", GH_ParamAccess.item, 100);
             pManager.AddBooleanParameter("Alternate", "A", "Reverses the direction of every other curve", GH_ParamAccess.item,false);
-            pManager.AddIntegerParameter("Connection type", "T", "Sets the type of connection [0 = Linear,1 = Bezier]", GH_ParamAccess.item,1);
+            pManager.AddIntegerParameter("Connection type", "T", "Sets the type of connection [0 = Linear,1 = Bezier]", GH_ParamAccess.item,0);
 
         }
 

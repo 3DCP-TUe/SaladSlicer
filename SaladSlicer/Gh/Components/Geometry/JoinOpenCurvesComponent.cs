@@ -48,7 +48,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         {
             pManager.AddCurveParameter("Curves", "C", "List of curves", GH_ParamAccess.list);
             pManager.AddBooleanParameter("Alternate", "A", "Reverses the direction of every other curve", GH_ParamAccess.item,true);
-            pManager.AddIntegerParameter("Connection type", "T", "Sets the type of connection [0 = Linear,1 = Bezier]", GH_ParamAccess.item,1);
+            pManager.AddIntegerParameter("Connection type", "T", "Sets the type of connection [0 = Linear,1 = Bezier]", GH_ParamAccess.item,0);
         }
 
         /// <summary>
