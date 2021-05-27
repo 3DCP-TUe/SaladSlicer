@@ -48,7 +48,7 @@ namespace SaladSlicer.Gh.Parameters.CodeGeneration
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.ExampleIcon; }
+            get { return Properties.Resources.Parameter_Icon; }
         }
 
         /// <summary>
