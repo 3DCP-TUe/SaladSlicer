@@ -11,12 +11,12 @@
 
 Salad Slicer is an open source Rhinoceros Grasshopper plugin developed for slicing objects for 3D concrete printing, however, the plugin is also suitable for slicing objects to print other materials like ceramics and polymers. Among other functionalities Salad Slicer offers: 
 
-- Slicing planar 2.5 objects from a 2D curve
+- Slicing planar 2.5D objects from a 2D curve
 - Slicing planar 3D objects from a 3D mesh
 - Slicing non-planar 3D objects from a 3D mesh
 - Possibility to define your own slicers and / or reconstruct and customize the pre-defined slicers with the components from the Geometry category. 
 - Possibility to construct a NC program (G-code) for the sliced geometry. 
-- Possibility to convert al sliced objects to planes that can be used to construct programs for, for example, ABB and KUKA robots. 
+- Possibility to convert all sliced objects to planes that can be used to construct programs for, for example, ABB and KUKA robots. 
 
 ## Getting Started
 You can download the latest release directly from this repository's [releases page](https://github.com/3DCP-TUe/SaladSlicer/releases). Download the `SaladSlicer.gha` file and place it in your Grasshopper components folder (in GH, File > Special Folders > Components Folder). Make sure that the file is unblocked (right-click on the file and select `Properties` from the menu, click `Unblock` on the `General` tab). Restart Rhino and you are ready to go!
