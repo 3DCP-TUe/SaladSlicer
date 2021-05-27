@@ -5,9 +5,15 @@
 
 namespace SaladSlicer.Core.Enumerations
 {
-    public enum Example : int
+    public enum Transition : int
     {
-        EXAMPLE1 = 0,
-        EXAMPLE2 = 1
+        /// <summary>
+        /// Linear transitions
+        /// </summary>
+        Linear = 0,
+        /// <summary>
+        /// Bezier transition
+        /// </summary>
+        Bezier = 1
     }
 }
