@@ -303,9 +303,9 @@ namespace SaladSlicer.Core.Geometry
         }
 
         /// <summary>
-        /// Returns a curve that is an interpolation between the two curves.
+        /// Returns a curve that is an interpolation between two curves.
         /// The start point of the interpolated curve is equal to the start point of the first curve.
-        /// The end point of the interpolatated curve is equal to the end point of the second curve.
+        /// The end point of the interpolated curve is equal to the end point of the second curve.
         /// </summary>
         /// <param name="curve1"> The first curve. </param>
         /// <param name="curve2"> The second curve. </param>
