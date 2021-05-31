@@ -11,6 +11,7 @@ namespace SaladSlicer.Core.Enumerations
         /// Linear transitions
         /// </summary>
         Linear = 0,
+
         /// <summary>
         /// Bezier transition
         /// </summary>

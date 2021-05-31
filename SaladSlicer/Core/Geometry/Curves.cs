@@ -17,34 +17,59 @@ namespace SaladSlicer.Core.Geometry
     public static class Curves
     {
         #region methods
-        
+
         #region join
         /// <summary>
         /// Joins start and end points of a list of curves linearly and returns a curve
         /// </summary>
         /// <param name="curves">The list of curves</param>
         /// <param name="reverse">Reverse every other curve if true</param>
+        /// /// <param name="param">Double between 0 and 1, redefining startpoint of curve if closed</param>
         /// <returns></returns>
         public static Curve JoinLinear(List<Curve> curves, bool reverse)
         {
+            //Make a duplicate
             List<Curve> curvesCopy = curves.ConvertAll(curve => curve.DuplicateCurve());
+            
+            //Reverse every other curve                
             if (reverse == true){curvesCopy = ReverseEveryOther(curvesCopy);}
+            
+            //Create linear transitions
             List<Curve> transitions = LinearTransitions(curvesCopy);
+            
+            //Join curves and transitions
             Curve joinedCurve = MergeCurves(curvesCopy,transitions);
+
+
+            // if (curves[0].IsClosed == false)
+            //{
+            //    throw new Exception("You did stupid stuff");
+            //}
+
             return joinedCurve;
         }
+
         /// <summary>
         /// Joins start and end points of a list of curves using arcs that connect outside of the original curves.
         /// </summary>
         /// <param name="curves">The list of curves</param>
         /// <param name="reverse">Reverse every other curve if true</param>
+        /// <param name="param">Double between 0 and 1, redefining startpoint of curve if closed</param>
         /// <returns></returns>
         public static Curve JoinOutsideArc(List<Curve> curves, bool reverse)
         {
+            //Make a duplicate
             List<Curve> curvesCopy = curves.ConvertAll(curve => curve.DuplicateCurve());
+            
+            //Reverse every other curve    
             if (reverse == true) { curvesCopy = ReverseEveryOther(curvesCopy); }
+            
+            //Create arc transitions
             List<Curve> transitions = OutsideArcTransitions(curvesCopy);
+            
+            //Join curves and transitions
             Curve joinedCurve = MergeCurves(curvesCopy, transitions);
+            
             return joinedCurve;
         }
 
@@ -56,13 +81,22 @@ namespace SaladSlicer.Core.Geometry
         /// <returns></returns>
         public static Curve JoinBezier(List<Curve> curves, bool reverse)
         {
+            //Make a duplicate
             List<Curve> curvesCopy = curves.ConvertAll(curve => curve.DuplicateCurve());
+                     
+            //Reverse every other curve   
             if (reverse == true) { curvesCopy = ReverseEveryOther(curvesCopy); }
+            
+            //Create bezier transitions
             List<Curve> transitions = BezierTransitions(curvesCopy);
+            
+            //Join curves and transitions
             Curve joinedCurve = MergeCurves(curvesCopy, transitions);
+            
             return joinedCurve;
         }
         #endregion
+
         /// <summary>
         /// Returns the number of closed curves in a list of curves
         /// </summary>
@@ -82,6 +116,7 @@ namespace SaladSlicer.Core.Geometry
             
             return numberClosed;
         }
+
         /// <summary>
         /// Cuts of the end of every curve in a list of curves
         /// </summary>
@@ -91,14 +126,17 @@ namespace SaladSlicer.Core.Geometry
         public static List<Curve> CutTransitionEnd(List<Curve> curves, double cutLength)//Doesn't allow for changelength 0
         {
             List<Curve> curvesCopy = curves.ConvertAll(curve => curve.DuplicateCurve());
+            
             for (int i = 0; i < curves.Count; i++)
             {
                 curvesCopy[i].LengthParameter(curvesCopy[i].GetLength()-cutLength, out double param3);
                 Curve[] tempCurves = curvesCopy[i].Split(param3);
                 curvesCopy[i] = tempCurves[0];
             }
+            
             return curvesCopy;
         }
+
         /// <summary>
         /// Reverses every other curve in a list of curves, starting with the second.
         /// </summary>
@@ -110,6 +148,7 @@ namespace SaladSlicer.Core.Geometry
             {
                 curves[i].Reverse();
             }
+            
             return curves;
         }
         /// <summary>
@@ -120,6 +159,7 @@ namespace SaladSlicer.Core.Geometry
         public static List<Plane> GetStartFrames(List<Curve> curves)
         {
             List<Plane> startFrames = new List<Plane>();
+            
             for (int i = 0; i < curves.Count; i++)
             {
                 Point3d point = curves[i].PointAtStart;
@@ -127,8 +167,10 @@ namespace SaladSlicer.Core.Geometry
                 Vector3d y = Vector3d.CrossProduct(x, new Vector3d(0, 0, 1));
                 startFrames.Add(new Plane(point, x, y));
             }
+
             return startFrames;
         }
+
         /// <summary>
         /// Returns a list of end frames from a list of curves
         /// </summary>
@@ -137,6 +179,7 @@ namespace SaladSlicer.Core.Geometry
         public static List<Plane> GetEndFrames(List<Curve> curves)
         {
             List<Plane> endFrames = new List<Plane>();
+            
             for (int i = 0; i < curves.Count; i++)
             {
                 Point3d point = curves[i].PointAtEnd;
@@ -144,6 +187,7 @@ namespace SaladSlicer.Core.Geometry
                 Vector3d y = Vector3d.CrossProduct(x, new Vector3d(0, 0, 1));
                 endFrames.Add(new Plane(point, x, y));
             }
+            
             return endFrames;
         }
 
@@ -158,13 +202,16 @@ namespace SaladSlicer.Core.Geometry
             List<Curve> transitions = new List<Curve>();
             List<Plane> startFrames = GetStartFrames(curves);
             List<Plane> endFrames = GetEndFrames(curves);
+            
             for (int i = 0; i < curves.Count-1; i++)
             {
-                Line line = new Line(endFrames[i].Origin,startFrames[i + 1].Origin);
+                Line line = new Line(endFrames[i].Origin, startFrames[i + 1].Origin);
                 transitions.Add(line.ToNurbsCurve());
             }
+            
             return transitions;
         }
+
         /// <summary>
         /// Creates arc transitions between start and endpoints of a list of curves
         /// </summary>
