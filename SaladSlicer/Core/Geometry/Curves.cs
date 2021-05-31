@@ -298,7 +298,7 @@ namespace SaladSlicer.Core.Geometry
         /// <param name="param">The parameter of the transition location.</param>
         /// <param name="precision">The precision of the transition.</param>
         /// <returns>The connected curve with interpolated transitions.</returns>
-        public static Curve JoinInterpolatedTransitions(List<Curve> curves, double length = 100.0, double param = 0.0, double precision = 20.0)
+        public static Curve JoinInterpolatedTransitions(List<Curve> curves, double length = 100.0, double param = 0.0, double precision = 10.0)
         {
             Curve result = Curve.JoinCurves(InterpolatedTransitions(curves, length, param, precision))[0];
             result.Domain = new Interval(0, result.GetLength());
@@ -307,7 +307,7 @@ namespace SaladSlicer.Core.Geometry
         }
 
         /// <summary>
-        /// Returns a list connected curves from a list with unconnected curves. 
+        /// Returns a list with connected curves from a list with unconnected curves. 
         /// Interpolates between the curves at a given location and transition length.
         /// Used to join the contours in a 2.5D object.
         /// </summary>
@@ -316,9 +316,11 @@ namespace SaladSlicer.Core.Geometry
         /// <param name="param">The parameter of the transition location (0-1).</param>
         /// <param name="precision">The precision of the transition.</param>
         /// <returns>The list with connected curves.</returns>
-        public static List<Curve> InterpolatedTransitions(List<Curve> curves, double length = 100.0, double param = 0.0, double precision = 20.0)
+        public static List<Curve> InterpolatedTransitions(List<Curve> curves, double length = 100.0, double param = 0.0, double precision = 10.0)
         {
             List<Curve> result = new List<Curve>();
+            List<Curve> part1 = new List<Curve>();
+            List<Curve> part2 = new List<Curve>();
 
             for (int i = 0; i < curves.Count; i++)
             {
@@ -328,29 +330,55 @@ namespace SaladSlicer.Core.Geometry
                 curves[i].Domain = new Interval(0, curves[i].GetLength());
                 double splitParam = curves[i].GetLength() - length;
                 Curve[] splitCurves = curves[i].Split(splitParam);
-                Point3d splitPoint = curves[i].PointAt(splitParam);
 
-                result.Add(splitCurves[0].DuplicateCurve());
+                part1.Add(splitCurves[0].DuplicateCurve());
+                part2.Add(splitCurves[1].DuplicateCurve());
+            }
+
+            for (int i = 0; i < curves.Count; i++)
+            {
+                result.Add(part1[i]);
 
                 if (i < curves.Count - 1)
                 {
-                    int n = Math.Max((int)(splitCurves[1].GetLength() / precision), 8);
-                    double heightChange = curves[i + 1].PointAtStart.Z - splitPoint.Z;
-                    double delta = heightChange / n;
-
-                    double[] parameters = splitCurves[1].DivideByCount(n, true);
-                    double heightStart = splitPoint.Z;
-                    List<Point3d> points = new List<Point3d>();
-
-                    for (int j = 0; j < parameters.Length; j++)
-                    {
-                        Point3d point = splitCurves[1].PointAt(parameters[j]);
-                        points.Add(new Point3d(point.X, point.Y, heightStart + j * delta));
-                    }
-
-                    result.Add(Curve.CreateInterpolatedCurve(points, 3, CurveKnotStyle.Chord));
+                    int n = Math.Max((int)(part2[i].GetLength() / Convert.ToDouble(precision)), 8);
+                    result.Add(InterpolateCurves(part2[i], part2[i+1], n));
                 }
             }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Returns a curve that is an interpolation between two curves.
+        /// The start point of the interpolated curve is equal to the start point of the first curve.
+        /// The end point of the interpolated curve is equal to the end point of the second curve.
+        /// </summary>
+        /// <param name="curve1"> The first curve. </param>
+        /// <param name="curve2"> The second curve. </param>
+        /// <param name="precision"> The precision. </param>
+        /// <returns></returns>
+        public static Curve InterpolateCurves(Curve curve1, Curve curve2, double precision = 10.0)
+        {
+            List<Point3d> points = new List<Point3d>() { };
+            double length = Math.Max(curve1.GetLength(), curve2.GetLength());
+            int n = Math.Max((int)(length / precision), 8);
+
+            double[] param1 = curve1.DivideByCount(n, true);
+            double[] param2 = curve2.DivideByCount(n, true);
+
+            for (int i = 0; i < n + 1; i++)
+            {
+                Point3d point1 = curve1.PointAt(param1[i]);
+                Point3d point2 = curve2.PointAt(param2[i]);
+
+                Vector3d delta = point2 - point1;
+                double factor = Convert.ToDouble(i) / Convert.ToDouble(n);
+
+                points.Add(point1 + factor * delta);
+            }
+
+            Curve result = Curve.CreateInterpolatedCurve(points, 3, CurveKnotStyle.Chord);
 
             return result;
         }
