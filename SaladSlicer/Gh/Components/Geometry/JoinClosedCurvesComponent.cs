@@ -102,11 +102,11 @@ namespace SaladSlicer.Gh.Components.Geometry
             
             if (type == 0)
             {
-                joinedCurve = Curves.JoinLinear(curvesCopy, false);
+                joinedCurve = Curves.JoinLinear(curvesCopy);
             }
             else if (type == 1)
             {
-                joinedCurve = Curves.JoinBezier(curvesCopy, false);
+                joinedCurve = Curves.JoinBezier(curvesCopy);
             }
             else
             {
