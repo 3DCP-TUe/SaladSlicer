@@ -67,7 +67,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             //Create a value list
-            _expire = HelperMethodsGh.CreateValueList(this, 1, typeof(Transition), _expire);
+            _expire = HelperMethods.CreateValueList(this, 1, typeof(Transition));
             
             // Expire solution of this component
             if (_expire == true)

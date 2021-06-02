@@ -20,17 +20,17 @@ namespace SaladSlicer.Gh.Utils
     /// <summary>
     /// Represents general helper methods
     /// </summary>
-    public static class HelperMethodsGh
+    public static class HelperMethods
     {
         /// <summary>
-        /// Creates a Grasshopper value list
+        /// Creates a Grasshopper value list and returns true if it's created
         /// </summary>
         /// <param name="component">Component to connect to</param>
         /// <param name="inputIndex">Intex of the input to connect the list to</param>
         /// <param name="enumType">Enumeration to take values from</param>
         /// <param name="expire">_expire field parameter</param>
         /// <returns></returns>
-        public static bool CreateValueList(GH_Component component,int inputIndex, Type enumType, bool expire)
+        public static bool CreateValueList(GH_Component component,int inputIndex, Type enumType)
         {
             if (component.Params.Input[inputIndex].SourceCount == 0)
             {
@@ -64,14 +64,20 @@ namespace SaladSlicer.Gh.Utils
                 // Collect data
                 parameter.CollectData();
 
-                // Created
-                expire = true;
-
                 // Expire value list
                 obj.ExpireSolution(true);
+
+                //Return that it's created
+                return true; 
             }
-            return expire;
+            else
+            {
+                //Return that it isn't created
+                return false;
+            }
+            
         }
+       
     }
 
 
