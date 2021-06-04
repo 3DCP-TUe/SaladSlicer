@@ -1,6 +1,5 @@
 ﻿// System Libs
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
@@ -28,7 +27,7 @@ using System.Runtime.InteropServices;
 //      Major Version
 //      Minor Version 
 //      Build Number
-//      Revision
+//      Revision <- Salad Slicer doesn't use revision numbers in the public version.
 //
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:

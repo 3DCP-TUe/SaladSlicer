@@ -77,6 +77,7 @@
     <Compile Include="Gh\Components\Slicers\Planar2DSlicerComponent.cs" />
     <Compile Include="Gh\Components\CodeGeneration\CodeLineComponent.cs" />
     <Compile Include="Gh\Components\CodeGeneration\ProgramGeneratorComponent.cs" />
+    <Compile Include="Gh\Components\Utilities\InfoComponent.cs" />
     <Compile Include="Gh\Components\Utilities\ConvertVelocityMmsMmminComponent.cs" />
     <Compile Include="Gh\Components\Utilities\ConvertVelocityMmminMmsComponent.cs" />
     <Compile Include="Gh\Components\Geometry\JoinOpenCurvesComponent.cs" />
