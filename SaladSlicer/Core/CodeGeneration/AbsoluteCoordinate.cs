@@ -67,7 +67,7 @@ namespace SaladSlicer.Core.CodeGeneration
         {
             get
             { 
-                if (_plane != null) { return false; } 
+                if (_plane == null) { return false; } 
                 return true;
             }
         }
