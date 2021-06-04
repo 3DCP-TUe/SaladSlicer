@@ -87,11 +87,11 @@ namespace SaladSlicer.Gh.Components.Geometry
             // Create the code line            
             if (type == 0)
             {
-                joinedCurve = Curves.JoinLinear(curves, false);
+                joinedCurve = Curves.JoinLinear(curves);
             }
             else if (type == 1)
             {
-                joinedCurve = Curves.JoinBezier(curves, false);
+                joinedCurve = Curves.JoinBezier(curves);
             }
             else
             {
@@ -107,7 +107,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         public override GH_Exposure Exposure
         {
-            get { return GH_Exposure.primary; }
+            get { return GH_Exposure.tertiary; }
         }
 
         /// <summary>

@@ -26,14 +26,11 @@ namespace SaladSlicer.Core.Geometry
         /// <param name="reverse">Reverse every other curve if true</param>
         /// /// <param name="param">Double between 0 and 1, redefining startpoint of curve if closed</param>
         /// <returns></returns>
-        public static Curve JoinLinear(List<Curve> curves, bool reverse)
+        public static Curve JoinLinear(List<Curve> curves)
         {
             //Make a duplicate
             List<Curve> curvesCopy = curves.ConvertAll(curve => curve.DuplicateCurve());
-            
-            //Reverse every other curve                
-            if (reverse == true){curvesCopy = ReverseEveryOther(curvesCopy);}
-            
+                        
             //Create linear transitions
             List<Curve> transitions = LinearTransitions(curvesCopy);
             
@@ -56,14 +53,11 @@ namespace SaladSlicer.Core.Geometry
         /// <param name="reverse">Reverse every other curve if true</param>
         /// <param name="param">Double between 0 and 1, redefining startpoint of curve if closed</param>
         /// <returns></returns>
-        public static Curve JoinOutsideArc(List<Curve> curves, bool reverse)
+        public static Curve JoinOutsideArc(List<Curve> curves)
         {
             //Make a duplicate
             List<Curve> curvesCopy = curves.ConvertAll(curve => curve.DuplicateCurve());
-            
-            //Reverse every other curve    
-            if (reverse == true) { curvesCopy = ReverseEveryOther(curvesCopy); }
-            
+                        
             //Create arc transitions
             List<Curve> transitions = OutsideArcTransitions(curvesCopy);
             
@@ -79,14 +73,11 @@ namespace SaladSlicer.Core.Geometry
         /// <param name="curves">The list of curves</param>
         /// <param name="reverse">Reverse every other curve if true</param>
         /// <returns></returns>
-        public static Curve JoinBezier(List<Curve> curves, bool reverse)
+        public static Curve JoinBezier(List<Curve> curves)
         {
             //Make a duplicate
             List<Curve> curvesCopy = curves.ConvertAll(curve => curve.DuplicateCurve());
-                     
-            //Reverse every other curve   
-            if (reverse == true) { curvesCopy = ReverseEveryOther(curvesCopy); }
-            
+                        
             //Create bezier transitions
             List<Curve> transitions = BezierTransitions(curvesCopy);
             
