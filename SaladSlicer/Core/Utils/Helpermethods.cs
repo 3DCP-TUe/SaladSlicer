@@ -6,6 +6,8 @@
 // System Libs
 using System;
 using System.IO;
+using System.Reflection;
+using System.Diagnostics;
 using System.Runtime.Serialization.Formatters.Binary;
 
 namespace SaladSlicer.Core.Utils
@@ -13,7 +15,7 @@ namespace SaladSlicer.Core.Utils
     /// <summary>
     /// Represents general helper methods
     /// </summary>
-    public static class Helpermethods
+    public static class HelperMethods
     {
         /// <summary>
         /// Serializes a common object to a byte array. 
@@ -70,6 +72,20 @@ namespace SaladSlicer.Core.Utils
         public static double MillimetersMinuteToMillimetersSecond(double velocity)
         {
             return velocity / 60.0;
+        }
+
+        /// <summary>
+        /// Returns the version number of the assembly (as MAJOR.MINOR.PATCH).
+        /// </summary>
+        /// <returns> The version number. </returns>
+        public static string GetVersionNumber()
+        {
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            FileVersionInfo fileVersionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
+            string[] split = fileVersionInfo.ProductVersion.Split('.');
+            string version = split[0] + "." + split[1] + "." + split[2];
+
+            return version;
         }
     }
 }

@@ -58,7 +58,7 @@ namespace SaladSlicer.Gh.Components.Utilities
             if (!DA.GetData(0, ref velocity)) return;
 
             // Assign the output parameters
-            DA.SetData(0, Helpermethods.MillimetersMinuteToMillimetersSecond(velocity));
+            DA.SetData(0, HelperMethods.MillimetersMinuteToMillimetersSecond(velocity));
         }
 
         /// <summary>

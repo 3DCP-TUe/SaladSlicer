@@ -5,10 +5,10 @@
 
 // System Libs
 using System;
-using System.Reflection;
-using System.Diagnostics;
 // Grasshopper Libs
 using Grasshopper.Kernel;
+// Salad Slicer libs
+using SaladSlicer.Core.Utils;
 
 namespace SaladSlicer.Gh.Components.Utilities
 {
@@ -51,12 +51,6 @@ namespace SaladSlicer.Gh.Components.Utilities
         /// <param name="DA">The DA object can be used to retrieve data from input parameters and to store data in output parameters.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
-            // Get the version number 
-            Assembly assembly = Assembly.GetExecutingAssembly();
-            FileVersionInfo fileVersionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
-            string[] split = fileVersionInfo.ProductVersion.Split('.');
-            string version = split[0] + "." + split[1] + "." + split[2];
-
             // Declare info
             string text = "";
             text += "Salad Slicer";
@@ -89,7 +83,7 @@ namespace SaladSlicer.Gh.Components.Utilities
             text += "-----------------------------------";
             text += Environment.NewLine;
             text += Environment.NewLine;
-            text += "Version " + version;
+            text += "Version " + HelperMethods.GetVersionNumber();
 
             // Assign the output parameters
             DA.SetData(0, text);
