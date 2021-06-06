@@ -25,9 +25,10 @@ namespace SaladSlicer.Core.Slicers
         private double _distance;
         private List<Curve> _path = new List<Curve>();
         private Curve _interpolatedPath;
-        private readonly List<Curve> _contours = new List<Curve>();
+        private List<Curve> _contours = new List<Curve>();
         private List<double> _heights = new List<double>();
         private readonly List<Plane> _frames = new List<Plane>();
+        private readonly List<List<Plane>> _framesByLayer = new List<List<Plane>>() { };
         private double _changeParameter;
         private double _changeLength;
         #endregion
@@ -91,6 +92,13 @@ namespace SaladSlicer.Core.Slicers
             _contours = slicer.Contours.ConvertAll(curve => curve.DuplicateCurve());
             _frames = new List<Plane>(slicer.Frames);
             _interpolatedPath = slicer.InterpolatedPath.DuplicateCurve();
+            
+            _framesByLayer = new List<List<Plane>>();
+              
+            for (int i = 0; i<slicer.FramesByLayer.Count; i++)
+            {
+                _framesByLayer.Add(new List<Plane>(slicer.FramesByLayer[i]));
+            }
         }
 
         /// <summary>
@@ -119,7 +127,14 @@ namespace SaladSlicer.Core.Slicers
         /// <returns> A string that represents the current object. </returns>
         public override string ToString()
         {
-            return "2.5D Planar Object";
+            if (_baseContour.IsClosed == true)
+            {
+                return "Closed 2.5D Planar Object";
+            }
+            else
+            {
+                return "Open 2.5 Planar Object";
+            }
         }
 
         /// <summary>
@@ -147,6 +162,12 @@ namespace SaladSlicer.Core.Slicers
                 contour.Translate(0, 0, _heights[i]);
                 _contours.Add(contour.DuplicateCurve());
             }
+
+            // Reverse every other if it is an open curve
+            if (_baseContour.IsClosed == false)
+            {
+                _contours = Curves.ReverseEveryOther(_contours);
+            }
         }
 
         /// <summary>
@@ -155,7 +176,18 @@ namespace SaladSlicer.Core.Slicers
         private void CreatePath()
         {
             _path.Clear();
-            _path = Curves.InterpolatedTransitions(_contours, _changeLength, _changeParameter, 0.25 * _distance);
+
+            // Closed curve
+            if (_baseContour.IsClosed == true)
+            {
+                _path = Curves.InterpolatedTransitions(_contours, _changeLength, _changeParameter, 0.25 * _distance);
+            }
+
+            // Open curve
+            else
+            {
+                _path = Curves.WeaveCurves(_contours, Curves.LinearTransitions(_contours));
+            }
         }
 
         /// <summary>
@@ -164,28 +196,83 @@ namespace SaladSlicer.Core.Slicers
         private void CreateFrames()
         {
             _frames.Clear();
+            _framesByLayer.Clear();
 
-            for (int i = 0; i < _path.Count; i++)
+            for (int i = 0; i < _contours.Count; i++)
             {
-                bool includeEnds = false;
+                _framesByLayer.Add(new List<Plane>() { });
+            }
 
-                if (i % 2 == 0)
+            // Closed curves
+            if (_baseContour.IsClosed == true)
+            {
+                for (int i = 0; i < _contours.Count; i++)
                 {
-                    includeEnds = true;
+                    // Contours
+                    int n = (int)(_path[i * 2].GetLength() / _distance);
+                    n = Math.Max(2, n);
+                    double[] t = _path[i * 2].DivideByCount(n, true);
+
+                    for (int j = 0; j != t.Length; j++)
+                    {
+                        Point3d point = _path[i * 2].PointAt(t[j]);
+                        Vector3d x = _path[i * 2].TangentAt(t[j]);
+                        Vector3d y = Vector3d.CrossProduct(x, new Vector3d(0, 0, 1));
+                        Plane plane = new Plane(point, x, y);
+
+                        _frames.Add(plane);
+                        _framesByLayer[i].Add(plane);
+                    }
+
+                    // Transitions
+                    if (i < _contours.Count -1)
+                    {
+                        n = (int)(_path[i * 2 + 1].GetLength() / _distance);
+                        n = Math.Max(2, n);
+                        t = _path[i * 2 + 1].DivideByCount(n, false);
+
+                        for (int j = 0; j != t.Length; j++)
+                        {
+                            Point3d point = _path[i * 2 + 1].PointAt(t[j]);
+                            Vector3d x = _path[i * 2 + 1].TangentAt(t[j]);
+                            Vector3d y = Vector3d.CrossProduct(x, new Vector3d(0, 0, 1));
+                            Plane plane = new Plane(point, x, y);
+
+                            _frames.Add(plane);
+                            _framesByLayer[i].Add(plane);
+                        }
+                    }
                 }
+            }
 
-                int n = (int)(_path[i].GetLength() / _distance);
-                n = Math.Max(2, n);
-                double[] t = _path[i].DivideByCount(n, includeEnds);
-
-                for (int j = 0; j != t.Length; j++)
+            // Open curves
+            else
+            {
+                for (int i = 0; i < _contours.Count; i++)
                 {
-                    Point3d point = _path[i].PointAt(t[j]);
-                    Vector3d x = _path[i].TangentAt(t[j]);
-                    Vector3d y = Vector3d.CrossProduct(x, new Vector3d(0, 0, 1));
-                    Plane plane = new Plane(point, x, y);
+                    int n = (int)(_contours[i].GetLength() / _distance);
+                    n = Math.Max(2, n);
+                    double[] t = _contours[i].DivideByCount(n, true);
 
-                    _frames.Add(plane);
+                    for (int j = 0; j != t.Length; j++)
+                    {
+                        Point3d point = _contours[i].PointAt(t[j]);
+                        Vector3d x = _contours[i].TangentAt(t[j]);
+                        Vector3d y = Vector3d.CrossProduct(x, new Vector3d(0, 0, 1));
+                        Plane plane;
+
+                        if (i % 2 == 0)
+                        {
+                            plane = new Plane(point, x, y);
+                        }
+                        else
+                        {
+                            plane = new Plane(point, -x, -y);
+                        }
+
+                        _frames.Add(plane);
+                        _framesByLayer[i].Add(plane);
+                    }
                 }
             }
         }
@@ -203,22 +290,81 @@ namespace SaladSlicer.Core.Slicers
             programGenerator.Program.Add("; --------------------------------------------------------------------------");
             programGenerator.Program.Add(" ");
 
-            // Settings
-            programGenerator.Program.Add("BSPLINE");
-            programGenerator.Program.Add("G642");
-            programGenerator.Program.Add("G90");
-            programGenerator.Program.Add(" ");
-
-            // TODO
-            // TANG?
-            // FEEDRATE?
-            // WORK OFFSET?
-
-            // Coords
-            for (int i = 0; i < _frames.Count; i++)
+            // Closed curve
+            if (_baseContour.IsClosed == true)
             {
-                Point3d point = _frames[i].Origin;
-                programGenerator.Program.Add($"X{point.X:0.###} Y{point.Y:0.###} Z{point.Z:0.###}");
+                // Settings
+                programGenerator.Program.Add("BSPLINE");
+                programGenerator.Program.Add("G642");
+                programGenerator.Program.Add("G90");
+                programGenerator.Program.Add(" ");
+
+                // TODO
+                // TANG?
+                // FEEDRATE?
+                // WORK OFFSET?
+
+                // Coords
+                for (int i = 0; i < _framesByLayer.Count; i++)
+                {
+                    programGenerator.Program.Add(" ");
+                    programGenerator.Program.Add($"; LAYER {i + 1:0}");
+
+                    for (int j = 0; j < _framesByLayer[i].Count; j++)
+                    {
+                        Point3d point = _framesByLayer[i][j].Origin;
+                        programGenerator.Program.Add($"X{point.X:0.###} Y{point.Y:0.###} Z{point.Z:0.###}");
+                    }
+                }
+            }
+
+            // Open curve
+            else
+            {
+                // Settings
+                programGenerator.Program.Add("BSPLINE");
+                programGenerator.Program.Add("G642");
+                programGenerator.Program.Add("G90");
+                programGenerator.Program.Add(" ");
+
+                // TODO
+                // TANG?
+                // FEEDRATE?
+                // WORK OFFSET?
+
+                // Coords
+                for (int i = 0; i < _framesByLayer.Count; i++)
+                {
+                    programGenerator.Program.Add(" ");
+                    programGenerator.Program.Add($"; LAYER {i + 1:0}");
+
+                    if (i % 2 == 0)
+                    {
+                        programGenerator.Program.Add("TANG(C, X, Y, 1)"); // TODO: check with test run on gantry robot
+                        programGenerator.Program.Add("TANGON(C, 0)"); // TODO: check with test run on gantry robot
+                    }
+                    else
+                    {
+                        programGenerator.Program.Add("TANG(C, X, Y, -1)"); // TODO: check with test run on gantry robot
+                        programGenerator.Program.Add("TANGON(C, 0)"); // TODO: check with test run on gantry robot
+                    }
+
+                    for (int j = 0; j < _framesByLayer[i].Count; j++)
+                    {
+                        if (j == 0)
+                        {
+                            Point3d point = _framesByLayer[i][j].Origin;
+                            programGenerator.Program.Add($"G1 X{point.X:0.###} Y{point.Y:0.###} Z{point.Z:0.###}");
+                            programGenerator.Program.Add("BSPLINE");
+                            programGenerator.Program.Add("G642");
+                        }
+                        else
+                        {
+                            Point3d point = _framesByLayer[i][j].Origin;
+                            programGenerator.Program.Add($"X{point.X:0.###} Y{point.Y:0.###} Z{point.Z:0.###}");
+                        }
+                    }
+                }
             }
 
             // End
@@ -232,7 +378,27 @@ namespace SaladSlicer.Core.Slicers
         /// </summary>
         public void CreateInterpolatedPath()
         {
-            _interpolatedPath = Curve.CreateInterpolatedCurve(this.GetPoints(), 3, CurveKnotStyle.Chord);
+            // Closed curve
+            if (_baseContour.IsClosed == true)
+            {
+                _interpolatedPath = Curve.CreateInterpolatedCurve(this.GetPoints(), 3, CurveKnotStyle.Chord);
+            }
+
+            // Open curve
+            else
+            {
+                List<Curve> curves = new List<Curve>() { };
+                List<List<Point3d>> points = this.GetPointsByLayer();
+
+                for (int i = 0; i < points.Count; i++)
+                {
+                    curves.Add(Curve.CreateInterpolatedCurve(points[i], 3, CurveKnotStyle.Chord));
+                }
+
+                curves = Curves.WeaveCurves(curves, Curves.LinearTransitions(curves));
+
+                _interpolatedPath = Curve.JoinCurves(curves)[0];
+            }
         }
 
         /// <summary>
@@ -267,6 +433,27 @@ namespace SaladSlicer.Core.Slicers
         }
 
         /// <summary>
+        /// Returns all the points of the path sorted by layer.
+        /// </summary>
+        /// <returns> The lists with points. </returns>
+        public List<List<Point3d>> GetPointsByLayer()
+        {
+            List<List<Point3d>> points = new List<List<Point3d>>();
+
+            for (int i = 0; i < _framesByLayer.Count; i++)
+            {
+                points.Add(new List<Point3d>());
+
+                for (int j = 0; j < _framesByLayer[i].Count; j++)
+                {
+                    points[i].Add(_framesByLayer[i][j].Origin);
+                }
+            }
+
+            return points;
+        }
+
+        /// <summary>
         /// Transforms the geometry.
         /// </summary>
         /// <param name="xform"> Transformation to apply to geometry. </param>
@@ -275,7 +462,17 @@ namespace SaladSlicer.Core.Slicers
         {
             _baseContour.Transform(xform);
             _interpolatedPath.Transform(xform);
-            
+
+            for (int i = 0; i < _framesByLayer.Count; i++)
+            {
+                for (int j = 0; j < _framesByLayer[i].Count; j++)
+                {
+                    Plane frame = _framesByLayer[i][j];
+                    frame.Transform(xform);
+                    _framesByLayer[i][j] = frame;
+                }
+            }
+
             for (int i = 0; i < _frames.Count; i++)
             {
                 Plane frame = _frames[i];
@@ -310,6 +507,7 @@ namespace SaladSlicer.Core.Slicers
                 if (_contours == null) { return false; }
                 if (_heights == null) { return false; }
                 if (_frames == null) { return false; }
+                if (_framesByLayer == null) { return false; }
                 if (_distance <= 0.0) { return false; }
                 if (_changeLength <= 0.0) { return false; }
                 if (_changeParameter < 0.0) { return false; }
@@ -395,6 +593,14 @@ namespace SaladSlicer.Core.Slicers
         public List<Plane> Frames
         {
             get { return _frames; }
+        }
+
+        /// <summary>
+        /// Gets the frames of the path sorted by layer. 
+        /// </summary>
+        public List<List<Plane>> FramesByLayer
+        {
+            get { return _framesByLayer; }
         }
 
         /// <summary>

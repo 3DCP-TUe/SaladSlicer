@@ -373,6 +373,36 @@ namespace SaladSlicer.Core.Geometry
 
             return result;
         }
+
+        /// <summary>
+        /// Returns a woven list with curves from two lists of curves. 
+        /// </summary>
+        /// <param name="curves1"> First list with curves. </param>
+        /// <param name="curves2"> Second list with curves. </param>
+        /// <returns> Woven list with curves. </returns>
+        public static List<Curve> WeaveCurves(List<Curve> curves1, List<Curve> curves2)
+        {
+            List<Curve> result = new List<Curve>() { };
+
+            int n1 = curves1.Count;
+            int n2 = curves2.Count;
+            int n = Math.Max(n1, n2);
+
+            for (int i = 0; i < n + 1; i++)
+            {
+                if (i < n1)
+                {
+                    result.Add(curves1[i].DuplicateCurve());
+                }
+
+                if (i < n2)
+                {
+                    result.Add(curves2[i].DuplicateCurve());
+                }
+            }
+
+            return result;
+        }
         #endregion
 
         #region properties
