@@ -18,7 +18,7 @@ namespace SaladSlicer.Core.Slicers
     /// <summary>
     /// Represents the Planar 2D Slicer class.
     /// </summary>
-    public class Planar2DSlicer : IProgram, IObject
+    public class OpenPlanar2DSlicer : IProgram, IObject
     {
         #region fields
         private Curve _baseContour;
@@ -27,17 +27,14 @@ namespace SaladSlicer.Core.Slicers
         private Curve _interpolatedPath;
         private List<Curve> _contours = new List<Curve>();
         private List<double> _heights = new List<double>();
-        private readonly List<Plane> _frames = new List<Plane>();
         private readonly List<List<Plane>> _framesByLayer = new List<List<Plane>>() { };
-        private double _changeParameter;
-        private double _changeLength;
         #endregion
 
         #region constructors
         /// <summary>
         /// Initializes an empty instance of the Planar 2D Slicer class.
         /// </summary>
-        public Planar2DSlicer()
+        public OpenPlanar2DSlicer()
         {
 
         }
@@ -46,16 +43,12 @@ namespace SaladSlicer.Core.Slicers
         /// Initializes a new instance of the Planar 2D Slicer class from a list with absolute layer heights. 
         /// </summary>
         /// <param name="curve"> The base contour. </param>
-        /// <param name="parameter"> The parameter of the starting point. </param>
-        /// <param name="length"> The length of the change between two layers. </param>
         /// <param name="distance"> The desired distance between two frames. </param>
         /// <param name="heights"> A list with absolute layer heights. </param>
-        public Planar2DSlicer(Curve curve, double parameter, double length, double distance, List<double> heights)
+        public OpenPlanar2DSlicer(Curve curve, double distance, List<double> heights)
         {
             _baseContour = curve;
             _heights = heights;
-            _changeParameter = parameter;
-            _changeLength = length;
             _distance = distance;
         }
 
@@ -63,17 +56,13 @@ namespace SaladSlicer.Core.Slicers
         /// Initializes a new instance of the Planar 2D Slicer class from a given number of layers and layer thickness.
         /// </summary>
         /// <param name="curve"> The base contour. </param>
-        /// <param name="parameter"> The parameter of the starting point. </param>
-        /// <param name="length"> The length of the change between two layers. </param>
         /// <param name="distance"> The desired distance between two frames. </param>
         /// <param name="height"> The layer height. </param>
         /// <param name="layers"> The number of layers. </param>
-        public Planar2DSlicer(Curve curve, double parameter, double length, double distance, double height, int layers)
+        public OpenPlanar2DSlicer(Curve curve, double distance, double height, int layers)
         {
             _baseContour = curve;
             _heights.AddRange(Enumerable.Repeat(height, layers).ToList());
-            _changeParameter = parameter;
-            _changeLength = length;
             _distance = distance;
         }
 
@@ -81,16 +70,13 @@ namespace SaladSlicer.Core.Slicers
         /// Initializes a new instance of the Planar 2D Slicer class by duplicating an existing Planar 2D Slicer instance. 
         /// </summary>
         /// <param name="slicer"> The Planar 2D Slicer instance to duplicate. </param>
-        public Planar2DSlicer(Planar2DSlicer slicer)
+        public OpenPlanar2DSlicer(OpenPlanar2DSlicer slicer)
         {
             _baseContour = slicer.BaseContour.DuplicateCurve();
             _heights = new List<double>(slicer.Heights);
-            _changeParameter = slicer.ChangeParameter;
-            _changeLength = slicer.ChangeLength;
             _distance = slicer.Distance;
             _path = slicer.Path.ConvertAll(curve => curve.DuplicateCurve());
             _contours = slicer.Contours.ConvertAll(curve => curve.DuplicateCurve());
-            _frames = new List<Plane>(slicer.Frames);
             _interpolatedPath = slicer.InterpolatedPath.DuplicateCurve();
             
             _framesByLayer = new List<List<Plane>>();
@@ -105,9 +91,9 @@ namespace SaladSlicer.Core.Slicers
         /// Returns an exact duplicate of this Planar 2D Slicer instance.
         /// </summary>
         /// <returns> The exact duplicate of this Planar 2D Slicer instance. </returns>
-        public Planar2DSlicer Duplicate()
+        public OpenPlanar2DSlicer Duplicate()
         {
-            return new Planar2DSlicer(this);
+            return new OpenPlanar2DSlicer(this);
         }
 
         /// <summary>
@@ -127,14 +113,7 @@ namespace SaladSlicer.Core.Slicers
         /// <returns> A string that represents the current object. </returns>
         public override string ToString()
         {
-            if (_baseContour.IsClosed == true)
-            {
-                return "Closed 2.5D Planar Object";
-            }
-            else
-            {
-                return "Open 2.5 Planar Object";
-            }
+            return "Open 2.5 Planar Object";
         }
 
         /// <summary>
@@ -163,11 +142,7 @@ namespace SaladSlicer.Core.Slicers
                 _contours.Add(contour.DuplicateCurve());
             }
 
-            // Reverse every other if it is an open curve
-            if (_baseContour.IsClosed == false)
-            {
-                _contours = Curves.ReverseEveryOther(_contours);
-            }
+            _contours = Curves.ReverseEveryOther(_contours);
         }
 
         /// <summary>
@@ -176,18 +151,7 @@ namespace SaladSlicer.Core.Slicers
         private void CreatePath()
         {
             _path.Clear();
-
-            // Closed curve
-            if (_baseContour.IsClosed == true)
-            {
-                _path = Curves.InterpolatedTransitions(_contours, _changeLength, _changeParameter, 0.25 * _distance);
-            }
-
-            // Open curve
-            else
-            {
-                _path = Curves.WeaveCurves(_contours, Curves.LinearTransitions(_contours));
-            }
+            _path = Curves.WeaveCurves(_contours, Curves.LinearTransitions(_contours));
         }
 
         /// <summary>
@@ -195,7 +159,6 @@ namespace SaladSlicer.Core.Slicers
         /// </summary>
         private void CreateFrames()
         {
-            _frames.Clear();
             _framesByLayer.Clear();
 
             for (int i = 0; i < _contours.Count; i++)
@@ -203,76 +166,29 @@ namespace SaladSlicer.Core.Slicers
                 _framesByLayer.Add(new List<Plane>() { });
             }
 
-            // Closed curves
-            if (_baseContour.IsClosed == true)
+            for (int i = 0; i < _contours.Count; i++)
             {
-                for (int i = 0; i < _contours.Count; i++)
+                int n = (int)(_contours[i].GetLength() / _distance);
+                n = Math.Max(2, n);
+                double[] t = _contours[i].DivideByCount(n, true);
+
+                for (int j = 0; j != t.Length; j++)
                 {
-                    // Contours
-                    int n = (int)(_path[i * 2].GetLength() / _distance);
-                    n = Math.Max(2, n);
-                    double[] t = _path[i * 2].DivideByCount(n, true);
+                    Point3d point = _contours[i].PointAt(t[j]);
+                    Vector3d x = _contours[i].TangentAt(t[j]);
+                    Vector3d y = Vector3d.CrossProduct(x, new Vector3d(0, 0, 1));
+                    Plane plane;
 
-                    for (int j = 0; j != t.Length; j++)
+                    if (i % 2 == 0)
                     {
-                        Point3d point = _path[i * 2].PointAt(t[j]);
-                        Vector3d x = _path[i * 2].TangentAt(t[j]);
-                        Vector3d y = Vector3d.CrossProduct(x, new Vector3d(0, 0, 1));
-                        Plane plane = new Plane(point, x, y);
-
-                        _frames.Add(plane);
-                        _framesByLayer[i].Add(plane);
+                        plane = new Plane(point, x, y);
+                    }
+                    else
+                    {
+                        plane = new Plane(point, -x, -y);
                     }
 
-                    // Transitions
-                    if (i < _contours.Count -1)
-                    {
-                        n = (int)(_path[i * 2 + 1].GetLength() / _distance);
-                        n = Math.Max(2, n);
-                        t = _path[i * 2 + 1].DivideByCount(n, false);
-
-                        for (int j = 0; j != t.Length; j++)
-                        {
-                            Point3d point = _path[i * 2 + 1].PointAt(t[j]);
-                            Vector3d x = _path[i * 2 + 1].TangentAt(t[j]);
-                            Vector3d y = Vector3d.CrossProduct(x, new Vector3d(0, 0, 1));
-                            Plane plane = new Plane(point, x, y);
-
-                            _frames.Add(plane);
-                            _framesByLayer[i].Add(plane);
-                        }
-                    }
-                }
-            }
-
-            // Open curves
-            else
-            {
-                for (int i = 0; i < _contours.Count; i++)
-                {
-                    int n = (int)(_contours[i].GetLength() / _distance);
-                    n = Math.Max(2, n);
-                    double[] t = _contours[i].DivideByCount(n, true);
-
-                    for (int j = 0; j != t.Length; j++)
-                    {
-                        Point3d point = _contours[i].PointAt(t[j]);
-                        Vector3d x = _contours[i].TangentAt(t[j]);
-                        Vector3d y = Vector3d.CrossProduct(x, new Vector3d(0, 0, 1));
-                        Plane plane;
-
-                        if (i % 2 == 0)
-                        {
-                            plane = new Plane(point, x, y);
-                        }
-                        else
-                        {
-                            plane = new Plane(point, -x, -y);
-                        }
-
-                        _frames.Add(plane);
-                        _framesByLayer[i].Add(plane);
-                    }
+                    _framesByLayer[i].Add(plane);
                 }
             }
         }
@@ -290,79 +206,47 @@ namespace SaladSlicer.Core.Slicers
             programGenerator.Program.Add("; --------------------------------------------------------------------------");
             programGenerator.Program.Add(" ");
 
-            // Closed curve
-            if (_baseContour.IsClosed == true)
+            // Settings
+            programGenerator.Program.Add("BSPLINE");
+            programGenerator.Program.Add("G642");
+            programGenerator.Program.Add("G90");
+            programGenerator.Program.Add(" ");
+
+            // TODO
+            // TANG?
+            // FEEDRATE?
+            // WORK OFFSET?
+
+            // Coords
+            for (int i = 0; i < _framesByLayer.Count; i++)
             {
-                // Settings
-                programGenerator.Program.Add("BSPLINE");
-                programGenerator.Program.Add("G642");
-                programGenerator.Program.Add("G90");
                 programGenerator.Program.Add(" ");
+                programGenerator.Program.Add($"; LAYER {i + 1:0}");
 
-                // TODO
-                // TANG?
-                // FEEDRATE?
-                // WORK OFFSET?
-
-                // Coords
-                for (int i = 0; i < _framesByLayer.Count; i++)
+                if (i % 2 == 0)
                 {
-                    programGenerator.Program.Add(" ");
-                    programGenerator.Program.Add($"; LAYER {i + 1:0}");
+                    programGenerator.Program.Add("TANG(C, X, Y, 1)"); // TODO: check with test run on gantry robot
+                    programGenerator.Program.Add("TANGON(C, 0)"); // TODO: check with test run on gantry robot
+                }
+                else
+                {
+                    programGenerator.Program.Add("TANG(C, X, Y, -1)"); // TODO: check with test run on gantry robot
+                    programGenerator.Program.Add("TANGON(C, 0)"); // TODO: check with test run on gantry robot
+                }
 
-                    for (int j = 0; j < _framesByLayer[i].Count; j++)
+                for (int j = 0; j < _framesByLayer[i].Count; j++)
+                {
+                    if (j == 0)
                     {
                         Point3d point = _framesByLayer[i][j].Origin;
-                        programGenerator.Program.Add($"X{point.X:0.###} Y{point.Y:0.###} Z{point.Z:0.###}");
-                    }
-                }
-            }
-
-            // Open curve
-            else
-            {
-                // Settings
-                programGenerator.Program.Add("BSPLINE");
-                programGenerator.Program.Add("G642");
-                programGenerator.Program.Add("G90");
-                programGenerator.Program.Add(" ");
-
-                // TODO
-                // TANG?
-                // FEEDRATE?
-                // WORK OFFSET?
-
-                // Coords
-                for (int i = 0; i < _framesByLayer.Count; i++)
-                {
-                    programGenerator.Program.Add(" ");
-                    programGenerator.Program.Add($"; LAYER {i + 1:0}");
-
-                    if (i % 2 == 0)
-                    {
-                        programGenerator.Program.Add("TANG(C, X, Y, 1)"); // TODO: check with test run on gantry robot
-                        programGenerator.Program.Add("TANGON(C, 0)"); // TODO: check with test run on gantry robot
+                        programGenerator.Program.Add($"G1 X{point.X:0.###} Y{point.Y:0.###} Z{point.Z:0.###}");
+                        programGenerator.Program.Add("BSPLINE");
+                        programGenerator.Program.Add("G642");
                     }
                     else
                     {
-                        programGenerator.Program.Add("TANG(C, X, Y, -1)"); // TODO: check with test run on gantry robot
-                        programGenerator.Program.Add("TANGON(C, 0)"); // TODO: check with test run on gantry robot
-                    }
-
-                    for (int j = 0; j < _framesByLayer[i].Count; j++)
-                    {
-                        if (j == 0)
-                        {
-                            Point3d point = _framesByLayer[i][j].Origin;
-                            programGenerator.Program.Add($"G1 X{point.X:0.###} Y{point.Y:0.###} Z{point.Z:0.###}");
-                            programGenerator.Program.Add("BSPLINE");
-                            programGenerator.Program.Add("G642");
-                        }
-                        else
-                        {
-                            Point3d point = _framesByLayer[i][j].Origin;
-                            programGenerator.Program.Add($"X{point.X:0.###} Y{point.Y:0.###} Z{point.Z:0.###}");
-                        }
+                        Point3d point = _framesByLayer[i][j].Origin;
+                        programGenerator.Program.Add($"X{point.X:0.###} Y{point.Y:0.###} Z{point.Z:0.###}");
                     }
                 }
             }
@@ -378,27 +262,17 @@ namespace SaladSlicer.Core.Slicers
         /// </summary>
         public void CreateInterpolatedPath()
         {
-            // Closed curve
-            if (_baseContour.IsClosed == true)
+            List<Curve> curves = new List<Curve>() { };
+            List<List<Point3d>> points = this.GetPointsByLayer();
+
+            for (int i = 0; i < points.Count; i++)
             {
-                _interpolatedPath = Curve.CreateInterpolatedCurve(this.GetPoints(), 3, CurveKnotStyle.Chord);
+                curves.Add(Curve.CreateInterpolatedCurve(points[i], 3, CurveKnotStyle.Chord));
             }
 
-            // Open curve
-            else
-            {
-                List<Curve> curves = new List<Curve>() { };
-                List<List<Point3d>> points = this.GetPointsByLayer();
+            curves = Curves.WeaveCurves(curves, Curves.LinearTransitions(curves));
 
-                for (int i = 0; i < points.Count; i++)
-                {
-                    curves.Add(Curve.CreateInterpolatedCurve(points[i], 3, CurveKnotStyle.Chord));
-                }
-
-                curves = Curves.WeaveCurves(curves, Curves.LinearTransitions(curves));
-
-                _interpolatedPath = Curve.JoinCurves(curves)[0];
-            }
+            _interpolatedPath = Curve.JoinCurves(curves)[0];
         }
 
         /// <summary>
@@ -423,10 +297,11 @@ namespace SaladSlicer.Core.Slicers
         public List<Point3d> GetPoints() 
         {
             List<Point3d> points = new List<Point3d>();
+            List<Plane> frames = this.Frames;
 
-            for (int i = 0; i < _frames.Count; i++)
+            for (int i = 0; i < frames.Count; i++)
             {
-                points.Add(_frames[i].Origin);
+                points.Add(frames[i].Origin);
             }
 
             return points;
@@ -472,13 +347,6 @@ namespace SaladSlicer.Core.Slicers
                     _framesByLayer[i][j] = frame;
                 }
             }
-
-            for (int i = 0; i < _frames.Count; i++)
-            {
-                Plane frame = _frames[i];
-                frame.Transform(xform);
-                _frames[i] = frame;
-            }
             
             for (int i = 0; i < _path.Count; i++)
             {
@@ -506,15 +374,10 @@ namespace SaladSlicer.Core.Slicers
                 if (_path == null) { return false; }
                 if (_contours == null) { return false; }
                 if (_heights == null) { return false; }
-                if (_frames == null) { return false; }
                 if (_framesByLayer == null) { return false; }
                 if (_distance <= 0.0) { return false; }
-                if (_changeLength <= 0.0) { return false; }
-                if (_changeParameter < 0.0) { return false; }
-                if (_changeParameter > 1.0) { return false; }
                 if (_contours.Count == 0) { return false; }
                 if (_heights.Count == 0) { return false; }
-                if (_frames.Count == 0) { return false; }
                 return true;
             }
         }
@@ -535,24 +398,6 @@ namespace SaladSlicer.Core.Slicers
         {
             get { return _distance; }
             set { _distance = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the parameter of the starting point.
-        /// </summary>
-        public double ChangeParameter
-        {
-            get { return _changeParameter; }
-            set { _changeParameter = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the transition length beteen two layers.
-        /// </summary>
-        public double ChangeLength
-        {
-            get { return _changeLength; }
-            set { _changeLength = value; }
         }
 
         /// <summary>
@@ -592,7 +437,17 @@ namespace SaladSlicer.Core.Slicers
         /// </summary>
         public List<Plane> Frames
         {
-            get { return _frames; }
+            get
+            {
+                List<Plane> frames = new List<Plane>() { };
+
+                for (int i = 0; i < _framesByLayer.Count; i++)
+                {
+                    frames.AddRange(_framesByLayer[i]);
+                }
+
+                return frames;
+            }
         }
 
         /// <summary>
@@ -608,7 +463,7 @@ namespace SaladSlicer.Core.Slicers
         /// </summary>
         public Plane FrameAtStart
         {
-            get { return _frames[0]; }
+            get { return _framesByLayer[0][0]; }
         }
 
         /// <summary>
@@ -616,7 +471,7 @@ namespace SaladSlicer.Core.Slicers
         /// </summary>
         public Plane FrameAtEnd
         {
-            get { return _frames[_frames.Count - 1]; }
+            get { return _framesByLayer[_framesByLayer.Count - 1][_framesByLayer[_framesByLayer.Count - 1].Count - 1]; }
         }
 
         /// <summary>
@@ -624,7 +479,7 @@ namespace SaladSlicer.Core.Slicers
         /// </summary>
         public Point3d PointAtStart
         {
-            get { return _frames[0].Origin; }
+            get { return this.FrameAtStart.Origin; }
         }
 
         /// <summary>
@@ -632,7 +487,7 @@ namespace SaladSlicer.Core.Slicers
         /// </summary>
         public Point3d PointAtEnd
         {
-            get { return _frames[_frames.Count - 1].Origin; }
+            get { return this.FrameAtEnd.Origin; }
         }
         #endregion
     }

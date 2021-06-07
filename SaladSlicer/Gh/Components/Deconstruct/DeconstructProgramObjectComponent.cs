@@ -57,7 +57,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             // Declare variable of input parameters
-            IObject programObject = new Planar2DSlicer();
+            IObject programObject = new ClosedPlanar2DSlicer();
             
             // Access the input parameters individually. 
             if (!DA.GetData(0, ref programObject)) return;

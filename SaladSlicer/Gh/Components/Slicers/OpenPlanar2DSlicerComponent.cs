@@ -19,15 +19,15 @@ namespace SaladSlicer.Gh.Components.Slicers
     /// <summary>
     /// Represent a component that creates a 2.5D slicer object.
     /// </summary>
-    public class Planar2DSlicerComponent : GH_Component
+    public class OpenPlanar2DSlicerComponent : GH_Component
     {
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public Planar2DSlicerComponent()
-          : base("Planar 2.5D Slicer", // Component name
+        public OpenPlanar2DSlicerComponent()
+          : base("Open Planar 2.5D Slicer", // Component name
               "2.5D", // Component nickname
-              "Defines a slicer object for a 2.5D object.", // Description
+              "Defines a slicer object for a open 2.5D object.", // Description
               "Salad Slicer", // Category
               "Slicers") // Subcategory
         {
@@ -39,8 +39,6 @@ namespace SaladSlicer.Gh.Components.Slicers
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddCurveParameter("Curve", "C", "Base contour as a Curve.", GH_ParamAccess.item);
-            pManager.AddNumberParameter("Parameter", "P", "Parameter for layer change as a Number.", GH_ParamAccess.item, 0.0);
-            pManager.AddNumberParameter("Length", "L", "Length for layer change as a Number.", GH_ParamAccess.item, 100.0);
             pManager.AddNumberParameter("Distance", "D", "Distance between frames as a Number", GH_ParamAccess.item, 20.0);
             pManager.AddNumberParameter("Heights", "H", "Layer heights a list with Numbers.", GH_ParamAccess.list);
         }
@@ -61,27 +59,20 @@ namespace SaladSlicer.Gh.Components.Slicers
         {
             // Declare variable of input parameters
             Curve contour = new Line().ToNurbsCurve();
-            double parameter = 0.0;
-            double length = 100.0;
             double distance = 20.0;
             List<double> heights = new List<double>();
 
             // Access the input parameters individually. 
             if (!DA.GetData(0, ref contour)) return;
-            if (!DA.GetData(1, ref parameter)) return;
-            if (!DA.GetData(2, ref length)) return;
-            if (!DA.GetData(3, ref distance)) return;
-            if (!DA.GetDataList(4, heights)) return;
+            if (!DA.GetData(1, ref distance)) return;
+            if (!DA.GetDataList(2, heights)) return;
 
             // Check input values
-            if (parameter < 0.0) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Parameter value is not in the range of 0 to 1."); }
-            if (parameter > 1.0) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Parameter value is not in the range of 0 to 1."); }
             if (distance <= 0.0) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "The distance between two frames cannot be smaller than or equal to zero."); }
             if (contour.GetLength() < distance) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "The distance between two frames exceeds the length of the base contour."); }
-            if (contour.GetLength() < length) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "The length of the layer change exceeds the length of the base contour."); }
 
             // Create the slicer object
-            Planar2DSlicer slicer = new Planar2DSlicer(contour, parameter, length, distance, heights);
+            OpenPlanar2DSlicer slicer = new OpenPlanar2DSlicer(contour, distance, heights);
             slicer.Slice();
 
             // Assign the output parameters
@@ -118,7 +109,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("328E7568-AD4F-4D00-86D5-DCF6BE5E4433"); }
+            get { return new Guid("F7D61760-DFCB-41FF-B2FC-49677C25B48E"); }
         }
     }
 }
