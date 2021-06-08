@@ -201,19 +201,20 @@ namespace SaladSlicer.Core.Slicers
         {
             // Header
             programGenerator.Program.Add(" ");
-            programGenerator.Program.Add("; --------------------------------------------------------------------------");
+            programGenerator.Program.Add("; ----------------------------------------------------------------------");
             programGenerator.Program.Add($"; 2.5D PLANAR OBJECT - {_contours.Count:0} LAYERS - {(this.GetLength() / 1000):0.###} METER");
-            programGenerator.Program.Add("; --------------------------------------------------------------------------");
+            programGenerator.Program.Add("; ----------------------------------------------------------------------");
             programGenerator.Program.Add(" ");
 
             // Settings
+            programGenerator.Program.Add("TANG(C, X, Y, 1)");
+            programGenerator.Program.Add("TANGON(C, 0)");
             programGenerator.Program.Add("BSPLINE");
             programGenerator.Program.Add("G642");
             programGenerator.Program.Add("G90");
             programGenerator.Program.Add(" ");
 
             // TODO
-            // TANG?
             // FEEDRATE?
             // WORK OFFSET?
 
@@ -223,15 +224,9 @@ namespace SaladSlicer.Core.Slicers
                 programGenerator.Program.Add(" ");
                 programGenerator.Program.Add($"; LAYER {i + 1:0}");
 
-                if (i % 2 == 0)
+                if (i != 0)
                 {
-                    programGenerator.Program.Add("TANG(C, X, Y, 1)"); // TODO: check with test run on gantry robot
-                    programGenerator.Program.Add("TANGON(C, 0)"); // TODO: check with test run on gantry robot
-                }
-                else
-                {
-                    programGenerator.Program.Add("TANG(C, X, Y, -1)"); // TODO: check with test run on gantry robot
-                    programGenerator.Program.Add("TANGON(C, 0)"); // TODO: check with test run on gantry robot
+                    programGenerator.Program.Add("TANGOF(C)");
                 }
 
                 for (int j = 0; j < _framesByLayer[i].Count; j++)
@@ -240,6 +235,16 @@ namespace SaladSlicer.Core.Slicers
                     {
                         Point3d point = _framesByLayer[i][j].Origin;
                         programGenerator.Program.Add($"G1 X{point.X:0.###} Y{point.Y:0.###} Z{point.Z:0.###}");
+
+                        if (i % 2 == 0 & j == 0)
+                        {
+                            programGenerator.Program.Add("TANGON(C, 0)");
+                        }
+                        else if (j == 0)
+                        {
+                            programGenerator.Program.Add("TANGON(C, 180)");
+                        }
+
                         programGenerator.Program.Add("BSPLINE");
                         programGenerator.Program.Add("G642");
                     }
@@ -253,7 +258,7 @@ namespace SaladSlicer.Core.Slicers
 
             // End
             programGenerator.Program.Add(" ");
-            programGenerator.Program.Add("; --------------------------------------------------------------------------");
+            programGenerator.Program.Add("; ----------------------------------------------------------------------");
             programGenerator.Program.Add(" ");
         }
 

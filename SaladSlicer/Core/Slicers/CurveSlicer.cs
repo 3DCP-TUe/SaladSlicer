@@ -122,9 +122,9 @@ namespace SaladSlicer.Core.Slicers
         {
             // Header
             programGenerator.Program.Add(" ");
-            programGenerator.Program.Add("; --------------------------------------------------------------------------");
+            programGenerator.Program.Add("; ----------------------------------------------------------------------");
             programGenerator.Program.Add($"; CURVE SLICER OBJECT - {(this.GetLength() / 1000):0.###} METER");
-            programGenerator.Program.Add("; --------------------------------------------------------------------------");
+            programGenerator.Program.Add("; ----------------------------------------------------------------------");
             programGenerator.Program.Add(" ");
 
             // Settings
@@ -142,7 +142,7 @@ namespace SaladSlicer.Core.Slicers
 
             // End
             programGenerator.Program.Add(" ");
-            programGenerator.Program.Add("; --------------------------------------------------------------------------");
+            programGenerator.Program.Add("; ----------------------------------------------------------------------");
             programGenerator.Program.Add(" ");
         }
 
