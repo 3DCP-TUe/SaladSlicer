@@ -10,6 +10,7 @@ using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
 // Salad Slicer Libs
 using SaladSlicer.Core.CodeGeneration;
+using SaladSlicer.Core.Slicers;
 
 namespace SaladSlicer.Gh.Goos.CodeGeneration
 {
@@ -125,6 +126,36 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
             //     target = (Q)(object)new GH_Program(this.Value);
             //     return true;
             // }
+
+            // Cast to OpenPlanar2DSlicer
+            if (typeof(Q).IsAssignableFrom(typeof(OpenPlanar2DSlicer)))
+            {
+                target = (Q)(object)this.Value;
+                return true;
+            }
+
+            // Cast to GH_OpenPlanar2DSlicer
+            // TODO...
+
+            // Cast to ClosedPlanar2DSlicer
+            if (typeof(Q).IsAssignableFrom(typeof(ClosedPlanar2DSlicer)))
+            {
+                target = (Q)(object)this.Value;
+                return true;
+            }
+
+            // Cast to GH_ClosedPlanar2DSlicer
+            // TODO...
+
+            // Cast to CurveSlicer
+            if (typeof(Q).IsAssignableFrom(typeof(CurveSlicer)))
+            {
+                target = (Q)(object)this.Value;
+                return true;
+            }
+
+            // Cast to GH_CurveSlicer
+            // TODO...
 
             // Cast to Curve
             if (typeof(Q).IsAssignableFrom(typeof(Curve)))
