@@ -74,6 +74,9 @@
     <Compile Include="Core\Utils\HelperMethods.cs" />
     <Compile Include="Gh\Components\CodeGeneration\FeedRateComponent.cs" />
     <Compile Include="Gh\Components\CodeGeneration\AbsoluteCoordinateComponent.cs" />
+    <Compile Include="Gh\Components\Deconstruct\DeconstructCurveSlicerComponent.cs" />
+    <Compile Include="Gh\Components\Deconstruct\DeconstructOpenPlaner2DSlicerComponent.cs" />
+    <Compile Include="Gh\Components\Deconstruct\DeconstructClosedPlaner2DSlicerComponent.cs" />
     <Compile Include="Gh\Components\Deconstruct\DeconstructProgramObjectComponent.cs" />
     <Compile Include="Gh\Components\Geometry\ReverseEveryOtherComponent.cs" />
     <Compile Include="Gh\Components\Geometry\RedefineStartpointParameterComponent.cs" />

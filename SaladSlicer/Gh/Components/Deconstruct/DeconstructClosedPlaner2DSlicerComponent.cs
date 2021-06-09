@@ -8,24 +8,22 @@ using System;
 // Grasshopper Libs
 using Grasshopper.Kernel;
 // Salad Slicer Libs
-using SaladSlicer.Core.CodeGeneration;
 using SaladSlicer.Core.Slicers;
-using SaladSlicer.Gh.Parameters.CodeGeneration;
 
 namespace SaladSlicer.Gh.Components.CodeGeneration
 {
     /// <summary>
-    /// Represent a component that deconstruct a Porgram Object.
+    /// Represent a component that deconstruct a Closed Planar 2.5D Slicer object.
     /// </summary>
-    public class DeconstructProgramObjectComponent : GH_Component
+    public class DeconstructClosedPlanar2DSlicerComponent : GH_Component
     {
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public DeconstructProgramObjectComponent()
-          : base("Deconstruct Program Object", // Component name
-              "DPO", // Component nickname
-              "Deconstructs a Program Object", // Description
+        public DeconstructClosedPlanar2DSlicerComponent()
+          : base("Deconstruct Closed Planar 2.5D Slicer", // Component name
+              "DCP2D", // Component nickname
+              "Deconstructs a Closed Planar 2.5D Slicer", // Description
               "Salad Slicer", // Category
               "Deconstruct") // Subcategory
         {
@@ -36,7 +34,8 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddParameter(new Param_Object(), "Program Object", "PO", "Program Object.", GH_ParamAccess.item);
+            // TODO: Param_ClosedPlanar2DSlicer
+            pManager.AddGenericParameter("Closed Planar 2.5D", "CP2D", "Closed Planar 2.5D Slicer.", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -44,7 +43,12 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddCurveParameter("Path", "P", "Path as a Curve.", GH_ParamAccess.item);
+            pManager.AddCurveParameter("Contours", "C", "Contour as a list with Curves.", GH_ParamAccess.list);
+            pManager.AddNumberParameter("Parameter", "P", "Parameter for layer change as a Number.", GH_ParamAccess.item);
+            pManager.AddNumberParameter("Length", "L", "Length for layer change as a Number.", GH_ParamAccess.item);
+            pManager.AddNumberParameter("Distance", "D", "Distance between frames as a Number", GH_ParamAccess.item);
+            pManager.AddNumberParameter("Heights", "H", "Absolute layer heights a list with Numbers.", GH_ParamAccess.list);
+            pManager.AddCurveParameter("Path", "P", "Path as a Curve", GH_ParamAccess.item);
             pManager.AddPlaneParameter("Frames", "F", "Frames as a list with Planes.", GH_ParamAccess.list);
             pManager.AddPlaneParameter("Start Frame", "S", "Start frame as a Plane.", GH_ParamAccess.item);
             pManager.AddPlaneParameter("End Frame", "E", "End frame as a Plane.", GH_ParamAccess.item);
@@ -57,16 +61,21 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             // Declare variable of input parameters
-            IObject programObject = new ClosedPlanar2DSlicer();
+            ClosedPlanar2DSlicer slicer = new ClosedPlanar2DSlicer();
             
             // Access the input parameters individually. 
-            if (!DA.GetData(0, ref programObject)) return;
+            if (!DA.GetData(0, ref slicer)) return;
 
             // Assign the output parameters
-            DA.SetData(0, programObject.InterpolatedPath);
-            DA.SetDataList(1, programObject.Frames);
-            DA.SetData(2, programObject.FrameAtStart);
-            DA.SetData(3, programObject.FrameAtEnd);
+            DA.SetDataList(0, slicer.Contours);
+            DA.SetData(1, slicer.ChangeParameter);
+            DA.SetData(2, slicer.ChangeLength);
+            DA.SetData(3, slicer.Distance);
+            DA.SetDataList(4, slicer.Heights);
+            DA.SetData(5, slicer.InterpolatedPath);
+            DA.SetDataList(6, slicer.Frames);
+            DA.SetData(7, slicer.FrameAtStart);
+            DA.SetData(8, slicer.FrameAtEnd);
         }
 
         /// <summary>
@@ -74,7 +83,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         public override GH_Exposure Exposure
         {
-            get { return GH_Exposure.secondary; }
+            get { return GH_Exposure.primary; }
         }
 
         /// <summary>
@@ -99,7 +108,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("ACF32A02-B093-4D72-822C-C51D5310C8CE"); }
+            get { return new Guid("5D6833BF-7B1E-4C28-B092-A9633FD71FB2"); }
         }
     } 
 }
