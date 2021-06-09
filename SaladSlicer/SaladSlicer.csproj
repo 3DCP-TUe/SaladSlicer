@@ -35,15 +35,19 @@
   <ItemGroup>
     <Reference Include="GH_IO">
       <HintPath>..\DLLs\GH_IO.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="GH_Util">
       <HintPath>..\DLLs\GH_Util.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Grasshopper">
       <HintPath>..\DLLs\Grasshopper.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="RhinoCommon">
       <HintPath>..\DLLs\RhinoCommon.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
