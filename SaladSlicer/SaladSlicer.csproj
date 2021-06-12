@@ -118,6 +118,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\2.5D.png" />
+    <None Include="Resources\SetFeedRate_Icon.png" />
+    <None Include="Resources\AbsoluteCoordinate_Icon.png" />
+    <None Include="Resources\CodeLine_Icon.png" />
+    <None Include="Resources\CodeGeneratorIcon.png" />
     <None Include="Resources\PlaneVisualizer_Icon.png" />
     <None Include="Resources\Parameter_Icon.png" />
   </ItemGroup>
