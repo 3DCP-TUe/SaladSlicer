@@ -9,6 +9,7 @@ using System;
 using Grasshopper.Kernel;
 // Salad Slicer Libs
 using SaladSlicer.Core.Slicers;
+using SaladSlicer.Gh.Parameters.Slicers;
 
 namespace SaladSlicer.Gh.Components.CodeGeneration
 {
@@ -34,8 +35,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>s
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            // TODO: Param_OpenPlanar2DSlicer
-            pManager.AddGenericParameter("Open Planar 2.5D", "OP2D", "Closed Planar 2.5D Slicer.", GH_ParamAccess.item);
+            pManager.AddParameter(new Param_OpenPlanar2DSlicer(), "Open Planar 2.5D", "CP2D", "Closed Planar 2.5D Slicer.", GH_ParamAccess.item);
         }
 
         /// <summary>

@@ -9,6 +9,7 @@ using System;
 using Grasshopper.Kernel;
 // Salad Slicer Libs
 using SaladSlicer.Core.Slicers;
+using SaladSlicer.Gh.Parameters.Slicers;
 
 namespace SaladSlicer.Gh.Components.CodeGeneration
 {
@@ -34,8 +35,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            // TODO: Param_CurveSlicer
-            pManager.AddGenericParameter("Curve", "C", "Curve Slicer.", GH_ParamAccess.item);
+            pManager.AddParameter(new Param_CurveSlicer(), "Curve Slicer", "CS", "Curve Slicer.", GH_ParamAccess.item);
         }
 
         /// <summary>
