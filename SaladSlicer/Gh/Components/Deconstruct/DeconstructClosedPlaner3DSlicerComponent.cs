@@ -43,7 +43,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddCurveParameter("Mesh", "M", "Mesh as a Mesh.", GH_ParamAccess.item);
+            pManager.AddMeshParameter("Mesh", "M", "Mesh as a Mesh.", GH_ParamAccess.item);
             pManager.AddCurveParameter("Contours", "C", "Contour as a list with Curves.", GH_ParamAccess.list);
             pManager.AddNumberParameter("Parameter", "t", "Parameter for layer change as a Number.", GH_ParamAccess.item);
             pManager.AddNumberParameter("Length", "L", "Length for layer change as a Number.", GH_ParamAccess.item);
