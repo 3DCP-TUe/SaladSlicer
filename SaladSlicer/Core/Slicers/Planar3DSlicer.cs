@@ -23,7 +23,7 @@ namespace SaladSlicer.Core.Slicers
         #region fields
         private Mesh _mesh ;
         private double _distance;
-        private readonly List<Curve> _path = new List<Curve>();
+        private List<Curve> _path = new List<Curve>();
         private Curve _interpolatedPath;
         private readonly List<Curve> _contours = new List<Curve>();
         private List<double> _heights = new List<double>();
@@ -152,7 +152,6 @@ namespace SaladSlicer.Core.Slicers
                 if (curves.Length != 0)
                 {
                     _contours.Add(curves[0]);
-                    
                 }
                 else
                 {
@@ -176,7 +175,6 @@ namespace SaladSlicer.Core.Slicers
                 Point3d testPoint = _contours[i - 1].PointAt(parameters[i - 1]);
                 _contours[i].ClosestPoint(testPoint, out double t);
                 parameters.Add(t);
-         
             }
 
             return parameters;
@@ -190,24 +188,21 @@ namespace SaladSlicer.Core.Slicers
             _path.Clear();
 
             // Change start point of all contours 
-
             List<double> parameters = this.CreateParameters();
 
             for (int i = 1; i < _contours.Count; i++)
             {
-                
-               Curves.SetStartPointAtParam(Curve curve, double param)
-
-  
-        }
+                _contours[i] = Curves.SetStartPointAtParam(_contours[i], parameters[i]);
+            }
 
             // Interpolate transitions..
-            Curves.InterpolatedTransitions(List < Curve > curves, double length = 100.0, double param = 0.0, double precision = 10.0)
+            _path = Curves.InterpolatedTransitions(_contours, _changeLength, 0.0, _distance);
+        }
 
-            /// <summary>
-            /// Creates the frames of the path.
-            /// </summary>
-            private void CreateFrames()
+        /// <summary>
+        /// Creates the frames of the path.
+        /// </summary>
+        private void CreateFrames()
         {
             _frames.Clear();
 
