@@ -200,11 +200,7 @@ namespace SaladSlicer.Core.Slicers
         public void ToProgram(ProgramGenerator programGenerator)
         {
             // Header
-            programGenerator.Program.Add(" ");
-            programGenerator.Program.Add("; ----------------------------------------------------------------------");
-            programGenerator.Program.Add($"; 2.5D PLANAR OBJECT - {_contours.Count:0} LAYERS - {(this.GetLength() / 1000):0.###} METER");
-            programGenerator.Program.Add("; ----------------------------------------------------------------------");
-            programGenerator.Program.Add(" ");
+            programGenerator.AddSlicerHeader("2.5D OPEN PLANAR OBJECT", _contours.Count, this.GetLength());
 
             // Settings
             programGenerator.Program.Add("TANG(C, X, Y, 1)");
@@ -257,9 +253,7 @@ namespace SaladSlicer.Core.Slicers
             }
 
             // End
-            programGenerator.Program.Add(" ");
-            programGenerator.Program.Add("; ----------------------------------------------------------------------");
-            programGenerator.Program.Add(" ");
+            programGenerator.AddFooter();
         }
 
         /// <summary>
