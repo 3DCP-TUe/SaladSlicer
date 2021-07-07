@@ -120,7 +120,7 @@ namespace SaladSlicer.Core.Slicers
         /// <returns> A string that represents the current object. </returns>
         public override string ToString()
         {
-            return "3D Planar Object";
+            return "Closed 3D Planar Object";
         }
 
         /// <summary>
@@ -129,7 +129,6 @@ namespace SaladSlicer.Core.Slicers
         public void Slice()
         {
             this.CreateContours();
-            this.CreateParameters();
             this.CreatePath();
             this.CreateFrames();
             this.CreateInterpolatedPath();
@@ -151,13 +150,19 @@ namespace SaladSlicer.Core.Slicers
                 
                 if (curves.Length != 0)
                 {
-                    _contours.Add(curves[0]);
+                    _contours.Add(curves[0].ToNurbsCurve());
                 }
                 else
                 {
                     break;
                 }
             }           
+
+            // Reparametrize all contours
+            for (int i = 0; i <_contours.Count; i++)
+            {
+                _contours[i].Domain = new Interval(0, 1);
+            }
         }
 
         /// <summary>
@@ -190,7 +195,7 @@ namespace SaladSlicer.Core.Slicers
             // Change start point of all contours 
             List<double> parameters = this.CreateParameters();
 
-            for (int i = 1; i < _contours.Count; i++)
+            for (int i = 0; i < _contours.Count; i++)
             {
                 _contours[i] = Curves.SetStartPointAtParam(_contours[i], parameters[i]);
             }

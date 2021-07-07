@@ -26,7 +26,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         public ClosedPlanar3DSlicerComponent()
           : base("Closed Planar 3D Slicer", // Component name
-              "2.5D", // Component nickname
+              "CP3D", // Component nickname
               "Defines a slicer object for a closed 3D object.", // Description
               "Salad Slicer", // Category
               "Slicers") // Subcategory
@@ -75,9 +75,9 @@ namespace SaladSlicer.Gh.Components.Slicers
 
             // Check input values
             //double curveLength = Math.Round(contour.GetLength(), 1);
-           // if (parameter < 0.0) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Parameter value is not in the range of 0 to " + curveLength + "."); }
-           // if (parameter > curveLength) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Parameter value is not in the range of 0 to " + curveLength + "."); }
-           // if (distance <= 0.0) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "The distance between two frames cannot be smaller than or equal to zero."); }
+            // if (parameter < 0.0) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Parameter value is not in the range of 0 to " + curveLength + "."); }
+            // if (parameter > curveLength) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Parameter value is not in the range of 0 to " + curveLength + "."); }
+            // if (distance <= 0.0) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "The distance between two frames cannot be smaller than or equal to zero."); }
             // if (contour.GetLength() < distance) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "The distance between two frames exceeds the length of the base contour."); }
             // if (contour.GetLength() < length) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "The length of the layer change exceeds the length of the base contour."); }
 
