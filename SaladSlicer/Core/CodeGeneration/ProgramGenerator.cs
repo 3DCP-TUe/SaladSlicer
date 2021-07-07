@@ -68,6 +68,31 @@ namespace SaladSlicer.Core.CodeGeneration
 
             return _program;
         }
+
+        /// <summary>
+        /// Adds a default pre-defined slicer header.
+        /// </summary>
+        /// <param name="name"> The object name </param>
+        /// <param name="layers"> The number of layers of the pre-defines slicer. </param>
+        /// <param name="length"> The path length in mm. </param>
+        public void AddSlicerHeader(string name, int layers, double length)
+        {
+            _program.Add(" ");
+            _program.Add("; ----------------------------------------------------------------------");
+            _program.Add($"; {name} - {layers:0} LAYERS - {(length / 1000):0.###} METER");
+            _program.Add("; ----------------------------------------------------------------------");
+            _program.Add(" ");
+        }
+
+        /// <summary>
+        /// Adds a default footer.
+        /// </summary>
+        public void AddFooter()
+        {
+            _program.Add(" ");
+            _program.Add("; ----------------------------------------------------------------------");
+            _program.Add(" ");
+        }
         #endregion
 
         #region properties
