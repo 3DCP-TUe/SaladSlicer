@@ -42,7 +42,7 @@ namespace SaladSlicer.Gh.Components.Slicers
             pManager.AddNumberParameter("Parameter", "t", "Parameter for layer change as a Number.", GH_ParamAccess.item, 0.0);
             pManager.AddNumberParameter("Length", "L", "Length for layer change as a Number.", GH_ParamAccess.item, 100.0);
             pManager.AddNumberParameter("Distance", "D", "Distance between frames as a Number", GH_ParamAccess.item, 20.0);
-        // pManager.AddNumberParameter("Heights", "H", "Layer heights a list with Numbers.", GH_ParamAccess.list);
+            pManager.AddNumberParameter("Heights", "H", "Layer heights a list with Numbers.", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace SaladSlicer.Gh.Components.Slicers
             // if (contour.GetLength() < length) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "The length of the layer change exceeds the length of the base contour."); }
 
             // Create the slicer object
-            Planar3DSlicer slicer = new Planar3DSlicer(mesh, parameter, length, distance, heights);
+            ClosedPlanar3DSlicer slicer = new ClosedPlanar3DSlicer(mesh, parameter, length, distance, heights);
             slicer.Slice();
 
             // Assign the output parameters

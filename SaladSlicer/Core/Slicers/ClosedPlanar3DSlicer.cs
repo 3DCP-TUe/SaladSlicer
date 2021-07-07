@@ -18,7 +18,7 @@ namespace SaladSlicer.Core.Slicers
     /// <summary>
     /// Represents the Planar 3D Slicer class.
     /// </summary>
-    public class Planar3DSlicer : IProgram, IObject
+    public class ClosedPlanar3DSlicer : IProgram, IObject
     {
         #region fields
         private Mesh _mesh ;
@@ -37,7 +37,7 @@ namespace SaladSlicer.Core.Slicers
         /// <summary>
         /// Initializes an empty instance of the Planar 3D Slicer class.
         /// </summary>
-        public Planar3DSlicer()
+        public ClosedPlanar3DSlicer()
         {
 
         }
@@ -50,7 +50,7 @@ namespace SaladSlicer.Core.Slicers
         /// <param name="length"> The length of the change between two layers. </param>
         /// <param name="distance"> The desired distance between two frames. </param>
         /// <param name="heights"> A list with absolute layer heights. </param>
-        public Planar3DSlicer(Mesh mesh, double parameter, double length, double distance, List<double> heights)
+        public ClosedPlanar3DSlicer(Mesh mesh, double parameter, double length, double distance, List<double> heights)
         {
             _mesh = mesh;
             _heights = heights;
@@ -68,7 +68,7 @@ namespace SaladSlicer.Core.Slicers
         /// <param name="distance"> The desired distance between two frames. </param>
         /// <param name="height"> The layer height. </param>
         /// <param name="layers"> The number of layers. </param>
-        public Planar3DSlicer(Mesh mesh, double parameter, double length, double distance, double height, int layers)
+        public ClosedPlanar3DSlicer(Mesh mesh, double parameter, double length, double distance, double height, int layers)
         {
             _mesh = mesh;
             _heights.AddRange(Enumerable.Repeat(height, layers).ToList());
@@ -81,7 +81,7 @@ namespace SaladSlicer.Core.Slicers
         /// Initializes a new instance of the Planar 3D Slicer class by duplicating an existing Planar 3D Slicer instance. 
         /// </summary>
         /// <param name="slicer"> The Planar 2D Slicer instance to duplicate. </param>
-        public Planar3DSlicer(Planar3DSlicer slicer)
+        public ClosedPlanar3DSlicer(ClosedPlanar3DSlicer slicer)
         {
             _mesh = slicer.Mesh.DuplicateMesh();
             _heights = new List<double>(slicer.Heights);
@@ -98,9 +98,9 @@ namespace SaladSlicer.Core.Slicers
         /// Returns an exact duplicate of this Planar 3D Slicer instance.
         /// </summary>
         /// <returns> The exact duplicate of this Planar 3D Slicer instance. </returns>
-        public Planar3DSlicer Duplicate()
+        public ClosedPlanar3DSlicer Duplicate()
         {
-            return new Planar3DSlicer(this);
+            return new ClosedPlanar3DSlicer(this);
         }
 
         /// <summary>

@@ -18,7 +18,7 @@ namespace SaladSlicer.Gh.Goos.Slicers
     /// <summary>
     /// Represents the GH_ClosedPlanar3DSlicer class.
     /// </summary>
-    public class GH_ClosedPlanar3DSlicer : GH_GeometricGoo<Planar3DSlicer>, IGH_PreviewData
+    public class GH_ClosedPlanar3DSlicer : GH_GeometricGoo<ClosedPlanar3DSlicer>, IGH_PreviewData
     {
         #region (de)serialisation
         //TODO
@@ -37,7 +37,7 @@ namespace SaladSlicer.Gh.Goos.Slicers
         /// Initializes a new Oject Goo instance from a ClosedPlanar3DSlicer instance.
         /// </summary>
         /// <param name="closedPlanar3DSlicer"> ClosedPlanar3DSlicer Value to store inside this Goo instance. </param>
-        public GH_ClosedPlanar3DSlicer(Planar3DSlicer closedPlanar3DSlicer)
+        public GH_ClosedPlanar3DSlicer(ClosedPlanar3DSlicer closedPlanar3DSlicer)
         {
             this.Value = closedPlanar3DSlicer;
         }
@@ -115,7 +115,7 @@ namespace SaladSlicer.Gh.Goos.Slicers
             }
 
             // Cast to ClosedPlanar3DSlicer
-            if (typeof(Q).IsAssignableFrom(typeof(Planar3DSlicer)))
+            if (typeof(Q).IsAssignableFrom(typeof(ClosedPlanar3DSlicer)))
             {
                 target = (Q)(object)this.Value;
                 return true;
@@ -161,9 +161,9 @@ namespace SaladSlicer.Gh.Goos.Slicers
             }
 
             // Cast from ClosedPlanar3DSlicer
-            if (typeof(Planar3DSlicer).IsAssignableFrom(source.GetType()))
+            if (typeof(ClosedPlanar3DSlicer).IsAssignableFrom(source.GetType()))
             {
-                this.Value = source as Planar3DSlicer;
+                this.Value = source as ClosedPlanar3DSlicer;
                 return true;
             }
 
@@ -178,7 +178,7 @@ namespace SaladSlicer.Gh.Goos.Slicers
             // Cast from IObject
             if (typeof(IObject).IsAssignableFrom(source.GetType()))
             {
-                if (source is Planar3DSlicer slicer)
+                if (source is ClosedPlanar3DSlicer slicer)
                 {
                     this.Value = slicer;
                     return true;
@@ -190,7 +190,7 @@ namespace SaladSlicer.Gh.Goos.Slicers
             {
                 GH_Object goo = source as GH_Object;
 
-                if (goo.Value is Planar3DSlicer slicer)
+                if (goo.Value is ClosedPlanar3DSlicer slicer)
                 {
                     this.Value = slicer;
                     return true;
@@ -266,7 +266,7 @@ namespace SaladSlicer.Gh.Goos.Slicers
 
             else
             {
-                Planar3DSlicer slicer = Value.Duplicate();
+                ClosedPlanar3DSlicer slicer = Value.Duplicate();
                 slicer.Transform(xform);
                 return new GH_ClosedPlanar3DSlicer(slicer);
             }
