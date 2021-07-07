@@ -25,7 +25,7 @@ namespace SaladSlicer.Core.Slicers
         private double _distance;
         private List<Curve> _path = new List<Curve>();
         private Curve _interpolatedPath;
-        private readonly List<Curve> _contours = new List<Curve>();
+        private List<Curve> _contours = new List<Curve>();
         private List<double> _heights = new List<double>();
         private readonly List<Plane> _frames = new List<Plane>();
         private double _changeParameter;
@@ -166,41 +166,11 @@ namespace SaladSlicer.Core.Slicers
         }
 
         /// <summary>
-        /// Returns the list with curve parameters. 
-        /// These curve parameters defines where we move to the next layer.
-        /// </summary>
-        /// <returns> The list with curve parameters. </returns>
-        private List<double> CreateParameters()
-        {
-            List<double> parameters = new List<double>() { };
-            parameters.Add(_changeParameter);
-
-            for (int i = 1; i < _contours.Count; i++)
-            {
-                Point3d testPoint = _contours[i - 1].PointAt(parameters[i - 1]);
-                _contours[i].ClosestPoint(testPoint, out double t);
-                parameters.Add(t);
-            }
-
-            return parameters;
-        }
-
-        /// <summary>
         /// Creates the path of this object.
         /// </summary>
         private void CreatePath()
         {
-            _path.Clear();
-
-            // Change start point of all contours 
-            List<double> parameters = this.CreateParameters();
-
-            for (int i = 0; i < _contours.Count; i++)
-            {
-                _contours[i] = Curves.SetStartPointAtParam(_contours[i], parameters[i]);
-            }
-
-            // Interpolate transitions..
+            _contours = Curves.SetSeamClosestPoint(_contours, _changeParameter);
             _path = Curves.InterpolatedTransitions(_contours, _changeLength, 0.0, _distance);
         }
 

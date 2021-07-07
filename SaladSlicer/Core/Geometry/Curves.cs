@@ -271,9 +271,7 @@ namespace SaladSlicer.Core.Geometry
 
             if (param > result.Domain.T0 & param < result.Domain.T1 & result.IsClosed == true)
             {
-                Curve[] split = curve.Split(param);
-                result = Curve.JoinCurves(new List<Curve>() { split[1].ToNurbsCurve(), split[0].ToNurbsCurve() })[0];
-                result.Domain = curve.Domain;
+                result.ChangeClosedCurveSeam(param);
             }
 
             return result;
@@ -399,6 +397,30 @@ namespace SaladSlicer.Core.Geometry
                 {
                     result.Add(curves2[i].DuplicateCurve());
                 }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Returns a list with curves with as starting point the closest point to the starting point of the curve before. 
+        /// The parameter defines the starting point of the first curve. 
+        /// </summary>
+        /// <param name="contours"> The contours as a list with Curves. </param>
+        /// <param name="parameter"> The parameter tha defines the starting point of the first curve. </param>
+        /// <returns></returns>
+        public static List<Curve> SetSeamClosestPoint(List<Curve> contours, double parameter)
+        {
+            List<Curve> result = new List<Curve>() { };
+            result.Add(Curves.SetStartPointAtParam(contours[0], parameter));
+            
+            double t = parameter;
+
+            for (int i = 1; i < contours.Count; i++)
+            {
+                Point3d testPoint = contours[i - 1].PointAt(t);
+                contours[i].ClosestPoint(testPoint, out t);
+                result.Add(Curves.SetStartPointAtParam(contours[i], t));
             }
 
             return result;
