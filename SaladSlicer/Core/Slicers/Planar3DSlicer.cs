@@ -11,11 +11,12 @@ using System.Linq;
 using Rhino.Geometry;
 // Slicer Salad Libs
 using SaladSlicer.Core.CodeGeneration;
+using SaladSlicer.Core.Geometry;
 
 namespace SaladSlicer.Core.Slicers
 {
     /// <summary>
-    /// Represents the Planar 2D Slicer class.
+    /// Represents the Planar 3D Slicer class.
     /// </summary>
     public class Planar3DSlicer : IProgram, IObject
     {
@@ -77,7 +78,7 @@ namespace SaladSlicer.Core.Slicers
         }
 
         /// <summary>
-        /// Initializes a new instance of the Planar 2D Slicer class by duplicating an existing Planar 2D Slicer instance. 
+        /// Initializes a new instance of the Planar 3D Slicer class by duplicating an existing Planar 3D Slicer instance. 
         /// </summary>
         /// <param name="slicer"> The Planar 2D Slicer instance to duplicate. </param>
         public Planar3DSlicer(Planar3DSlicer slicer)
@@ -94,18 +95,18 @@ namespace SaladSlicer.Core.Slicers
         }
 
         /// <summary>
-        /// Returns an exact duplicate of this Planar 2D Slicer instance.
+        /// Returns an exact duplicate of this Planar 3D Slicer instance.
         /// </summary>
-        /// <returns> The exact duplicate of this Planar 2D Slicer instance. </returns>
+        /// <returns> The exact duplicate of this Planar 3D Slicer instance. </returns>
         public Planar3DSlicer Duplicate()
         {
             return new Planar3DSlicer(this);
         }
 
         /// <summary>
-        /// Returns an exact duplicate of this Planar 2D Slicer instance as an IObject.
+        /// Returns an exact duplicate of this Planar 3D Slicer instance as an IObject.
         /// </summary>
-        /// <returns> The exact duplicate of this Planar 2D Slicer instance as an IObject. </returns>
+        /// <returns> The exact duplicate of this Planar 3D Slicer instance as an IObject. </returns>
         public IObject DuplicateObject()
         {
             return this.Duplicate() as IObject;
@@ -172,7 +173,10 @@ namespace SaladSlicer.Core.Slicers
 
             for (int i = 1; i < _contours.Count; i++)
             {
-                // TODO: find closest parameter (point) on contour to contour below
+                Point3d testPoint = _contours[i - 1].PointAt(parameters[i - 1]);
+                _contours[i].ClosestPoint(testPoint, out double t);
+                parameters.Add(t);
+         
             }
 
             return parameters;
@@ -185,13 +189,25 @@ namespace SaladSlicer.Core.Slicers
         {
             _path.Clear();
 
-            List<double> parameters = this.CreateParameters(); 
+            // Change start point of all contours 
+
+            List<double> parameters = this.CreateParameters();
+
+            for (int i = 1; i < _contours.Count; i++)
+            {
+                
+               Curves.SetStartPointAtParam(Curve curve, double param)
+
+  
         }
 
-        /// <summary>
-        /// Creates the frames of the path.
-        /// </summary>
-        private void CreateFrames()
+            // Interpolate transitions..
+            Curves.InterpolatedTransitions(List < Curve > curves, double length = 100.0, double param = 0.0, double precision = 10.0)
+
+            /// <summary>
+            /// Creates the frames of the path.
+            /// </summary>
+            private void CreateFrames()
         {
             _frames.Clear();
 
@@ -229,7 +245,7 @@ namespace SaladSlicer.Core.Slicers
             // Header
             programGenerator.Program.Add(" ");
             programGenerator.Program.Add("; ----------------------------------------------------------------------");
-            programGenerator.Program.Add($"; 2.5D PLANAR OBJECT - {_contours.Count:0} LAYERS - {(this.GetLength() / 1000):0.###} METER");
+            programGenerator.Program.Add($"; 3D PLANAR OBJECT - {_contours.Count:0} LAYERS - {(this.GetLength() / 1000):0.###} METER");
             programGenerator.Program.Add("; ----------------------------------------------------------------------");
             programGenerator.Program.Add(" ");
 
