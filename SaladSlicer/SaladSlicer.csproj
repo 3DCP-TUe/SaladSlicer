@@ -82,6 +82,7 @@
     <Compile Include="Gh\Components\Geometry\RedefineStartpointParameterComponent.cs" />
     <Compile Include="Gh\Components\Geometry\RedefineStartpointLengthComponent.cs" />
     <Compile Include="Gh\Components\Geometry\JoinClosedCurvesComponent.cs" />
+    <Compile Include="Gh\Components\Slicers\ClosedPlanar3DSlicerComponent.cs" />
     <Compile Include="Gh\Components\Slicers\OpenPlanar2DSlicerComponent.cs" />
     <Compile Include="Gh\Components\Slicers\CurveSlicerComponent.cs" />
     <Compile Include="Gh\Components\Slicers\ClosedPlanar2DSlicerComponent.cs" />
