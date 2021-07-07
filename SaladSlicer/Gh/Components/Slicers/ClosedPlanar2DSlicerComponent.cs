@@ -39,7 +39,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddCurveParameter("Curve", "C", "Base contour as a Curve.", GH_ParamAccess.item);
-            pManager.AddNumberParameter("Parameter", "P", "Parameter for layer change as a Number.", GH_ParamAccess.item, 0.0);
+            pManager.AddNumberParameter("Parameter", "t", "Parameter for layer change as a Number.", GH_ParamAccess.item, 0.0);
             pManager.AddNumberParameter("Length", "L", "Length for layer change as a Number.", GH_ParamAccess.item, 100.0);
             pManager.AddNumberParameter("Distance", "D", "Distance between frames as a Number", GH_ParamAccess.item, 20.0);
             pManager.AddNumberParameter("Heights", "H", "Layer heights a list with Numbers.", GH_ParamAccess.list);
@@ -74,8 +74,9 @@ namespace SaladSlicer.Gh.Components.Slicers
             if (!DA.GetDataList(4, heights)) return;
 
             // Check input values
-            if (parameter < 0.0) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Parameter value is not in the range of 0 to 1."); }
-            if (parameter > 1.0) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Parameter value is not in the range of 0 to 1."); }
+            double curveLength = Math.Round(contour.GetLength(), 1);
+            if (parameter < 0.0) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Parameter value is not in the range of 0 to " + curveLength + "."); }
+            if (parameter > curveLength) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Parameter value is not in the range of 0 to " + curveLength + "."); }
             if (distance <= 0.0) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "The distance between two frames cannot be smaller than or equal to zero."); }
             if (contour.GetLength() < distance) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "The distance between two frames exceeds the length of the base contour."); }
             if (contour.GetLength() < length) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "The length of the layer change exceeds the length of the base contour."); }
