@@ -11,20 +11,21 @@ using System.Linq;
 using Rhino.Geometry;
 // Slicer Salad Libs
 using SaladSlicer.Core.CodeGeneration;
+using SaladSlicer.Core.Geometry;
 
 namespace SaladSlicer.Core.Slicers
 {
     /// <summary>
-    /// Represents the Planar 2D Slicer class.
+    /// Represents the Planar 3D Slicer class.
     /// </summary>
-    public class Planar3DSlicer : IProgram, IObject
+    public class ClosedPlanar3DSlicer : IProgram, IObject
     {
         #region fields
         private Mesh _mesh ;
         private double _distance;
-        private readonly List<Curve> _path = new List<Curve>();
+        private List<Curve> _path = new List<Curve>();
         private Curve _interpolatedPath;
-        private readonly List<Curve> _contours = new List<Curve>();
+        private List<Curve> _contours = new List<Curve>();
         private List<double> _heights = new List<double>();
         private readonly List<Plane> _frames = new List<Plane>();
         private double _changeParameter;
@@ -36,7 +37,7 @@ namespace SaladSlicer.Core.Slicers
         /// <summary>
         /// Initializes an empty instance of the Planar 3D Slicer class.
         /// </summary>
-        public Planar3DSlicer()
+        public ClosedPlanar3DSlicer()
         {
 
         }
@@ -49,7 +50,7 @@ namespace SaladSlicer.Core.Slicers
         /// <param name="length"> The length of the change between two layers. </param>
         /// <param name="distance"> The desired distance between two frames. </param>
         /// <param name="heights"> A list with absolute layer heights. </param>
-        public Planar3DSlicer(Mesh mesh, double parameter, double length, double distance, List<double> heights)
+        public ClosedPlanar3DSlicer(Mesh mesh, double parameter, double length, double distance, List<double> heights)
         {
             _mesh = mesh;
             _heights = heights;
@@ -67,7 +68,7 @@ namespace SaladSlicer.Core.Slicers
         /// <param name="distance"> The desired distance between two frames. </param>
         /// <param name="height"> The layer height. </param>
         /// <param name="layers"> The number of layers. </param>
-        public Planar3DSlicer(Mesh mesh, double parameter, double length, double distance, double height, int layers)
+        public ClosedPlanar3DSlicer(Mesh mesh, double parameter, double length, double distance, double height, int layers)
         {
             _mesh = mesh;
             _heights.AddRange(Enumerable.Repeat(height, layers).ToList());
@@ -77,10 +78,10 @@ namespace SaladSlicer.Core.Slicers
         }
 
         /// <summary>
-        /// Initializes a new instance of the Planar 2D Slicer class by duplicating an existing Planar 2D Slicer instance. 
+        /// Initializes a new instance of the Planar 3D Slicer class by duplicating an existing Planar 3D Slicer instance. 
         /// </summary>
         /// <param name="slicer"> The Planar 2D Slicer instance to duplicate. </param>
-        public Planar3DSlicer(Planar3DSlicer slicer)
+        public ClosedPlanar3DSlicer(ClosedPlanar3DSlicer slicer)
         {
             _mesh = slicer.Mesh.DuplicateMesh();
             _heights = new List<double>(slicer.Heights);
@@ -94,18 +95,18 @@ namespace SaladSlicer.Core.Slicers
         }
 
         /// <summary>
-        /// Returns an exact duplicate of this Planar 2D Slicer instance.
+        /// Returns an exact duplicate of this Planar 3D Slicer instance.
         /// </summary>
-        /// <returns> The exact duplicate of this Planar 2D Slicer instance. </returns>
-        public Planar3DSlicer Duplicate()
+        /// <returns> The exact duplicate of this Planar 3D Slicer instance. </returns>
+        public ClosedPlanar3DSlicer Duplicate()
         {
-            return new Planar3DSlicer(this);
+            return new ClosedPlanar3DSlicer(this);
         }
 
         /// <summary>
-        /// Returns an exact duplicate of this Planar 2D Slicer instance as an IObject.
+        /// Returns an exact duplicate of this Planar 3D Slicer instance as an IObject.
         /// </summary>
-        /// <returns> The exact duplicate of this Planar 2D Slicer instance as an IObject. </returns>
+        /// <returns> The exact duplicate of this Planar 3D Slicer instance as an IObject. </returns>
         public IObject DuplicateObject()
         {
             return this.Duplicate() as IObject;
@@ -119,7 +120,7 @@ namespace SaladSlicer.Core.Slicers
         /// <returns> A string that represents the current object. </returns>
         public override string ToString()
         {
-            return "3D Planar Object";
+            return "Closed 3D Planar Object";
         }
 
         /// <summary>
@@ -128,7 +129,6 @@ namespace SaladSlicer.Core.Slicers
         public void Slice()
         {
             this.CreateContours();
-            this.CreateParameters();
             this.CreatePath();
             this.CreateFrames();
             this.CreateInterpolatedPath();
@@ -150,32 +150,19 @@ namespace SaladSlicer.Core.Slicers
                 
                 if (curves.Length != 0)
                 {
-                    _contours.Add(curves[0]);
-                    
+                    _contours.Add(curves[0].ToNurbsCurve());
                 }
                 else
                 {
                     break;
                 }
             }           
-        }
 
-        /// <summary>
-        /// Returns the list with curve parameters. 
-        /// These curve parameters defines where we move to the next layer.
-        /// </summary>
-        /// <returns> The list with curve parameters. </returns>
-        private List<double> CreateParameters()
-        {
-            List<double> parameters = new List<double>() { };
-            parameters.Add(_changeParameter);
-
-            for (int i = 1; i < _contours.Count; i++)
+            // Reparametrize all contours
+            for (int i = 0; i <_contours.Count; i++)
             {
-                // TODO: find closest parameter (point) on contour to contour below
+                _contours[i].Domain = new Interval(0, 1);
             }
-
-            return parameters;
         }
 
         /// <summary>
@@ -183,9 +170,8 @@ namespace SaladSlicer.Core.Slicers
         /// </summary>
         private void CreatePath()
         {
-            _path.Clear();
-
-            List<double> parameters = this.CreateParameters(); 
+            _contours = Curves.SetSeamClosestPoint(_contours, _changeParameter);
+            _path = Curves.InterpolatedTransitions(_contours, _changeLength, 0.0, _distance);
         }
 
         /// <summary>
@@ -229,7 +215,7 @@ namespace SaladSlicer.Core.Slicers
             // Header
             programGenerator.Program.Add(" ");
             programGenerator.Program.Add("; ----------------------------------------------------------------------");
-            programGenerator.Program.Add($"; 2.5D PLANAR OBJECT - {_contours.Count:0} LAYERS - {(this.GetLength() / 1000):0.###} METER");
+            programGenerator.Program.Add($"; 3D PLANAR OBJECT - {_contours.Count:0} LAYERS - {(this.GetLength() / 1000):0.###} METER");
             programGenerator.Program.Add("; ----------------------------------------------------------------------");
             programGenerator.Program.Add(" ");
 
