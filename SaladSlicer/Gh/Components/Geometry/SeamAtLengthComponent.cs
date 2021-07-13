@@ -5,25 +5,18 @@
 
 // System Libs
 using System;
-using System.Collections.Generic;
-using System.Drawing;
 // Grasshopper Libs
-using Grasshopper;
 using Grasshopper.Kernel;
-using Grasshopper.Kernel.Special;
-using Grasshopper.Kernel.Types;
-using Grasshopper.Kernel.Data;
 // Rhino Libs
 using Rhino.Geometry;
 using SaladSlicer.Core.Geometry;
-using SaladSlicer.Core.Enumerations;
 
 namespace SaladSlicer.Gh.Components.Geometry
 {
     /// <summary>
-    /// Represents the component that joins curves using linear interpolation. 
+    /// Represents the component that set a seam based on the length.
     /// </summary>
-    public class RedefineStartpointLengthComponent : GH_Component
+    public class SeamAtLengthComponent : GH_Component
     {
         #region fields
         #endregion
@@ -31,10 +24,10 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public RedefineStartpointLengthComponent()
-          : base("Set Start Point", // Component name
-              "RS", // Component nickname
-              "Redefines the startpoint of a closed curve based on distance along curve.", // Description
+        public SeamAtLengthComponent()
+          : base("Seam at Length", // Component name
+              "SL", // Component nickname
+              "Redefines the startpoint of a closed curve based on the distance along the curve.", // Description
               "Salad Slicer", // Category
               "Geometry") // Subcategory
         {
@@ -46,7 +39,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddCurveParameter("Curve", "C", "Curve", GH_ParamAccess.item);
-            pManager.AddNumberParameter("Length", "L", "The length along the curve between the old startpoint and new startpoint of the curve [0 to 1]", GH_ParamAccess.item, 0);
+            pManager.AddNumberParameter("Length", "L", "The length along the curve between the old startpoint and new startpoint of the curve.", GH_ParamAccess.item, 0);
         }
 
         /// <summary>
@@ -73,15 +66,15 @@ namespace SaladSlicer.Gh.Components.Geometry
 
             // Check input values
             if (length < 0.0) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Length input cannot be smaller than 0."); }
-            if (length > curve.GetLength()) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Length input is larger than curve length"); }
+            if (length > curve.GetLength()) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Length input is larger than curve length."); }
             
-            // Create the code line
-            Curve curveCopy = curve.DuplicateCurve();
-            curveCopy.Domain = new Interval(0, curve.GetLength());
-            curveCopy = Curves.SetStartPointAtParam(curveCopy, length);
+            // Create the new curve
+            Curve curveCopy = Seams.SeamAtLength(curve, length);
+            
             // Assign the output parameters
             DA.SetData(0, curveCopy);
         }
+
         /// <summary>
         /// Gets the exposure of this object in the Graphical User Interface.
         /// </summary>

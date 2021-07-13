@@ -142,7 +142,7 @@ namespace SaladSlicer.Core.Slicers
                 _contours.Add(contour.DuplicateCurve());
             }
 
-            _contours = Curves.ReverseEveryOther(_contours);
+            _contours = Curves.AlternateCurves(_contours);
         }
 
         /// <summary>

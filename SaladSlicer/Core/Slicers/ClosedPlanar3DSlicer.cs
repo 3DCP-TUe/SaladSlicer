@@ -170,7 +170,8 @@ namespace SaladSlicer.Core.Slicers
         /// </summary>
         private void CreatePath()
         {
-            _contours = Curves.SetSeamClosestPoint(_contours, _changeParameter);
+            _contours[0] = Seams.SeamAtParam(_contours[0], _changeParameter);
+            _contours = Seams.SeamsAtClosestPoint(_contours);
             _path = Curves.InterpolatedTransitions(_contours, _changeLength, 0.0, _distance);
         }
 

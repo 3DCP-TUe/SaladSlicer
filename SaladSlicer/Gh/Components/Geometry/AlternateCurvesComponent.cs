@@ -6,24 +6,18 @@
 // System Libs
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 // Grasshopper Libs
-using Grasshopper;
 using Grasshopper.Kernel;
-using Grasshopper.Kernel.Special;
-using Grasshopper.Kernel.Types;
-using Grasshopper.Kernel.Data;
 // Rhino Libs
 using Rhino.Geometry;
 using SaladSlicer.Core.Geometry;
-using SaladSlicer.Core.Enumerations;
 
 namespace SaladSlicer.Gh.Components.Geometry
 {
     /// <summary>
     /// Represents the component that joins curves using linear interpolation. 
     /// </summary>
-    public class ReverseEveryOtherComponent : GH_Component
+    public class AlternateCurvesComponent : GH_Component
     {
         #region fields
         #endregion
@@ -31,10 +25,10 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public ReverseEveryOtherComponent()
-          : base("Alternate", // Component name
-              "A", // Component nickname
-              "Reverses the direction of every other curve in a list, startint with the second.", // Description
+        public AlternateCurvesComponent()
+          : base("Alternate Curves", // Component name
+              "AC", // Component nickname
+              "Reverses the direction of every other curve in a list, starting with the second curve.", // Description
               "Salad Slicer", // Category
               "Geometry") // Subcategory
         {
@@ -70,17 +64,18 @@ namespace SaladSlicer.Gh.Components.Geometry
 
             // Create the code line
             List<Curve> curvesCopy = curves.ConvertAll(curve => curve.DuplicateCurve());
-            curvesCopy = Curves.ReverseEveryOther(curvesCopy);
+            curvesCopy = Curves.AlternateCurves(curvesCopy);
 
             // Assign the output parameters
             DA.SetDataList(0, curvesCopy);
         }
+
         /// <summary>
         /// Gets the exposure of this object in the Graphical User Interface.
         /// </summary>
         public override GH_Exposure Exposure
         {
-            get { return GH_Exposure.secondary; }
+            get { return GH_Exposure.quarternary; }
         }
 
         /// <summary>

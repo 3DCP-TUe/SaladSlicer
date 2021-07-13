@@ -5,23 +5,16 @@
 
 // System Libs
 using System;
-using System.Collections.Generic;
-using System.Drawing;
 // Grasshopper Libs
-using Grasshopper;
 using Grasshopper.Kernel;
-using Grasshopper.Kernel.Special;
-using Grasshopper.Kernel.Types;
-using Grasshopper.Kernel.Data;
 // Rhino Libs
 using Rhino.Geometry;
 using SaladSlicer.Core.Geometry;
-using SaladSlicer.Core.Enumerations;
 
 namespace SaladSlicer.Gh.Components.Geometry
 {
     /// <summary>
-    /// Represents the component that joins curves using linear interpolation. 
+    /// Represents the component that set a seam based on the parameter.
     /// </summary>
     public class RedefineStartpointComponent : GH_Component
     {
@@ -32,8 +25,8 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// Public constructor without any arguments.
         /// </summary>
         public RedefineStartpointComponent()
-          : base("Set Start Point", // Component name
-              "RS", // Component nickname
+          : base("Seam at Parameter", // Component name
+              "SP", // Component nickname
               "Redefines the startpoint of a closed curve based on a parameter between 0 and 1.", // Description
               "Salad Slicer", // Category
               "Geometry") // Subcategory
@@ -78,11 +71,12 @@ namespace SaladSlicer.Gh.Components.Geometry
             // Create the code line
             Curve curveCopy = curve.DuplicateCurve();
             curveCopy.Domain = new Interval(0, 1);
-            curveCopy = Curves.SetStartPointAtParam(curveCopy, param);
-            curveCopy.Domain= new Interval(0, curveCopy.GetLength());
+            Curve result = Seams.SeamAtParam(curveCopy, param);
+            
             // Assign the output parameters
-            DA.SetData(0, curveCopy);
+            DA.SetData(0, result);
         }
+
         /// <summary>
         /// Gets the exposure of this object in the Graphical User Interface.
         /// </summary>

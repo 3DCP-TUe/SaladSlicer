@@ -12,7 +12,7 @@ using Rhino.Geometry;
 namespace SaladSlicer.Core.Geometry
 {
     /// <summary>
-    /// A static class that contains a number of methods to manipulate a list of curves.
+    /// A static class that contains a number of methods to manipulate curves.
     /// </summary>
     public static class Curves
     {
@@ -36,12 +36,6 @@ namespace SaladSlicer.Core.Geometry
             
             //Join curves and transitions
             Curve joinedCurve = MergeCurves(curvesCopy,transitions);
-
-
-            // if (curves[0].IsClosed == false)
-            //{
-            //    throw new Exception("You did stupid stuff");
-            //}
 
             return joinedCurve;
         }
@@ -133,7 +127,7 @@ namespace SaladSlicer.Core.Geometry
         /// </summary>
         /// <param name="curves">List of curves</param>
         /// <returns></returns>
-        public static List<Curve> ReverseEveryOther(List<Curve> curves)
+        public static List<Curve> AlternateCurves(List<Curve> curves)
         {
             for (int i = 1; i < curves.Count; i += 2)
             {
@@ -142,6 +136,7 @@ namespace SaladSlicer.Core.Geometry
             
             return curves;
         }
+
         /// <summary>
         /// Returns a list of starting frames from a list of curves
         /// </summary>
@@ -223,24 +218,28 @@ namespace SaladSlicer.Core.Geometry
             return transitions;
         }
 
+        /// <summary>
+        /// Creates Bezier ransitions between start and endpoints of a list of curves.
+        /// </summary>
+        /// <param name="curves"> List of curves. </param>
+        /// <returns></returns>
         public static List<Curve> BezierTransitions(List<Curve> curves)
         {
             List<Curve> transitions = new List<Curve>();
             List<Plane> startFrames = GetStartFrames(curves);
             List<Plane> endFrames = GetEndFrames(curves);
+
             for (int i = 0; i < curves.Count - 1; i++)
             {
                 Point3d[] points = { endFrames[i].Origin, startFrames[i + 1].Origin };
-                Curve curve = Curve.CreateInterpolatedCurve(points,
-                                                            3,
-                                                            CurveKnotStyle.Chord,
-                                                            endFrames[i].XAxis,
-                                                            startFrames[i + 1].XAxis);
+                Curve curve = Curve.CreateInterpolatedCurve(points, 3, CurveKnotStyle.Chord, endFrames[i].XAxis, startFrames[i + 1].XAxis);
                 transitions.Add(curve.ToNurbsCurve());
             }
+
             return transitions;
         }
         #endregion
+
         /// <summary>
         /// Joins a list of curves and a list of transitions and return a single curve
         /// </summary>
@@ -257,24 +256,6 @@ namespace SaladSlicer.Core.Geometry
                 curve1 = Curve.JoinCurves(new List<Curve>() {curve1, curves[i+1] })[0];
             }
             return curve1;
-        }
-
-        /// <summary>
-        /// Returns the curve with a starting point at the given parameters. Requires a closed curve. 
-        /// </summary>
-        /// <param name="curve">The closed curve to change the point at start from.</param>
-        /// <param name="param">The parameter of the new point at start.</param>
-        /// <returns>The closed curve with a new point at start.</returns>
-        public static Curve SetStartPointAtParam(Curve curve, double param)
-        {
-            Curve result = curve.DuplicateCurve();
-
-            if (param > result.Domain.T0 & param < result.Domain.T1 & result.IsClosed == true)
-            {
-                result.ChangeClosedCurveSeam(param);
-            }
-
-            return result;
         }
 
         /// <summary>
@@ -314,7 +295,7 @@ namespace SaladSlicer.Core.Geometry
             for (int i = 0; i < curves.Count; i++)
             {
                 curves[i].Domain = new Interval(0, 1);
-                curves[i] = SetStartPointAtParam(curves[i], param);
+                curves[i] = Seams.SeamAtParam(curves[i], param);
 
                 curves[i].Domain = new Interval(0, curves[i].GetLength());
                 double splitParam = curves[i].GetLength() - length;
@@ -397,30 +378,6 @@ namespace SaladSlicer.Core.Geometry
                 {
                     result.Add(curves2[i].DuplicateCurve());
                 }
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Returns a list with curves with as starting point the closest point to the starting point of the curve before. 
-        /// The parameter defines the starting point of the first curve. 
-        /// </summary>
-        /// <param name="contours"> The contours as a list with Curves. </param>
-        /// <param name="parameter"> The parameter tha defines the starting point of the first curve. </param>
-        /// <returns></returns>
-        public static List<Curve> SetSeamClosestPoint(List<Curve> contours, double parameter)
-        {
-            List<Curve> result = new List<Curve>() { };
-            result.Add(Curves.SetStartPointAtParam(contours[0], parameter));
-            
-            double t = parameter;
-
-            for (int i = 1; i < contours.Count; i++)
-            {
-                Point3d testPoint = contours[i - 1].PointAt(t);
-                contours[i].ClosestPoint(testPoint, out t);
-                result.Add(Curves.SetStartPointAtParam(contours[i], t));
             }
 
             return result;
