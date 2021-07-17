@@ -9,12 +9,12 @@ using System.Collections.Generic;
 // Rhino Libs
 using Rhino.Geometry;
 
-namespace SaladSlicer.Core.Geometry
+namespace SaladSlicer.Core.Geometry.Seams
 {
     /// <summary>
     /// A static class that contains a number of methods to manipulate the start point of closed curves.
     /// </summary>
-    public static class Seams
+    public static class Locations
     {
         #region methods for a single curve
         /// <summary>
@@ -22,8 +22,9 @@ namespace SaladSlicer.Core.Geometry
         /// </summary>
         /// <param name="curve">The closed curve to change the point at start from.</param>
         /// <param name="param">The parameter of the new point at start.</param>
+        /// <param name="reparametrized"> Indicates if the curve domain is normalized [0 - 1]. </param>
         /// <returns> The closed curve with a new point at start. </returns>
-        public static Curve SeamAtParam(Curve curve, double param)
+        public static Curve SeamAtParam(Curve curve, double param, bool reparametrized = false)
         {
             if (curve.IsClosed == false)
             {
@@ -32,9 +33,18 @@ namespace SaladSlicer.Core.Geometry
 
             Curve result = curve.DuplicateCurve();
 
+            if (reparametrized == true)
+            {
+                result.Domain = new Interval(0, 1);
+            }
+
             if (param > result.Domain.T0 & param < result.Domain.T1)
             {
                 result.ChangeClosedCurveSeam(param);
+            }
+            else 
+            {
+                throw new Exception("Parameter is not inside curve domain.");
             }
 
             return result;
@@ -45,8 +55,9 @@ namespace SaladSlicer.Core.Geometry
         /// </summary>
         /// <param name="curve"> The closed curve to change the point at start from. </param>
         /// <param name="length"> The position of the new start point defined by the length. </param>
+        /// <param name="normalized"> Indicates if the length factor is normalized [0 - 1] </param>
         /// <returns> The closed curve with a new point at start. </returns>
-        public static Curve SeamAtLength(Curve curve, double length)
+        public static Curve SeamAtLength(Curve curve, double length, bool normalized = false)
         {
             if (curve.IsClosed == false)
             {
@@ -54,12 +65,20 @@ namespace SaladSlicer.Core.Geometry
             }
 
             Curve result = curve.DuplicateCurve();
-            Point3d point = result.PointAtLength(length);
+            double param;
 
-            result.ClosestPoint(point, out double param);
+            if (normalized == true)
+            {
+                result.NormalizedLengthParameter(length, out param);
+            }
+            else
+            {
+                result.LengthParameter(length, out param);
+            }
+
             result.ChangeClosedCurveSeam(param);
 
-            return curve;
+            return result;
         }
 
         /// <summary>

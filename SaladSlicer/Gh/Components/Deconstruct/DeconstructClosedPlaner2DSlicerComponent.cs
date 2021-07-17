@@ -68,8 +68,8 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
 
             // Assign the output parameters
             DA.SetDataList(0, slicer.Contours);
-            DA.SetData(1, slicer.ChangeParameter);
-            DA.SetData(2, slicer.ChangeLength);
+            DA.SetData(1, slicer.SeamLocation);
+            DA.SetData(2, slicer.SeamLength);
             DA.SetData(3, slicer.Distance);
             DA.SetDataList(4, slicer.Heights);
             DA.SetData(5, slicer.InterpolatedPath);

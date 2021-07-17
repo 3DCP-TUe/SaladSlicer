@@ -121,11 +121,7 @@ namespace SaladSlicer.Core.Slicers
         public void ToProgram(ProgramGenerator programGenerator)
         {
             // Header
-            programGenerator.Program.Add(" ");
-            programGenerator.Program.Add("; ----------------------------------------------------------------------");
-            programGenerator.Program.Add($"; CURVE SLICER OBJECT - {(this.GetLength() / 1000):0.###} METER");
-            programGenerator.Program.Add("; ----------------------------------------------------------------------");
-            programGenerator.Program.Add(" ");
+            programGenerator.AddSlicerHeader("CURVE SLICER OBJECT", this.GetLength());
 
             // Settings
             programGenerator.Program.Add("BSPLINE");
@@ -141,9 +137,7 @@ namespace SaladSlicer.Core.Slicers
             }
 
             // End
-            programGenerator.Program.Add(" ");
-            programGenerator.Program.Add("; ----------------------------------------------------------------------");
-            programGenerator.Program.Add(" ");
+            programGenerator.AddFooter();
         }
 
         /// <summary>

@@ -39,8 +39,8 @@ namespace SaladSlicer.Gh.Components.Slicers
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddCurveParameter("Curve", "C", "Base contour as a Curve.", GH_ParamAccess.item);
-            pManager.AddNumberParameter("Parameter", "t", "Parameter for layer change as a Number.", GH_ParamAccess.item, 0.0);
-            pManager.AddNumberParameter("Length", "L", "Length for layer change as a Number.", GH_ParamAccess.item, 100.0);
+            pManager.AddNumberParameter("Seam Location", "F", "Seam location defined as a normalized length factor of the contour.", GH_ParamAccess.item, 0.0);
+            pManager.AddNumberParameter("Seam Length", "L", "Seam length as a Number.", GH_ParamAccess.item, 100.0);
             pManager.AddNumberParameter("Distance", "D", "Distance between frames as a Number", GH_ParamAccess.item, 20.0);
             pManager.AddNumberParameter("Heights", "H", "Layer heights a list with Numbers.", GH_ParamAccess.list);
         }
@@ -61,28 +61,27 @@ namespace SaladSlicer.Gh.Components.Slicers
         {
             // Declare variable of input parameters
             Curve contour = new Line().ToNurbsCurve();
-            double parameter = 0.0;
-            double length = 100.0;
+            double seamLocation = 0.0;
+            double seamLength = 100.0;
             double distance = 20.0;
             List<double> heights = new List<double>();
 
             // Access the input parameters individually. 
             if (!DA.GetData(0, ref contour)) return;
-            if (!DA.GetData(1, ref parameter)) return;
-            if (!DA.GetData(2, ref length)) return;
+            if (!DA.GetData(1, ref seamLocation)) return;
+            if (!DA.GetData(2, ref seamLength)) return;
             if (!DA.GetData(3, ref distance)) return;
             if (!DA.GetDataList(4, heights)) return;
 
             // Check input values
-            double curveLength = Math.Round(contour.GetLength(), 1);
-            if (parameter < 0.0) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Parameter value is not in the range of 0 to " + curveLength + "."); }
-            if (parameter > curveLength) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Parameter value is not in the range of 0 to " + curveLength + "."); }
+            if (seamLocation < 0.0) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Parameter value is not in the range of 0 to 1."); }
+            if (seamLocation > 1.0) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Parameter value is not in the range of 0 to 1."); }
             if (distance <= 0.0) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "The distance between two frames cannot be smaller than or equal to zero."); }
             if (contour.GetLength() < distance) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "The distance between two frames exceeds the length of the base contour."); }
-            if (contour.GetLength() < length) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "The length of the layer change exceeds the length of the base contour."); }
+            if (contour.GetLength() < seamLength) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "The length of the layer change exceeds the length of the base contour."); }
 
             // Create the slicer object
-            ClosedPlanar2DSlicer slicer = new ClosedPlanar2DSlicer(contour, parameter, length, distance, heights);
+            ClosedPlanar2DSlicer slicer = new ClosedPlanar2DSlicer(contour, seamLocation, seamLength, distance, heights);
             slicer.Slice();
 
             // Assign the output parameters

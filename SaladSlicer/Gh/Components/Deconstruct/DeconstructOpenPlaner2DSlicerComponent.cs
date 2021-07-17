@@ -14,7 +14,7 @@ using SaladSlicer.Gh.Parameters.Slicers;
 namespace SaladSlicer.Gh.Components.CodeGeneration
 {
     /// <summary>
-    /// Represent a component that deconstruct a Open Planar 2.5D Slicer object.
+    /// Represent a component that deconstruct an Open Planar 2.5D Slicer object.
     /// </summary>
     public class DeconstructOpenPlanar2DSlicerComponent : GH_Component
     {

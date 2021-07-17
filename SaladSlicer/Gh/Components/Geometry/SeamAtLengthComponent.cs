@@ -9,7 +9,8 @@ using System;
 using Grasshopper.Kernel;
 // Rhino Libs
 using Rhino.Geometry;
-using SaladSlicer.Core.Geometry;
+// Salad Slicer Libs
+using SaladSlicer.Core.Geometry.Seams;
 
 namespace SaladSlicer.Gh.Components.Geometry
 {
@@ -69,7 +70,7 @@ namespace SaladSlicer.Gh.Components.Geometry
             if (length > curve.GetLength()) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Length input is larger than curve length."); }
             
             // Create the new curve
-            Curve curveCopy = Seams.SeamAtLength(curve, length);
+            Curve curveCopy = Locations.SeamAtLength(curve, length, false);
             
             // Assign the output parameters
             DA.SetData(0, curveCopy);

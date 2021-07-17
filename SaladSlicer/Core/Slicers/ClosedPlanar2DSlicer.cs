@@ -28,8 +28,8 @@ namespace SaladSlicer.Core.Slicers
         private readonly List<Curve> _contours = new List<Curve>();
         private List<double> _heights = new List<double>();
         private readonly List<List<Plane>> _framesByLayer = new List<List<Plane>>() { };
-        private double _changeParameter;
-        private double _changeLength;
+        private double _seamLocation;
+        private double _seamLength;
         #endregion
 
         #region constructors
@@ -46,15 +46,15 @@ namespace SaladSlicer.Core.Slicers
         /// </summary>
         /// <param name="curve"> The base contour. </param>
         /// <param name="parameter"> The parameter of the starting point. </param>
-        /// <param name="length"> The length of the change between two layers. </param>
+        /// <param name="length"> The length of the seam between two layers. </param>
         /// <param name="distance"> The desired distance between two frames. </param>
         /// <param name="heights"> A list with absolute layer heights. </param>
         public ClosedPlanar2DSlicer(Curve curve, double parameter, double length, double distance, List<double> heights)
         {
             _baseContour = curve;
             _heights = heights;
-            _changeParameter = parameter;
-            _changeLength = length;
+            _seamLocation = parameter;
+            _seamLength = length;
             _distance = distance;
         }
 
@@ -63,7 +63,7 @@ namespace SaladSlicer.Core.Slicers
         /// </summary>
         /// <param name="curve"> The base contour. </param>
         /// <param name="parameter"> The parameter of the starting point. </param>
-        /// <param name="length"> The length of the change between two layers. </param>
+        /// <param name="length"> The length of the seam between two layers. </param>
         /// <param name="distance"> The desired distance between two frames. </param>
         /// <param name="height"> The layer height. </param>
         /// <param name="layers"> The number of layers. </param>
@@ -71,8 +71,8 @@ namespace SaladSlicer.Core.Slicers
         {
             _baseContour = curve;
             _heights.AddRange(Enumerable.Repeat(height, layers).ToList());
-            _changeParameter = parameter;
-            _changeLength = length;
+            _seamLocation = parameter;
+            _seamLength = length;
             _distance = distance;
         }
 
@@ -84,8 +84,8 @@ namespace SaladSlicer.Core.Slicers
         {
             _baseContour = slicer.BaseContour.DuplicateCurve();
             _heights = new List<double>(slicer.Heights);
-            _changeParameter = slicer.ChangeParameter;
-            _changeLength = slicer.ChangeLength;
+            _seamLocation = slicer.SeamLocation;
+            _seamLength = slicer.SeamLength;
             _distance = slicer.Distance;
             _path = slicer.Path.ConvertAll(curve => curve.DuplicateCurve());
             _contours = slicer.Contours.ConvertAll(curve => curve.DuplicateCurve());
@@ -161,7 +161,7 @@ namespace SaladSlicer.Core.Slicers
         private void CreatePath()
         {
             _path.Clear();
-            _path = Curves.InterpolatedTransitions(_contours, _changeLength, _changeParameter, 0.25 * _distance);
+            _path = Curves.InterpolatedTransitions(_contours, _seamLength, _seamLocation, 0.25 * _distance);
         }
 
         /// <summary>
@@ -240,11 +240,7 @@ namespace SaladSlicer.Core.Slicers
         public void ToProgram(ProgramGenerator programGenerator)
         {
             // Header
-            programGenerator.Program.Add(" ");
-            programGenerator.Program.Add("; ----------------------------------------------------------------------");
-            programGenerator.Program.Add($"; 2.5D PLANAR OBJECT - {_contours.Count:0} LAYERS - {(this.GetLength() / 1000):0.###} METER");
-            programGenerator.Program.Add("; ----------------------------------------------------------------------");
-            programGenerator.Program.Add(" ");
+            programGenerator.AddSlicerHeader("2.5D CLOSED PLANAR OBJECT", _contours.Count, this.GetLength());
 
             // Settings
             programGenerator.Program.Add("; Settings");
@@ -257,9 +253,6 @@ namespace SaladSlicer.Core.Slicers
             // TANG?
             // FEEDRATE?
             // WORK OFFSET?
-
-            // Coords
-
 
             // Create a loop for objects with an constant height increase per layer
             if (this.ConstantHeightIncrease())
@@ -285,10 +278,11 @@ namespace SaladSlicer.Core.Slicers
                 programGenerator.Program.Add("R20 = R20 + 1            ; Increase layer number");
                 programGenerator.Program.Add("IF R20 < R21 GOTOB LINE1");
             }
+
             // Create standard code for objects with irregular height increse
             else
             {
-            for (int i = 0; i < _framesByLayer.Count; i++)
+                for (int i = 0; i < _framesByLayer.Count; i++)
                 {
                     programGenerator.Program.Add(" ");
                     programGenerator.Program.Add($"; LAYER {i + 1:0}");
@@ -302,9 +296,7 @@ namespace SaladSlicer.Core.Slicers
             }
 
             // End
-            programGenerator.Program.Add(" ");
-            programGenerator.Program.Add("; ----------------------------------------------------------------------");
-            programGenerator.Program.Add(" ");
+            programGenerator.AddFooter();
         }
 
         /// <summary>
@@ -416,9 +408,9 @@ namespace SaladSlicer.Core.Slicers
                 if (_heights == null) { return false; }
                 if (_framesByLayer == null) { return false; }
                 if (_distance <= 0.0) { return false; }
-                if (_changeLength <= 0.0) { return false; }
-                if (_changeParameter < 0.0) { return false; }
-                if (_changeParameter > 1.0) { return false; }
+                if (_seamLength <= 0.0) { return false; }
+                if (_seamLocation < 0.0) { return false; }
+                if (_seamLocation > 1.0) { return false; }
                 if (_contours.Count == 0) { return false; }
                 if (_heights.Count == 0) { return false; }
                 return true;
@@ -444,21 +436,21 @@ namespace SaladSlicer.Core.Slicers
         }
 
         /// <summary>
-        /// Gets or sets the parameter of the starting point.
+        /// Gets or sets the location of the seam based on the length of the contour. 
         /// </summary>
-        public double ChangeParameter
+        public double SeamLocation
         {
-            get { return _changeParameter; }
-            set { _changeParameter = value; }
+            get { return _seamLocation; }
+            set { _seamLocation = value; }
         }
 
         /// <summary>
-        /// Gets or sets the transition length beteen two layers.
+        /// Gets or sets the length of the seam between two layers.
         /// </summary>
-        public double ChangeLength
+        public double SeamLength
         {
-            get { return _changeLength; }
-            set { _changeLength = value; }
+            get { return _seamLength; }
+            set { _seamLength = value; }
         }
 
         /// <summary>
@@ -485,6 +477,7 @@ namespace SaladSlicer.Core.Slicers
         {
             get { return _path; }
         }
+
         /// <summary>
         /// Gets the interpolated path as a single curve
         /// </summary>

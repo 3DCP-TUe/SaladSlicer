@@ -58,6 +58,8 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Geometry\Meshes.cs" />
+    <Compile Include="Core\Geometry\Frames.cs" />
     <Compile Include="Core\Geometry\Curves.cs" />
     <Compile Include="Core\CodeGeneration\FeedRate.cs" />
     <Compile Include="Core\CodeGeneration\AbsoluteCoordinate.cs" />
@@ -67,8 +69,8 @@
     <Compile Include="Core\CodeGeneration\IProgram.cs" />
     <Compile Include="Core\Enumerations\Enumerations.cs" />
     <Compile Include="Core\Examples\ExamplePoint.cs" />
-    <Compile Include="Core\Geometry\Transitions.cs" />
-    <Compile Include="Core\Geometry\Seams.cs" />
+    <Compile Include="Core\Geometry\Seams\Transitions.cs" />
+    <Compile Include="Core\Geometry\Seams\Locations.cs" />
     <Compile Include="Core\Slicers\OpenPlanar2DSlicer.cs" />
     <Compile Include="Core\Slicers\CurveSlicer.cs" />
     <Compile Include="Core\Slicers\ClosedPlanar2DSlicer.cs" />

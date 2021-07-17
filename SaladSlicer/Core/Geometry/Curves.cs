@@ -8,6 +8,8 @@ using System;
 using System.Collections.Generic;
 // Rhino Libs
 using Rhino.Geometry;
+// Salad Slicer Libs
+using SaladSlicer.Core.Geometry.Seams;
 
 namespace SaladSlicer.Core.Geometry
 {
@@ -295,11 +297,9 @@ namespace SaladSlicer.Core.Geometry
             for (int i = 0; i < curves.Count; i++)
             {
                 curves[i].Domain = new Interval(0, 1);
-                curves[i] = Seams.SeamAtParam(curves[i], param);
+                curves[i] = Locations.SeamAtLength(curves[i], param, true);
 
-                curves[i].Domain = new Interval(0, curves[i].GetLength());
-                double splitParam = curves[i].GetLength() - length;
-                Curve[] splitCurves = curves[i].Split(splitParam);
+                Curve[] splitCurves = SplitAtLength(curves[i], curves[i].GetLength() - length);
 
                 part1.Add(splitCurves[0].DuplicateCurve());
                 part2.Add(splitCurves[1].DuplicateCurve());
@@ -378,6 +378,49 @@ namespace SaladSlicer.Core.Geometry
                 {
                     result.Add(curves2[i].DuplicateCurve());
                 }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Splits (divides) the curve at a specified length. The length must be in the interior of the curve.
+        /// </summary>
+        /// <param name="length"> The specified length. </param>
+        /// <returns> The collection with split curves. </returns>
+        public static Curve[] SplitAtLength(Curve curve, double length)
+        {
+            if (length < 0.0 & length > curve.GetLength())
+            {
+                throw new Exception("Defined length is outside the interior of the curve.");
+            }
+
+            Point3d point = curve.PointAtLength(length);
+            curve.ClosestPoint(point, out double param);
+            Curve[] result = curve.Split(param);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Returns a list with aligned contours. 
+        /// Checks directions of all curves and aligns (reverses) them if necessary. 
+        /// </summary>
+        /// <param name="contours"> List with contours. </param>
+        /// <returns> List with aligned curves. </returns>
+        public static List<Curve> AlignContours(List<Curve> contours)
+        {
+            List<Curve> result = Locations.SeamsAtClosestPoint(contours);
+
+            for (int i = 1; i < result.Count; i++)
+            {
+                Vector3d tan1 = result[i - 1].TangentAtStart;
+                Vector3d tan2 = result[i].TangentAtStart;
+
+                double angle1 = Vector3d.VectorAngle(tan1, tan2);
+                double angle2 = Vector3d.VectorAngle(tan1, -tan2);
+
+                if (angle1 > angle2) { result[i].Reverse(); }
             }
 
             return result;

@@ -12,6 +12,7 @@ using Rhino.Geometry;
 // Slicer Salad Libs
 using SaladSlicer.Core.CodeGeneration;
 using SaladSlicer.Core.Geometry;
+using SaladSlicer.Core.Geometry.Seams;
 
 namespace SaladSlicer.Core.Slicers
 {
@@ -27,9 +28,9 @@ namespace SaladSlicer.Core.Slicers
         private Curve _interpolatedPath;
         private List<Curve> _contours = new List<Curve>();
         private List<double> _heights = new List<double>();
-        private readonly List<Plane> _frames = new List<Plane>();
-        private double _changeParameter;
-        private double _changeLength;
+        private readonly List<List<Plane>> _framesByLayer = new List<List<Plane>>() { };
+        private double _seamLocation;
+        private double _seamLength;
 
         #endregion
 
@@ -47,15 +48,15 @@ namespace SaladSlicer.Core.Slicers
         /// </summary>
         /// <param name="mesh"> The base mesh. </param>
         /// <param name="parameter"> The parameter of the starting point. </param>
-        /// <param name="length"> The length of the change between two layers. </param>
+        /// <param name="length"> The length of the seam between two layers. </param>
         /// <param name="distance"> The desired distance between two frames. </param>
         /// <param name="heights"> A list with absolute layer heights. </param>
         public ClosedPlanar3DSlicer(Mesh mesh, double parameter, double length, double distance, List<double> heights)
         {
             _mesh = mesh;
             _heights = heights;
-            _changeParameter = parameter;
-            _changeLength = length;
+            _seamLocation = parameter;
+            _seamLength = length;
             _distance = distance;
         }
 
@@ -64,7 +65,7 @@ namespace SaladSlicer.Core.Slicers
         /// </summary>
         /// <param name="mesh"> The base mesh. </param>
         /// <param name="parameter"> The parameter of the starting point. </param>
-        /// <param name="length"> The length of the change between two layers. </param>
+        /// <param name="length"> The length of the seam between two layers. </param>
         /// <param name="distance"> The desired distance between two frames. </param>
         /// <param name="height"> The layer height. </param>
         /// <param name="layers"> The number of layers. </param>
@@ -72,8 +73,8 @@ namespace SaladSlicer.Core.Slicers
         {
             _mesh = mesh;
             _heights.AddRange(Enumerable.Repeat(height, layers).ToList());
-            _changeParameter = parameter;
-            _changeLength = length;
+            _seamLocation = parameter;
+            _seamLength = length;
             _distance = distance;
         }
 
@@ -85,13 +86,19 @@ namespace SaladSlicer.Core.Slicers
         {
             _mesh = slicer.Mesh.DuplicateMesh();
             _heights = new List<double>(slicer.Heights);
-            _changeParameter = slicer.ChangeParameter;
-            _changeLength = slicer.ChangeLength;
+            _seamLocation = slicer.SeamLocation;
+            _seamLength = slicer.SeamLength;
             _distance = slicer.Distance;
             _path = slicer.Path.ConvertAll(curve => curve.DuplicateCurve());
             _contours = slicer.Contours.ConvertAll(curve => curve.DuplicateCurve());
-            _frames = new List<Plane>(slicer.Frames);
             _interpolatedPath = slicer.InterpolatedPath.DuplicateCurve();
+
+            _framesByLayer = new List<List<Plane>>();
+
+            for (int i = 0; i < slicer.FramesByLayer.Count; i++)
+            {
+                _framesByLayer.Add(new List<Plane>(slicer.FramesByLayer[i]));
+            }
         }
 
         /// <summary>
@@ -147,7 +154,8 @@ namespace SaladSlicer.Core.Slicers
             {
                 plane.OriginZ = _heights[i];
                 Curve[] curves = Mesh.CreateContourCurves(_mesh, plane);
-                
+                curves = Curve.JoinCurves(curves, 1.0);
+
                 if (curves.Length != 0)
                 {
                     _contours.Add(curves[0].ToNurbsCurve());
@@ -156,13 +164,9 @@ namespace SaladSlicer.Core.Slicers
                 {
                     break;
                 }
-            }           
-
-            // Reparametrize all contours
-            for (int i = 0; i <_contours.Count; i++)
-            {
-                _contours[i].Domain = new Interval(0, 1);
             }
+
+            _contours = Curves.AlignContours(_contours);
         }
 
         /// <summary>
@@ -170,9 +174,9 @@ namespace SaladSlicer.Core.Slicers
         /// </summary>
         private void CreatePath()
         {
-            _contours[0] = Seams.SeamAtParam(_contours[0], _changeParameter);
-            _contours = Seams.SeamsAtClosestPoint(_contours);
-            _path = Curves.InterpolatedTransitions(_contours, _changeLength, 0.0, _distance);
+            _contours[0] = Locations.SeamAtLength(_contours[0], _seamLocation, true);
+            _contours = Locations.SeamsAtClosestPoint(_contours);
+            _path = Curves.InterpolatedTransitions(_contours, _seamLength, 0.0, _distance);
         }
 
         /// <summary>
@@ -180,29 +184,66 @@ namespace SaladSlicer.Core.Slicers
         /// </summary>
         private void CreateFrames()
         {
-            _frames.Clear();
+            _framesByLayer.Clear();
 
-            for (int i = 0; i < _path.Count; i++)
+            for (int i = 0; i < _contours.Count; i++)
             {
-                bool includeEnds = false;
+                _framesByLayer.Add(new List<Plane>() { });
+            }
 
-                if (i % 2 == 0)
-                {
-                    includeEnds = true;
-                }
-
-                int n = (int)(_path[i].GetLength() / _distance);
+            for (int i = 0; i < _contours.Count; i++)
+            {
+                // Contours
+                int n = (int)(_path[i * 2].GetLength() / _distance);
                 n = Math.Max(2, n);
-                double[] t = _path[i].DivideByCount(n, includeEnds);
+                double[] t = _path[i * 2].DivideByCount(n, true);
 
                 for (int j = 0; j != t.Length; j++)
                 {
-                    Point3d point = _path[i].PointAt(t[j]);
-                    Vector3d x = _path[i].TangentAt(t[j]);
-                    Vector3d y = Vector3d.CrossProduct(x, new Vector3d(0, 0, 1));
-                    Plane plane = new Plane(point, x, y);
+                    Point3d point = _path[i * 2].PointAt(t[j]);
 
-                    _frames.Add(plane);
+                    MeshPoint meshPoint = _mesh.ClosestMeshPoint(point, 100.0);
+                    Vector3d meshNormal = _mesh.NormalAt(meshPoint);
+
+                    Vector3d x = _path[i * 2].TangentAt(t[j]);
+                    Vector3d y = Vector3d.CrossProduct(x, new Vector3d(0, 0, 1));
+
+                    double angle1 = Vector3d.VectorAngle(y, meshNormal);
+                    double angle2 = Vector3d.VectorAngle(y, -meshNormal);
+
+                    if (angle1 < angle2) { y = meshNormal; }
+                    else { y = -meshNormal; }
+
+                    Plane plane = new Plane(point, x, y);
+                    _framesByLayer[i].Add(plane);
+                }
+
+                // Transitions
+                if (i < _contours.Count - 1)
+                {
+                    n = (int)(_path[i * 2 + 1].GetLength() / _distance);
+                    n = Math.Max(2, n);
+                    t = _path[i * 2 + 1].DivideByCount(n, false);
+
+                    for (int j = 0; j != t.Length; j++)
+                    {
+                        Point3d point = _path[i * 2 + 1].PointAt(t[j]);
+
+                        MeshPoint meshPoint = _mesh.ClosestMeshPoint(point, 100.0);
+                        Vector3d meshNormal = _mesh.NormalAt(meshPoint);
+
+                        Vector3d x = _path[i * 2 + 1].TangentAt(t[j]);
+                        Vector3d y = Vector3d.CrossProduct(x, new Vector3d(0, 0, 1));
+
+                        double angle1 = Vector3d.VectorAngle(y, meshNormal);
+                        double angle2 = Vector3d.VectorAngle(y, -meshNormal);
+
+                        if (angle1 < angle2) { y = meshNormal; }
+                        else { y = -meshNormal; }
+
+                        Plane plane = new Plane(point, x, y);
+                        _framesByLayer[i].Add(plane);
+                    }
                 }
             }
         }
@@ -214,11 +255,7 @@ namespace SaladSlicer.Core.Slicers
         public void ToProgram(ProgramGenerator programGenerator)
         {
             // Header
-            programGenerator.Program.Add(" ");
-            programGenerator.Program.Add("; ----------------------------------------------------------------------");
-            programGenerator.Program.Add($"; 3D PLANAR OBJECT - {_contours.Count:0} LAYERS - {(this.GetLength() / 1000):0.###} METER");
-            programGenerator.Program.Add("; ----------------------------------------------------------------------");
-            programGenerator.Program.Add(" ");
+            programGenerator.AddSlicerHeader("3D CLOSED PLANAR OBJECT", _contours.Count, this.GetLength());
 
             // Settings
             programGenerator.Program.Add("BSPLINE");
@@ -232,16 +269,20 @@ namespace SaladSlicer.Core.Slicers
             // WORK OFFSET?
 
             // Coords
-            for (int i = 0; i < _frames.Count; i++)
+            for (int i = 0; i < _framesByLayer.Count; i++)
             {
-                Point3d point = _frames[i].Origin;
-                programGenerator.Program.Add($"X{point.X:0.###} Y{point.Y:0.###} Z{point.Z:0.###}");
+                programGenerator.Program.Add(" ");
+                programGenerator.Program.Add($"; LAYER {i + 1:0}");
+
+                for (int j = 0; j < _framesByLayer[i].Count; j++)
+                {
+                    Point3d point = _framesByLayer[i][j].Origin;
+                    programGenerator.Program.Add($"X{point.X:0.###} Y{point.Y:0.###} Z{point.Z:0.###}");
+                }
             }
 
             // End
-            programGenerator.Program.Add(" ");
-            programGenerator.Program.Add("; ----------------------------------------------------------------------");
-            programGenerator.Program.Add(" ");
+            programGenerator.AddFooter();
         }
 
         /// <summary>
@@ -274,10 +315,32 @@ namespace SaladSlicer.Core.Slicers
         public List<Point3d> GetPoints() 
         {
             List<Point3d> points = new List<Point3d>();
+            List<Plane> frames = this.Frames;
 
-            for (int i = 0; i < _frames.Count; i++)
+            for (int i = 0; i < frames.Count; i++)
             {
-                points.Add(_frames[i].Origin);
+                points.Add(frames[i].Origin);
+            }
+
+            return points;
+        }
+
+        /// <summary>
+        /// Returns all the points of the path sorted by layer.
+        /// </summary>
+        /// <returns> The lists with points. </returns>
+        public List<List<Point3d>> GetPointsByLayer()
+        {
+            List<List<Point3d>> points = new List<List<Point3d>>();
+
+            for (int i = 0; i < _framesByLayer.Count; i++)
+            {
+                points.Add(new List<Point3d>());
+
+                for (int j = 0; j < _framesByLayer[i].Count; j++)
+                {
+                    points[i].Add(_framesByLayer[i][j].Origin);
+                }
             }
 
             return points;
@@ -292,14 +355,17 @@ namespace SaladSlicer.Core.Slicers
         {
             _mesh.Transform(xform);
             _interpolatedPath.Transform(xform);
-            
-            for (int i = 0; i < _frames.Count; i++)
+
+            for (int i = 0; i < _framesByLayer.Count; i++)
             {
-                Plane frame = _frames[i];
-                frame.Transform(xform);
-                _frames[i] = frame;
+                for (int j = 0; j < _framesByLayer[i].Count; j++)
+                {
+                    Plane frame = _framesByLayer[i][j];
+                    frame.Transform(xform);
+                    _framesByLayer[i][j] = frame;
+                }
             }
-            
+
             for (int i = 0; i < _path.Count; i++)
             {
                 _path[i].Transform(xform);
@@ -326,14 +392,14 @@ namespace SaladSlicer.Core.Slicers
                 if (_path == null) { return false; }
                 if (_contours == null) { return false; }
                 if (_heights == null) { return false; }
-                if (_frames == null) { return false; }
+                if (_framesByLayer == null) { return false; }
                 if (_distance <= 0.0) { return false; }
-                if (_changeLength <= 0.0) { return false; }
-                if (_changeParameter < 0.0) { return false; }
-                if (_changeParameter > 1.0) { return false; }
+                if (_seamLength <= 0.0) { return false; }
+                if (_seamLocation < 0.0) { return false; }
+                if (_seamLocation > 1.0) { return false; }
                 if (_contours.Count == 0) { return false; }
                 if (_heights.Count == 0) { return false; }
-                if (_frames.Count == 0) { return false; }
+                if (_framesByLayer.Count == 0) { return false; }
                 return true;
             }
         }
@@ -357,21 +423,21 @@ namespace SaladSlicer.Core.Slicers
         }
 
         /// <summary>
-        /// Gets or sets the parameter of the starting point.
+        /// Gets or sets the location of the seam based on the normalized length of the first contour. 
         /// </summary>
-        public double ChangeParameter
+        public double SeamLocation
         {
-            get { return _changeParameter; }
-            set { _changeParameter = value; }
+            get { return _seamLocation; }
+            set { _seamLocation = value; }
         }
 
         /// <summary>
-        /// Gets or sets the transition length beteen two layers.
+        /// Gets or sets the length of the seam between two layers. 
         /// </summary>
-        public double ChangeLength
+        public double SeamLength
         {
-            get { return _changeLength; }
-            set { _changeLength = value; }
+            get { return _seamLength; }
+            set { _seamLength = value; }
         }
 
         /// <summary>
@@ -411,7 +477,25 @@ namespace SaladSlicer.Core.Slicers
         /// </summary>
         public List<Plane> Frames
         {
-            get { return _frames; }
+            get
+            {
+                List<Plane> frames = new List<Plane>() { };
+
+                for (int i = 0; i < _framesByLayer.Count; i++)
+                {
+                    frames.AddRange(_framesByLayer[i]);
+                }
+
+                return frames;
+            }
+        }
+
+        /// <summary>
+        /// Gets the frames of the path sorted by layer. 
+        /// </summary>
+        public List<List<Plane>> FramesByLayer
+        {
+            get { return _framesByLayer; }
         }
 
         /// <summary>
@@ -419,7 +503,7 @@ namespace SaladSlicer.Core.Slicers
         /// </summary>
         public Plane FrameAtStart
         {
-            get { return _frames[0]; }
+            get { return _framesByLayer[0][0]; }
         }
 
         /// <summary>
@@ -427,7 +511,7 @@ namespace SaladSlicer.Core.Slicers
         /// </summary>
         public Plane FrameAtEnd
         {
-            get { return _frames[_frames.Count - 1]; }
+            get { return _framesByLayer[_framesByLayer.Count - 1][_framesByLayer[_framesByLayer.Count - 1].Count - 1]; }
         }
 
         /// <summary>
@@ -435,7 +519,7 @@ namespace SaladSlicer.Core.Slicers
         /// </summary>
         public Point3d PointAtStart
         {
-            get { return _frames[0].Origin; }
+            get { return this.FrameAtStart.Origin; }
         }
 
         /// <summary>
@@ -443,7 +527,7 @@ namespace SaladSlicer.Core.Slicers
         /// </summary>
         public Point3d PointAtEnd
         {
-            get { return _frames[_frames.Count - 1].Origin; }
+            get { return this.FrameAtEnd.Origin; }
         }
         #endregion
     }

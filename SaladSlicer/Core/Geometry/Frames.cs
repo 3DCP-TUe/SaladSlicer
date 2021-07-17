@@ -12,11 +12,12 @@ using Rhino.Geometry;
 namespace SaladSlicer.Core.Geometry
 {
     /// <summary>
-    /// A static class that contains a number of methods to create transitions between curves. 
+    /// A static class that contains a number of methods to manipulate and create meshes.
     /// </summary>
-    public static class Transitions
+    public static class Meshes
     {
         #region methods
+
         #endregion
     }
 }

@@ -9,7 +9,8 @@ using System;
 using Grasshopper.Kernel;
 // Rhino Libs
 using Rhino.Geometry;
-using SaladSlicer.Core.Geometry;
+// Salad Slicer Libs
+using SaladSlicer.Core.Geometry.Seams;
 
 namespace SaladSlicer.Gh.Components.Geometry
 {
@@ -65,7 +66,7 @@ namespace SaladSlicer.Gh.Components.Geometry
             if (!DA.GetData(1, ref point)) return;
 
             // Create the new curves
-            Curve result = Seams.SeamAtClosestPoint(curve, point);
+            Curve result = Locations.SeamAtClosestPoint(curve, point);
 
             // Assign the output parameters
             DA.SetData(0, result);

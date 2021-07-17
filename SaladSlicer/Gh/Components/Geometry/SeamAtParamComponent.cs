@@ -9,7 +9,8 @@ using System;
 using Grasshopper.Kernel;
 // Rhino Libs
 using Rhino.Geometry;
-using SaladSlicer.Core.Geometry;
+// Salad Slicer Libs
+using SaladSlicer.Core.Geometry.Seams;
 
 namespace SaladSlicer.Gh.Components.Geometry
 {
@@ -71,7 +72,7 @@ namespace SaladSlicer.Gh.Components.Geometry
             // Create the code line
             Curve curveCopy = curve.DuplicateCurve();
             curveCopy.Domain = new Interval(0, 1);
-            Curve result = Seams.SeamAtParam(curveCopy, param);
+            Curve result = Locations.SeamAtParam(curveCopy, param);
             
             // Assign the output parameters
             DA.SetData(0, result);

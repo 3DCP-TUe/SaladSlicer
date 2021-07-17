@@ -5,6 +5,9 @@
 
 namespace SaladSlicer.Core.Enumerations
 {
+    /// <summary>
+    /// Defines the transition type between two layers.
+    /// </summary>
     public enum Transition : int
     {
         /// <summary>
