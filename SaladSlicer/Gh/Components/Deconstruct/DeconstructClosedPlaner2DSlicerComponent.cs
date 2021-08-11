@@ -10,6 +10,7 @@ using Grasshopper.Kernel;
 // Salad Slicer Libs
 using SaladSlicer.Core.Slicers;
 using SaladSlicer.Gh.Parameters.Slicers;
+using SaladSlicer.Gh.Utils;
 
 namespace SaladSlicer.Gh.Components.CodeGeneration
 {
@@ -49,7 +50,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
             pManager.AddNumberParameter("Distance", "D", "Distance between frames as a Number", GH_ParamAccess.item);
             pManager.AddNumberParameter("Heights", "H", "Absolute layer heights a list with Numbers.", GH_ParamAccess.list);
             pManager.AddCurveParameter("Path", "P", "Path as a Curve", GH_ParamAccess.item);
-            pManager.AddPlaneParameter("Frames", "F", "Frames as a list with Planes.", GH_ParamAccess.list);
+            pManager.AddPlaneParameter("Frames", "F", "Frames as a datatree with Planes.", GH_ParamAccess.tree);
             pManager.AddPlaneParameter("Start Frame", "S", "Start frame as a Plane.", GH_ParamAccess.item);
             pManager.AddPlaneParameter("End Frame", "E", "End frame as a Plane.", GH_ParamAccess.item);
         }
@@ -73,7 +74,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
             DA.SetData(3, slicer.Distance);
             DA.SetDataList(4, slicer.Heights);
             DA.SetData(5, slicer.InterpolatedPath);
-            DA.SetDataList(6, slicer.Frames);
+            DA.SetDataTree(6, HelperMethods.ListInListToDataTree(slicer.FramesByLayer));
             DA.SetData(7, slicer.FrameAtStart);
             DA.SetData(8, slicer.FrameAtEnd);
         }

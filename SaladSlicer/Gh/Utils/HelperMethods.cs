@@ -5,15 +5,15 @@
 
 // System Libs
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 //Grasshopper
 using Grasshopper;
 using Grasshopper.Kernel;
+using Grasshopper.Kernel.Data;
 using Grasshopper.Kernel.Special;
-//SaladSlicer
-using SaladSlicer.Gh.Components.Geometry;
-
-
+// Rhino Libs
+using Rhino.Geometry;
 
 namespace SaladSlicer.Gh.Utils
 {
@@ -75,11 +75,41 @@ namespace SaladSlicer.Gh.Utils
                 //Return that it isn't created
                 return false;
             }
-            
         }
-       
+
+        /// <summary>
+        /// Returns a datatree with doubles created from a nested list with doubles.
+        /// </summary>
+        /// <param name="data"> The nested list with doubles. </param>
+        /// <returns> The datatree with doubles. </returns>
+        public static DataTree<double> ListInListToDataTree(List<List<double>> data)
+        {
+            DataTree<double> result = new DataTree<double>();
+
+            for (int i = 0; i < data.Count; i++)
+            {
+                result.AddRange(data[i], new GH_Path(i));
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Returns a datatree with planes created from a nested list with planes.
+        /// </summary>
+        /// <param name="data"> The nested list with planes. </param>
+        /// <returns> The datatree with planes. </returns>
+        public static DataTree<Plane> ListInListToDataTree(List<List<Plane>> data)
+        {
+            DataTree<Plane> result = new DataTree<Plane>();
+
+            for (int i = 0; i < data.Count; i++)
+            {
+                result.AddRange(data[i], new GH_Path(i));
+            }
+
+            return result;
+        }
     }
-
-
 }
 
