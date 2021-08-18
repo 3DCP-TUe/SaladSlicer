@@ -15,7 +15,7 @@ using SaladSlicer.Core.Geometry.Seams;
 namespace SaladSlicer.Gh.Components.Geometry
 {
     /// <summary>
-    /// Represents the component that set a seam based on the length.
+    /// Represents the component that set a closed curve seam based on the length.
     /// </summary>
     public class SeamAtLengthComponent : GH_Component
     {
@@ -40,7 +40,8 @@ namespace SaladSlicer.Gh.Components.Geometry
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddCurveParameter("Curve", "C", "Curve", GH_ParamAccess.item);
-            pManager.AddNumberParameter("Length", "L", "The length along the curve between the old startpoint and new startpoint of the curve.", GH_ParamAccess.item, 0);
+            pManager.AddNumberParameter("Length", "L", "The length factor along the curve between the old startpoint and new startpoint of the curve.", GH_ParamAccess.item, 0);
+            pManager.AddBooleanParameter("Normalize", "N", "Indicating whether or not the length factor is normalized (0 - 1).", GH_ParamAccess.item, true);
         }
 
         /// <summary>
@@ -58,22 +59,30 @@ namespace SaladSlicer.Gh.Components.Geometry
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             // Declare variable of input parameters
-            Curve curve = new Line().ToNurbsCurve();
-            double length = new double();
+            Curve curve = null;
+            double length = 0.0;
+            bool normalize = true;
 
             // Access the input parameters individually. 
             if (!DA.GetData(0, ref curve)) return;
             if (!DA.GetData(1, ref length)) return;
+            if (!DA.GetData(2, ref normalize)) return;
 
-            // Check input values
-            if (length < 0.0) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Length input cannot be smaller than 0."); }
-            if (length > curve.GetLength()) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Length input is larger than curve length."); }
-            
+            // Declate the output variable
+            Curve result = curve;
+
             // Create the new curve
-            Curve curveCopy = Locations.SeamAtLength(curve, length, false);
-            
+            try
+            {
+                result = Locations.SeamAtLength(curve, length, normalize);
+            }
+            catch (Exception e)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Error, e.Message);
+            }
+
             // Assign the output parameters
-            DA.SetData(0, curveCopy);
+            DA.SetData(0, result);
         }
 
         /// <summary>

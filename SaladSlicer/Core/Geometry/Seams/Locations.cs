@@ -28,7 +28,7 @@ namespace SaladSlicer.Core.Geometry.Seams
         {
             if (curve.IsClosed == false)
             {
-                throw new Exception("Requires a closed curve.");
+                throw new Exception("The method Seam at Param requires a closed curve.");
             }
 
             Curve result = curve.DuplicateCurve();
@@ -38,7 +38,7 @@ namespace SaladSlicer.Core.Geometry.Seams
                 result.Domain = new Interval(0, 1);
             }
 
-            if (param > result.Domain.T0 & param < result.Domain.T1)
+            if (param >= result.Domain.T0 & param <= result.Domain.T1)
             {
                 result.ChangeClosedCurveSeam(param);
             }
@@ -61,7 +61,23 @@ namespace SaladSlicer.Core.Geometry.Seams
         {
             if (curve.IsClosed == false)
             {
-                throw new Exception("Requires a closed curve.");
+                throw new Exception("The method Seam at Length requires a closed curve.");
+            }
+            if (normalized == false & length < 0.0) 
+            { 
+                throw new Exception("Length factor cannot be smaller than 0."); 
+            }
+            if (normalized == true & length < 0.0) 
+            { 
+                throw new Exception("Normalized length factor cannot be smaller than 0."); 
+            }
+            if (normalized == false & length > curve.GetLength()) 
+            { 
+                throw new Exception("Length factor cannot be larger than curve length."); 
+            }
+            if (normalized == true & length > 1.0) 
+            { 
+                throw new Exception("Normalized length factor cannot be larger than 1."); 
             }
 
             Curve result = curve.DuplicateCurve();
@@ -91,7 +107,7 @@ namespace SaladSlicer.Core.Geometry.Seams
         {
             if (curve.IsClosed == false)
             {
-                throw new Exception("Requires a closed curve.");
+                throw new Exception("The method Seam at Closest Point requires a closed curve.");
             }
 
             Curve result = curve.DuplicateCurve();
@@ -107,7 +123,7 @@ namespace SaladSlicer.Core.Geometry.Seams
         /// <summary>
         /// Returns a list with curves with as starting point the closest point to the starting point of the curve before. 
         /// </summary>
-        /// <param name="contours"> The contours as a list with Curves. </param>
+        /// <param name="contours"> The contours as a list with curves. </param>
         /// <returns></returns>
         public static List<Curve> SeamsAtClosestPoint(List<Curve> contours)
         {

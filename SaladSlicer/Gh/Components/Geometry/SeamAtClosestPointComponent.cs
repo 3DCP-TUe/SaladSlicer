@@ -58,15 +58,25 @@ namespace SaladSlicer.Gh.Components.Geometry
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             // Declare variable of input parameters
-            Curve curve = new Line().ToNurbsCurve();
+            Curve curve = null;
             Point3d point = new Point3d();
 
             // Access the input parameters individually. 
             if (!DA.GetData(0, ref curve)) return;
             if (!DA.GetData(1, ref point)) return;
 
-            // Create the new curves
-            Curve result = Locations.SeamAtClosestPoint(curve, point);
+            // Delcare the output variable
+            Curve result = curve;
+
+            // Create the new curve
+            try
+            {
+                result = Locations.SeamAtClosestPoint(curve, point);
+            }
+            catch (Exception e)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Error, e.Message);
+            }
 
             // Assign the output parameters
             DA.SetData(0, result);

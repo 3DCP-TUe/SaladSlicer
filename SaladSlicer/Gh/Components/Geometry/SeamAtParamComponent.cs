@@ -40,7 +40,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddCurveParameter("Curve", "C", "Curve", GH_ParamAccess.item);
-            pManager.AddNumberParameter("Parameter", "P", "A parameter thet redefines the startpoint of the curve [0 to 1]", GH_ParamAccess.item, 0);
+            pManager.AddNumberParameter("Parameter", "P", "A parameter that redefines the startpoint of the curve.",  GH_ParamAccess.item, 0.0);
         }
 
         /// <summary>
@@ -58,21 +58,25 @@ namespace SaladSlicer.Gh.Components.Geometry
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             // Declare variable of input parameters
-            Curve curve = new Line().ToNurbsCurve();
-            double param = new double();
+            Curve curve = null;
+            double param = 0.0;
 
             // Access the input parameters individually. 
             if (!DA.GetData(0, ref curve)) return;
             if (!DA.GetData(1, ref param)) return;
 
-            // Check input values
-            if (param < 0.0) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Parameter value is not in the range of 0 to 1."); }
-            if (param > 1.0) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Parameter value is not in the range of 0 to 1."); }
-            
-            // Create the code line
-            Curve curveCopy = curve.DuplicateCurve();
-            curveCopy.Domain = new Interval(0, 1);
-            Curve result = Locations.SeamAtParam(curveCopy, param);
+            // Declare the output variable
+            Curve result = curve;
+
+            // Create the new curve
+            try
+            {
+                result = Locations.SeamAtParam(curve, param);
+            }
+            catch (Exception e)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Error, e.Message);
+            }
             
             // Assign the output parameters
             DA.SetData(0, result);
