@@ -12,9 +12,9 @@ using Rhino.Geometry;
 namespace SaladSlicer.Core.Geometry
 {
     /// <summary>
-    /// A static class that contains a number of methods to manipulate and create frames.
+    /// A static class that contains a number of methods to manipulate and create meshes.
     /// </summary>
-    public static class Frames
+    public static class Meshes
     {
         #region methods
 

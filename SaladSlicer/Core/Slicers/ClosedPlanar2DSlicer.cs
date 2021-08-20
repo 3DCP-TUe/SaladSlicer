@@ -179,34 +179,12 @@ namespace SaladSlicer.Core.Slicers
             for (int i = 0; i < _contours.Count; i++)
             {
                 // Contours
-                int n = (int)(_path[i * 2].GetLength() / _distance);
-                n = Math.Max(2, n);
-                double[] t = _path[i * 2].DivideByCount(n, true);
-
-                for (int j = 0; j != t.Length; j++)
-                {
-                    Point3d point = _path[i * 2].PointAt(t[j]);
-                    Vector3d x = _path[i * 2].TangentAt(t[j]);
-                    Vector3d y = Vector3d.CrossProduct(x, new Vector3d(0, 0, 1));
-                    Plane plane = new Plane(point, x, y);
-                    _framesByLayer[i].Add(plane);
-                }
+                _framesByLayer[i].AddRange(Geometry.Frames.GetFramesBySegment(_path[i * 2], _distance, true));
 
                 // Transitions
-                if (i < _contours.Count -1)
+                if (i < _contours.Count - 1)
                 {
-                    n = (int)(_path[i * 2 + 1].GetLength() / _distance);
-                    n = Math.Max(2, n);
-                    t = _path[i * 2 + 1].DivideByCount(n, false);
-
-                    for (int j = 0; j != t.Length; j++)
-                    {
-                        Point3d point = _path[i * 2 + 1].PointAt(t[j]);
-                        Vector3d x = _path[i * 2 + 1].TangentAt(t[j]);
-                        Vector3d y = Vector3d.CrossProduct(x, new Vector3d(0, 0, 1));
-                        Plane plane = new Plane(point, x, y);
-                        _framesByLayer[i].Add(plane);
-                    }
+                    _framesByLayer[i].AddRange(Geometry.Frames.GetFramesBySegment(_path[i * 2 + 1], _distance, false));
                 }
             }
         }
@@ -271,7 +249,7 @@ namespace SaladSlicer.Core.Slicers
                 for (int i = 0; i < _framesByLayer[0].Count; i++)
                 {
                     Point3d point = _framesByLayer[0][i].Origin;
-                    programGenerator.Program.Add($"X{point.X:0.###} Y{point.Y:0.###} Z= {point.Z:0.###} + R10*R20");
+                    programGenerator.Program.Add($"X{point.X:0.###} Y{point.Y:0.###} Z={point.Z:0.###}+R10*R20");
                 }
 
                 programGenerator.Program.Add(" ");
