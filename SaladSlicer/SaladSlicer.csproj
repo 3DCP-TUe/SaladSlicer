@@ -140,6 +140,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\2.5D.png" />
+    <None Include="Resources\SeamsAtClosestPoint_Icon.png" />
+    <None Include="Resources\SeamAtClosestPoint_Icon.png" />
+    <None Include="Resources\SeamAtParameter_Icon.png" />
+    <None Include="Resources\SeamAtLength_Icon.png" />
+    <None Include="Resources\CurveFramesByCurvature_Icon.png" />
+    <None Include="Resources\AlternateCurves_Icon.png" />
+    <None Include="Resources\JoinClosedCurves_Icon.png" />
+    <None Include="Resources\JoinOpenCurves_Icon.png" />
+    <None Include="Resources\Param_ProgramObject_Icon.png" />
+    <None Include="Resources\DeconstructProgramObject_Icon.png" />
     <None Include="Resources\Param_CodeLine_Icon.png" />
     <None Include="Resources\Param_CurveSlicer_Icon.png" />
     <None Include="Resources\Param_OpenPlanar2DSlicer_Icon.png" />
@@ -153,7 +163,6 @@
     <None Include="Resources\ClosedPlanar2DSlicer_Icon.png" />
     <None Include="Resources\DeconstructClosedPlanar3DSlicer_Icon.png" />
     <None Include="Resources\DeconstructClosedPlanar2DSlicer_Icon.png" />
-    <None Include="Resources\DeconstructProgramObject_Icon.png" />
     <None Include="Resources\Info_Icon.png" />
     <None Include="Resources\SetFeedRate_Icon.png" />
     <None Include="Resources\AbsoluteCoordinate_Icon.png" />

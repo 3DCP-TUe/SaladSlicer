@@ -106,7 +106,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.ExampleIcon; }
+            get { return Properties.Resources.SeamAtLength_Icon; }
         }
 
         /// <summary>
