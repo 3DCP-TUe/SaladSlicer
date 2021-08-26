@@ -11,7 +11,7 @@ using System.Linq;
 using Rhino.Geometry;
 // Slicer Salad Libs
 using SaladSlicer.Core.CodeGeneration;
-using SaladSlicer.Core.Geometry;
+using SaladSlicer.Core.Geometry.Seams;
 
 namespace SaladSlicer.Core.Slicers
 {
@@ -143,13 +143,13 @@ namespace SaladSlicer.Core.Slicers
         private void CreateContours()
         {
             _contours.Clear();
+            Curve contour = Geometry.Seams.Locations.SeamAtLength(_baseContour, _seamLocation, true);
+            contour.Domain = new Interval(0, contour.GetLength());
 
             for (int i = 0; i < _heights.Count; i++)
             {
-                Curve contour = _baseContour.DuplicateCurve();
-                contour.Domain = new Interval(0, contour.GetLength());
-                contour.Translate(0, 0, _heights[i]);
                 _contours.Add(contour.DuplicateCurve());
+                _contours[i].Translate(0, 0, _heights[i]);
             }
         }
 
@@ -159,7 +159,7 @@ namespace SaladSlicer.Core.Slicers
         private void CreatePath()
         {
             _path.Clear();
-            _path = Curves.InterpolatedTransitions(_contours, _seamLength, _seamLocation, 0.25 * _distance);
+            _path = Transitions.InterpolatedTransitions(_contours, _seamLength, 0.25 * _distance);
         }
 
         /// <summary>
