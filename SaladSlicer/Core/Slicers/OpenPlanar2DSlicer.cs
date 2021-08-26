@@ -4,7 +4,6 @@
 // see <https://github.com/3DCP-TUe/SaladSlicer>.
 
 // System Libs
-using System;
 using System.Collections.Generic;
 using System.Linq;
 // Rhino Libs
@@ -161,36 +160,19 @@ namespace SaladSlicer.Core.Slicers
         {
             _framesByLayer.Clear();
 
-            for (int i = 0; i < _contours.Count; i++)
-            {
-                _framesByLayer.Add(new List<Plane>() { });
-            }
+            _contours = Curves.AlternateCurves(_contours);
 
             for (int i = 0; i < _contours.Count; i++)
             {
-                int n = (int)(_contours[i].GetLength() / _distance);
-                n = Math.Max(2, n);
-                double[] t = _contours[i].DivideByCount(n, true);
-
-                for (int j = 0; j != t.Length; j++)
-                {
-                    Point3d point = _contours[i].PointAt(t[j]);
-                    Vector3d x = _contours[i].TangentAt(t[j]);
-                    Vector3d y = Vector3d.CrossProduct(x, new Vector3d(0, 0, 1));
-                    Plane plane;
-
-                    if (i % 2 == 0)
-                    {
-                        plane = new Plane(point, x, y);
-                    }
-                    else
-                    {
-                        plane = new Plane(point, -x, -y);
-                    }
-
-                    _framesByLayer[i].Add(plane);
-                }
+                _framesByLayer.Add(Geometry.Frames.GetFramesBySegment(_contours[i], _distance, true, true));
             }
+
+            for (int i = 1; i < _framesByLayer.Count; i += 2)
+            {
+                _framesByLayer[i].Reverse();
+            }
+
+            _contours = Curves.AlternateCurves(_contours);
         }
 
         /// <summary>

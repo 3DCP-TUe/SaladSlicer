@@ -4,7 +4,6 @@
 // see <https://github.com/3DCP-TUe/SaladSlicer>.
 
 // System Libs
-using System;
 using System.Collections.Generic;
 using System.Linq;
 // Rhino Libs
@@ -179,12 +178,12 @@ namespace SaladSlicer.Core.Slicers
             for (int i = 0; i < _contours.Count; i++)
             {
                 // Contours
-                _framesByLayer[i].AddRange(Geometry.Frames.GetFramesBySegment(_path[i * 2], _distance, true));
+                _framesByLayer[i].AddRange(Geometry.Frames.GetFramesBySegment(_path[i * 2], _distance, true, true));
 
                 // Transitions
                 if (i < _contours.Count - 1)
                 {
-                    _framesByLayer[i].AddRange(Geometry.Frames.GetFramesBySegment(_path[i * 2 + 1], _distance, false));
+                    _framesByLayer[i].AddRange(Geometry.Frames.GetFramesBySegment(_path[i * 2 + 1], _distance, false, false));
                 }
             }
         }

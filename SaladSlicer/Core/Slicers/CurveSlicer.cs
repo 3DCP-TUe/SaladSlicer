@@ -4,13 +4,12 @@
 // see <https://github.com/3DCP-TUe/SaladSlicer>.
 
 // System Libs
-using System;
 using System.Collections.Generic;
-using System.Linq;
 // Rhino Libs
 using Rhino.Geometry;
 // Slicer Salad Libs
 using SaladSlicer.Core.CodeGeneration;
+using SaladSlicer.Core.Geometry;
 
 namespace SaladSlicer.Core.Slicers
 {
@@ -23,7 +22,7 @@ namespace SaladSlicer.Core.Slicers
         private Curve _curve;
         private double _distance;
         private Curve _interpolatedPath;
-        private readonly List<Plane> _frames = new List<Plane>();
+        private List<Plane> _frames = new List<Plane>();
         #endregion
 
         #region constructors
@@ -98,20 +97,7 @@ namespace SaladSlicer.Core.Slicers
         private void CreateFrames()
         {
             _frames.Clear();
-
-            int n = (int)(_curve.GetLength() / _distance);
-            n = Math.Max(2, n);
-            double[] t = _curve.DivideByCount(n, true);
-
-            for (int j = 0; j != t.Length; j++)
-            {
-                Point3d point = _curve.PointAt(t[j]);
-                Vector3d x = _curve.TangentAt(t[j]);
-                Vector3d y = Vector3d.CrossProduct(x, new Vector3d(0, 0, 1));
-                Plane plane = new Plane(point, x, y);
-                _frames.Add(plane);
-            
-            }
+            _frames = Geometry.Frames.GetFramesBySegment(_curve, _distance, true, true);
         }
 
         /// <summary>

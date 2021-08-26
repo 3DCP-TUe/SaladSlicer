@@ -83,6 +83,7 @@
     <Compile Include="Gh\Components\Deconstruct\DeconstructOpenPlaner2DSlicerComponent.cs" />
     <Compile Include="Gh\Components\Deconstruct\DeconstructClosedPlaner2DSlicerComponent.cs" />
     <Compile Include="Gh\Components\Deconstruct\DeconstructProgramObjectComponent.cs" />
+    <Compile Include="Gh\Components\Geometry\CurveFramesByCurvatureComponent.cs" />
     <Compile Include="Gh\Components\Geometry\SeamAtClosestPointComponent.cs" />
     <Compile Include="Gh\Components\Geometry\AlternateCurvesComponent.cs" />
     <Compile Include="Gh\Components\Geometry\SeamAtParamComponent.cs" />

@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 // Rhino Libs
 using Rhino.Geometry;
+using Rhino.Geometry.Collections;
 
 namespace SaladSlicer.Core.Geometry
 {
@@ -97,18 +98,6 @@ namespace SaladSlicer.Core.Geometry
         /// </summary>
         /// <param name="curve"> The curve to get the frames from. </param>
         /// <param name="distance"> The maximum distance between two frames. </param>
-        /// <param name="includeEnds"> Indicates if the start and end frame are included. </param>
-        /// <returns></returns>
-        public static List<Plane> GetFrames(Curve curve, double distance, bool includeEnds = true)
-        {
-            return  GetFrames(curve, distance, includeEnds, includeEnds);
-        }
-
-        /// <summary>
-        /// Returns the frames for a curve.
-        /// </summary>
-        /// <param name="curve"> The curve to get the frames from. </param>
-        /// <param name="distance"> The maximum distance between two frames. </param>
         /// <param name="includeStart"> Indicates if the start frame is included. </param>
         /// <param name="includeEnd"> Indicates if the end frame is included. </param>
         /// <returns> The list with frames. </returns>
@@ -119,10 +108,10 @@ namespace SaladSlicer.Core.Geometry
             int n = Math.Max((int)(curve.GetLength() / distance), 1);
             double[] t = curve.DivideByCount(n, true);
 
-            for (int j = 0; j != t.Length; j++)
+            for (int i = 0; i != t.Length; i++)
             {
-                Point3d point = curve.PointAt(t[j]);
-                Vector3d x = curve.TangentAt(t[j]);
+                Point3d point = curve.PointAt(t[i]);
+                Vector3d x = curve.TangentAt(t[i]);
                 Vector3d y = Vector3d.CrossProduct(x, new Vector3d(0, 0, 1));
                 Plane plane = new Plane(point, x, y);
                 result.Add(plane);
@@ -157,18 +146,6 @@ namespace SaladSlicer.Core.Geometry
         /// </summary>
         /// <param name="curve"> The curve to get the frames from. </param>
         /// <param name="distance"> The maximum distance between two frames. </param>
-        /// <param name="includeEnds"> Indicates if the start and end frame are included. </param>
-        /// <returns> The list with frames. </returns>
-        public static List<Plane> GetFramesBySegment(Curve curve, double distance, bool includeEnds = true)
-        {
-            return GetFramesBySegment(curve, distance, includeEnds, includeEnds);
-        }
-
-        /// <summary>
-        /// Returns the frames of a curve by dividing it in mulitple segments. 
-        /// </summary>
-        /// <param name="curve"> The curve to get the frames from. </param>
-        /// <param name="distance"> The maximum distance between two frames. </param>
         /// <param name="includeStart"> Indicates if the start frame is included. </param>
         /// <param name="includeEnd"> Indicates if the end frame is included. </param>
         /// <returns> The list with frames. </returns>
@@ -179,7 +156,7 @@ namespace SaladSlicer.Core.Geometry
 
             if (segments.Length <= 1)
             {
-                result = GetFrames(segments[0], distance, true);
+                result = GetFrames(segments[0], distance, true, true);
             }
             else
             {
@@ -190,13 +167,13 @@ namespace SaladSlicer.Core.Geometry
                     // First segment
                     if (i == 0)
                     {
-                        subset = GetFrames(segments[i], distance, true);
+                        subset = GetFrames(segments[i], distance, true, true);
                         result.AddRange(subset);
                     }
                     // In between and last segment
                     else
                     {
-                        subset = GetFrames(segments[i], distance, true);
+                        subset = GetFrames(segments[i], distance, true, true);
                         result[result.Count - 1] = InterpolateFrames(result[result.Count - 1], subset[0]);
                         result.AddRange(subset.GetRange(1, subset.Count - 1));
                     }
@@ -238,6 +215,69 @@ namespace SaladSlicer.Core.Geometry
             Vector3d yAxis = 0.5 * (frame1.YAxis + frame2.YAxis);
 
             return new Plane(origin, xAxis, yAxis); 
+        }
+
+        /// <summary>
+        /// Returns the frames of a curve by curvature.
+        /// </summary>
+        /// <param name="curve"> The curve to get the frames from. </param>
+        /// <param name="tolerance"> The tolerance for fitting. </param>
+        /// <param name="includeStart"> Indicates if the start frame is included. </param>
+        /// <param name="includeEnd"> Indicates if the end frame is included. </param>
+        /// <returns> The list with frames. </returns>
+        public static List<Plane> GetFramesByCurvature(Curve curve, double tolerance = 0.001, bool includeStart = true, bool includeEnd = true)
+        {
+            List<Plane> result = new List<Plane>();
+
+            // Fits a curve through the existing: This method does that based on curvature
+            NurbsCurve fit = curve.Fit(curve.Degree, tolerance, 0.0).ToNurbsCurve();
+            NurbsCurvePointList controlPoints = fit.Points;
+
+            // Start frames
+            Point3d point = curve.PointAtStart;
+            Vector3d x = curve.TangentAtStart;
+            Vector3d y = Vector3d.CrossProduct(x, new Vector3d(0, 0, 1));
+            Plane plane = new Plane(point, x, y);
+            result.Add(plane);
+
+            // Intermediate frames
+            for (int i = 1; i != controlPoints.Count - 1; i++)
+            {
+                curve.ClosestPoint(controlPoints[i].Location, out double t);
+                point = curve.PointAt(t);
+                x = curve.TangentAt(t);
+                y = Vector3d.CrossProduct(x, new Vector3d(0, 0, 1));
+                plane = new Plane(point, x, y);
+                result.Add(plane);
+            }
+
+            // End frame
+            point = curve.PointAtEnd;
+            x = curve.TangentAtEnd;
+            y = Vector3d.CrossProduct(x, new Vector3d(0, 0, 1));
+            plane = new Plane(point, x, y);
+            result.Add(plane);
+
+            if (includeStart == true && includeEnd == true)
+            {
+                return result;
+            }
+            else if (includeStart == false && includeEnd == false && result.Count == 2)
+            {
+                return new List<Plane>();
+            }
+            else if (includeStart == false && includeEnd == false)
+            {
+                return result.GetRange(1, result.Count - 2);
+            }
+            else if (includeStart == true && includeEnd == false)
+            {
+                return result.GetRange(0, result.Count - 2);
+            }
+            else
+            {
+                return result.GetRange(1, result.Count - 1);
+            }
         }
         #endregion
     }
