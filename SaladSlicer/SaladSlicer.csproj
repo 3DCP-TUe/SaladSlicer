@@ -81,6 +81,7 @@
     <Compile Include="Gh\Components\Deconstruct\DeconstructCurveSlicerComponent.cs" />
     <Compile Include="Gh\Components\Deconstruct\DeconstructOpenPlaner2DSlicerComponent.cs" />
     <Compile Include="Gh\Components\Deconstruct\DeconstructClosedPlaner2DSlicerComponent.cs" />
+    <Compile Include="Gh\Components\Geometry\CurveFramesByDistanceComponent.cs" />
     <Compile Include="Gh\Components\Geometry\CurveFramesByCurvatureComponent.cs" />
     <Compile Include="Gh\Components\Geometry\SeamAtClosestPointComponent.cs" />
     <Compile Include="Gh\Components\Geometry\AlternateCurvesComponent.cs" />
@@ -125,6 +126,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SaladSlicerIcon.cs" />
     <Compile Include="SaladSlicerInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -143,6 +145,8 @@
     <None Include="Resources\TransposeSurface_Icon.png" />
     <None Include="Resources\ConvertVelocityMmminMms_Icon.png" />
     <None Include="Resources\ConvertVelocityMmsMmmin_Icon.png" />
+    <None Include="Resources\GetContours_Icon.png" />
+    <None Include="Resources\saladSlicer_Icon.png" />
     <None Include="Resources\SeamsAtClosestPoint_Icon.png" />
     <None Include="Resources\SeamAtClosestPoint_Icon.png" />
     <None Include="Resources\SeamAtParameter_Icon.png" />

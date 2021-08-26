@@ -5,29 +5,32 @@
 
 // System Libs
 using System;
+using System.Collections.Generic;
 // Grasshopper Libs
 using Grasshopper.Kernel;
-// Salad Slicer Libs
-using SaladSlicer.Core.CodeGeneration;
-using SaladSlicer.Core.Slicers;
-using SaladSlicer.Gh.Parameters.CodeGeneration;
+// Rhino Libs
+using Rhino.Geometry;
+using SaladSlicer.Core.Geometry;
 
-namespace SaladSlicer.Gh.Components.Slicers
+namespace SaladSlicer.Gh.Components.Geometry
 {
     /// <summary>
-    /// Represent a component that creates the path.
+    /// Represents the component that gets the curve frames by distance. 
     /// </summary>
-    public class GetPathComponent : GH_Component
+    public class CurveFramesByDistanceComponent : GH_Component
     {
+        #region fields
+        #endregion
+
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public GetPathComponent()
-          : base("Get Path", // Component name
-              "P", // Component nickname
-              "Defines the linearized of a slicer object", // Description
+        public CurveFramesByDistanceComponent()
+          : base("Curve Frames by Distance", // Component name
+              "CFD", // Component nickname
+              "Gets the frames of a curve by distance.", // Description
               "Salad Slicer", // Category
-              "Slicers") // Subcategory
+              "Geometry") // Subcategory
         {
         }
 
@@ -36,7 +39,8 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddParameter(new Param_Object(), "Program Object", "PO", "Slicer object.", GH_ParamAccess.item);
+            pManager.AddCurveParameter("Curve", "C", "Curve to divide.", GH_ParamAccess.item);
+            pManager.AddNumberParameter("Distance", "D", "Distance as a number.", GH_ParamAccess.item, 20);
         }
 
         /// <summary>
@@ -44,7 +48,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddCurveParameter("Path", "P", "Linearized path as a Curve.", GH_ParamAccess.item);
+            pManager.AddPlaneParameter("Frames", "F", "Frames as list with Planes", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -54,13 +58,18 @@ namespace SaladSlicer.Gh.Components.Slicers
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             // Declare variable of input parameters
-            IObject slicer = new ClosedPlanar2DSlicer();
+            Curve curve = null;
+            double distance = 20.0;
 
             // Access the input parameters individually. 
-            if (!DA.GetData(0, ref slicer)) return;
+            if (!DA.GetData(0, ref curve)) return;
+            if (!DA.GetData(1, ref distance)) return;
+
+            // Create the frames
+            List<Plane> frames = Frames.GetFramesByDistanceAndSegment(curve, distance, true, true);
 
             // Assign the output parameters
-            DA.SetData(0, slicer.GetPath());
+            DA.SetDataList(0, frames);
         }
 
         /// <summary>
@@ -68,7 +77,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         public override GH_Exposure Exposure
         {
-            get { return GH_Exposure.secondary; }
+            get { return GH_Exposure.quinary; }
         }
 
         /// <summary>
@@ -84,7 +93,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.GetPath_Icon; }
+            get { return Properties.Resources.ExampleIcon; }
         }
 
         /// <summary>
@@ -93,7 +102,8 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("68FD2AA1-8A7B-4593-8E49-7E2ADF1AC29C"); }
+            get { return new Guid("2F41ED5E-033B-43EB-9463-25411505ADFD"); }
         }
+
     }
 }
