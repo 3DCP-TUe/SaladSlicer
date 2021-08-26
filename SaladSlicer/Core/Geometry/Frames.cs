@@ -101,7 +101,7 @@ namespace SaladSlicer.Core.Geometry
         /// <param name="includeStart"> Indicates if the start frame is included. </param>
         /// <param name="includeEnd"> Indicates if the end frame is included. </param>
         /// <returns> The list with frames. </returns>
-        public static List<Plane> GetFrames(Curve curve, double distance, bool includeStart = true, bool includeEnd = true)
+        public static List<Plane> GetFramesByDistance(Curve curve, double distance, bool includeStart = true, bool includeEnd = true)
         {
             List<Plane> result = new List<Plane>();
 
@@ -149,14 +149,14 @@ namespace SaladSlicer.Core.Geometry
         /// <param name="includeStart"> Indicates if the start frame is included. </param>
         /// <param name="includeEnd"> Indicates if the end frame is included. </param>
         /// <returns> The list with frames. </returns>
-        public static List<Plane> GetFramesBySegment(Curve curve, double distance, bool includeStart = true, bool includeEnd = true)
+        public static List<Plane> GetFramesByDistanceAndSegment(Curve curve, double distance, bool includeStart = true, bool includeEnd = true)
         {
             List<Plane> result = new List<Plane>();
             Curve[] segments = curve.DuplicateSegments();
 
             if (segments.Length <= 1)
             {
-                result = GetFrames(curve, distance, true, true);
+                result = GetFramesByDistance(curve, distance, true, true);
             }
             else
             {
@@ -167,13 +167,13 @@ namespace SaladSlicer.Core.Geometry
                     // First segment
                     if (i == 0)
                     {
-                        subset = GetFrames(segments[i], distance, true, true);
+                        subset = GetFramesByDistance(segments[i], distance, true, true);
                         result.AddRange(subset);
                     }
                     // In between and last segment
                     else
                     {
-                        subset = GetFrames(segments[i], distance, true, true);
+                        subset = GetFramesByDistance(segments[i], distance, true, true);
                         result[result.Count - 1] = InterpolateFrames(result[result.Count - 1], subset[0]);
                         result.AddRange(subset.GetRange(1, subset.Count - 1));
                     }

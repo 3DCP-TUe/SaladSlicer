@@ -162,7 +162,7 @@ namespace SaladSlicer.Core.Slicers
 
             for (int i = 0; i < _contours.Count; i++)
             {
-                _framesByLayer.Add(Geometry.Frames.GetFramesBySegment(_contours[i], _distance, true, true));
+                _framesByLayer.Add(Geometry.Frames.GetFramesByDistanceAndSegment(_contours[i], _distance, true, true));
             }
 
             for (int i = 1; i < _framesByLayer.Count; i += 2)

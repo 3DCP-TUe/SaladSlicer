@@ -93,7 +93,7 @@ namespace SaladSlicer.Core.Slicers
         private void CreateFrames()
         {
             _frames.Clear();
-            _frames = Geometry.Frames.GetFramesBySegment(_curve, _distance, true, true);
+            _frames = Geometry.Frames.GetFramesByDistanceAndSegment(_curve, _distance, true, true);
         }
 
         /// <summary>

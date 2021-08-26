@@ -15,9 +15,9 @@ using SaladSlicer.Core.Geometry;
 namespace SaladSlicer.Gh.Components.Geometry
 {
     /// <summary>
-    /// Represents the component that joins curves using linear interpolation. 
+    /// Represents the component that gets the curve frames by distance. 
     /// </summary>
-    public class CurveFramesByCurvatureComponent : GH_Component
+    public class CurveFramesByDistanceComponent : GH_Component
     {
         #region fields
         #endregion
@@ -25,10 +25,10 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public CurveFramesByCurvatureComponent()
-          : base("Curve Frames by Curvature", // Component name
-              "CFC", // Component nickname
-              "Gets the frames of a curve by curvature.", // Description
+        public CurveFramesByDistanceComponent()
+          : base("Curve Frames by Distance", // Component name
+              "CFD", // Component nickname
+              "Gets the frames of a curve by distance.", // Description
               "Salad Slicer", // Category
               "Geometry") // Subcategory
         {
@@ -40,7 +40,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddCurveParameter("Curve", "C", "Curve to divide.", GH_ParamAccess.item);
-            pManager.AddNumberParameter("Tolerance", "T", "Tolerance as a Number", GH_ParamAccess.item, 0.001);
+            pManager.AddNumberParameter("Distance", "D", "Distance as a number.", GH_ParamAccess.item, 20);
         }
 
         /// <summary>
@@ -59,14 +59,14 @@ namespace SaladSlicer.Gh.Components.Geometry
         {
             // Declare variable of input parameters
             Curve curve = null;
-            double tolerance = 0.001;
+            double distance = 20.0;
 
             // Access the input parameters individually. 
             if (!DA.GetData(0, ref curve)) return;
-            if (!DA.GetData(1, ref tolerance)) return;
+            if (!DA.GetData(1, ref distance)) return;
 
             // Create the frames
-            List<Plane> frames = Frames.GetFramesByCurvature(curve, tolerance, true, true);
+            List<Plane> frames = Frames.GetFramesByDistanceAndSegment(curve, distance, true, true);
 
             // Assign the output parameters
             DA.SetDataList(0, frames);
@@ -102,7 +102,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("D22559CF-A623-4167-9199-DF574539315A"); }
+            get { return new Guid("2F41ED5E-033B-43EB-9463-25411505ADFD"); }
         }
 
     }
