@@ -301,6 +301,17 @@ namespace SaladSlicer.Core.Slicers
         }
 
         /// <summary>
+        /// Returns the Bounding Box of the object.
+        /// </summary>
+        /// <returns> The Bounding Box. </returns>
+        /// <param name="accurate"> If true, a physically accurate bounding box will be computed. If not, a bounding box estimate will be computed. </param>
+
+        public BoundingBox GetBoundingBox(bool accurate)
+        {
+            return this.GetPath().GetBoundingBox(accurate);
+        }
+
+        /// <summary>
         /// Returns the length of the path.
         /// </summary>
         /// <returns> The length of the path. </returns>

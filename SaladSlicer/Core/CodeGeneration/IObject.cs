@@ -54,6 +54,13 @@ namespace SaladSlicer.Core.CodeGeneration
         /// </summary>
         /// <returns> The linearized path. </returns>
         Curve GetLinearizedPath();
+
+        /// <summary>
+        /// Returns the Bounding Box of the object.
+        /// </summary>
+        /// <returns> The Bounding Box. </returns>
+        /// <param name="accurate"> If true, a physically accurate bounding box will be computed. </param>
+        BoundingBox GetBoundingBox(bool accurate);
         #endregion
 
         #region properties
