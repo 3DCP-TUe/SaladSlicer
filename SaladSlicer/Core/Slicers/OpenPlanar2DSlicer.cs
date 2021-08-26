@@ -4,7 +4,6 @@
 // see <https://github.com/3DCP-TUe/SaladSlicer>.
 
 // System Libs
-using System;
 using System.Collections.Generic;
 using System.Linq;
 // Rhino Libs
@@ -163,7 +162,7 @@ namespace SaladSlicer.Core.Slicers
 
             for (int i = 0; i < _contours.Count; i++)
             {
-                _framesByLayer.Add(Geometry.Frames.GetFramesBySegment(_contours[i], _distance, true, true));
+                _framesByLayer.Add(Geometry.Frames.GetFramesByDistanceAndSegment(_contours[i], _distance, true, true));
             }
 
             for (int i = 1; i < _framesByLayer.Count; i += 2)
@@ -274,6 +273,17 @@ namespace SaladSlicer.Core.Slicers
         public Curve GetLinearizedPath()
         {
             return new PolylineCurve(this.GetPoints());
+        }
+
+        /// <summary>
+        /// Returns the Bounding Box of the object.
+        /// </summary>
+        /// <returns> The Bounding Box. </returns>
+        /// <param name="accurate"> If true, a physically accurate bounding box will be computed. If not, a bounding box estimate will be computed. </param>
+
+        public BoundingBox GetBoundingBox(bool accurate)
+        {
+            return this.GetPath().GetBoundingBox(accurate);
         }
 
         /// <summary>

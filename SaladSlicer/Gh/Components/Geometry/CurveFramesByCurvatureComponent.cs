@@ -40,7 +40,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddCurveParameter("Curve", "C", "Curve to divide.", GH_ParamAccess.item);
-            pManager.AddNumberParameter("Tolerance", "T", "Tolerance", GH_ParamAccess.item, 0.001);
+            pManager.AddNumberParameter("Tolerance", "T", "Tolerance as a Number", GH_ParamAccess.item, 0.001);
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddPlaneParameter("Frames", "F", "Curvature frames", GH_ParamAccess.list);
+            pManager.AddPlaneParameter("Frames", "F", "Frames as list with Planes", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.ExampleIcon; }
+            get { return Properties.Resources.CurveFramesByCurvature_Icon; }
         }
 
         /// <summary>

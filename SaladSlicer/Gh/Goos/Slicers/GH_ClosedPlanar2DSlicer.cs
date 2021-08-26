@@ -142,6 +142,13 @@ namespace SaladSlicer.Gh.Goos.Slicers
                 return true;
             }
 
+            // Cast to Bounding Box
+            if (typeof(Q).IsAssignableFrom(typeof(BoundingBox)))
+            {
+                target = (Q)(object)this.Value.GetBoundingBox(true);
+                return true;
+            }
+
             // Invalid cast
             target = default;
             return false;

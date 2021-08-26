@@ -5,27 +5,33 @@
 
 // System Libs
 using System;
+using System.Collections.Generic;
 // Grasshopper Libs
 using Grasshopper.Kernel;
 // Rhino Libs
 using Rhino.Geometry;
+// Using Salad Slicer Libs
+using SaladSlicer.Core.Geometry;
 
-namespace SaladSlicer.Gh.Components
+namespace SaladSlicer.Gh.Components.Geometry
 {
     /// <summary>
-    /// Represent a component that constructs a line between two points. 
+    /// Represents the component that aligns the curves.
     /// </summary>
-    public class ExampleComponent : GH_Component
+    public class AlignCurvesComponent : GH_Component
     {
+        #region fields
+        #endregion
+
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public ExampleComponent()
-          : base("Example", // Component name
-              "E", // Component nickname
-              "An example component description.", // Description
+        public AlignCurvesComponent()
+          : base("Align Curves", // Component name
+              "AC", // Component nickname
+              "Aligns a set of curves / orients the direction in the same direction.", // Description
               "Salad Slicer", // Category
-              "Example Components") // Subcategory
+              "Geometry") // Subcategory
         {
         }
 
@@ -34,10 +40,7 @@ namespace SaladSlicer.Gh.Components
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddPointParameter("Start", "S", "Starting point as a point.", GH_ParamAccess.item);
-            pManager.AddPointParameter("End", "E", "End point as a point.", GH_ParamAccess.item);
-
-            //pManager[0].Optional = true;
+            pManager.AddCurveParameter("Curves", "C", "Curves as a list with Curves", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -45,7 +48,7 @@ namespace SaladSlicer.Gh.Components
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddCurveParameter("Line", "L", "Line as a Curve", GH_ParamAccess.item);
+            pManager.AddCurveParameter("Curves", "C", "Curves as a list with Curves.", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -55,18 +58,16 @@ namespace SaladSlicer.Gh.Components
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             // Declare variable of input parameters
-            Point3d start = new Point3d();
-            Point3d end = new Point3d();
+            List<Curve> curves = new List<Curve>();
 
             // Access the input parameters individually. 
-            if (!DA.GetData(0, ref start)) return;
-            if (!DA.GetData(1, ref end)) return;
+            if (!DA.GetDataList(0, curves)) return;
 
-            // Create the line
-            LineCurve line = new LineCurve(start, end);
+            // Create the new curves
+            List<Curve> result = Curves.AlignContours(curves);
 
             // Assign the output parameters
-            DA.SetData(0, line);
+            DA.SetDataList(0, result);
         }
 
         /// <summary>
@@ -74,7 +75,7 @@ namespace SaladSlicer.Gh.Components
         /// </summary>
         public override GH_Exposure Exposure
         {
-            get { return GH_Exposure.hidden; } // <-- change this to primary to make the component visible in grasshopper
+            get { return GH_Exposure.quarternary; }
         }
 
         /// <summary>
@@ -99,7 +100,8 @@ namespace SaladSlicer.Gh.Components
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("72A0A189-DB6D-4BDF-BD69-CC9D3C13FD51"); }
+            get { return new Guid("5466193D-47FB-4C21-8755-94D8736F3730"); }
         }
+
     }
 }

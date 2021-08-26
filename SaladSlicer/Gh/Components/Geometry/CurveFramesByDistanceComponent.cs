@@ -5,37 +5,42 @@
 
 // System Libs
 using System;
+using System.Collections.Generic;
 // Grasshopper Libs
 using Grasshopper.Kernel;
-// Salad Slicer Libs
-using SaladSlicer.Core.Slicers;
-using SaladSlicer.Gh.Parameters.Slicers;
+// Rhino Libs
+using Rhino.Geometry;
+using SaladSlicer.Core.Geometry;
 
-namespace SaladSlicer.Gh.Components.CodeGeneration
+namespace SaladSlicer.Gh.Components.Geometry
 {
     /// <summary>
-    /// Represent a component that deconstruct an Open Planar 2.5D Slicer object.
+    /// Represents the component that gets the curve frames by distance. 
     /// </summary>
-    public class DeconstructOpenPlanar2DSlicerComponent : GH_Component
+    public class CurveFramesByDistanceComponent : GH_Component
     {
+        #region fields
+        #endregion
+
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public DeconstructOpenPlanar2DSlicerComponent()
-          : base("Deconstruct Open Planar 2.5D Slicer", // Component name
-              "DOP2D", // Component nickname
-              "Deconstructs an Open Planar 2.5D Slicer", // Description
+        public CurveFramesByDistanceComponent()
+          : base("Curve Frames by Distance", // Component name
+              "CFD", // Component nickname
+              "Gets the frames of a curve by distance.", // Description
               "Salad Slicer", // Category
-              "Deconstruct") // Subcategory
+              "Geometry") // Subcategory
         {
         }
 
         /// <summary>
         /// Registers all the input parameters for this component.
-        /// </summary>s
+        /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddParameter(new Param_OpenPlanar2DSlicer(), "Open Planar 2.5D", "OP2D", "Closed Planar 2.5D Slicer.", GH_ParamAccess.item);
+            pManager.AddCurveParameter("Curve", "C", "Curve to divide.", GH_ParamAccess.item);
+            pManager.AddNumberParameter("Distance", "D", "Distance as a number.", GH_ParamAccess.item, 20);
         }
 
         /// <summary>
@@ -43,9 +48,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddCurveParameter("Curve", "C", "Curve as a Curve.", GH_ParamAccess.item);
-            pManager.AddNumberParameter("Distance", "D", "Distance between frames as a Number", GH_ParamAccess.item);
-            pManager.AddNumberParameter("Heights", "H", "Absolute layer heights a list with Numbers.", GH_ParamAccess.list);
+            pManager.AddPlaneParameter("Frames", "F", "Frames as list with Planes", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -55,15 +58,18 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             // Declare variable of input parameters
-            OpenPlanar2DSlicer slicer = new OpenPlanar2DSlicer();
-            
+            Curve curve = null;
+            double distance = 20.0;
+
             // Access the input parameters individually. 
-            if (!DA.GetData(0, ref slicer)) return;
+            if (!DA.GetData(0, ref curve)) return;
+            if (!DA.GetData(1, ref distance)) return;
+
+            // Create the frames
+            List<Plane> frames = Frames.GetFramesByDistanceAndSegment(curve, distance, true, true);
 
             // Assign the output parameters
-            DA.SetData(0, slicer.BaseContour);
-            DA.SetData(1, slicer.Distance);
-            DA.SetDataList(2, slicer.Heights);
+            DA.SetDataList(0, frames);
         }
 
         /// <summary>
@@ -71,7 +77,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         public override GH_Exposure Exposure
         {
-            get { return GH_Exposure.primary; }
+            get { return GH_Exposure.quinary; }
         }
 
         /// <summary>
@@ -87,7 +93,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.DeconstructOpenPlanar2DSlicer_Icon; }
+            get { return Properties.Resources.ExampleIcon; }
         }
 
         /// <summary>
@@ -96,7 +102,8 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("A6FFF9C8-9DA6-418B-88A1-AC92D3227D9C"); }
+            get { return new Guid("2F41ED5E-033B-43EB-9463-25411505ADFD"); }
         }
-    } 
+
+    }
 }

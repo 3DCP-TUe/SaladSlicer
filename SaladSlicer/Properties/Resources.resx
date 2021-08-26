@@ -121,6 +121,9 @@
   <data name="AbsoluteCoordinate_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\AbsoluteCoordinate_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="AlternateCurves_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\AlternateCurves_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="ClosedPlanar2DSlicer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ClosedPlanar2DSlicer_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -132,6 +135,9 @@
   </data>
   <data name="CodeLine_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\CodeLine_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CurveFramesByCurvature_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CurveFramesByCurvature_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="CurveSlicer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\CurveSlicer_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -172,6 +178,12 @@
   <data name="Info_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Info_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="JoinClosedCurves_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\JoinClosedCurves_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="JoinOpenCurves_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\JoinOpenCurves_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="OpenPlanar2DSlicer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\OpenPlanar2DSlicer_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -193,14 +205,26 @@
   <data name="Param_OpenPlanar2DSlicer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Param_OpenPlanar2DSlicer_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Param_ProgramObject_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Param_ProgramObject_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Planar2DSlicerIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\2.5d.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="PlaneVisualizer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\PlaneVisualizer_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="saladSlicer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\saladSlicer_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="SeamAtClosestPoint_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SeamAtClosestPoint_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SeamAtLength_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SeamAtLength_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SeamAtParameter_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SeamAtParameter_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SeamsAtClosestPoint_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SeamsAtClosestPoint_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="SetFeedRate_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SetFeedRate_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

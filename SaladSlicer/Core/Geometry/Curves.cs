@@ -100,7 +100,7 @@ namespace SaladSlicer.Core.Geometry
         /// <param name="curves">List of curves</param>
         /// <param name="transitions">List of transitions</param>
         /// <returns></returns>
-        public static Curve MergeCurves(List<Curve> curves,List<Curve> transitions)
+        public static Curve MergeCurves(List<Curve> curves, List<Curve> transitions)
         {
             Curve curve1=curves[0];
             

@@ -93,7 +93,7 @@ namespace SaladSlicer.Core.Slicers
         private void CreateFrames()
         {
             _frames.Clear();
-            _frames = Geometry.Frames.GetFramesBySegment(_curve, _distance, true, true);
+            _frames = Geometry.Frames.GetFramesByDistanceAndSegment(_curve, _distance, true, true);
         }
 
         /// <summary>
@@ -147,6 +147,17 @@ namespace SaladSlicer.Core.Slicers
         public Curve GetLinearizedPath()
         {
             return new PolylineCurve(this.GetPoints());
+        }
+
+        /// <summary>
+        /// Returns the Bounding Box of the object.
+        /// </summary>
+        /// <returns> The Bounding Box. </returns>
+        /// <param name="accurate"> If true, a physically accurate bounding box will be computed. </param>
+
+        public BoundingBox GetBoundingBox(bool accurate)
+        {
+            return this.GetPath().GetBoundingBox(accurate);
         }
 
         /// <summary>

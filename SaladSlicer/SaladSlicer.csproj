@@ -68,7 +68,6 @@
     <Compile Include="Core\CodeGeneration\CodeLine.cs" />
     <Compile Include="Core\CodeGeneration\IProgram.cs" />
     <Compile Include="Core\Enumerations\Enumerations.cs" />
-    <Compile Include="Core\Examples\ExamplePoint.cs" />
     <Compile Include="Core\Geometry\Seams\Transitions.cs" />
     <Compile Include="Core\Geometry\Seams\Locations.cs" />
     <Compile Include="Core\Slicers\OpenPlanar2DSlicer.cs" />
@@ -82,12 +81,14 @@
     <Compile Include="Gh\Components\Deconstruct\DeconstructCurveSlicerComponent.cs" />
     <Compile Include="Gh\Components\Deconstruct\DeconstructOpenPlaner2DSlicerComponent.cs" />
     <Compile Include="Gh\Components\Deconstruct\DeconstructClosedPlaner2DSlicerComponent.cs" />
+    <Compile Include="Gh\Components\Geometry\CurveFramesByDistanceComponent.cs" />
     <Compile Include="Gh\Components\Geometry\CurveFramesByCurvatureComponent.cs" />
     <Compile Include="Gh\Components\Geometry\SeamAtClosestPointComponent.cs" />
     <Compile Include="Gh\Components\Geometry\AlternateCurvesComponent.cs" />
     <Compile Include="Gh\Components\Geometry\SeamAtParamComponent.cs" />
     <Compile Include="Gh\Components\Geometry\SeamAtLengthComponent.cs" />
     <Compile Include="Gh\Components\Geometry\JoinClosedCurvesComponent.cs" />
+    <Compile Include="Gh\Components\Geometry\AlignCurvesComponent.cs" />
     <Compile Include="Gh\Components\Geometry\SeamsAtClosestPointComponent.cs" />
     <Compile Include="Gh\Components\Slicers\ClosedPlanar3DSlicerComponent.cs" />
     <Compile Include="Gh\Components\Slicers\GetFramesComponent.cs" />
@@ -107,7 +108,6 @@
     <Compile Include="Gh\Components\Geometry\JoinOpenCurvesComponent.cs" />
     <Compile Include="Gh\Components\Utilities\PlaneVisualizerComponent.cs" />
     <Compile Include="Gh\Components\Utilities\TransposeSurfaceComponent.cs" />
-    <Compile Include="Gh\Components\ExampleComponent.cs" />
     <Compile Include="Gh\Goos\Slicers\GH_ClosedPlanar3DSlicer.cs" />
     <Compile Include="Gh\Goos\Slicers\GH_OpenPlanar2DSlicer.cs" />
     <Compile Include="Gh\Goos\Slicers\GH_ClosedPlanar2DSlicer.cs" />
@@ -141,11 +141,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\2.5D.png" />
-    <None Include="Resources\GetPath_Icon.png" />
-    <None Include="Resources\GetLinearizedPath_Icon.png" />
-    <None Include="Resources\GetInterpolatedPath_Icon.png" />
-    <None Include="Resources\Frames_Icon.png" />
-    <None Include="Resources\endFrames_Icon.png" />
+    <None Include="Resources\SeamsAtClosestPoint_Icon.png" />
+    <None Include="Resources\SeamAtClosestPoint_Icon.png" />
+    <None Include="Resources\SeamAtParameter_Icon.png" />
+    <None Include="Resources\SeamAtLength_Icon.png" />
+    <None Include="Resources\CurveFramesByCurvature_Icon.png" />
+    <None Include="Resources\AlternateCurves_Icon.png" />
+    <None Include="Resources\JoinClosedCurves_Icon.png" />
+    <None Include="Resources\JoinOpenCurves_Icon.png" />
+    <None Include="Resources\Param_ProgramObject_Icon.png" />
+    <None Include="Resources\DeconstructProgramObject_Icon.png" />
     <None Include="Resources\Param_CodeLine_Icon.png" />
     <None Include="Resources\Param_CurveSlicer_Icon.png" />
     <None Include="Resources\Param_OpenPlanar2DSlicer_Icon.png" />
@@ -159,7 +164,6 @@
     <None Include="Resources\ClosedPlanar2DSlicer_Icon.png" />
     <None Include="Resources\DeconstructClosedPlanar3DSlicer_Icon.png" />
     <None Include="Resources\DeconstructClosedPlanar2DSlicer_Icon.png" />
-    <None Include="Resources\DeconstructProgramObject_Icon.png" />
     <None Include="Resources\Info_Icon.png" />
     <None Include="Resources\SetFeedRate_Icon.png" />
     <None Include="Resources\AbsoluteCoordinate_Icon.png" />
