@@ -91,6 +91,8 @@
     <Compile Include="Gh\Components\Geometry\JoinClosedCurvesComponent.cs" />
     <Compile Include="Gh\Components\Geometry\SeamsAtClosestPointComponent.cs" />
     <Compile Include="Gh\Components\Slicers\ClosedPlanar3DSlicerComponent.cs" />
+    <Compile Include="Gh\Components\Slicers\GetFramesComponent.cs" />
+    <Compile Include="Gh\Components\Slicers\GetEndFramesComponent.cs" />
     <Compile Include="Gh\Components\Slicers\GetLinerazedPathComponent.cs" />
     <Compile Include="Gh\Components\Slicers\GetInterpolatedPathComponent.cs" />
     <Compile Include="Gh\Components\Slicers\OpenPlanar2DSlicerComponent.cs" />
