@@ -4,7 +4,6 @@
 // see <https://github.com/3DCP-TUe/SaladSlicer>.
 
 // System Libs
-using System;
 using System.Collections.Generic;
 // Rhino Libs
 using Rhino.Geometry;
@@ -235,20 +234,25 @@ namespace SaladSlicer.Core.Slicers
         }
 
         /// <summary>
-        /// Gets the interpolated path as a single curve
-        /// </summary>
-        [Obsolete("This property is obsolete. Use the method GetInterPolatedPath() instead.", false)]
-        public Curve InterpolatedPath
-        {
-            get { return this.GetInterpolatedPath(); }
-        }
-
-        /// <summary>
         /// Gets the frames of the path.
         /// </summary>
         public List<Plane> Frames
         {
             get { return _frames; }
+        }
+
+        /// <summary>
+        /// Gets the frames of the path by layer
+        /// </summary>
+        public List<List<Plane>> FramesByLayer
+        {
+            get 
+            {
+                List<List<Plane>> result = new List<List<Plane>>();
+                result.Add(new List<Plane>());
+                result[0].AddRange(_frames);
+                return result; 
+            }
         }
 
         /// <summary>

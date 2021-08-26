@@ -11,6 +11,7 @@ using Grasshopper.Kernel;
 using SaladSlicer.Core.CodeGeneration;
 using SaladSlicer.Core.Slicers;
 using SaladSlicer.Gh.Parameters.CodeGeneration;
+using SaladSlicer.Gh.Utils;
 
 namespace SaladSlicer.Gh.Components.Slicers
 {
@@ -44,7 +45,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddPlaneParameter("Frames", "F", "Frames as a list with Planes.", GH_ParamAccess.list);
+            pManager.AddPlaneParameter("Frames", "F", "Frames as a datatree with Planes.", GH_ParamAccess.tree);
         }
 
         /// <summary>
@@ -60,7 +61,7 @@ namespace SaladSlicer.Gh.Components.Slicers
             if (!DA.GetData(0, ref slicer)) return;
 
             // Assign the output parameters
-            DA.SetDataList(0, slicer.Frames);
+            DA.SetDataTree(0, HelperMethods.ListInListToDataTree(slicer.FramesByLayer));
         }
 
         /// <summary>
