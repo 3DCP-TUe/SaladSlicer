@@ -85,7 +85,7 @@ namespace SaladSlicer.Gh.Components.Utilities
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.ExampleIcon; }
+            get { return Properties.Resources.TransposeSurface_Icon; }
         }
 
         /// <summary>

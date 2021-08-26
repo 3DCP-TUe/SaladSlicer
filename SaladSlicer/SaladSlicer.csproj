@@ -126,6 +126,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SaladSlicerIcon.cs" />
     <Compile Include="SaladSlicerInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -140,6 +141,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\2.5D.png" />
+    <None Include="Resources\PlaneVisualizer_Icon.png" />
+    <None Include="Resources\TransposeSurface_Icon.png" />
+    <None Include="Resources\ConvertVelocityMmminMms_Icon.png" />
+    <None Include="Resources\ConvertVelocityMmsMmmin_Icon.png" />
+    <None Include="Resources\GetContours_Icon.png" />
+    <None Include="Resources\saladSlicer_Icon.png" />
     <None Include="Resources\SeamsAtClosestPoint_Icon.png" />
     <None Include="Resources\SeamAtClosestPoint_Icon.png" />
     <None Include="Resources\SeamAtParameter_Icon.png" />
@@ -168,7 +175,6 @@
     <None Include="Resources\AbsoluteCoordinate_Icon.png" />
     <None Include="Resources\CodeLine_Icon.png" />
     <None Include="Resources\CodeGeneratorIcon.png" />
-    <None Include="Resources\PlaneVisualizer_Icon.png" />
     <None Include="Resources\Parameter_Icon.png" />
   </ItemGroup>
   <ItemGroup />

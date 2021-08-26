@@ -15,12 +15,11 @@ namespace SaladSlicer
     {
         public override string Name
         {
-            get { return "Salad Slicer";
-            }
+            get { return "Salad Slicer"; }
         }
         public override Bitmap Icon
         {
-            get { return null; }
+            get { return Properties.Resources.saladSlicer_Icon; }
         }
         public override string Description
         {
