@@ -100,7 +100,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.ExampleIcon; }
+            get { return Properties.Resources.DeconstructClosedPlanar2DSlicer_Icon; }
         }
 
         /// <summary>

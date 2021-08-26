@@ -36,7 +36,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>s
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddParameter(new Param_OpenPlanar2DSlicer(), "Open Planar 2.5D", "CP2D", "Closed Planar 2.5D Slicer.", GH_ParamAccess.item);
+            pManager.AddParameter(new Param_OpenPlanar2DSlicer(), "Open Planar 2.5D", "OP2D", "Closed Planar 2.5D Slicer.", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.ExampleIcon; }
+            get { return Properties.Resources.DeconstructOpenPlanar2DSlicer_Icon; }
         }
 
         /// <summary>

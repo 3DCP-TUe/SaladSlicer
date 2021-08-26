@@ -25,9 +25,9 @@ namespace SaladSlicer.Gh.Parameters.CodeGeneration
         /// Initializes a new instance of the Param_Object class
         /// </summary>
         public Param_Object()
-          : base(new GH_InstanceDescription("Slicer Object", // Parameter name
-              "SO", // Component nickname
-              "Defines a slicer object.", // Description
+          : base(new GH_InstanceDescription("Program Object", // Parameter name
+              "PO", // Component nickname
+              "Defines a Progran Bbject.", // Description
               "Salad Slicer", // Category
               "Parameters")) // Subcategory)
         { 
