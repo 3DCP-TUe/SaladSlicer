@@ -223,6 +223,16 @@ namespace SaladSlicer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap GetContours_Icon {
+            get {
+                object obj = ResourceManager.GetObject("GetContours_Icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap GetInterpolatedPath_Icon {
             get {
                 object obj = ResourceManager.GetObject("GetInterpolatedPath_Icon", resourceCulture);

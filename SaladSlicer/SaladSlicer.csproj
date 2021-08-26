@@ -141,6 +141,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\2.5D.png" />
+    <None Include="Resources\GetContours_Icon.png" />
     <None Include="Resources\saladSlicer_Icon.png" />
     <None Include="Resources\SeamsAtClosestPoint_Icon.png" />
     <None Include="Resources\SeamAtClosestPoint_Icon.png" />
