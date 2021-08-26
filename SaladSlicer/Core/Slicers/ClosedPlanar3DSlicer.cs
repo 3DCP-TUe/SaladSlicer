@@ -142,7 +142,6 @@ namespace SaladSlicer.Core.Slicers
             this.CreateContours();
             this.CreatePath();
             this.CreateFrames();
-            this.GetInterpolatedPath();
         }
 
         /// <summary>
@@ -231,7 +230,7 @@ namespace SaladSlicer.Core.Slicers
         {
             _contours[0] = Locations.SeamAtLength(_contours[0], _seamLocation, true);
             _contours = Locations.SeamsAtClosestPoint(_contours);
-            _path = Curves.InterpolatedTransitions(_contours, _seamLength, 0.0, _distance);
+            _path = Transitions.InterpolatedTransitions(_contours, _seamLength, 0.25 * _distance);
         }
 
         /// <summary>
@@ -365,6 +364,17 @@ namespace SaladSlicer.Core.Slicers
         public Curve GetLinearizedPath()
         {
             return new PolylineCurve(this.GetPoints());
+        }
+
+        /// <summary>
+        /// Returns the Bounding Box of the object.
+        /// </summary>
+        /// <returns> The Bounding Box. </returns>
+        /// <param name="accurate"> If true, a physically accurate bounding box will be computed. If not, a bounding box estimate will be computed. </param>
+
+        public BoundingBox GetBoundingBox(bool accurate)
+        {
+            return this.GetPath().GetBoundingBox(accurate);
         }
 
         /// <summary>
@@ -536,14 +546,6 @@ namespace SaladSlicer.Core.Slicers
         public List<Curve> Path
         {
             get { return _path; }
-        }
-        /// <summary>
-        /// Gets the interpolated path as a single curve
-        /// </summary>
-        [Obsolete("This property is obsolete. Use the method GetInterPolatedPath() instead.", false)]
-        public Curve InterpolatedPath
-        {
-            get { return this.GetInterpolatedPath(); }
         }
 
         /// <summary>

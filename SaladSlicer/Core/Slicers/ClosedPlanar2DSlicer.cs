@@ -4,14 +4,13 @@
 // see <https://github.com/3DCP-TUe/SaladSlicer>.
 
 // System Libs
-using System;
 using System.Collections.Generic;
 using System.Linq;
 // Rhino Libs
 using Rhino.Geometry;
 // Slicer Salad Libs
 using SaladSlicer.Core.CodeGeneration;
-using SaladSlicer.Core.Geometry;
+using SaladSlicer.Core.Geometry.Seams;
 
 namespace SaladSlicer.Core.Slicers
 {
@@ -134,7 +133,6 @@ namespace SaladSlicer.Core.Slicers
             this.CreateContours();
             this.CreatePath();
             this.CreateFrames();
-            this.GetInterpolatedPath();
         }
 
         /// <summary>
@@ -143,13 +141,13 @@ namespace SaladSlicer.Core.Slicers
         private void CreateContours()
         {
             _contours.Clear();
+            Curve contour = Geometry.Seams.Locations.SeamAtLength(_baseContour, _seamLocation, true);
+            contour.Domain = new Interval(0, contour.GetLength());
 
             for (int i = 0; i < _heights.Count; i++)
             {
-                Curve contour = _baseContour.DuplicateCurve();
-                contour.Domain = new Interval(0, contour.GetLength());
-                contour.Translate(0, 0, _heights[i]);
                 _contours.Add(contour.DuplicateCurve());
+                _contours[i].Translate(0, 0, _heights[i]);
             }
         }
 
@@ -159,7 +157,7 @@ namespace SaladSlicer.Core.Slicers
         private void CreatePath()
         {
             _path.Clear();
-            _path = Curves.InterpolatedTransitions(_contours, _seamLength, _seamLocation, 0.25 * _distance);
+            _path = Transitions.InterpolatedTransitions(_contours, _seamLength, 0.25 * _distance);
         }
 
         /// <summary>
@@ -300,6 +298,17 @@ namespace SaladSlicer.Core.Slicers
         public Curve GetLinearizedPath()
         {
             return new PolylineCurve(this.GetPoints());
+        }
+
+        /// <summary>
+        /// Returns the Bounding Box of the object.
+        /// </summary>
+        /// <returns> The Bounding Box. </returns>
+        /// <param name="accurate"> If true, a physically accurate bounding box will be computed. If not, a bounding box estimate will be computed. </param>
+
+        public BoundingBox GetBoundingBox(bool accurate)
+        {
+            return this.GetPath().GetBoundingBox(accurate);
         }
 
         /// <summary>
@@ -470,15 +479,6 @@ namespace SaladSlicer.Core.Slicers
         public List<Curve> Path
         {
             get { return _path; }
-        }
-
-        /// <summary>
-        /// Gets the interpolated path as a single curve
-        /// </summary>
-        [Obsolete("This property is obsolete. Use the method GetInterPolatedPath() instead.", false)]
-        public Curve InterpolatedPath
-        {
-            get { return this.GetInterpolatedPath(); }
         }
 
         /// <summary>

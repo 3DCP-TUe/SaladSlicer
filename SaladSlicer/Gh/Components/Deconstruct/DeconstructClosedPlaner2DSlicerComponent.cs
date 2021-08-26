@@ -10,7 +10,6 @@ using Grasshopper.Kernel;
 // Salad Slicer Libs
 using SaladSlicer.Core.Slicers;
 using SaladSlicer.Gh.Parameters.Slicers;
-using SaladSlicer.Gh.Utils;
 
 namespace SaladSlicer.Gh.Components.CodeGeneration
 {
@@ -44,15 +43,11 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddCurveParameter("Contours", "C", "Contour as a list with Curves.", GH_ParamAccess.list);
+            pManager.AddCurveParameter("Curve", "C", "Curve as a Curve.", GH_ParamAccess.item);
             pManager.AddNumberParameter("Parameter", "P", "Parameter for layer change as a Number.", GH_ParamAccess.item);
             pManager.AddNumberParameter("Length", "L", "Length for layer change as a Number.", GH_ParamAccess.item);
             pManager.AddNumberParameter("Distance", "D", "Distance between frames as a Number", GH_ParamAccess.item);
             pManager.AddNumberParameter("Heights", "H", "Absolute layer heights a list with Numbers.", GH_ParamAccess.list);
-            pManager.AddCurveParameter("Path", "P", "Path as a Curve", GH_ParamAccess.item);
-            pManager.AddPlaneParameter("Frames", "F", "Frames as a datatree with Planes.", GH_ParamAccess.tree);
-            pManager.AddPlaneParameter("Start Frame", "S", "Start frame as a Plane.", GH_ParamAccess.item);
-            pManager.AddPlaneParameter("End Frame", "E", "End frame as a Plane.", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -68,15 +63,11 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
             if (!DA.GetData(0, ref slicer)) return;
 
             // Assign the output parameters
-            DA.SetDataList(0, slicer.Contours);
+            DA.SetData(0, slicer.BaseContour);
             DA.SetData(1, slicer.SeamLocation);
             DA.SetData(2, slicer.SeamLength);
             DA.SetData(3, slicer.Distance);
             DA.SetDataList(4, slicer.Heights);
-            DA.SetData(5, slicer.GetPath());
-            DA.SetDataTree(6, HelperMethods.ListInListToDataTree(slicer.FramesByLayer));
-            DA.SetData(7, slicer.FrameAtStart);
-            DA.SetData(8, slicer.FrameAtEnd);
         }
 
         /// <summary>

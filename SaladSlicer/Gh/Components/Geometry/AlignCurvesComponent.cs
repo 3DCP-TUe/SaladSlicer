@@ -5,29 +5,33 @@
 
 // System Libs
 using System;
+using System.Collections.Generic;
 // Grasshopper Libs
 using Grasshopper.Kernel;
-// Salad Slicer Libs
-using SaladSlicer.Core.CodeGeneration;
-using SaladSlicer.Core.Slicers;
-using SaladSlicer.Gh.Parameters.CodeGeneration;
+// Rhino Libs
+using Rhino.Geometry;
+// Using Salad Slicer Libs
+using SaladSlicer.Core.Geometry;
 
-namespace SaladSlicer.Gh.Components.CodeGeneration
+namespace SaladSlicer.Gh.Components.Geometry
 {
     /// <summary>
-    /// Represent a component that deconstruct a Porgram Object.
+    /// Represents the component that aligns the curves.
     /// </summary>
-    public class DeconstructProgramObjectComponent : GH_Component
+    public class AlignCurvesComponent : GH_Component
     {
+        #region fields
+        #endregion
+
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public DeconstructProgramObjectComponent()
-          : base("Deconstruct Program Object", // Component name
-              "DPO", // Component nickname
-              "Deconstructs a Program Object", // Description
+        public AlignCurvesComponent()
+          : base("Align Curves", // Component name
+              "AC", // Component nickname
+              "Aligns a set of curves / orients the direction in the same direction.", // Description
               "Salad Slicer", // Category
-              "Deconstruct") // Subcategory
+              "Geometry") // Subcategory
         {
         }
 
@@ -36,7 +40,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddParameter(new Param_Object(), "Program Object", "PO", "Program Object.", GH_ParamAccess.item);
+            pManager.AddCurveParameter("Curves", "C", "Curves as a list with Curves", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -44,10 +48,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddCurveParameter("Path", "P", "Path as a Curve.", GH_ParamAccess.item);
-            pManager.AddPlaneParameter("Frames", "F", "Frames as a list with Planes.", GH_ParamAccess.list);
-            pManager.AddPlaneParameter("Start Frame", "S", "Start frame as a Plane.", GH_ParamAccess.item);
-            pManager.AddPlaneParameter("End Frame", "E", "End frame as a Plane.", GH_ParamAccess.item);
+            pManager.AddCurveParameter("Curves", "C", "Curves as a list with Curves.", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -57,16 +58,16 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             // Declare variable of input parameters
-            IObject programObject = new ClosedPlanar2DSlicer();
-            
+            List<Curve> curves = new List<Curve>();
+
             // Access the input parameters individually. 
-            if (!DA.GetData(0, ref programObject)) return;
+            if (!DA.GetDataList(0, curves)) return;
+
+            // Create the new curves
+            List<Curve> result = Curves.AlignContours(curves);
 
             // Assign the output parameters
-            DA.SetData(0, programObject.GetPath());
-            DA.SetDataList(1, programObject.Frames);
-            DA.SetData(2, programObject.FrameAtStart);
-            DA.SetData(3, programObject.FrameAtEnd);
+            DA.SetDataList(0, result);
         }
 
         /// <summary>
@@ -74,7 +75,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         public override GH_Exposure Exposure
         {
-            get { return GH_Exposure.secondary; }
+            get { return GH_Exposure.quarternary; }
         }
 
         /// <summary>
@@ -90,7 +91,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.DeconstructProgramObject_Icon; }
+            get { return Properties.Resources.ExampleIcon; }
         }
 
         /// <summary>
@@ -99,7 +100,8 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("ACF32A02-B093-4D72-822C-C51D5310C8CE"); }
+            get { return new Guid("5466193D-47FB-4C21-8755-94D8736F3730"); }
         }
-    } 
+
+    }
 }

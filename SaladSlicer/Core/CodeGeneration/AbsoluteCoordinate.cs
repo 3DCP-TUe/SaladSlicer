@@ -4,9 +4,6 @@
 // see <https://github.com/3DCP-TUe/SaladSlicer>.
 
 // System Libs
-using System;
-using System.Runtime.Serialization;
-using System.Security.Permissions;
 using Rhino.Geometry;
 
 namespace SaladSlicer.Core.CodeGeneration

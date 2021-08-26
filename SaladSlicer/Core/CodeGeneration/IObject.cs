@@ -4,7 +4,6 @@
 // see <https://github.com/3DCP-TUe/SaladSlicer>.
 
 // System Libs
-using System;
 using System.Collections.Generic;
 // Rhino Libs
 using Rhino.Geometry;
@@ -55,6 +54,13 @@ namespace SaladSlicer.Core.CodeGeneration
         /// </summary>
         /// <returns> The linearized path. </returns>
         Curve GetLinearizedPath();
+
+        /// <summary>
+        /// Returns the Bounding Box of the object.
+        /// </summary>
+        /// <returns> The Bounding Box. </returns>
+        /// <param name="accurate"> If true, a physically accurate bounding box will be computed. </param>
+        BoundingBox GetBoundingBox(bool accurate);
         #endregion
 
         #region properties
@@ -64,15 +70,19 @@ namespace SaladSlicer.Core.CodeGeneration
         bool IsValid { get; }
 
         /// <summary>
-        /// Get the path of the Object
+        /// Gets the contours.
         /// </summary>
-        [Obsolete("This property is obsolete. Use the method GetInterPolatedPath() instead.", false)]
-        Curve InterpolatedPath { get; }
+        List<Curve> Contours { get; }
 
         /// <summary>
         /// Gets the frames of the object.
         /// </summary>
         List<Plane> Frames { get; }
+
+        /// <summary>
+        /// Gets the frames of the object by layer.
+        /// </summary>
+        List<List<Plane>> FramesByLayer { get; }
 
         /// <summary>
         /// Gets frame at the start of the path.

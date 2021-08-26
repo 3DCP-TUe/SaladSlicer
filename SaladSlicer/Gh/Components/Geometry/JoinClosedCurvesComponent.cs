@@ -6,16 +6,12 @@
 // System Libs
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 // Grasshopper Libs
-using Grasshopper;
 using Grasshopper.Kernel;
-using Grasshopper.Kernel.Special;
-using Grasshopper.Kernel.Types;
-using Grasshopper.Kernel.Data;
 // Rhino Libs
 using Rhino.Geometry;
 using SaladSlicer.Core.Geometry;
+using SaladSlicer.Core.Geometry.Seams;
 using SaladSlicer.Gh.Utils;
 using SaladSlicer.Core.Enumerations;
 
@@ -48,7 +44,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddCurveParameter("Curves", "C", "List of curves", GH_ParamAccess.list);
-            pManager.AddIntegerParameter("Connection type", "T", "Sets the type of connection [0 = Linear,1 = Bezier]", GH_ParamAccess.item,0);
+            pManager.AddIntegerParameter("Connection type", "T", "Sets the type of connection [0 = Linear,1 = Bezier]", GH_ParamAccess.item, 0);
             pManager.AddNumberParameter("Changelength", "L", "Sets the length over which to connect to the next layer", GH_ParamAccess.item, 100);
         }
 
@@ -90,40 +86,33 @@ namespace SaladSlicer.Gh.Components.Geometry
             // Check input values
             if (curves[0].GetLength() < changeLength) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "The length of the layer change exceeds the length of the base contour."); }
             if (Curves.NumberClosed(curves) != curves.Count) { AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "One or more curves are not closed"); }
-            if (type != 0 && type != 1)
+            if (type != 0 && type != 1 && type != 2)
             {
                 AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Comment type value <" + type + "> is invalid. " +
-                    "In can only be set to 0 or 1. Use 0 for linear and 1 for bezier connections.");
+                    "In can only be set to 0, 1 and 2. Use 0 for linear, 1 for bezier and 2 for interpolated connections.");
             }
             
             // Create the code line
             List<Curve> curvesCopy = curves.ConvertAll(curve => curve.DuplicateCurve());
-            curvesCopy = Curves.CutTransitionEnd(curves, changeLength);
             
             if (type == 0)
             {
-                joinedCurve = Curves.JoinLinear(curvesCopy);
+                curvesCopy = Transitions.CutTransitionEnd(curves, changeLength);
+                joinedCurve = Transitions.JoinLinear(curvesCopy);
             }
             else if (type == 1)
             {
-                joinedCurve = Curves.JoinBezier(curvesCopy);
+                curvesCopy = Transitions.CutTransitionEnd(curves, changeLength);
+                joinedCurve = Transitions.JoinBezier(curvesCopy);
+            }
+            else if (type == 2)
+            {
+                joinedCurve = Transitions.JoinInterpolated(curvesCopy, changeLength);
             }
             else
             {
                 joinedCurve = Line.Unset.ToNurbsCurve();
             }
-
-            /**
-            try
-            {
-                bool test = true;
-                test = false;
-            }
-            catch (Exception e)
-            {
-                AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, e.Message);
-            }
-            **/
 
             // Assign the output parameters
             DA.SetData(0, joinedCurve);

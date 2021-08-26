@@ -6,16 +6,11 @@
 // System Libs
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 // Grasshopper Libs
-using Grasshopper;
 using Grasshopper.Kernel;
-using Grasshopper.Kernel.Special;
-using Grasshopper.Kernel.Types;
-using Grasshopper.Kernel.Data;
 // Rhino Libs
 using Rhino.Geometry;
-using SaladSlicer.Core.Geometry;
+using SaladSlicer.Core.Geometry.Seams;
 using SaladSlicer.Core.Enumerations;
 using SaladSlicer.Gh.Utils;
 
@@ -87,11 +82,11 @@ namespace SaladSlicer.Gh.Components.Geometry
             // Create the code line            
             if (type == 0)
             {
-                joinedCurve = Curves.JoinLinear(curves);
+                joinedCurve = Transitions.JoinLinear(curves);
             }
             else if (type == 1)
             {
-                joinedCurve = Curves.JoinBezier(curves);
+                joinedCurve = Transitions.JoinBezier(curves);
             }
             else
             {

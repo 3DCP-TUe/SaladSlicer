@@ -68,7 +68,6 @@
     <Compile Include="Core\CodeGeneration\CodeLine.cs" />
     <Compile Include="Core\CodeGeneration\IProgram.cs" />
     <Compile Include="Core\Enumerations\Enumerations.cs" />
-    <Compile Include="Core\Examples\ExamplePoint.cs" />
     <Compile Include="Core\Geometry\Seams\Transitions.cs" />
     <Compile Include="Core\Geometry\Seams\Locations.cs" />
     <Compile Include="Core\Slicers\OpenPlanar2DSlicer.cs" />
@@ -82,17 +81,18 @@
     <Compile Include="Gh\Components\Deconstruct\DeconstructCurveSlicerComponent.cs" />
     <Compile Include="Gh\Components\Deconstruct\DeconstructOpenPlaner2DSlicerComponent.cs" />
     <Compile Include="Gh\Components\Deconstruct\DeconstructClosedPlaner2DSlicerComponent.cs" />
-    <Compile Include="Gh\Components\Deconstruct\DeconstructProgramObjectComponent.cs" />
     <Compile Include="Gh\Components\Geometry\CurveFramesByCurvatureComponent.cs" />
     <Compile Include="Gh\Components\Geometry\SeamAtClosestPointComponent.cs" />
     <Compile Include="Gh\Components\Geometry\AlternateCurvesComponent.cs" />
     <Compile Include="Gh\Components\Geometry\SeamAtParamComponent.cs" />
     <Compile Include="Gh\Components\Geometry\SeamAtLengthComponent.cs" />
     <Compile Include="Gh\Components\Geometry\JoinClosedCurvesComponent.cs" />
+    <Compile Include="Gh\Components\Geometry\AlignCurvesComponent.cs" />
     <Compile Include="Gh\Components\Geometry\SeamsAtClosestPointComponent.cs" />
     <Compile Include="Gh\Components\Slicers\ClosedPlanar3DSlicerComponent.cs" />
     <Compile Include="Gh\Components\Slicers\GetFramesComponent.cs" />
     <Compile Include="Gh\Components\Slicers\GetEndFramesComponent.cs" />
+    <Compile Include="Gh\Components\Slicers\GetContours.cs" />
     <Compile Include="Gh\Components\Slicers\GetPathComponent.cs" />
     <Compile Include="Gh\Components\Slicers\GetLinerazedPathComponent.cs" />
     <Compile Include="Gh\Components\Slicers\GetInterpolatedPathComponent.cs" />
@@ -107,7 +107,6 @@
     <Compile Include="Gh\Components\Geometry\JoinOpenCurvesComponent.cs" />
     <Compile Include="Gh\Components\Utilities\PlaneVisualizerComponent.cs" />
     <Compile Include="Gh\Components\Utilities\TransposeSurfaceComponent.cs" />
-    <Compile Include="Gh\Components\ExampleComponent.cs" />
     <Compile Include="Gh\Goos\Slicers\GH_ClosedPlanar3DSlicer.cs" />
     <Compile Include="Gh\Goos\Slicers\GH_OpenPlanar2DSlicer.cs" />
     <Compile Include="Gh\Goos\Slicers\GH_ClosedPlanar2DSlicer.cs" />

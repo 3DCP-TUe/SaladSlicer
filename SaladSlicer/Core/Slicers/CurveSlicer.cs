@@ -4,7 +4,6 @@
 // see <https://github.com/3DCP-TUe/SaladSlicer>.
 
 // System Libs
-using System;
 using System.Collections.Generic;
 // Rhino Libs
 using Rhino.Geometry;
@@ -85,7 +84,6 @@ namespace SaladSlicer.Core.Slicers
         public void Slice()
         {
             this.CreateFrames();
-            this.GetInterpolatedPath();
         }
 
 
@@ -152,6 +150,17 @@ namespace SaladSlicer.Core.Slicers
         }
 
         /// <summary>
+        /// Returns the Bounding Box of the object.
+        /// </summary>
+        /// <returns> The Bounding Box. </returns>
+        /// <param name="accurate"> If true, a physically accurate bounding box will be computed. </param>
+
+        public BoundingBox GetBoundingBox(bool accurate)
+        {
+            return this.GetPath().GetBoundingBox(accurate);
+        }
+
+        /// <summary>
         /// Returns the length of the path.
         /// </summary>
         /// <returns> The length of the path. </returns>
@@ -213,12 +222,17 @@ namespace SaladSlicer.Core.Slicers
         }
 
         /// <summary>
-        /// Gets or sets the curve. 
+        /// Gets or sets the base curve/contour. 
         /// </summary>
         public Curve Curve
         {
             get { return _curve; }
             set { _curve = value; }
+        }
+
+        public List<Curve> Contours
+        {
+            get { return new List<Curve>() { _curve }; }
         }
 
         /// <summary>
@@ -231,20 +245,25 @@ namespace SaladSlicer.Core.Slicers
         }
 
         /// <summary>
-        /// Gets the interpolated path as a single curve
-        /// </summary>
-        [Obsolete("This property is obsolete. Use the method GetInterPolatedPath() instead.", false)]
-        public Curve InterpolatedPath
-        {
-            get { return this.GetInterpolatedPath(); }
-        }
-
-        /// <summary>
         /// Gets the frames of the path.
         /// </summary>
         public List<Plane> Frames
         {
             get { return _frames; }
+        }
+
+        /// <summary>
+        /// Gets the frames of the path by layer
+        /// </summary>
+        public List<List<Plane>> FramesByLayer
+        {
+            get 
+            {
+                List<List<Plane>> result = new List<List<Plane>>();
+                result.Add(new List<Plane>());
+                result[0].AddRange(_frames);
+                return result; 
+            }
         }
 
         /// <summary>

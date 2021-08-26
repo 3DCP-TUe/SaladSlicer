@@ -4,7 +4,6 @@
 // see <https://github.com/3DCP-TUe/SaladSlicer>.
 
 // System Libs
-using System;
 using System.Collections.Generic;
 using System.Linq;
 // Rhino Libs
@@ -12,6 +11,7 @@ using Rhino.Geometry;
 // Slicer Salad Libs
 using SaladSlicer.Core.CodeGeneration;
 using SaladSlicer.Core.Geometry;
+using SaladSlicer.Core.Geometry.Seams;
 
 namespace SaladSlicer.Core.Slicers
 {
@@ -122,7 +122,6 @@ namespace SaladSlicer.Core.Slicers
             this.CreateContours();
             this.CreatePath();
             this.CreateFrames();
-            this.GetInterpolatedPath();
         }
 
         /// <summary>
@@ -149,7 +148,7 @@ namespace SaladSlicer.Core.Slicers
         private void CreatePath()
         {
             _path.Clear();
-            _path = Curves.WeaveCurves(_contours, Curves.LinearTransitions(_contours));
+            _path = Curves.WeaveCurves(_contours, Transitions.LinearTransitions(_contours));
         }
 
         /// <summary>
@@ -260,7 +259,7 @@ namespace SaladSlicer.Core.Slicers
                 curves.Add(Curve.CreateInterpolatedCurve(points[i], 3, CurveKnotStyle.Chord));
             }
 
-            curves = Curves.WeaveCurves(curves, Curves.LinearTransitions(curves));
+            curves = Curves.WeaveCurves(curves, Transitions.LinearTransitions(curves));
 
             Curve result = Curve.JoinCurves(curves)[0];
 
@@ -274,6 +273,17 @@ namespace SaladSlicer.Core.Slicers
         public Curve GetLinearizedPath()
         {
             return new PolylineCurve(this.GetPoints());
+        }
+
+        /// <summary>
+        /// Returns the Bounding Box of the object.
+        /// </summary>
+        /// <returns> The Bounding Box. </returns>
+        /// <param name="accurate"> If true, a physically accurate bounding box will be computed. If not, a bounding box estimate will be computed. </param>
+
+        public BoundingBox GetBoundingBox(bool accurate)
+        {
+            return this.GetPath().GetBoundingBox(accurate);
         }
 
         /// <summary>
@@ -423,14 +433,6 @@ namespace SaladSlicer.Core.Slicers
         public List<Curve> Path
         {
             get { return _path; }
-        }
-        /// <summary>
-        /// Gets the interpolated path as a single curve
-        /// </summary>
-        [Obsolete("This property is obsolete. Use the method GetInterPolatedPath() instead.", false)]
-        public Curve InterpolatedPath
-        {
-            get { return this.GetInterpolatedPath(); }
         }
 
         /// <summary>

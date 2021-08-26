@@ -7,25 +7,27 @@
 using System;
 // Grasshopper Libs
 using Grasshopper.Kernel;
-// Rhino Libs
-using Rhino.Geometry;
+// Salad Slicer Libs
+using SaladSlicer.Core.CodeGeneration;
+using SaladSlicer.Core.Slicers;
+using SaladSlicer.Gh.Parameters.CodeGeneration;
 
-namespace SaladSlicer.Gh.Components
+namespace SaladSlicer.Gh.Components.Slicers
 {
     /// <summary>
-    /// Represent a component that constructs a line between two points. 
+    /// Represent a component that creates the contours.
     /// </summary>
-    public class ExampleComponent : GH_Component
+    public class GetContoursComponent : GH_Component
     {
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public ExampleComponent()
-          : base("Example", // Component name
-              "E", // Component nickname
-              "An example component description.", // Description
+        public GetContoursComponent()
+          : base("Get Contours", // Component name
+              "C", // Component nickname
+              "Defines the contours of a slicer object", // Description
               "Salad Slicer", // Category
-              "Example Components") // Subcategory
+              "Slicers") // Subcategory
         {
         }
 
@@ -34,10 +36,7 @@ namespace SaladSlicer.Gh.Components
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddPointParameter("Start", "S", "Starting point as a point.", GH_ParamAccess.item);
-            pManager.AddPointParameter("End", "E", "End point as a point.", GH_ParamAccess.item);
-
-            //pManager[0].Optional = true;
+            pManager.AddParameter(new Param_Object(), "Program Object", "PO", "Slicer object.", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -45,7 +44,7 @@ namespace SaladSlicer.Gh.Components
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddCurveParameter("Line", "L", "Line as a Curve", GH_ParamAccess.item);
+            pManager.AddCurveParameter("Contours", "C", "Contours as a list with Curves.", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -55,18 +54,13 @@ namespace SaladSlicer.Gh.Components
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             // Declare variable of input parameters
-            Point3d start = new Point3d();
-            Point3d end = new Point3d();
+            IObject slicer = new ClosedPlanar2DSlicer();
 
             // Access the input parameters individually. 
-            if (!DA.GetData(0, ref start)) return;
-            if (!DA.GetData(1, ref end)) return;
-
-            // Create the line
-            LineCurve line = new LineCurve(start, end);
+            if (!DA.GetData(0, ref slicer)) return;
 
             // Assign the output parameters
-            DA.SetData(0, line);
+            DA.SetDataList(0, slicer.Contours);
         }
 
         /// <summary>
@@ -74,7 +68,7 @@ namespace SaladSlicer.Gh.Components
         /// </summary>
         public override GH_Exposure Exposure
         {
-            get { return GH_Exposure.hidden; } // <-- change this to primary to make the component visible in grasshopper
+            get { return GH_Exposure.secondary; }
         }
 
         /// <summary>
@@ -99,7 +93,7 @@ namespace SaladSlicer.Gh.Components
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("72A0A189-DB6D-4BDF-BD69-CC9D3C13FD51"); }
+            get { return new Guid("99B9D21C-708B-41D0-A15E-E55851F5B5B2"); }
         }
     }
 }
