@@ -64,15 +64,19 @@ namespace SaladSlicer.Core.CodeGeneration
         bool IsValid { get; }
 
         /// <summary>
-        /// Get the path of the Object
+        /// Gets the contours.
         /// </summary>
-        [Obsolete("This property is obsolete. Use the method GetInterPolatedPath() instead.", false)]
-        Curve InterpolatedPath { get; }
+        List<Curve> Contours { get; }
 
         /// <summary>
         /// Gets the frames of the object.
         /// </summary>
         List<Plane> Frames { get; }
+
+        /// <summary>
+        /// Gets the frames of the object by layer.
+        /// </summary>
+        List<List<Plane>> FramesByLayer { get; }
 
         /// <summary>
         /// Gets frame at the start of the path.

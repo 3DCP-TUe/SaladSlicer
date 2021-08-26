@@ -134,7 +134,6 @@ namespace SaladSlicer.Core.Slicers
             this.CreateContours();
             this.CreatePath();
             this.CreateFrames();
-            this.GetInterpolatedPath();
         }
 
         /// <summary>
@@ -470,15 +469,6 @@ namespace SaladSlicer.Core.Slicers
         public List<Curve> Path
         {
             get { return _path; }
-        }
-
-        /// <summary>
-        /// Gets the interpolated path as a single curve
-        /// </summary>
-        [Obsolete("This property is obsolete. Use the method GetInterPolatedPath() instead.", false)]
-        public Curve InterpolatedPath
-        {
-            get { return this.GetInterpolatedPath(); }
         }
 
         /// <summary>

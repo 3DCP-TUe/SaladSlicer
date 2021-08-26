@@ -43,12 +43,8 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddCurveParameter("Curve", "C", "Curve as a Curve.", GH_ParamAccess.list);
+            pManager.AddCurveParameter("Curve", "C", "Curve as a Curve.", GH_ParamAccess.item);
             pManager.AddNumberParameter("Distance", "D", "Distance between frames as a Number", GH_ParamAccess.item);
-            pManager.AddCurveParameter("Path", "P", "Path as a Curve.", GH_ParamAccess.item);
-            pManager.AddPlaneParameter("Frames", "F", "Frames as a list with Planes.", GH_ParamAccess.list);
-            pManager.AddPlaneParameter("Start Frame", "S", "Start frame as a Plane.", GH_ParamAccess.item);
-            pManager.AddPlaneParameter("End Frame", "E", "End frame as a Plane.", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -66,10 +62,6 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
             // Assign the output parameters
             DA.SetData(0, slicer.Curve);
             DA.SetData(1, slicer.Distance);
-            DA.SetData(2, slicer.GetPath());
-            DA.SetDataList(3, slicer.Frames);
-            DA.SetData(4, slicer.FrameAtStart);
-            DA.SetData(5, slicer.FrameAtEnd);
         }
 
         /// <summary>
