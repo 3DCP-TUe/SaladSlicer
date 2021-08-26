@@ -6,7 +6,6 @@
 // System Libs
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 // Grasshopper Libs
 using Grasshopper.Kernel;
 // Rhino Libs

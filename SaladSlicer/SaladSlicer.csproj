@@ -68,7 +68,6 @@
     <Compile Include="Core\CodeGeneration\CodeLine.cs" />
     <Compile Include="Core\CodeGeneration\IProgram.cs" />
     <Compile Include="Core\Enumerations\Enumerations.cs" />
-    <Compile Include="Core\Examples\ExamplePoint.cs" />
     <Compile Include="Core\Geometry\Seams\Transitions.cs" />
     <Compile Include="Core\Geometry\Seams\Locations.cs" />
     <Compile Include="Core\Slicers\OpenPlanar2DSlicer.cs" />
@@ -107,7 +106,6 @@
     <Compile Include="Gh\Components\Geometry\JoinOpenCurvesComponent.cs" />
     <Compile Include="Gh\Components\Utilities\PlaneVisualizerComponent.cs" />
     <Compile Include="Gh\Components\Utilities\TransposeSurfaceComponent.cs" />
-    <Compile Include="Gh\Components\ExampleComponent.cs" />
     <Compile Include="Gh\Goos\Slicers\GH_ClosedPlanar3DSlicer.cs" />
     <Compile Include="Gh\Goos\Slicers\GH_OpenPlanar2DSlicer.cs" />
     <Compile Include="Gh\Goos\Slicers\GH_ClosedPlanar2DSlicer.cs" />

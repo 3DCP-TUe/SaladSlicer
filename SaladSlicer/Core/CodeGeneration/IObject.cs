@@ -4,7 +4,6 @@
 // see <https://github.com/3DCP-TUe/SaladSlicer>.
 
 // System Libs
-using System;
 using System.Collections.Generic;
 // Rhino Libs
 using Rhino.Geometry;
