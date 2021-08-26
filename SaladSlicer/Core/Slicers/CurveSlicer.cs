@@ -85,7 +85,6 @@ namespace SaladSlicer.Core.Slicers
         public void Slice()
         {
             this.CreateFrames();
-            this.GetInterpolatedPath();
         }
 
 
@@ -213,12 +212,17 @@ namespace SaladSlicer.Core.Slicers
         }
 
         /// <summary>
-        /// Gets or sets the curve. 
+        /// Gets or sets the base curve/contour. 
         /// </summary>
         public Curve Curve
         {
             get { return _curve; }
             set { _curve = value; }
+        }
+
+        public List<Curve> Contours
+        {
+            get { return new List<Curve>() { _curve }; }
         }
 
         /// <summary>

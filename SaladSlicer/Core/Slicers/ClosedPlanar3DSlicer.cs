@@ -142,7 +142,6 @@ namespace SaladSlicer.Core.Slicers
             this.CreateContours();
             this.CreatePath();
             this.CreateFrames();
-            this.GetInterpolatedPath();
         }
 
         /// <summary>
