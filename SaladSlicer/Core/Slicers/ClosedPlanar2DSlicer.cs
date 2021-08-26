@@ -472,15 +472,6 @@ namespace SaladSlicer.Core.Slicers
         }
 
         /// <summary>
-        /// Gets the interpolated path as a single curve
-        /// </summary>
-        [Obsolete("This property is obsolete. Use the method GetInterPolatedPath() instead.", false)]
-        public Curve InterpolatedPath
-        {
-            get { return this.GetInterpolatedPath(); }
-        }
-
-        /// <summary>
         /// Gets the frames of the path.
         /// </summary>
         public List<Plane> Frames
