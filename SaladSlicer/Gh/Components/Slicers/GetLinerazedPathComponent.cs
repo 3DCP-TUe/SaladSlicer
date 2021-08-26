@@ -25,7 +25,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         public GetLinearizedPathComponent()
           : base("Get Linearized Path", // Component name
               "LP", // Component nickname
-              "Defines the linearized of a slicer object", // Description
+              "Defines the linearized path of a slicer object", // Description
               "Salad Slicer", // Category
               "Slicers") // Subcategory
         {
