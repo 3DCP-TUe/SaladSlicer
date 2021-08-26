@@ -150,19 +150,61 @@ namespace SaladSlicer.Core.Slicers
 
             Plane plane = Plane.WorldXY;
 
-            for (int i = 0; i < _heights.Count; i++)
-            {
-                plane.OriginZ = _heights[i];
-                Curve[] curves = Mesh.CreateContourCurves(_mesh, plane);
-                curves = Curve.JoinCurves(curves, 1.0);
+            // Get the bounding box and start position
+            BoundingBox box = _mesh.GetBoundingBox(true);
+            Point3d[] corners = box.GetCorners();
+            double min = corners[0].Z;
 
-                if (curves.Length != 0)
+            for (int i = 1; i < corners.Length; i++)
+            {
+                if (corners[i].Z < min)
                 {
-                    _contours.Add(curves[0].ToNurbsCurve());
+                    min = corners[i].Z;
                 }
-                else
+            }
+
+            plane.OriginZ = min;
+
+            // One height value defined
+            if (_heights.Count == 1)
+            {
+                bool stop = false;
+                int i = 0;
+                
+                while (stop == false)
                 {
-                    break;
+                    plane.OriginZ = min + i * _heights[0];
+                    Curve[] curves = Mesh.CreateContourCurves(_mesh, plane);
+                    curves = Curve.JoinCurves(curves, 1.0);
+
+                    if (curves.Length != 0)
+                    {
+                        _contours.Add(curves[0].ToNurbsCurve());
+                        i++;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+            // Multiple values defined
+            else
+            {
+                for (int i = 0; i < _heights.Count; i++)
+                {
+                    plane.OriginZ = min + _heights[i];
+                    Curve[] curves = Mesh.CreateContourCurves(_mesh, plane);
+                    curves = Curve.JoinCurves(curves, 1.0);
+
+                    if (curves.Length != 0)
+                    {
+                        _contours.Add(curves[0].ToNurbsCurve());
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
             }
 
