@@ -123,6 +123,26 @@ namespace SaladSlicer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap ConvertVelocityMmminMms_Icon {
+            get {
+                object obj = ResourceManager.GetObject("ConvertVelocityMmminMms_Icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ConvertVelocityMmsMmmin_Icon {
+            get {
+                object obj = ResourceManager.GetObject("ConvertVelocityMmsMmmin_Icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap CurveFramesByCurvature_Icon {
             get {
                 object obj = ResourceManager.GetObject("CurveFramesByCurvature_Icon", resourceCulture);
@@ -376,6 +396,16 @@ namespace SaladSlicer.Properties {
         internal static System.Drawing.Bitmap SetFeedRate_Icon {
             get {
                 object obj = ResourceManager.GetObject("SetFeedRate_Icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap TransposeSurface_Icon {
+            get {
+                object obj = ResourceManager.GetObject("TransposeSurface_Icon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
