@@ -77,10 +77,10 @@ namespace SaladSlicer.Core.Slicers
             _path = slicer.Path.ConvertAll(curve => curve.DuplicateCurve());
             _contours = slicer.Contours.ConvertAll(curve => curve.DuplicateCurve());
             _interpolatedPath = slicer.InterpolatedPath.DuplicateCurve();
-            
+
             _framesByLayer = new List<List<Plane>>();
-              
-            for (int i = 0; i<slicer.FramesByLayer.Count; i++)
+
+            for (int i = 0; i < slicer.FramesByLayer.Count; i++)
             {
                 _framesByLayer.Add(new List<Plane>(slicer.FramesByLayer[i]));
             }
@@ -123,7 +123,7 @@ namespace SaladSlicer.Core.Slicers
             this.CreateContours();
             this.CreatePath();
             this.CreateFrames();
-            this.CreateInterpolatedPath();
+            this.GetInterpolatedPath();
         }
 
         /// <summary>
@@ -239,9 +239,10 @@ namespace SaladSlicer.Core.Slicers
         }
 
         /// <summary>
-        /// Creates the interpolated path.
+        /// Returns the interpolated path.
         /// </summary>
-        public void CreateInterpolatedPath()
+        /// <returns> The interpolated path. </returns>
+        public Curve GetInterpolatedPath()
         {
             List<Curve> curves = new List<Curve>() { };
             List<List<Point3d>> points = this.GetPointsByLayer();
@@ -254,6 +255,17 @@ namespace SaladSlicer.Core.Slicers
             curves = Curves.WeaveCurves(curves, Curves.LinearTransitions(curves));
 
             _interpolatedPath = Curve.JoinCurves(curves)[0];
+
+            return _interpolatedPath;
+        }
+
+        /// <summary>
+        /// Returns the linearized path.
+        /// </summary>
+        /// <returns> The linearized path. </returns>
+        public Curve GetLinearizedPath()
+        {
+            return new PolylineCurve(this.GetPoints());
         }
 
         /// <summary>

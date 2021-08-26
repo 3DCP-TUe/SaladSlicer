@@ -35,6 +35,18 @@ namespace SaladSlicer.Core.CodeGeneration
         /// <param name="xform"> Transformation to apply to geometry. </param>
         /// <returns> True on success, false on failure. </returns>
         bool Transform(Transform xform);
+
+        /// <summary>
+        /// Returns the interpolated path.
+        /// </summary>
+        /// <returns> The interpolated path. </returns>
+        Curve GetInterpolatedPath();
+
+        /// <summary>
+        /// Returns the linearized path.
+        /// </summary>
+        /// <returns> The linearized path. </returns>
+        Curve GetLinearizedPath();
         #endregion
 
         #region properties

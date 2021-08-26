@@ -135,7 +135,7 @@ namespace SaladSlicer.Core.Slicers
             this.CreateContours();
             this.CreatePath();
             this.CreateFrames();
-            this.CreateInterpolatedPath();
+            this.GetInterpolatedPath();
         }
 
         /// <summary>
@@ -277,11 +277,23 @@ namespace SaladSlicer.Core.Slicers
         }
 
         /// <summary>
-        /// Creates the interpolated path.
+        /// Returns the interpolated path.
         /// </summary>
-        public void CreateInterpolatedPath()
+        /// <returns> The interpolated path. </returns>
+        public Curve GetInterpolatedPath()
         {
             _interpolatedPath = Curve.CreateInterpolatedCurve(this.GetPoints(), 3, CurveKnotStyle.Chord);
+
+            return _interpolatedPath;
+        }
+
+        /// <summary>
+        /// Returns the linearized path.
+        /// </summary>
+        /// <returns> The linearized path. </returns>
+        public Curve GetLinearizedPath()
+        {
+            return new PolylineCurve(this.GetPoints());
         }
 
         /// <summary>
