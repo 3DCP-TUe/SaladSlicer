@@ -141,6 +141,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\2.5D.png" />
+    <None Include="Resources\CurveFramesByDistance_Icon.png" />
+    <None Include="Resources\AlternateCurves_Icon.png" />
+    <None Include="Resources\AlignCurves_Icon.png" />
     <None Include="Resources\PlaneVisualizer_Icon.png" />
     <None Include="Resources\TransposeSurface_Icon.png" />
     <None Include="Resources\ConvertVelocityMmminMms_Icon.png" />
@@ -152,7 +155,6 @@
     <None Include="Resources\SeamAtParameter_Icon.png" />
     <None Include="Resources\SeamAtLength_Icon.png" />
     <None Include="Resources\CurveFramesByCurvature_Icon.png" />
-    <None Include="Resources\AlternateCurves_Icon.png" />
     <None Include="Resources\JoinClosedCurves_Icon.png" />
     <None Include="Resources\JoinOpenCurves_Icon.png" />
     <None Include="Resources\Param_ProgramObject_Icon.png" />

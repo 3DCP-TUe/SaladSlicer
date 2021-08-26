@@ -73,6 +73,16 @@ namespace SaladSlicer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap AlignCurves_Icon {
+            get {
+                object obj = ResourceManager.GetObject("AlignCurves_Icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap AlternateCurves_Icon {
             get {
                 object obj = ResourceManager.GetObject("AlternateCurves_Icon", resourceCulture);
@@ -146,6 +156,16 @@ namespace SaladSlicer.Properties {
         internal static System.Drawing.Bitmap CurveFramesByCurvature_Icon {
             get {
                 object obj = ResourceManager.GetObject("CurveFramesByCurvature_Icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap CurveFramesByDistance_Icon {
+            get {
+                object obj = ResourceManager.GetObject("CurveFramesByDistance_Icon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
