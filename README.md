@@ -1,4 +1,10 @@
 <p align="center">
+  <img src="https://user-images.githubusercontent.com/24313771/130939816-62267ff3-533c-462f-aed5-f12da5610828.png" width="350" title="Salad Slicer Logo">
+</p>
+  
+  <br>
+  
+ <p align="center"> 
   <img src="https://img.shields.io/github/v/release/3DCP-TUe/SaladSlicer?label=stable&style=flat-square">
   <img src="https://img.shields.io/github/v/release/3DCP-TUe/SaladSlice?label=latest&include_prereleases&style=flat-square">
   <img src="https://img.shields.io/github/downloads/3DCP-TUe/SaladSlice/total?style=flat-square">
@@ -8,10 +14,6 @@
 </p>
 
 ---
-
-
-<img src="https://user-images.githubusercontent.com/24313771/130939816-62267ff3-533c-462f-aed5-f12da5610828.png" width="350" title="Salad Slicer Logo">
-
 
 Salad Slicer is an open source Rhinoceros Grasshopper plugin developed for slicing objects for 3D concrete printing, however, the plugin is also suitable for slicing objects to print other materials like ceramics and polymers. Among other functionalities Salad Slicer offers: 
 
