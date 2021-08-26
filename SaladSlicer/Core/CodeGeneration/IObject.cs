@@ -3,6 +3,8 @@
 // Free Software Foundation. For more information and the LICENSE file, 
 // see <https://github.com/3DCP-TUe/SaladSlicer>.
 
+// System Libs
+using System;
 using System.Collections.Generic;
 // Rhino Libs
 using Rhino.Geometry;
@@ -37,6 +39,12 @@ namespace SaladSlicer.Core.CodeGeneration
         bool Transform(Transform xform);
 
         /// <summary>
+        /// Returns the path.
+        /// </summary>
+        /// <returns> The path. </returns>
+        Curve GetPath();
+
+        /// <summary>
         /// Returns the interpolated path.
         /// </summary>
         /// <returns> The interpolated path. </returns>
@@ -58,6 +66,7 @@ namespace SaladSlicer.Core.CodeGeneration
         /// <summary>
         /// Get the path of the Object
         /// </summary>
+        [Obsolete("This property is obsolete. Use the method GetInterPolatedPath() instead.", false)]
         Curve InterpolatedPath { get; }
 
         /// <summary>

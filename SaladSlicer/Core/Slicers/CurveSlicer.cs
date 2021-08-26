@@ -4,12 +4,12 @@
 // see <https://github.com/3DCP-TUe/SaladSlicer>.
 
 // System Libs
+using System;
 using System.Collections.Generic;
 // Rhino Libs
 using Rhino.Geometry;
 // Slicer Salad Libs
 using SaladSlicer.Core.CodeGeneration;
-using SaladSlicer.Core.Geometry;
 
 namespace SaladSlicer.Core.Slicers
 {
@@ -21,7 +21,6 @@ namespace SaladSlicer.Core.Slicers
         #region fields
         private Curve _curve;
         private double _distance;
-        private Curve _interpolatedPath;
         private List<Plane> _frames = new List<Plane>();
         #endregion
 
@@ -48,7 +47,6 @@ namespace SaladSlicer.Core.Slicers
         {
             _curve = slicer.Curve.DuplicateCurve();
             _distance = slicer.Distance;
-            _interpolatedPath = slicer.InterpolatedPath.DuplicateCurve();
             _frames = new List<Plane>(slicer.Frames);
         }
 
@@ -127,14 +125,21 @@ namespace SaladSlicer.Core.Slicers
         }
 
         /// <summary>
+        /// Returns the path.
+        /// </summary>
+        /// <returns> The path. </returns>
+        public Curve GetPath()
+        {
+            return _curve;
+        }
+
+        /// <summary>
         /// Returns the interpolated path.
         /// </summary>
         /// <returns> The interpolated path. </returns>
         public Curve GetInterpolatedPath()
         {
-            _interpolatedPath = Curve.CreateInterpolatedCurve(this.GetPoints(), 3,CurveKnotStyle.Chord);
-
-            return _interpolatedPath;
+            return Curve.CreateInterpolatedCurve(this.GetPoints(), 3, CurveKnotStyle.Chord);
         }
 
         /// <summary>
@@ -179,7 +184,6 @@ namespace SaladSlicer.Core.Slicers
         public bool Transform(Transform xform)
         {
             _curve.Transform(xform);
-            _interpolatedPath.Transform(xform);
             
             for (int i = 0; i < _frames.Count; i++)
             {
@@ -229,9 +233,10 @@ namespace SaladSlicer.Core.Slicers
         /// <summary>
         /// Gets the interpolated path as a single curve
         /// </summary>
+        [Obsolete("This property is obsolete. Use the method GetInterPolatedPath() instead.", false)]
         public Curve InterpolatedPath
         {
-            get { return _interpolatedPath; }
+            get { return this.GetInterpolatedPath(); }
         }
 
         /// <summary>

@@ -66,7 +66,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
             // Assign the output parameters
             DA.SetData(0, slicer.Curve);
             DA.SetData(1, slicer.Distance);
-            DA.SetData(2, slicer.InterpolatedPath);
+            DA.SetData(2, slicer.GetPath());
             DA.SetDataList(3, slicer.Frames);
             DA.SetData(4, slicer.FrameAtStart);
             DA.SetData(5, slicer.FrameAtEnd);

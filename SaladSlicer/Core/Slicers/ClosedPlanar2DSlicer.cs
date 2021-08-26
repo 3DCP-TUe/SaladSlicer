@@ -4,6 +4,7 @@
 // see <https://github.com/3DCP-TUe/SaladSlicer>.
 
 // System Libs
+using System;
 using System.Collections.Generic;
 using System.Linq;
 // Rhino Libs
@@ -23,7 +24,6 @@ namespace SaladSlicer.Core.Slicers
         private Curve _baseContour;
         private double _distance;
         private List<Curve> _path = new List<Curve>();
-        private Curve _interpolatedPath;
         private readonly List<Curve> _contours = new List<Curve>();
         private List<double> _heights = new List<double>();
         private readonly List<List<Plane>> _framesByLayer = new List<List<Plane>>() { };
@@ -88,7 +88,6 @@ namespace SaladSlicer.Core.Slicers
             _distance = slicer.Distance;
             _path = slicer.Path.ConvertAll(curve => curve.DuplicateCurve());
             _contours = slicer.Contours.ConvertAll(curve => curve.DuplicateCurve());
-            _interpolatedPath = slicer.InterpolatedPath.DuplicateCurve();
             
             _framesByLayer = new List<List<Plane>>();
               
@@ -277,14 +276,21 @@ namespace SaladSlicer.Core.Slicers
         }
 
         /// <summary>
+        /// Returns the path.
+        /// </summary>
+        /// <returns> The path. </returns>
+        public Curve GetPath()
+        {
+            return Curve.JoinCurves(_path)[0];
+        }
+
+        /// <summary>
         /// Returns the interpolated path.
         /// </summary>
         /// <returns> The interpolated path. </returns>
         public Curve GetInterpolatedPath()
         {
-            _interpolatedPath = Curve.CreateInterpolatedCurve(this.GetPoints(), 3, CurveKnotStyle.Chord);
-
-            return _interpolatedPath;
+            return Curve.CreateInterpolatedCurve(this.GetPoints(), 3, CurveKnotStyle.Chord);
         }
 
         /// <summary>
@@ -357,7 +363,6 @@ namespace SaladSlicer.Core.Slicers
         public bool Transform(Transform xform)
         {
             _baseContour.Transform(xform);
-            _interpolatedPath.Transform(xform);
 
             for (int i = 0; i < _framesByLayer.Count; i++)
             {
@@ -470,9 +475,10 @@ namespace SaladSlicer.Core.Slicers
         /// <summary>
         /// Gets the interpolated path as a single curve
         /// </summary>
+        [Obsolete("This property is obsolete. Use the method GetInterPolatedPath() instead.", false)]
         public Curve InterpolatedPath
         {
-            get { return _interpolatedPath; }
+            get { return this.GetInterpolatedPath(); }
         }
 
         /// <summary>
