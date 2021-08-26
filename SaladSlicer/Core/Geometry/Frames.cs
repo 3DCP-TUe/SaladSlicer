@@ -156,7 +156,7 @@ namespace SaladSlicer.Core.Geometry
 
             if (segments.Length <= 1)
             {
-                result = GetFrames(segments[0], distance, true, true);
+                result = GetFrames(curve, distance, true, true);
             }
             else
             {

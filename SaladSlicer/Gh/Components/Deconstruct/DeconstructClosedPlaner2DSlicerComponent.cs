@@ -73,7 +73,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
             DA.SetData(2, slicer.SeamLength);
             DA.SetData(3, slicer.Distance);
             DA.SetDataList(4, slicer.Heights);
-            DA.SetData(5, slicer.InterpolatedPath);
+            DA.SetData(5, slicer.GetPath());
             DA.SetDataTree(6, HelperMethods.ListInListToDataTree(slicer.FramesByLayer));
             DA.SetData(7, slicer.FrameAtStart);
             DA.SetData(8, slicer.FrameAtEnd);

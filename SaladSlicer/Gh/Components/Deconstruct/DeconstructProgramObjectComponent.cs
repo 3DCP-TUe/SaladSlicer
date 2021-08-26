@@ -63,7 +63,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
             if (!DA.GetData(0, ref programObject)) return;
 
             // Assign the output parameters
-            DA.SetData(0, programObject.InterpolatedPath);
+            DA.SetData(0, programObject.GetPath());
             DA.SetDataList(1, programObject.Frames);
             DA.SetData(2, programObject.FrameAtStart);
             DA.SetData(3, programObject.FrameAtEnd);

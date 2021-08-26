@@ -131,14 +131,14 @@ namespace SaladSlicer.Gh.Goos.Slicers
             // Cast to Curve
             if (typeof(Q).IsAssignableFrom(typeof(Curve)))
             {
-                target = (Q)(object)this.Value.InterpolatedPath;
+                target = (Q)(object)this.Value.GetPath();
                 return true;
             }
 
             // Cast to Curve Goo
             if (typeof(Q).IsAssignableFrom(typeof(GH_Curve)))
             {
-                target = (Q)(object)new GH_Curve(this.Value.InterpolatedPath);
+                target = (Q)(object)new GH_Curve(this.Value.GetPath());
                 return true;
             }
 
@@ -295,13 +295,13 @@ namespace SaladSlicer.Gh.Goos.Slicers
             {
                 return BoundingBox.Empty;
             }
-            else if (this.Value.InterpolatedPath == null)
+            else if (this.Value.GetPath() == null)
             {
                 return BoundingBox.Empty;
             }
             else
             {
-                return this.Value.InterpolatedPath.GetBoundingBox(true);
+                return this.Value.GetPath().GetBoundingBox(true);
             }
         }
 
@@ -337,9 +337,9 @@ namespace SaladSlicer.Gh.Goos.Slicers
         /// <param name="args"> Drawing arguments. </param>
         public void DrawViewportWires(GH_PreviewWireArgs args)
         {
-            if (this.Value.InterpolatedPath != null)
+            if (this.Value.GetPath() != null)
             {
-                args.Pipeline.DrawCurve(this.Value.InterpolatedPath, args.Color, args.Thickness);
+                args.Pipeline.DrawCurve(this.Value.GetPath(), args.Color, args.Thickness);
             }
 
             if (this.Value.PointAtStart != null)

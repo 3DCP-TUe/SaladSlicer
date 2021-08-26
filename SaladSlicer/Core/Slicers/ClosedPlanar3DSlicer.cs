@@ -25,12 +25,12 @@ namespace SaladSlicer.Core.Slicers
         private Mesh _mesh ;
         private double _distance;
         private List<Curve> _path = new List<Curve>();
-        private Curve _interpolatedPath;
         private List<Curve> _contours = new List<Curve>();
         private List<double> _heights = new List<double>();
         private readonly List<List<Plane>> _framesByLayer = new List<List<Plane>>() { };
         private double _seamLocation;
         private double _seamLength;
+        private bool _reverse;
 
         #endregion
 
@@ -50,14 +50,16 @@ namespace SaladSlicer.Core.Slicers
         /// <param name="parameter"> The parameter of the starting point. </param>
         /// <param name="length"> The length of the seam between two layers. </param>
         /// <param name="distance"> The desired distance between two frames. </param>
+        /// <param name="reverse"> Indicates if the path direction will be reversed. </param>
         /// <param name="heights"> A list with absolute layer heights. </param>
-        public ClosedPlanar3DSlicer(Mesh mesh, double parameter, double length, double distance, List<double> heights)
+        public ClosedPlanar3DSlicer(Mesh mesh, double parameter, double length, double distance, bool reverse, List<double> heights)
         {
             _mesh = mesh;
             _heights = heights;
             _seamLocation = parameter;
             _seamLength = length;
             _distance = distance;
+            _reverse = reverse;
         }
 
         /// <summary>
@@ -68,14 +70,16 @@ namespace SaladSlicer.Core.Slicers
         /// <param name="length"> The length of the seam between two layers. </param>
         /// <param name="distance"> The desired distance between two frames. </param>
         /// <param name="height"> The layer height. </param>
+        /// <param name="reverse"> Indicates if the path direction will be reversed. </param>
         /// <param name="layers"> The number of layers. </param>
-        public ClosedPlanar3DSlicer(Mesh mesh, double parameter, double length, double distance, double height, int layers)
+        public ClosedPlanar3DSlicer(Mesh mesh, double parameter, double length, double distance, double height, bool reverse, int layers)
         {
             _mesh = mesh;
             _heights.AddRange(Enumerable.Repeat(height, layers).ToList());
             _seamLocation = parameter;
             _seamLength = length;
             _distance = distance;
+            _reverse = reverse;
         }
 
         /// <summary>
@@ -91,7 +95,7 @@ namespace SaladSlicer.Core.Slicers
             _distance = slicer.Distance;
             _path = slicer.Path.ConvertAll(curve => curve.DuplicateCurve());
             _contours = slicer.Contours.ConvertAll(curve => curve.DuplicateCurve());
-            _interpolatedPath = slicer.InterpolatedPath.DuplicateCurve();
+            _reverse = slicer.Reverse;
 
             _framesByLayer = new List<List<Plane>>();
 
@@ -138,7 +142,7 @@ namespace SaladSlicer.Core.Slicers
             this.CreateContours();
             this.CreatePath();
             this.CreateFrames();
-            this.CreateInterpolatedPath();
+            this.GetInterpolatedPath();
         }
 
         /// <summary>
@@ -150,23 +154,74 @@ namespace SaladSlicer.Core.Slicers
 
             Plane plane = Plane.WorldXY;
 
-            for (int i = 0; i < _heights.Count; i++)
-            {
-                plane.OriginZ = _heights[i];
-                Curve[] curves = Mesh.CreateContourCurves(_mesh, plane);
-                curves = Curve.JoinCurves(curves, 1.0);
+            // Get the bounding box and start position
+            BoundingBox box = _mesh.GetBoundingBox(true);
+            Point3d[] corners = box.GetCorners();
+            double min = corners[0].Z;
 
-                if (curves.Length != 0)
+            for (int i = 1; i < corners.Length; i++)
+            {
+                if (corners[i].Z < min)
                 {
-                    _contours.Add(curves[0].ToNurbsCurve());
+                    min = corners[i].Z;
                 }
-                else
+            }
+
+            plane.OriginZ = min;
+
+            // One height value defined
+            if (_heights.Count == 1)
+            {
+                bool stop = false;
+                int i = 0;
+                
+                while (stop == false)
                 {
-                    break;
+                    plane.OriginZ = min + i * _heights[0];
+                    Curve[] curves = Mesh.CreateContourCurves(_mesh, plane);
+                    curves = Curve.JoinCurves(curves, 1.0);
+
+                    if (curves.Length != 0)
+                    {
+                        _contours.Add(curves[0].ToNurbsCurve());
+                        i++;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+            // Multiple values defined
+            else
+            {
+                for (int i = 0; i < _heights.Count; i++)
+                {
+                    plane.OriginZ = min + _heights[i];
+                    Curve[] curves = Mesh.CreateContourCurves(_mesh, plane);
+                    curves = Curve.JoinCurves(curves, 1.0);
+
+                    if (curves.Length != 0)
+                    {
+                        _contours.Add(curves[0].ToNurbsCurve());
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
             }
 
             _contours = Curves.AlignContours(_contours);
+
+            // Reverse the contours
+            if (_reverse == true)
+            {
+                for (int i = 0; i < _contours.Count; i++)
+                {
+                    _contours[i].Reverse();
+                }
+            }
         }
 
         /// <summary>
@@ -286,11 +341,30 @@ namespace SaladSlicer.Core.Slicers
         }
 
         /// <summary>
-        /// Creates the interpolated path.
+        /// Returns the path.
         /// </summary>
-        public void CreateInterpolatedPath()
+        /// <returns> The path. </returns>
+        public Curve GetPath()
         {
-            _interpolatedPath = Curve.CreateInterpolatedCurve(this.GetPoints(), 3);
+            return Curve.JoinCurves(_path)[0];
+        }
+
+        /// <summary>
+        /// Returns the interpolated path.
+        /// </summary>
+        /// <returns> The interpolated path. </returns>
+        public Curve GetInterpolatedPath()
+        {
+            return Curve.CreateInterpolatedCurve(this.GetPoints(), 3, CurveKnotStyle.Chord);
+        }
+
+        /// <summary>
+        /// Returns the linearized path.
+        /// </summary>
+        /// <returns> The linearized path. </returns>
+        public Curve GetLinearizedPath()
+        {
+            return new PolylineCurve(this.GetPoints());
         }
 
         /// <summary>
@@ -354,7 +428,6 @@ namespace SaladSlicer.Core.Slicers
         public bool Transform(Transform xform)
         {
             _mesh.Transform(xform);
-            _interpolatedPath.Transform(xform);
 
             for (int i = 0; i < _framesByLayer.Count; i++)
             {
@@ -467,9 +540,10 @@ namespace SaladSlicer.Core.Slicers
         /// <summary>
         /// Gets the interpolated path as a single curve
         /// </summary>
+        [Obsolete("This property is obsolete. Use the method GetInterPolatedPath() instead.", false)]
         public Curve InterpolatedPath
         {
-            get { return _interpolatedPath; }
+            get { return this.GetInterpolatedPath(); }
         }
 
         /// <summary>
@@ -528,6 +602,15 @@ namespace SaladSlicer.Core.Slicers
         public Point3d PointAtEnd
         {
             get { return this.FrameAtEnd.Origin; }
+        }
+
+        /// <summary>
+        /// Gets or set a value indicating whether or not the path direction is reversed.
+        /// </summary>
+        public bool Reverse
+        {
+            get { return _reverse; }
+            set { _reverse = value; }
         }
         #endregion
     }
