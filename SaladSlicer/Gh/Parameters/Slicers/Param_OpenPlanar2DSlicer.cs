@@ -48,7 +48,7 @@ namespace SaladSlicer.Gh.Parameters.Slicers
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.Parameter_Icon; }
+            get { return Properties.Resources.Param_OpenPlanar2DSlicer_Icon; }
         }
 
         /// <summary>

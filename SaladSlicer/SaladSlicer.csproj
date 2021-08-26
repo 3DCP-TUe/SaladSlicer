@@ -91,6 +91,11 @@
     <Compile Include="Gh\Components\Geometry\JoinClosedCurvesComponent.cs" />
     <Compile Include="Gh\Components\Geometry\SeamsAtClosestPointComponent.cs" />
     <Compile Include="Gh\Components\Slicers\ClosedPlanar3DSlicerComponent.cs" />
+    <Compile Include="Gh\Components\Slicers\GetFramesComponent.cs" />
+    <Compile Include="Gh\Components\Slicers\GetEndFramesComponent.cs" />
+    <Compile Include="Gh\Components\Slicers\GetPathComponent.cs" />
+    <Compile Include="Gh\Components\Slicers\GetLinerazedPathComponent.cs" />
+    <Compile Include="Gh\Components\Slicers\GetInterpolatedPathComponent.cs" />
     <Compile Include="Gh\Components\Slicers\OpenPlanar2DSlicerComponent.cs" />
     <Compile Include="Gh\Components\Slicers\CurveSlicerComponent.cs" />
     <Compile Include="Gh\Components\Slicers\ClosedPlanar2DSlicerComponent.cs" />
@@ -136,7 +141,21 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\2.5D.png" />
-    <None Include="Resources\saladSlicer_Icon.png" />
+    <None Include="Resources\Param_CodeLine_Icon.png" />
+    <None Include="Resources\Param_CurveSlicer_Icon.png" />
+    <None Include="Resources\Param_OpenPlanar2DSlicer_Icon.png" />
+    <None Include="Resources\OpenPlanar2DSlicer_Icon.png" />
+    <None Include="Resources\CurveSlicer_Icon.png" />
+    <None Include="Resources\DeconstructCurveSlicer_Icon.png" />
+    <None Include="Resources\DeconstructOpenPlanar2DSlicer_Icon.png" />
+    <None Include="Resources\ClosedPlanar3DSlicer_Icon.png" />
+    <None Include="Resources\Param_ClosedPlanar3DSlicer_Icon.png" />
+    <None Include="Resources\Param_ClosedPlanar2DSlicer_Icon.png" />
+    <None Include="Resources\ClosedPlanar2DSlicer_Icon.png" />
+    <None Include="Resources\DeconstructClosedPlanar3DSlicer_Icon.png" />
+    <None Include="Resources\DeconstructClosedPlanar2DSlicer_Icon.png" />
+    <None Include="Resources\DeconstructProgramObject_Icon.png" />
+    <None Include="Resources\Info_Icon.png" />
     <None Include="Resources\SetFeedRate_Icon.png" />
     <None Include="Resources\AbsoluteCoordinate_Icon.png" />
     <None Include="Resources\CodeLine_Icon.png" />

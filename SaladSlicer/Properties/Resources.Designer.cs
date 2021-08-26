@@ -73,6 +73,26 @@ namespace SaladSlicer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap ClosedPlanar2DSlicer_Icon {
+            get {
+                object obj = ResourceManager.GetObject("ClosedPlanar2DSlicer_Icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ClosedPlanar3DSlicer_Icon {
+            get {
+                object obj = ResourceManager.GetObject("ClosedPlanar3DSlicer_Icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap CodeGeneratorIcon {
             get {
                 object obj = ResourceManager.GetObject("CodeGeneratorIcon", resourceCulture);
@@ -93,9 +113,139 @@ namespace SaladSlicer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap CurveSlicer_Icon {
+            get {
+                object obj = ResourceManager.GetObject("CurveSlicer_Icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap DeconstructClosedPlanar2DSlicer_Icon {
+            get {
+                object obj = ResourceManager.GetObject("DeconstructClosedPlanar2DSlicer_Icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap DeconstructClosedPlanar3DSlicer_Icon {
+            get {
+                object obj = ResourceManager.GetObject("DeconstructClosedPlanar3DSlicer_Icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap DeconstructCurveSlicer_Icon {
+            get {
+                object obj = ResourceManager.GetObject("DeconstructCurveSlicer_Icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap DeconstructOpenPlanar2DSlicer_Icon {
+            get {
+                object obj = ResourceManager.GetObject("DeconstructOpenPlanar2DSlicer_Icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap DeconstructProgramObject_Icon {
+            get {
+                object obj = ResourceManager.GetObject("DeconstructProgramObject_Icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap ExampleIcon {
             get {
                 object obj = ResourceManager.GetObject("ExampleIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Info_Icon {
+            get {
+                object obj = ResourceManager.GetObject("Info_Icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap OpenPlanar2DSlicer_Icon {
+            get {
+                object obj = ResourceManager.GetObject("OpenPlanar2DSlicer_Icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Param_ClosedPlanar2DSlicer_Icon {
+            get {
+                object obj = ResourceManager.GetObject("Param_ClosedPlanar2DSlicer_Icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Param_ClosedPlanar3DSlicer_Icon {
+            get {
+                object obj = ResourceManager.GetObject("Param_ClosedPlanar3DSlicer_Icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Param_CodeLine_Icon {
+            get {
+                object obj = ResourceManager.GetObject("Param_CodeLine_Icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Param_CurveSlicer_Icon {
+            get {
+                object obj = ResourceManager.GetObject("Param_CurveSlicer_Icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Param_OpenPlanar2DSlicer_Icon {
+            get {
+                object obj = ResourceManager.GetObject("Param_OpenPlanar2DSlicer_Icon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

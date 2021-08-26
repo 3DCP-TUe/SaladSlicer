@@ -75,7 +75,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
             DA.SetData(3, slicer.SeamLength);
             DA.SetData(4, slicer.Distance);
             DA.SetDataList(5, slicer.Heights);
-            DA.SetData(6, slicer.InterpolatedPath);
+            DA.SetData(6, slicer.GetPath());
             DA.SetDataTree(7, HelperMethods.ListInListToDataTree(slicer.FramesByLayer));
             DA.SetData(8, slicer.FrameAtStart);
             DA.SetData(9, slicer.FrameAtEnd);
@@ -102,7 +102,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.ExampleIcon; }
+            get { return Properties.Resources.DeconstructClosedPlanar3DSlicer_Icon; }
         }
 
         /// <summary>
