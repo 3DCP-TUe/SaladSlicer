@@ -231,7 +231,7 @@ namespace SaladSlicer.Core.Slicers
         {
             _contours[0] = Locations.SeamAtLength(_contours[0], _seamLocation, true);
             _contours = Locations.SeamsAtClosestPoint(_contours);
-            _path = Curves.InterpolatedTransitions(_contours, _seamLength, 0.0, _distance);
+            _path = Transitions.InterpolatedTransitions(_contours, _seamLength, 0.25 * _distance);
         }
 
         /// <summary>

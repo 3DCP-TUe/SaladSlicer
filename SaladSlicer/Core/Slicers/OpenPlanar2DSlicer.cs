@@ -12,6 +12,7 @@ using Rhino.Geometry;
 // Slicer Salad Libs
 using SaladSlicer.Core.CodeGeneration;
 using SaladSlicer.Core.Geometry;
+using SaladSlicer.Core.Geometry.Seams;
 
 namespace SaladSlicer.Core.Slicers
 {
@@ -149,7 +150,7 @@ namespace SaladSlicer.Core.Slicers
         private void CreatePath()
         {
             _path.Clear();
-            _path = Curves.WeaveCurves(_contours, Curves.LinearTransitions(_contours));
+            _path = Curves.WeaveCurves(_contours, Transitions.LinearTransitions(_contours));
         }
 
         /// <summary>
@@ -260,7 +261,7 @@ namespace SaladSlicer.Core.Slicers
                 curves.Add(Curve.CreateInterpolatedCurve(points[i], 3, CurveKnotStyle.Chord));
             }
 
-            curves = Curves.WeaveCurves(curves, Curves.LinearTransitions(curves));
+            curves = Curves.WeaveCurves(curves, Transitions.LinearTransitions(curves));
 
             Curve result = Curve.JoinCurves(curves)[0];
 

@@ -18,6 +18,11 @@ namespace SaladSlicer.Core.Enumerations
         /// <summary>
         /// Bezier transition
         /// </summary>
-        Bezier = 1
+        Bezier = 1,
+
+        /// <summary>
+        /// Bezier transition
+        /// </summary>
+        Interpolated = 2,
     }
 }
