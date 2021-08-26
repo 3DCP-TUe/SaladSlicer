@@ -121,6 +121,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SaladSlicerIcon.cs" />
     <Compile Include="SaladSlicerInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -135,6 +136,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\2.5D.png" />
+    <None Include="Resources\saladSlicer_Icon.png" />
     <None Include="Resources\SetFeedRate_Icon.png" />
     <None Include="Resources\AbsoluteCoordinate_Icon.png" />
     <None Include="Resources\CodeLine_Icon.png" />
