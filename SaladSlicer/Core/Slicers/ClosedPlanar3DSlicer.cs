@@ -31,6 +31,7 @@ namespace SaladSlicer.Core.Slicers
         private readonly List<List<Plane>> _framesByLayer = new List<List<Plane>>() { };
         private double _seamLocation;
         private double _seamLength;
+        private bool _reverse;
 
         #endregion
 
@@ -50,14 +51,16 @@ namespace SaladSlicer.Core.Slicers
         /// <param name="parameter"> The parameter of the starting point. </param>
         /// <param name="length"> The length of the seam between two layers. </param>
         /// <param name="distance"> The desired distance between two frames. </param>
+        /// <param name="reverse"> Indicates if the path direction will be reversed. </param>
         /// <param name="heights"> A list with absolute layer heights. </param>
-        public ClosedPlanar3DSlicer(Mesh mesh, double parameter, double length, double distance, List<double> heights)
+        public ClosedPlanar3DSlicer(Mesh mesh, double parameter, double length, double distance, bool reverse, List<double> heights)
         {
             _mesh = mesh;
             _heights = heights;
             _seamLocation = parameter;
             _seamLength = length;
             _distance = distance;
+            _reverse = reverse;
         }
 
         /// <summary>
@@ -68,14 +71,16 @@ namespace SaladSlicer.Core.Slicers
         /// <param name="length"> The length of the seam between two layers. </param>
         /// <param name="distance"> The desired distance between two frames. </param>
         /// <param name="height"> The layer height. </param>
+        /// <param name="reverse"> Indicates if the path direction will be reversed. </param>
         /// <param name="layers"> The number of layers. </param>
-        public ClosedPlanar3DSlicer(Mesh mesh, double parameter, double length, double distance, double height, int layers)
+        public ClosedPlanar3DSlicer(Mesh mesh, double parameter, double length, double distance, double height, bool reverse, int layers)
         {
             _mesh = mesh;
             _heights.AddRange(Enumerable.Repeat(height, layers).ToList());
             _seamLocation = parameter;
             _seamLength = length;
             _distance = distance;
+            _reverse = reverse;
         }
 
         /// <summary>
@@ -92,6 +97,7 @@ namespace SaladSlicer.Core.Slicers
             _path = slicer.Path.ConvertAll(curve => curve.DuplicateCurve());
             _contours = slicer.Contours.ConvertAll(curve => curve.DuplicateCurve());
             _interpolatedPath = slicer.InterpolatedPath.DuplicateCurve();
+            _reverse = slicer.Reverse;
 
             _framesByLayer = new List<List<Plane>>();
 
@@ -209,6 +215,15 @@ namespace SaladSlicer.Core.Slicers
             }
 
             _contours = Curves.AlignContours(_contours);
+
+            // Reverse the contours
+            if (_reverse == true)
+            {
+                for (int i = 0; i < _contours.Count; i++)
+                {
+                    _contours[i].Reverse();
+                }
+            }
         }
 
         /// <summary>
@@ -582,6 +597,15 @@ namespace SaladSlicer.Core.Slicers
         public Point3d PointAtEnd
         {
             get { return this.FrameAtEnd.Origin; }
+        }
+
+        /// <summary>
+        /// Gets or set a value indicating whether or not the path direction is reversed.
+        /// </summary>
+        public bool Reverse
+        {
+            get { return _reverse; }
+            set { _reverse = value; }
         }
         #endregion
     }

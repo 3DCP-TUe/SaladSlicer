@@ -42,6 +42,7 @@ namespace SaladSlicer.Gh.Components.Slicers
             pManager.AddNumberParameter("Seam Location", "F", "Seam location defined as a normalized length factor of the contour.", GH_ParamAccess.item, 0.0);
             pManager.AddNumberParameter("Seam Length", "L", "Seam length as a Number.", GH_ParamAccess.item, 100.0);
             pManager.AddNumberParameter("Distance", "D", "Distance between frames as a Number", GH_ParamAccess.item, 20.0);
+            pManager.AddBooleanParameter("Reverse", "R", "Reverse path direction", GH_ParamAccess.item, false);
             pManager.AddNumberParameter("Heights", "H", "Layer heights a list with Numbers.", GH_ParamAccess.list);
         }
 
@@ -64,6 +65,7 @@ namespace SaladSlicer.Gh.Components.Slicers
             double seamLocation = 0.0;
             double seamLength = 100.0;
             double distance = 20.0;
+            bool reverse = false;
             List<double> heights = new List<double>();
 
             // Access the input parameters individually. 
@@ -71,7 +73,8 @@ namespace SaladSlicer.Gh.Components.Slicers
             if (!DA.GetData(1, ref seamLocation)) return;
             if (!DA.GetData(2, ref seamLength)) return;
             if (!DA.GetData(3, ref distance)) return;
-            if (!DA.GetDataList(4, heights)) return;
+            if (!DA.GetData(4, ref reverse)) return;
+            if (!DA.GetDataList(5, heights)) return;
 
             // Check input values
             if (seamLocation < 0.0) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Parameter value is not in the range of 0 to 1."); }
@@ -79,7 +82,7 @@ namespace SaladSlicer.Gh.Components.Slicers
             if (distance <= 0.0) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "The distance between two frames cannot be smaller than or equal to zero."); }
 
             // Create the slicer object
-            ClosedPlanar3DSlicer slicer = new ClosedPlanar3DSlicer(mesh, seamLocation, seamLength, distance, heights);
+            ClosedPlanar3DSlicer slicer = new ClosedPlanar3DSlicer(mesh, seamLocation, seamLength, distance, reverse, heights);
             slicer.Slice();
 
             // Assign the output parameters
