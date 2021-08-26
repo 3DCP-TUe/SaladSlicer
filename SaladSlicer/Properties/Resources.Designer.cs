@@ -383,6 +383,16 @@ namespace SaladSlicer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap saladSlicer_Icon {
+            get {
+                object obj = ResourceManager.GetObject("saladSlicer_Icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap SeamAtClosestPoint_Icon {
             get {
                 object obj = ResourceManager.GetObject("SeamAtClosestPoint_Icon", resourceCulture);
