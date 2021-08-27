@@ -8,7 +8,19 @@ namespace SaladSlicer.Core.Enumerations
     /// <summary>
     /// Defines the transition type between two layers.
     /// </summary>
-    public enum Transition : int
+    public enum OpenTransition : int
+    {
+        /// <summary>
+        /// Linear transitions
+        /// </summary>
+        Linear = 0,
+
+        /// <summary>
+        /// Bezier transition
+        /// </summary>
+        Bezier = 1,
+    }
+    public enum ClosedTransition : int
     {
         /// <summary>
         /// Linear transitions

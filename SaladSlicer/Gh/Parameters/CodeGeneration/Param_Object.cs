@@ -27,7 +27,7 @@ namespace SaladSlicer.Gh.Parameters.CodeGeneration
         public Param_Object()
           : base(new GH_InstanceDescription("Program Object", // Parameter name
               "PO", // Component nickname
-              "Defines a Progran Bbject.", // Description
+              "Defines a Progran Object.", // Description
               "Salad Slicer", // Category
               "Parameters")) // Subcategory)
         { 

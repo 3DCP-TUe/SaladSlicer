@@ -31,7 +31,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         public JoinOpenCurvesComponent()
           : base("Join Open Curves", // Component name
               "JOC", // Component nickname
-              "Joins a list of open curves between end and start points. Alternation false keeps the original directions of the curves, while alternation true flips every other curve in the list.", // Description
+              "Joins a list of open curves between end and start points. Connection type 'Linear' connects the curves with the shortest path and 'Bezier' interpolates between the curves smoothly.", // Description
               "Salad Slicer", // Category
               "Geometry") // Subcategory
         {
@@ -52,6 +52,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
             pManager.AddCurveParameter("Curve", "C", "Joined curve.", GH_ParamAccess.item);
+            pManager.AddCurveParameter("Connections", "C", "List of connections between input curves.", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -61,7 +62,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             //Create a value list
-            _expire = HelperMethods.CreateValueList(this, 1, typeof(Transition));
+            _expire = HelperMethods.CreateValueList(this, 1, typeof(OpenTransition));
 
             // Expire solution of this component
             if (_expire == true)
@@ -74,6 +75,7 @@ namespace SaladSlicer.Gh.Components.Geometry
             List<Curve> curves = new List<Curve>();
             int type = new int();
             Curve joinedCurve;
+            List<Curve> transitions=new List<Curve>();
 
             // Access the input parameters individually. 
             if (!DA.GetDataList(0, curves)) return;
@@ -82,11 +84,11 @@ namespace SaladSlicer.Gh.Components.Geometry
             // Create the code line            
             if (type == 0)
             {
-                joinedCurve = Transitions.JoinLinear(curves);
+                (joinedCurve,transitions) = Transitions.JoinLinear(curves);
             }
             else if (type == 1)
             {
-                joinedCurve = Transitions.JoinBezier(curves);
+                (joinedCurve, transitions) = Transitions.JoinBezier(curves);
             }
             else
             {
@@ -95,6 +97,7 @@ namespace SaladSlicer.Gh.Components.Geometry
 
             // Assign the output parameters
             DA.SetData(0, joinedCurve);
+            DA.SetDataList(1, transitions);
         }
         
         /// <summary>
