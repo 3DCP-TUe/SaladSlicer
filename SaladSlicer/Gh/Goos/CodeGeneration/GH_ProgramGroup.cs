@@ -7,6 +7,7 @@
 using Grasshopper.Kernel.Types;
 // Salad Slicer Libs
 using SaladSlicer.Core.CodeGeneration;
+using SaladSlicer.Core.Interfaces;
 
 namespace SaladSlicer.Gh.Goos.CodeGeneration
 {
@@ -97,6 +98,20 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
             if (typeof(Q).IsAssignableFrom(typeof(GH_ProgramGroup)))
             {
                 target = (Q)(object)new GH_ProgramGroup(this.Value);
+                return true;
+            }
+
+            // Cast to IProgram
+            if (typeof(Q).IsAssignableFrom(typeof(IProgram)))
+            {
+                target = (Q)(object)this.Value;
+                return true;
+            }
+
+            // Cast to IProgram Goo
+            if (typeof(Q).IsAssignableFrom(typeof(GH_ProgramObject)))
+            {
+                target = (Q)(object)new GH_ProgramObject(this.Value);
                 return true;
             }
 

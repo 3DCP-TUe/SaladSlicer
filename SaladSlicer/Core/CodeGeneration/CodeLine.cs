@@ -7,6 +7,8 @@
 using System;
 using System.Runtime.Serialization;
 using System.Security.Permissions;
+// Salad Libs
+using SaladSlicer.Core.Interfaces;
 
 namespace SaladSlicer.Core.CodeGeneration
 {

@@ -64,10 +64,11 @@
     <Compile Include="Core\Geometry\Curves.cs" />
     <Compile Include="Core\CodeGeneration\FeedRate.cs" />
     <Compile Include="Core\CodeGeneration\AbsoluteCoordinate.cs" />
-    <Compile Include="Core\Slicers\ISlicer.cs" />
+    <Compile Include="Core\Interfaces\IGeometry.cs" />
+    <Compile Include="Core\Interfaces\ISlicer.cs" />
     <Compile Include="Core\CodeGeneration\ProgramGenerator.cs" />
     <Compile Include="Core\CodeGeneration\CodeLine.cs" />
-    <Compile Include="Core\CodeGeneration\IProgram.cs" />
+    <Compile Include="Core\Interfaces\IProgram.cs" />
     <Compile Include="Core\Enumerations\Enumerations.cs" />
     <Compile Include="Core\Geometry\Seams\Transitions.cs" />
     <Compile Include="Core\Geometry\Seams\Locations.cs" />

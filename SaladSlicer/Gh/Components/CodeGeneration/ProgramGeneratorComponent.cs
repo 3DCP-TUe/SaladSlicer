@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using Grasshopper.Kernel;
 // Salad Slicer Libs
 using SaladSlicer.Core.CodeGeneration;
+using SaladSlicer.Core.Interfaces;
 
 namespace SaladSlicer.Gh.Components.CodeGeneration
 {

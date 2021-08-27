@@ -9,6 +9,7 @@ using Grasshopper.Kernel.Types;
 using Rhino.Geometry;
 // Salad Slicer Libs
 using SaladSlicer.Core.CodeGeneration;
+using SaladSlicer.Core.Interfaces;
 
 namespace SaladSlicer.Gh.Goos.CodeGeneration
 {
@@ -99,6 +100,20 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
             if (typeof(Q).IsAssignableFrom(typeof(GH_AbsoluteCoordinate)))
             {
                 target = (Q)(object)new GH_AbsoluteCoordinate(this.Value);
+                return true;
+            }
+
+            // Cast to IProgram
+            if (typeof(Q).IsAssignableFrom(typeof(IProgram)))
+            {
+                target = (Q)(object)this.Value;
+                return true;
+            }
+
+            // Cast to IProgram Goo
+            if (typeof(Q).IsAssignableFrom(typeof(GH_ProgramObject)))
+            {
+                target = (Q)(object)new GH_ProgramObject(this.Value);
                 return true;
             }
 

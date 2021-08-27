@@ -3,7 +3,10 @@
 // Free Software Foundation. For more information and the LICENSE file, 
 // see <https://github.com/3DCP-TUe/SaladSlicer>.
 
-namespace SaladSlicer.Core.CodeGeneration
+// Salad Libs
+using SaladSlicer.Core.CodeGeneration;
+
+namespace SaladSlicer.Core.Interfaces
 {
     /// <summary>
     /// Represents the interface for all classes that can generate code lines for a program.

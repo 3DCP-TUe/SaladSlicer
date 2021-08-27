@@ -9,6 +9,7 @@ using System;
 using Grasshopper.Kernel;
 // Salad Slicer Libs
 using SaladSlicer.Core.Slicers;
+using SaladSlicer.Core.Interfaces;
 using SaladSlicer.Gh.Parameters.Slicers;
 using SaladSlicer.Gh.Utils;
 

@@ -11,6 +11,7 @@ using Grasshopper.Kernel;
 // Salad Slicer Libs
 using SaladSlicer.Core.CodeGeneration;
 using SaladSlicer.Gh.Parameters.CodeGeneration;
+using SaladSlicer.Core.Interfaces;
 
 namespace SaladSlicer.Gh.Components.CodeGeneration
 {

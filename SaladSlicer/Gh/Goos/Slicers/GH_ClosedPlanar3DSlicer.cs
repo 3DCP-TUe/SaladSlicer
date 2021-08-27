@@ -12,6 +12,7 @@ using Grasshopper.Kernel.Types;
 using SaladSlicer.Core.CodeGeneration;
 using SaladSlicer.Core.Slicers;
 using SaladSlicer.Gh.Goos.CodeGeneration;
+using SaladSlicer.Core.Interfaces;
 
 namespace SaladSlicer.Gh.Goos.Slicers
 {
@@ -100,14 +101,14 @@ namespace SaladSlicer.Gh.Goos.Slicers
                 return false;
             }
 
-            // Cast to IObject
+            // Cast to ISlicer
             if (typeof(Q).IsAssignableFrom(typeof(ISlicer)))
             {
                 target = (Q)(object)this.Value;
                 return true;
             }
 
-            // Cast to IObject Goo
+            // Cast to ISlicer Goo
             if (typeof(Q).IsAssignableFrom(typeof(GH_SlicerObject)))
             {
                 target = (Q)(object)new GH_SlicerObject(this.Value);
@@ -182,7 +183,7 @@ namespace SaladSlicer.Gh.Goos.Slicers
                 return true;
             }
 
-            // Cast from IObject
+            // Cast from ISlicer
             if (typeof(ISlicer).IsAssignableFrom(source.GetType()))
             {
                 if (source is ClosedPlanar3DSlicer slicer)
@@ -192,7 +193,7 @@ namespace SaladSlicer.Gh.Goos.Slicers
                 }
             }
 
-            // Cast from IObject Goo 
+            // Cast from ISlicer Goo 
             if (typeof(GH_SlicerObject).IsAssignableFrom(source.GetType()))
             {
                 GH_SlicerObject goo = source as GH_SlicerObject;

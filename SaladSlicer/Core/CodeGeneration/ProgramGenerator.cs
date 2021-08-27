@@ -7,6 +7,7 @@
 using System.Collections.Generic;
 // Salad Slicer Libs
 using SaladSlicer.Core.Utils;
+using SaladSlicer.Core.Interfaces;
 
 namespace SaladSlicer.Core.CodeGeneration
 {

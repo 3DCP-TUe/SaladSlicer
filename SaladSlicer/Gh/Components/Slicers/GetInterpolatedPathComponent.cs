@@ -8,8 +8,8 @@ using System;
 // Grasshopper Libs
 using Grasshopper.Kernel;
 // Salad Slicer Libs
-using SaladSlicer.Core.CodeGeneration;
 using SaladSlicer.Core.Slicers;
+using SaladSlicer.Core.Interfaces;
 using SaladSlicer.Gh.Parameters.Slicers;
 
 namespace SaladSlicer.Gh.Components.Slicers

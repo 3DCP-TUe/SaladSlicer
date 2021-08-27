@@ -3,6 +3,9 @@
 // Free Software Foundation. For more information and the LICENSE file, 
 // see <https://github.com/3DCP-TUe/SaladSlicer>.
 
+// Salad Libs
+using SaladSlicer.Core.Interfaces;
+
 namespace SaladSlicer.Core.CodeGeneration
 {
     /// <summary>

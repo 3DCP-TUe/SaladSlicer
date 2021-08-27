@@ -10,6 +10,7 @@ using Grasshopper.Kernel;
 // Salad Slicer Libs
 using SaladSlicer.Core.Slicers;
 using SaladSlicer.Gh.Parameters.Slicers;
+using SaladSlicer.Core.Interfaces;
 
 namespace SaladSlicer.Gh.Components.Slicers
 {
