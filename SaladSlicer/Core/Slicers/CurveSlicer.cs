@@ -42,6 +42,10 @@ namespace SaladSlicer.Core.Slicers
             _distance = distance;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the Curve Slocer class by duplicating an existing Curve Slicer instance. 
+        /// </summary>
+        /// <param name="slicer"> The Curve Slicer instance to duplicate. </param>
         public CurveSlicer(CurveSlicer slicer)
         {
             _curve = slicer.Curve.DuplicateCurve();
@@ -56,6 +60,15 @@ namespace SaladSlicer.Core.Slicers
         public CurveSlicer Duplicate()
         {
             return new CurveSlicer(this);
+        }
+
+        /// <summary>
+        /// Returns an exact duplicate of this Planar 2D Slicer instance as an IProgram.
+        /// </summary>
+        /// <returns> The exact duplicate of this Planar 2D Slicer instance as an IProgram. </returns>
+        public IProgram DuplicateProgramObject()
+        {
+            return this.Duplicate() as IProgram;
         }
 
         /// <summary>

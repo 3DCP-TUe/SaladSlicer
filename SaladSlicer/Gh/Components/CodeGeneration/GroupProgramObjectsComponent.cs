@@ -5,6 +5,7 @@
 
 // System Libs
 using System;
+using System.Collections.Generic;
 // Grasshopper Libs
 using Grasshopper.Kernel;
 // Salad Slicer Libs
@@ -14,17 +15,17 @@ using SaladSlicer.Gh.Parameters.CodeGeneration;
 namespace SaladSlicer.Gh.Components.CodeGeneration
 {
     /// <summary>
-    /// Represent a component that generates a custom Code Line.
+    /// Represent a component that generates a set with program objects.
     /// </summary>
-    public class CodeLineComponent : GH_Component
+    public class GroupProgramObjectsComponent : GH_Component
     {
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public CodeLineComponent()
-          : base("Code Line", // Component name
-              "CL", // Component nickname
-              "Defines a custom (user-defined) code line.", // Description
+        public GroupProgramObjectsComponent()
+          : base("Group Program Objects", // Component name
+              "GO", // Component nickname
+              "Groups a set of program objects.", // Description
               "Salad Slicer", // Category
               "Code Generation") // Subcategory
         {
@@ -35,7 +36,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddTextParameter("Text", "T", "Text to create Program Object.", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Program Objects", "PO", "Program objects to group.", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -43,7 +44,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddParameter(new Param_CodeLine(), "Program Line", "PL", "Custom code line as a Program Line.", GH_ParamAccess.item);
+            pManager.AddParameter(new Param_ProgramGroup(), "Program Group", "G", "Group with program objects", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -53,16 +54,16 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             // Declare variable of input parameters
-            string code = "";
+            List<IProgram> objects = new List<IProgram>();
 
             // Access the input parameters individually. 
-            if (!DA.GetData(0, ref code)) return;
+            if (!DA.GetDataList(0, objects)) return;
 
             // Create the code line
-            CodeLine codeLine = new CodeLine(code);
+            ProgramGroup group = new ProgramGroup(objects);
 
             // Assign the output parameters
-            DA.SetData(0, codeLine);
+            DA.SetData(0, group);
         }
 
         /// <summary>
@@ -70,7 +71,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         public override GH_Exposure Exposure
         {
-            get { return GH_Exposure.primary; }
+            get { return GH_Exposure.senary; }
         }
 
         /// <summary>
@@ -86,7 +87,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.CodeLine_Icon; }
+            get { return Properties.Resources.ExampleIcon; }
         }
 
         /// <summary>
@@ -95,7 +96,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("87023584-452A-41B1-BFD4-24AEF09DC9F2"); }
+            get { return new Guid("37ADA3D1-AED5-48BF-B9E9-300B82F0205E"); }
         }
     }
 }

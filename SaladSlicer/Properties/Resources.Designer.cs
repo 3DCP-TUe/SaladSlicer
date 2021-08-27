@@ -443,29 +443,9 @@ namespace SaladSlicer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap SaladLogo_Icon {
-            get {
-                object obj = ResourceManager.GetObject("SaladLogo_Icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap SaladLogo_Icon2 {
             get {
                 object obj = ResourceManager.GetObject("SaladLogo_Icon2", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap saladSlicer_Icon {
-            get {
-                object obj = ResourceManager.GetObject("saladSlicer_Icon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
