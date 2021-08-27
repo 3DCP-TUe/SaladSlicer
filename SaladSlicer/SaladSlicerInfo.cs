@@ -19,7 +19,7 @@ namespace SaladSlicer
         }
         public override Bitmap Icon
         {
-            get { return Properties.Resources.saladSlicer_Icon; }
+            get { return Properties.Resources.SaladLogo_Icon2; }
         }
         public override string Description
         {
