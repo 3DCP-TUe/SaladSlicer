@@ -11,9 +11,9 @@ using SaladSlicer.Core.CodeGeneration;
 namespace SaladSlicer.Gh.Goos.CodeGeneration
 {
     /// <summary>
-    /// Represents the GH_ProgramGroup class.
+    /// Represents the GH_CodeLine class.
     /// </summary>
-    public class GH_ProgramGroup : GH_Goo<ProgramGroup>
+    public class GH_CodeLine : GH_Goo<CodeLine>
     {
         #region (de)serialisation
         //TODO
@@ -21,35 +21,35 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
 
         #region constructors
         /// <summary>
-        /// Initializes an empty instance of the GH_ProgramGroup class.
+        /// Initializes an empty instance of the GH_CodeLine class.
         /// </summary>
-        public GH_ProgramGroup()
+        public GH_CodeLine()
         {
             this.Value = null;
         }
 
         /// <summary>
-        /// Initializes a new Program Group Goo instance from a Program Group instance.
+        /// Initializes a new Code Line Goo instance from a Code Line instance.
         /// </summary>
-        /// <param name="programGroup"> Program Group Value to store inside this Goo instance. </param>
-        public GH_ProgramGroup(ProgramGroup programGroup)
+        /// <param name="codeLine"> Code Line Value to store inside this Goo instance. </param>
+        public GH_CodeLine(CodeLine codeLine)
         {
-            this.Value = programGroup;
+            this.Value = codeLine;
         }
 
         /// <summary>
         /// Returns a complete duplicate of this Goo instance.
         /// </summary>
-        /// <returns> A duplicate of the Program Group Goo. </returns>
+        /// <returns> A duplicate of the Code Line Goo. </returns>
         public override IGH_Goo Duplicate()
         {
             if (this.Value == null)
             {
-                return new GH_ProgramGroup();
+                return new GH_CodeLine();
             }
             else
             {
-                return new GH_ProgramGroup(this.Value.Duplicate());
+                return new GH_CodeLine(this.Value.Duplicate());
             }
         }
         #endregion
@@ -63,7 +63,7 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
         {
             if (this.Value == null)
             {
-                return "Null Program Group";
+                return "Null Code Line";
             }
             else
             {
@@ -86,17 +86,17 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
                 return false;
             }
 
-            // Cast to Program Group
-            if (typeof(Q).IsAssignableFrom(typeof(ProgramGroup)))
+            // Cast to Code Line
+            if (typeof(Q).IsAssignableFrom(typeof(CodeLine)))
             {
                 target = (Q)(object)this.Value;
                 return true;
             }
 
-            // Cast to Program Group Goo
-            if (typeof(Q).IsAssignableFrom(typeof(GH_ProgramGroup)))
+            // Cast to Code Line Goo
+            if (typeof(Q).IsAssignableFrom(typeof(GH_CodeLine)))
             {
-                target = (Q)(object)new GH_ProgramGroup(this.Value);
+                target = (Q)(object)new GH_CodeLine(this.Value);
                 return true;
             }
 
@@ -118,10 +118,18 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
                 return false; 
             }
 
-            // Cast from Program Group
-            if (typeof(ProgramGroup).IsAssignableFrom(source.GetType()))
+            // Cast from Code Line
+            if (typeof(CodeLine).IsAssignableFrom(source.GetType()))
             {
-                this.Value = source as ProgramGroup;
+                this.Value = source as CodeLine;
+                return true;
+            }
+
+            // Cast from Text
+            if (typeof(GH_String).IsAssignableFrom(source.GetType()))
+            {
+                GH_String goo = source as GH_String;
+                this.Value = new CodeLine(goo.Value);
                 return true;
             }
 
@@ -151,9 +159,9 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
         {
             get
             {
-                if (this.Value == null) { return "No internal Program Group instance"; }
+                if (this.Value == null) { return "No internal Code Line instance"; }
                 if (this.Value.IsValid) { return string.Empty; }
-                return "Invalid Program Group instance: Did you define a Text?";
+                return "Invalid Code Line instance: Did you define a Text?";
             }
         }
 
@@ -162,7 +170,7 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
         /// </summary>
         public override string TypeDescription
         {
-            get { return "Defines a Program Group."; }
+            get { return "Defines a Code Line."; }
         }
 
         /// <summary>
@@ -170,7 +178,7 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
         /// </summary>
         public override string TypeName
         {
-            get { return "Program Group"; }
+            get { return "Code Line"; }
         }
         #endregion
     }

@@ -34,6 +34,33 @@ namespace SaladSlicer.Core.CodeGeneration
         {
             _plane = plane;
         }
+
+        /// <summary>
+        /// Initializes a new instance of the Absolute Coordinate class by duplicating an existing Absolute Coordinate instance. 
+        /// </summary>
+        /// <param name="absoluteCoordinate"> The Absolute Coordinate instance to duplicate. </param>
+        public AbsoluteCoordinate(AbsoluteCoordinate absoluteCoordinate)
+        {
+            _plane = absoluteCoordinate.Plane;
+        }
+
+        /// <summary>
+        /// Returns an exact duplicate of this Absolute Coordinate instance.
+        /// </summary>
+        /// <returns> The exact duplicate of this Absolute Coordinate instance. </returns>
+        public AbsoluteCoordinate Duplicate()
+        {
+            return new AbsoluteCoordinate(this);
+        }
+
+        /// <summary>
+        /// Returns an exact duplicate of this Absolute Coordinate instance as an IProgram
+        /// </summary>
+        /// <returns> The exact duplicate of this Absolute Coordinate instance as an IProgram. </returns>
+        public IProgram DuplicateProgramObject()
+        {
+            return this.Duplicate() as IProgram;
+        }
         #endregion
 
         #region methods

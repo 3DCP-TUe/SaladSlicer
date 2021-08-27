@@ -78,6 +78,15 @@ namespace SaladSlicer.Core.CodeGeneration
         {
             return new CodeLine(this);
         }
+
+        /// <summary>
+        /// Returns an exact duplicate of this Code Line instance as an IProgram
+        /// </summary>
+        /// <returns> The exact duplicate of this Code Line instance as an IProgram. </returns>
+        public IProgram DuplicateProgramObject()
+        {
+            return this.Duplicate() as IProgram;
+        }
         #endregion
 
         #region methods

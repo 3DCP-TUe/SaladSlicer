@@ -3,57 +3,60 @@
 // Free Software Foundation. For more information and the LICENSE file, 
 // see <https://github.com/3DCP-TUe/SaladSlicer>.
 
+// System Libs
+using System.Collections.Generic;
+
 namespace SaladSlicer.Core.CodeGeneration
 {
     /// <summary>
-    /// Represents the Feed Rate.
+    /// Represents a Group of Program Objects.
     /// </summary>
-    public class FeedRate : IProgram
+    public class ProgramGroup : IProgram
     {
         #region fields
-        private double _feedRate;
+        private List<IProgram> _objects;
         #endregion
 
         #region constructors
         /// <summary>
-        /// Initializes an empty instance of the FeedRate class.
+        /// Initializes an empty instance of the ProgramGroup class.
         /// </summary>         
-        public FeedRate()
+        public ProgramGroup()
         {
-            _feedRate = double.NaN;
+            _objects = new List<IProgram>();
         }
 
         /// <summary>
-        /// Initializes a new instance of the FeedRate class.
+        /// Initializes a new instance of the ProgramGroup class.
         /// </summary>
-        /// <param name="feedRate">Double representing the velocity of movement.</param>
-        public FeedRate(double feedRate)
+        /// <param name="objects">List with program objects to store inside this group. </param>
+        public ProgramGroup(List<IProgram> objects)
         {
-            _feedRate = feedRate;
+            _objects = objects;
         }
 
         /// <summary>
-        /// Initializes a new instance of the Feed Rate class by duplicating an existing Feed Rate instance. 
+        /// 
         /// </summary>
-        /// <param name="feedRate"> The Feed Rate instance to duplicate. </param>
-        public FeedRate(FeedRate feedRate)
+        /// <param name="group"></param>
+        public ProgramGroup(ProgramGroup group)
         {
-            _feedRate = feedRate.Feedrate;
+            _objects = group.Objects; // TODO: Deep copy..
         }
 
         /// <summary>
-        /// Returns an exact duplicate of this Feed Rate instance.
+        /// Returns an exact duplicate of this Program Group instance.
         /// </summary>
-        /// <returns> The exact duplicate of this Feed Rate instance. </returns>
-        public FeedRate Duplicate()
+        /// <returns> The exact duplicate of this Program Group instance. </returns>
+        public ProgramGroup Duplicate()
         {
-            return new FeedRate(this);
+            return new ProgramGroup(this);
         }
 
         /// <summary>
-        /// Returns an exact duplicate of this Feed Rate instance as an IProgram
+        /// Returns an exact duplicate of this Program Group instance as an IProgram
         /// </summary>
-        /// <returns> The exact duplicate of this Feed Rate instance as an IProgram. </returns>
+        /// <returns> The exact duplicate of this Program Group instance as an IProgram. </returns>
         public IProgram DuplicateProgramObject()
         {
             return this.Duplicate() as IProgram;
@@ -67,7 +70,7 @@ namespace SaladSlicer.Core.CodeGeneration
         /// <returns> A string that represents the current object. </returns>
         public override string ToString()
         {
-            return $"Set Feedrate (F{_feedRate:0.###} mm/min)";
+            return "Program Group";
         }
 
         /// <summary>
@@ -76,7 +79,10 @@ namespace SaladSlicer.Core.CodeGeneration
         /// <param name="programGenerator"> The program generator. </param>
         public void ToProgram(ProgramGenerator programGenerator)
         {
-            programGenerator.Program.Add($"F{_feedRate:0.###} ; Feedrate in mm/min");
+            for (int i = 0; i < _objects.Count; i++)
+            {
+                _objects[i].ToProgram(programGenerator);
+            }
         }
         #endregion
 
@@ -88,18 +94,18 @@ namespace SaladSlicer.Core.CodeGeneration
         {
             get
             { 
-                if (_feedRate == double.NaN) { return false; } 
+                if (_objects == null) { return false; } 
                 return true;
             }
         }
 
         /// <summary>
-        /// Gets or sets the feedrate in mm/min.
+        /// Gets or sets the objects.
         /// </summary>
-        public double Feedrate
+        public List<IProgram> Objects
         {
-            get { return _feedRate; }
-            set { _feedRate = value; }
+            get { return _objects; }
+            set { _objects = value; }
         }
         #endregion
     }
