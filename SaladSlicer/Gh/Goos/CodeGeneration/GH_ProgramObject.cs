@@ -11,13 +11,14 @@ using Grasshopper.Kernel.Types;
 // Salad Slicer Libs
 using SaladSlicer.Core.CodeGeneration;
 using SaladSlicer.Core.Slicers;
+using SaladSlicer.Gh.Goos.Slicers;
 
-namespace SaladSlicer.Gh.Goos.Slicers
+namespace SaladSlicer.Gh.Goos.CodeGeneration
 {
     /// <summary>
-    /// Represents the GH_SlicerObject class.
+    /// Represents the GH_ProgramObject class.
     /// </summary>
-    public class GH_SlicerObject : GH_GeometricGoo<ISlicer>, IGH_PreviewData
+    public class GH_ProgramObject : GH_GeometricGoo<IProgram>, IGH_PreviewData
     {
         #region (de)serialisation
         //TODO
@@ -25,20 +26,20 @@ namespace SaladSlicer.Gh.Goos.Slicers
 
         #region constructors
         /// <summary>
-        /// Initializes an empty instance of the GH_SlicerObject class.
+        /// Initializes an empty instance of the GH_ProgramObject class.
         /// </summary>
-        public GH_SlicerObject()
+        public GH_ProgramObject()
         {
             this.Value = null;
         }
 
         /// <summary>
-        /// Initializes a new Slicer Oject Goo instance from an ISlicer instance.
+        /// Initializes a new Program Oject Goo instance from an IProgram instance.
         /// </summary>
-        /// <param name="slicermObject"> IObject Value to store inside this Goo instance. </param>
-        public GH_SlicerObject(ISlicer slicerObject)
+        /// <param name="programObject"> IObject Value to store inside this Goo instance. </param>
+        public GH_ProgramObject(IProgram programObject)
         {
-            this.Value = slicerObject;
+            this.Value = programObject;
         }
 
         /// <summary>
@@ -49,11 +50,11 @@ namespace SaladSlicer.Gh.Goos.Slicers
         {
             if (this.Value == null)
             {
-                return new GH_SlicerObject();
+                return new GH_ProgramObject();
             }
             else
             {
-                return new GH_SlicerObject(this.Value.DuplicateObject());
+                return new GH_ProgramObject(this.Value.DuplicateProgramObject());
             }
         }
 
@@ -76,7 +77,7 @@ namespace SaladSlicer.Gh.Goos.Slicers
         {
             if (this.Value == null)
             {
-                return "Null Slicer Object";
+                return "Null Program Object";
             }
             else
             {
@@ -99,6 +100,20 @@ namespace SaladSlicer.Gh.Goos.Slicers
                 return false;
             }
 
+            // Cast to IProgram
+            if (typeof(Q).IsAssignableFrom(typeof(IProgram)))
+            {
+                target = (Q)(object)this.Value;
+                return true;
+            }
+
+            // Cast to IProgram Goo
+            if (typeof(Q).IsAssignableFrom(typeof(GH_ProgramObject)))
+            {
+                target = (Q)(object)new GH_ProgramObject(this.Value);
+                return true;
+            }
+
             // Cast to ISlicer
             if (typeof(Q).IsAssignableFrom(typeof(ISlicer)))
             {
@@ -109,69 +124,7 @@ namespace SaladSlicer.Gh.Goos.Slicers
             // Cast to ISlicer Goo
             if (typeof(Q).IsAssignableFrom(typeof(GH_SlicerObject)))
             {
-                target = (Q)(object)new GH_SlicerObject(this.Value);
-                return true;
-            }
-
-            // Cast to IProgram
-            if (typeof(Q).IsAssignableFrom(typeof(IProgram)))
-            {
-                target = (Q)(object)this.Value;
-                return true;
-            }
-
-            // Cast to IProgram Goo
-            // if (typeof(Q).IsAssignableFrom(typeof(GH_Program)))
-            // {
-            //     target = (Q)(object)new GH_Program(this.Value);
-            //     return true;
-            // }
-
-            // Cast to OpenPlanar2DSlicer
-            if (typeof(Q).IsAssignableFrom(typeof(OpenPlanar2DSlicer)))
-            {
-                target = (Q)(object)this.Value;
-                return true;
-            }
-
-            // Cast to GH_OpenPlanar2DSlicer
-            // TODO...
-
-            // Cast to ClosedPlanar2DSlicer
-            if (typeof(Q).IsAssignableFrom(typeof(ClosedPlanar2DSlicer)))
-            {
-                target = (Q)(object)this.Value;
-                return true;
-            }
-
-            // Cast to GH_ClosedPlanar2DSlicer
-            // TODO...
-
-            // Cast to CurveSlicer
-            if (typeof(Q).IsAssignableFrom(typeof(CurveSlicer)))
-            {
-                target = (Q)(object)this.Value;
-                return true;
-            }
-
-            // Cast to CurveSlicer Goo
-            if (typeof(Q).IsAssignableFrom(typeof(GH_CurveSlicer)))
-            {
-                target = (Q)(object)new GH_CurveSlicer(this.Value as CurveSlicer);
-                return true;
-            }
-
-            // Cast to Curve
-            if (typeof(Q).IsAssignableFrom(typeof(Curve)))
-            {
-                target = (Q)(object)this.Value.GetPath();
-                return true;
-            }
-
-            // Cast to Curve Goo
-            if (typeof(Q).IsAssignableFrom(typeof(GH_Curve)))
-            {
-                target = (Q)(object)new GH_Curve(this.Value.GetPath());
+                target = (Q)(object)new GH_SlicerObject(this.Value as ISlicer);
                 return true;
             }
 
@@ -193,17 +146,17 @@ namespace SaladSlicer.Gh.Goos.Slicers
                 return false; 
             }
 
-            // Cast from IObject
-            if (typeof(ISlicer).IsAssignableFrom(source.GetType()))
+            // Cast from IProgram
+            if (typeof(IProgram).IsAssignableFrom(source.GetType()))
             {
-                this.Value = source as ISlicer;
+                this.Value = source as IProgram;
                 return true;
             }
 
-            // Cast from IObject Goo 
-            if (typeof(GH_SlicerObject).IsAssignableFrom(source.GetType()))
+            // Cast from IProgram Goo 
+            if (typeof(GH_ProgramObject).IsAssignableFrom(source.GetType()))
             {
-                GH_SlicerObject goo = source as GH_SlicerObject;
+                GH_ProgramObject goo = source as GH_ProgramObject;
                 this.Value = goo.Value;
                 return true;
             }
@@ -234,9 +187,9 @@ namespace SaladSlicer.Gh.Goos.Slicers
         {
             get
             {
-                if (this.Value == null) { return "No internal Slicer Object instance"; }
+                if (this.Value == null) { return "No internal Program Object instance"; }
                 if (this.Value.IsValid) { return string.Empty; }
-                return "Invalid Slicer Object instance.";
+                return "Invalid Program Object instance.";
             }
         }
 
@@ -245,7 +198,7 @@ namespace SaladSlicer.Gh.Goos.Slicers
         /// </summary>
         public override string TypeDescription
         {
-            get { return "Defines a Slicer Object."; }
+            get { return "Defines a Program Object."; }
         }
 
         /// <summary>
@@ -253,7 +206,7 @@ namespace SaladSlicer.Gh.Goos.Slicers
         /// </summary>
         public override string TypeName
         {
-            get { return "Slicer Object"; }
+            get { return "Program Object"; }
         }
         #endregion
 
@@ -275,11 +228,16 @@ namespace SaladSlicer.Gh.Goos.Slicers
                 return null;
             }
 
+            else if (Value is ISlicer slicer)
+            {
+                ISlicer slicerObject = slicer.DuplicateObject();
+                slicerObject.Transform(xform);
+                return new GH_ProgramObject(slicerObject as IProgram);
+            }
+
             else
             {
-                ISlicer slicerObject = Value.DuplicateObject();
-                slicerObject.Transform(xform);
-                return new GH_SlicerObject(slicerObject);
+                return null;
             }
         }
 
@@ -305,14 +263,23 @@ namespace SaladSlicer.Gh.Goos.Slicers
             if (this.Value == null)
             {
                 return BoundingBox.Empty;
-            }
-            else if (this.Value.GetPath() == null)
+            } 
+
+            else if (this.Value is ISlicer slicer)
             {
-                return BoundingBox.Empty;
+                if (slicer.GetPath() == null)
+                {
+                    return BoundingBox.Empty;
+                }
+                else
+                {
+                    return slicer.GetPath().GetBoundingBox(true);
+                }
             }
+
             else
             {
-                return this.Value.GetPath().GetBoundingBox(true);
+                return BoundingBox.Empty;
             }
         }
 
@@ -348,14 +315,17 @@ namespace SaladSlicer.Gh.Goos.Slicers
         /// <param name="args"> Drawing arguments. </param>
         public void DrawViewportWires(GH_PreviewWireArgs args)
         {
-            if (this.Value.GetPath() != null)
+            if (this.Value is ISlicer slicer)
             {
-                args.Pipeline.DrawCurve(this.Value.GetPath(), args.Color, args.Thickness);
-            }
+                if (slicer.GetPath() != null)
+                {
+                    args.Pipeline.DrawCurve(slicer.GetPath(), args.Color, args.Thickness);
+                }
 
-            if (this.Value.PointAtStart != null)
-            {
-                args.Pipeline.DrawPoint(this.Value.PointAtStart, args.Color);
+                if (slicer.PointAtStart != null)
+                {
+                    args.Pipeline.DrawPoint(slicer.PointAtStart, args.Color);
+                }
             }
         }
         #endregion

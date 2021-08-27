@@ -17,12 +17,12 @@ using SaladSlicer.Gh.Goos.Slicers;
 namespace SaladSlicer.Gh.Parameters.Slicers
 {
     /// <summary>
-    /// Represents the Param_Object class
+    /// Represents the Param_SlicerObject class
     /// </summary>
     public class Param_SlicerObject : GH_PersistentGeometryParam<GH_SlicerObject>, IGH_PreviewObject
     {
         /// <summary>
-        /// Initializes a new instance of the Param_Object class
+        /// Initializes a new instance of the Param_SlicerObject class
         /// </summary>
         public Param_SlicerObject()
           : base(new GH_InstanceDescription("Slicer Object", // Parameter name
