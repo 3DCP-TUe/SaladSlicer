@@ -66,9 +66,11 @@
     <Compile Include="Core\CodeGeneration\AbsoluteCoordinate.cs" />
     <Compile Include="Core\PathGeneration\ExitPath.cs" />
     <Compile Include="Core\Slicers\ISlicer.cs" />
+    <Compile Include="Core\Interfaces\IGeometry.cs" />
+    <Compile Include="Core\Interfaces\ISlicer.cs" />
     <Compile Include="Core\CodeGeneration\ProgramGenerator.cs" />
     <Compile Include="Core\CodeGeneration\CodeLine.cs" />
-    <Compile Include="Core\CodeGeneration\IProgram.cs" />
+    <Compile Include="Core\Interfaces\IProgram.cs" />
     <Compile Include="Core\Enumerations\Enumerations.cs" />
     <Compile Include="Core\Geometry\Seams\Transitions.cs" />
     <Compile Include="Core\Geometry\Seams\Locations.cs" />
@@ -120,6 +122,7 @@
     <Compile Include="Gh\Goos\Slicers\GH_OpenPlanar2DSlicer.cs" />
     <Compile Include="Gh\Goos\Slicers\GH_ClosedPlanar2DSlicer.cs" />
     <Compile Include="Gh\Goos\Slicers\GH_CurveSlicer.cs" />
+    <Compile Include="Gh\Goos\CodeGeneration\GH_ProgramObject.cs" />
     <Compile Include="Gh\Goos\Slicers\GH_SlicerObject.cs" />
     <Compile Include="Gh\Goos\CodeGeneration\GH_ProgramGroup.cs" />
     <Compile Include="Gh\Parameters\CodeGeneration\Param_FeedRate.cs" />
@@ -129,7 +132,8 @@
     <Compile Include="Gh\Parameters\Slicers\Param_OpenPlanar2DSlicer.cs" />
     <Compile Include="Gh\Parameters\Slicers\Param_ClosedPlanar2DSlicer.cs" />
     <Compile Include="Gh\Parameters\Slicers\Param_CurveSlicer.cs" />
-    <Compile Include="Gh\Parameters\Slicers\Param_Object.cs" />
+    <Compile Include="Gh\Parameters\CodeGeneration\Param_ProgramObject.cs" />
+    <Compile Include="Gh\Parameters\Slicers\Param_SlicerObject.cs" />
     <Compile Include="Gh\Parameters\CodeGeneration\Param_CodeLine.cs" />
     <Compile Include="Gh\Utils\HelperMethods.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -153,6 +157,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\2.5D.png" />
+    <None Include="Resources\GroupProgramObjects_Icon.png" />
+    <None Include="Resources\UnGroupProgramObjects_Icon.png" />
+    <None Include="Resources\Param_ProgramGroup_Icon.png" />
+    <None Include="Resources\Param_AbsoluteCoordinate_Icon.png" />
+    <None Include="Resources\Param_SetFeedRate_Icon.png" />
+    <None Include="Resources\SetFeedRate_Icon.png" />
+    <None Include="Resources\AbsoluteCoordinate_Icon.png" />
+    <None Include="Resources\CodeLine_Icon.png" />
     <EmbeddedResource Include="Resources\SaladLogo_Icon2.png" />
     <None Include="Resources\CodeGenerator_Icon.png" />
     <None Include="Resources\CurveFramesByDistance_Icon.png" />
@@ -186,9 +198,6 @@
     <None Include="Resources\DeconstructClosedPlanar3DSlicer_Icon.png" />
     <None Include="Resources\DeconstructClosedPlanar2DSlicer_Icon.png" />
     <None Include="Resources\Info_Icon.png" />
-    <None Include="Resources\SetFeedRate_Icon.png" />
-    <None Include="Resources\AbsoluteCoordinate_Icon.png" />
-    <None Include="Resources\CodeLine_Icon.png" />
     <None Include="Resources\CodeGeneratorIcon.png" />
     <None Include="Resources\Parameter_Icon.png" />
   </ItemGroup>

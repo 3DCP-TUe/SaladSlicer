@@ -9,9 +9,9 @@ using Rhino.Geometry;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
 // Salad Slicer Libs
-using SaladSlicer.Core.CodeGeneration;
 using SaladSlicer.Core.Slicers;
 using SaladSlicer.Gh.Goos.CodeGeneration;
+using SaladSlicer.Core.Interfaces;
 
 namespace SaladSlicer.Gh.Goos.Slicers
 {
@@ -36,7 +36,7 @@ namespace SaladSlicer.Gh.Goos.Slicers
         /// <summary>
         /// Initializes a new Slicer Oject Goo instance from an ISlicer instance.
         /// </summary>
-        /// <param name="slicermObject"> IObject Value to store inside this Goo instance. </param>
+        /// <param name="slicerObject"> ISlicer Value to store inside this Goo instance. </param>
         public GH_SlicerObject(ISlicer slicerObject)
         {
             this.Value = slicerObject;
@@ -54,7 +54,7 @@ namespace SaladSlicer.Gh.Goos.Slicers
             }
             else
             {
-                return new GH_SlicerObject(this.Value.DuplicateObject());
+                return new GH_SlicerObject(this.Value.DuplicateSlicerObject());
             }
         }
 
@@ -122,11 +122,11 @@ namespace SaladSlicer.Gh.Goos.Slicers
             }
 
             // Cast to IProgram Goo
-            // if (typeof(Q).IsAssignableFrom(typeof(GH_Program)))
-            // {
-            //     target = (Q)(object)new GH_Program(this.Value);
-            //     return true;
-            // }
+            if (typeof(Q).IsAssignableFrom(typeof(GH_ProgramObject)))
+            {
+                 target = (Q)(object)new GH_ProgramObject(this.Value as IProgram);
+                 return true;
+            }
 
             // Cast to OpenPlanar2DSlicer
             if (typeof(Q).IsAssignableFrom(typeof(OpenPlanar2DSlicer)))
@@ -136,7 +136,11 @@ namespace SaladSlicer.Gh.Goos.Slicers
             }
 
             // Cast to GH_OpenPlanar2DSlicer
-            // TODO...
+            if (typeof(Q).IsAssignableFrom(typeof(GH_OpenPlanar2DSlicer)))
+            {
+                target = (Q)(object)new GH_OpenPlanar2DSlicer(this.Value as OpenPlanar2DSlicer);
+                return true;
+            }
 
             // Cast to ClosedPlanar2DSlicer
             if (typeof(Q).IsAssignableFrom(typeof(ClosedPlanar2DSlicer)))
@@ -146,7 +150,11 @@ namespace SaladSlicer.Gh.Goos.Slicers
             }
 
             // Cast to GH_ClosedPlanar2DSlicer
-            // TODO...
+            if (typeof(Q).IsAssignableFrom(typeof(GH_ClosedPlanar2DSlicer)))
+            {
+                target = (Q)(object)new GH_ClosedPlanar2DSlicer(this.Value as ClosedPlanar2DSlicer);
+                return true;
+            }
 
             // Cast to CurveSlicer
             if (typeof(Q).IsAssignableFrom(typeof(CurveSlicer)))
@@ -194,14 +202,14 @@ namespace SaladSlicer.Gh.Goos.Slicers
                 return false; 
             }
 
-            // Cast from IObject
+            // Cast from ISlicer
             if (typeof(ISlicer).IsAssignableFrom(source.GetType()))
             {
                 this.Value = source as ISlicer;
                 return true;
             }
 
-            // Cast from IObject Goo 
+            // Cast from ISlicer Goo 
             if (typeof(GH_SlicerObject).IsAssignableFrom(source.GetType()))
             {
                 GH_SlicerObject goo = source as GH_SlicerObject;
@@ -276,11 +284,16 @@ namespace SaladSlicer.Gh.Goos.Slicers
                 return null;
             }
 
+            else if (Value is IGeometry geo)
+            {
+                IGeometry geoObject = geo.DuplicateGeometryObject();
+                geoObject.Transform(xform);
+                return new GH_SlicerObject(geoObject as ISlicer);
+            }
+            
             else
             {
-                ISlicer slicerObject = Value.DuplicateObject();
-                slicerObject.Transform(xform);
-                return new GH_SlicerObject(slicerObject);
+                return null;
             }
         }
 

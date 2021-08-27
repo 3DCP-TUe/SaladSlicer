@@ -9,23 +9,25 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 // Grasshopper Libs
 using Grasshopper.Kernel;
+// Rhino Libs
+using Rhino.Geometry;
 // Salad Slicer Libs
 using SaladSlicer.Gh.Goos.CodeGeneration;
 
 namespace SaladSlicer.Gh.Parameters.CodeGeneration
 {
     /// <summary>
-    /// Represents the Param_ProgramGroup class
+    /// Represents the Param_ProgramObject class
     /// </summary>
-    public class Param_ProgramGroup : GH_PersistentParam<GH_ProgramGroup>
+    public class Param_ProgramObject : GH_PersistentGeometryParam<GH_ProgramObject>, IGH_PreviewObject
     {
         /// <summary>
-        /// Initializes a new instance of the Param_ProgramGroup class
+        /// Initializes a new instance of the Param_ProgramObject class
         /// </summary>
-        public Param_ProgramGroup()
-          : base(new GH_InstanceDescription("Program Group", // Parameter name
-              "PG", // Component nickname
-              "Defines a set with program objects.", // Description
+        public Param_ProgramObject()
+          : base(new GH_InstanceDescription("Program Object", // Parameter name
+              "PO", // Component nickname
+              "Defines a Program Object.", // Description
               "Salad Slicer", // Category
               "Parameters")) // Subcategory)
         { 
@@ -46,7 +48,7 @@ namespace SaladSlicer.Gh.Parameters.CodeGeneration
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.Param_ProgramGroup_Icon; }
+            get { return Properties.Resources.Parameter_Icon; }
         }
 
         /// <summary>
@@ -55,7 +57,7 @@ namespace SaladSlicer.Gh.Parameters.CodeGeneration
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("F38D3007-6646-40B5-9AC4-2EA81CFFEEFB"); }
+            get { return new Guid("BEF7ECFC-FA90-4F67-8307-E72024631166"); }
         }
         #endregion
 
@@ -66,7 +68,7 @@ namespace SaladSlicer.Gh.Parameters.CodeGeneration
         /// </summary>
         /// <param name="values"> Empty list. </param>
         /// <returns> Canceled result. </returns>
-        protected override GH_GetterResult Prompt_Plural(ref List<GH_ProgramGroup> values)
+        protected override GH_GetterResult Prompt_Plural(ref List<GH_ProgramObject> values)
         {
             return GH_GetterResult.cancel;
         }
@@ -77,7 +79,7 @@ namespace SaladSlicer.Gh.Parameters.CodeGeneration
         /// </summary>
         /// <param name="value"> Null item.  </param>
         /// <returns> Canceled result. </returns>
-        protected override GH_GetterResult Prompt_Singular(ref GH_ProgramGroup value)
+        protected override GH_GetterResult Prompt_Singular(ref GH_ProgramObject value)
         {
             return GH_GetterResult.cancel;
         }
@@ -112,6 +114,54 @@ namespace SaladSlicer.Gh.Parameters.CodeGeneration
             };
 
             return item;
+        }
+        #endregion
+
+        #region preview methods
+        /// <summary>
+        /// Implement this function to draw all shaded meshes. 
+        /// If the viewport does not support shading, this function will not be called.
+        /// </summary>
+        /// <param name="args"> Drawing arguments. </param>
+        public void DrawViewportMeshes(IGH_PreviewArgs args)
+        {
+            Preview_DrawMeshes(args);
+        }
+
+        /// <summary>
+        /// Implement this function to draw all wire and point previews.
+        /// </summary>
+        /// <param name="args"> Drawing arguments. </param>
+        public void DrawViewportWires(IGH_PreviewArgs args)
+        {
+            Preview_DrawWires(args);
+        }
+
+        private bool m_hidden = false;
+
+        /// <summary>
+        /// Gets or sets the hidden flag for this component. Does not affect Hidden flags on parameters associated with this component.
+        /// </summary>
+        public bool Hidden
+        {
+            get { return m_hidden; }
+            set { m_hidden = value; }
+        }
+
+        /// <summary>
+        /// Gets the clipping box for this data. The clipping box is typically the same as the boundingbox.
+        /// </summary>
+        public BoundingBox ClippingBox
+        {
+            get { return Preview_ComputeClippingBox(); }
+        }
+
+        /// <summary>
+        /// If a single parameter is PreviewCapable, so is the component. Override this property if you need special Preview flags.
+        /// </summary>
+        public bool IsPreviewCapable
+        {
+            get { return true; }
         }
         #endregion
     }

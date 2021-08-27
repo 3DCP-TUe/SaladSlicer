@@ -9,15 +9,15 @@ using Rhino.Geometry;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
 // Salad Slicer Libs
-using SaladSlicer.Core.Slicers;
+using SaladSlicer.Gh.Goos.Slicers;
 using SaladSlicer.Core.Interfaces;
 
-namespace SaladSlicer.Gh.Goos.Slicers
+namespace SaladSlicer.Gh.Goos.CodeGeneration
 {
     /// <summary>
-    /// Represents the GH_CurveSlicer class.
+    /// Represents the GH_ProgramObject class.
     /// </summary>
-    public class GH_CurveSlicer : GH_GeometricGoo<CurveSlicer>, IGH_PreviewData
+    public class GH_ProgramObject : GH_GeometricGoo<IProgram>, IGH_PreviewData
     {
         #region (de)serialisation
         //TODO
@@ -25,42 +25,42 @@ namespace SaladSlicer.Gh.Goos.Slicers
 
         #region constructors
         /// <summary>
-        /// Initializes an empty instance of the GH_CurveSlicer class.
+        /// Initializes an empty instance of the GH_ProgramObject class.
         /// </summary>
-        public GH_CurveSlicer()
+        public GH_ProgramObject()
         {
             this.Value = null;
         }
 
         /// <summary>
-        /// Initializes a new Oject Goo instance from a CurveSlicer instance.
+        /// Initializes a new Program Oject Goo instance from an IProgram instance.
         /// </summary>
-        /// <param name="curveSlicer"> CurveSlicer Value to store inside this Goo instance. </param>
-        public GH_CurveSlicer(CurveSlicer curveSlicer)
+        /// <param name="programObject"> IProgram Value to store inside this Goo instance. </param>
+        public GH_ProgramObject(IProgram programObject)
         {
-            this.Value = curveSlicer;
+            this.Value = programObject;
         }
 
         /// <summary>
         /// Returns a complete duplicate of this Goo instance.
         /// </summary>
-        /// <returns> A duplicate of the Curve Slicer Goo. </returns>
+        /// <returns> A duplicate of the Object Goo. </returns>
         public override IGH_Goo Duplicate()
         {
             if (this.Value == null)
             {
-                return new GH_CurveSlicer();
+                return new GH_ProgramObject();
             }
             else
             {
-                return new GH_CurveSlicer(this.Value.Duplicate());
+                return new GH_ProgramObject(this.Value.DuplicateProgramObject());
             }
         }
 
         /// <summary>
         /// Returns a complete duplicate of this Goo insance.
         /// </summary>
-        /// <returns> A duplicate of the Curve Slicer Goo instance. </returns>
+        /// <returns> A duplicate of the Object Goo instance. </returns>
         public override IGH_GeometricGoo DuplicateGeometry()
         {
             return this.Duplicate() as IGH_GeometricGoo;
@@ -76,7 +76,7 @@ namespace SaladSlicer.Gh.Goos.Slicers
         {
             if (this.Value == null)
             {
-                return "Null Curve Slicer";
+                return "Null Program Object";
             }
             else
             {
@@ -99,6 +99,20 @@ namespace SaladSlicer.Gh.Goos.Slicers
                 return false;
             }
 
+            // Cast to IProgram
+            if (typeof(Q).IsAssignableFrom(typeof(IProgram)))
+            {
+                target = (Q)(object)this.Value;
+                return true;
+            }
+
+            // Cast to IProgram Goo
+            if (typeof(Q).IsAssignableFrom(typeof(GH_ProgramObject)))
+            {
+                target = (Q)(object)new GH_ProgramObject(this.Value);
+                return true;
+            }
+
             // Cast to ISlicer
             if (typeof(Q).IsAssignableFrom(typeof(ISlicer)))
             {
@@ -109,42 +123,7 @@ namespace SaladSlicer.Gh.Goos.Slicers
             // Cast to ISlicer Goo
             if (typeof(Q).IsAssignableFrom(typeof(GH_SlicerObject)))
             {
-                target = (Q)(object)new GH_SlicerObject(this.Value);
-                return true;
-            }
-
-            // Cast to CurveSlicer
-            if (typeof(Q).IsAssignableFrom(typeof(CurveSlicer)))
-            {
-                target = (Q)(object)this.Value;
-                return true;
-            }
-
-            // Cast to CurveSlicer Goo
-            if (typeof(Q).IsAssignableFrom(typeof(GH_CurveSlicer)))
-            {
-                target = (Q)(object)new GH_CurveSlicer(this.Value);
-                return true;
-            }
-
-            // Cast to Curve
-            if (typeof(Q).IsAssignableFrom(typeof(Curve)))
-            {
-                target = (Q)(object)this.Value.GetPath();
-                return true;
-            }
-
-            // Cast to Curve Goo
-            if (typeof(Q).IsAssignableFrom(typeof(GH_Curve)))
-            {
-                target = (Q)(object)new GH_Curve(this.Value.GetPath());
-                return true;
-            }
-
-            // Cast to Bounding Box
-            if (typeof(Q).IsAssignableFrom(typeof(BoundingBox)))
-            {
-                target = (Q)(object)this.Value.GetBoundingBox(true);
+                target = (Q)(object)new GH_SlicerObject(this.Value as ISlicer);
                 return true;
             }
 
@@ -166,41 +145,19 @@ namespace SaladSlicer.Gh.Goos.Slicers
                 return false; 
             }
 
-            // Cast from CurveSlicer
-            if (typeof(CurveSlicer).IsAssignableFrom(source.GetType()))
+            // Cast from IProgram
+            if (typeof(IProgram).IsAssignableFrom(source.GetType()))
             {
-                this.Value = source as CurveSlicer;
+                this.Value = source as IProgram;
                 return true;
             }
 
-            // Cast from CurveSlicer Goo
-            if (typeof(GH_CurveSlicer).IsAssignableFrom(source.GetType()))
+            // Cast from IProgram Goo 
+            if (typeof(GH_ProgramObject).IsAssignableFrom(source.GetType()))
             {
-                GH_CurveSlicer goo = source as GH_CurveSlicer;
+                GH_ProgramObject goo = source as GH_ProgramObject;
                 this.Value = goo.Value;
                 return true;
-            }
-
-            // Cast from ISlicer
-            if (typeof(ISlicer).IsAssignableFrom(source.GetType()))
-            {
-                if (source is CurveSlicer slicer)
-                {
-                    this.Value = slicer;
-                    return true;
-                }
-            }
-
-            // Cast from ISlicer Goo 
-            if (typeof(GH_SlicerObject).IsAssignableFrom(source.GetType()))
-            {
-                GH_SlicerObject goo = source as GH_SlicerObject;
-
-                if (goo.Value is CurveSlicer slicer)
-                {
-                    this.Value = slicer;
-                    return true;
-                }
             }
 
             // Invalid cast
@@ -229,9 +186,9 @@ namespace SaladSlicer.Gh.Goos.Slicers
         {
             get
             {
-                if (this.Value == null) { return "No internal Curve Slicer instance"; }
+                if (this.Value == null) { return "No internal Program Object instance"; }
                 if (this.Value.IsValid) { return string.Empty; }
-                return "Invalid Curve Slicer instance.";
+                return "Invalid Program Object instance.";
             }
         }
 
@@ -240,7 +197,7 @@ namespace SaladSlicer.Gh.Goos.Slicers
         /// </summary>
         public override string TypeDescription
         {
-            get { return "Defines a Curve Slicer."; }
+            get { return "Defines a Program Object."; }
         }
 
         /// <summary>
@@ -248,7 +205,7 @@ namespace SaladSlicer.Gh.Goos.Slicers
         /// </summary>
         public override string TypeName
         {
-            get { return "Curve Slicer"; }
+            get { return "Program Object"; }
         }
         #endregion
 
@@ -270,11 +227,16 @@ namespace SaladSlicer.Gh.Goos.Slicers
                 return null;
             }
 
+            else if (Value is IGeometry geo)
+            {
+                IGeometry geoObject = geo.DuplicateGeometryObject();
+                geoObject.Transform(xform);
+                return new GH_ProgramObject(geoObject as IProgram);
+            }
+
             else
             {
-                CurveSlicer slicer = Value.Duplicate();
-                slicer.Transform(xform);
-                return new GH_CurveSlicer(slicer);
+                return null;
             }
         }
 
@@ -300,14 +262,23 @@ namespace SaladSlicer.Gh.Goos.Slicers
             if (this.Value == null)
             {
                 return BoundingBox.Empty;
-            }
-            else if (this.Value.GetPath() == null)
+            } 
+
+            else if (this.Value is ISlicer slicer)
             {
-                return BoundingBox.Empty;
+                if (slicer.GetPath() == null)
+                {
+                    return BoundingBox.Empty;
+                }
+                else
+                {
+                    return slicer.GetPath().GetBoundingBox(true);
+                }
             }
+
             else
             {
-                return this.Value.GetPath().GetBoundingBox(true);
+                return BoundingBox.Empty;
             }
         }
 
@@ -343,14 +314,17 @@ namespace SaladSlicer.Gh.Goos.Slicers
         /// <param name="args"> Drawing arguments. </param>
         public void DrawViewportWires(GH_PreviewWireArgs args)
         {
-            if (this.Value.GetPath() != null)
+            if (this.Value is ISlicer slicer)
             {
-                args.Pipeline.DrawCurve(this.Value.GetPath(), args.Color, args.Thickness);
-            }
+                if (slicer.GetPath() != null)
+                {
+                    args.Pipeline.DrawCurve(slicer.GetPath(), args.Color, args.Thickness);
+                }
 
-            if (this.Value.PointAtStart != null)
-            {
-                args.Pipeline.DrawPoint(this.Value.PointAtStart, args.Color);
+                if (slicer.PointAtStart != null)
+                {
+                    args.Pipeline.DrawPoint(slicer.PointAtStart, args.Color);
+                }
             }
         }
         #endregion
