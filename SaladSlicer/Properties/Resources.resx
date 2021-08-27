@@ -229,8 +229,20 @@
   <data name="PlaneVisualizer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\PlaneVisualizer_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="saladSlicer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\saladSlicer_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="saladSlicer_Icon" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAACxMAAAsTAQCanBgAAAHJSURBVEhLtdU5SFxBHMfxRRQR1AgaDB4EFUUMiqlio2hh
+        DjGCQfFAMY14oKBFwDRBvCBNCouABLFJExIIaSRNCIhIRAQFRTyw0cJGRATB6vn9zfh02SPsuvt+8GH/
+        8/adM+/N+AKSgQFM4QNG0I1WNKAZ9SjDQyQg4gxiCTOoQyYCoxsoxhOUIhkRZRyHKDetOOcFTpFkWh7k
+        L0Zt6U3WUWRLb7KDfFt6Ew1uuy29yTds2tKbZMPBS9PyKNPQRR6ZVpyTc/P7B7rIY9OKPU14reINClSQ
+        VegibaZ1/7jdLmbSmoA7cc1Df6ygQhuizANsQ+fQR2zyHAu2NGnEJbTTFnrgdmW4pEH7adrRccfQ5Hib
+        Xmgc9HhuNIWcQQfIEX7gI95hDJ/wG+4+sogsBOUt9jBsWnepxizcuwvlApMoRMjoERVN2RtYQ7jBzoPG
+        5ylyteEmLei3ZXD0enbY0uQ9DrCPn+iCThyYFOhGNGm6T5OIkKmCVrQa07LRwP3DOfy7JJSvKMF/o+Xw
+        M/S6PtMGv+h70cSotVovQB+G8AqpiCpao7/jF+bQCa3D6dC3Uwt1Y8zR3X3BMnZxgiuoS9RtlQgfx3E8
+        5PiuASjkqpUYcggyAAAAAElFTkSuQmCC
+</value>
   </data>
   <data name="SeamAtClosestPoint_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SeamAtClosestPoint_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

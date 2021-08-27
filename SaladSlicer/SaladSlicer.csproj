@@ -134,6 +134,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -149,7 +150,7 @@
     <None Include="Resources\ConvertVelocityMmminMms_Icon.png" />
     <None Include="Resources\ConvertVelocityMmsMmmin_Icon.png" />
     <None Include="Resources\GetContours_Icon.png" />
-    <None Include="Resources\saladSlicer_Icon.png" />
+    <EmbeddedResource Include="Resources\saladSlicer_Icon.png" />
     <None Include="Resources\SeamsAtClosestPoint_Icon.png" />
     <None Include="Resources\SeamAtClosestPoint_Icon.png" />
     <None Include="Resources\SeamAtParameter_Icon.png" />
