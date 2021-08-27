@@ -64,6 +64,7 @@
     <Compile Include="Core\Geometry\Curves.cs" />
     <Compile Include="Core\CodeGeneration\FeedRate.cs" />
     <Compile Include="Core\CodeGeneration\AbsoluteCoordinate.cs" />
+    <Compile Include="Core\PathGeneration\ExitPath.cs" />
     <Compile Include="Core\Slicers\ISlicer.cs" />
     <Compile Include="Core\CodeGeneration\ProgramGenerator.cs" />
     <Compile Include="Core\CodeGeneration\CodeLine.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="Gh\Components\Geometry\JoinClosedCurvesComponent.cs" />
     <Compile Include="Gh\Components\Geometry\AlignCurvesComponent.cs" />
     <Compile Include="Gh\Components\Geometry\SeamsAtClosestPointComponent.cs" />
+    <Compile Include="Gh\Components\PathGeneration\ExitPathComponent.cs" />
     <Compile Include="Gh\Components\Slicers\ClosedPlanar3DSlicerComponent.cs" />
     <Compile Include="Gh\Components\Slicers\GetFramesComponent.cs" />
     <Compile Include="Gh\Components\Slicers\GetEndFramesComponent.cs" />
