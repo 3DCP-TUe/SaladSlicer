@@ -43,7 +43,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddParameter(new Param_CodeLine(), "Program Line", "PL", "Custom code line as a Program Line.", GH_ParamAccess.item);
+            pManager.AddParameter(new Param_CodeLine(), "Program Object", "PO", "Text as a Program Object.", GH_ParamAccess.item);
         }
 
         /// <summary>

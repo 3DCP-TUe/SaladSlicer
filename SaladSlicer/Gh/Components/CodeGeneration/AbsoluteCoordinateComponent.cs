@@ -45,7 +45,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddParameter(new Param_AbsoluteCoordinate(), "Program Line", "PL", "Absolute Coordinate as a Program Line.", GH_ParamAccess.item);
+            pManager.AddParameter(new Param_AbsoluteCoordinate(), "Program Object", "PO", "Absolute Coordinate as a Program Object.", GH_ParamAccess.item);
         }
 
         /// <summary>
