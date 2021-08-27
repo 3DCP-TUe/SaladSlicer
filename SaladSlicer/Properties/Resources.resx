@@ -193,6 +193,9 @@
   <data name="GetPath_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\GetPath_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="GroupProgramObjects_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\GroupProgramObjects_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Info_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Info_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -207,6 +210,9 @@
   </data>
   <data name="Parameter_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Parameter_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Param_AbsoluteCoordinate_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Param_AbsoluteCoordinate_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Param_ClosedPlanar2DSlicer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Param_ClosedPlanar2DSlicer_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -223,8 +229,14 @@
   <data name="Param_OpenPlanar2DSlicer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Param_OpenPlanar2DSlicer_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Param_ProgramGroup_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Param_ProgramGroup_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Param_ProgramObject_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Param_ProgramObject_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Param_SetFeedRate_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Param_SetFeedRate_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Planar2DSlicerIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\2.5d.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -252,5 +264,8 @@
   </data>
   <data name="TransposeSurface_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\TransposeSurface_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="UnGroupProgramObjects_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\UnGroupProgramObjects_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

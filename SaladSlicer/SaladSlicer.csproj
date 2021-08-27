@@ -151,6 +151,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\2.5D.png" />
+    <None Include="Resources\GroupProgramObjects_Icon.png" />
+    <None Include="Resources\UnGroupProgramObjects_Icon.png" />
+    <None Include="Resources\Param_ProgramGroup_Icon.png" />
+    <None Include="Resources\Param_AbsoluteCoordinate_Icon.png" />
+    <None Include="Resources\Param_SetFeedRate_Icon.png" />
+    <None Include="Resources\SetFeedRate_Icon.png" />
+    <None Include="Resources\AbsoluteCoordinate_Icon.png" />
+    <None Include="Resources\CodeLine_Icon.png" />
     <EmbeddedResource Include="Resources\SaladLogo_Icon2.png" />
     <None Include="Resources\CodeGenerator_Icon.png" />
     <None Include="Resources\CurveFramesByDistance_Icon.png" />
@@ -184,9 +192,6 @@
     <None Include="Resources\DeconstructClosedPlanar3DSlicer_Icon.png" />
     <None Include="Resources\DeconstructClosedPlanar2DSlicer_Icon.png" />
     <None Include="Resources\Info_Icon.png" />
-    <None Include="Resources\SetFeedRate_Icon.png" />
-    <None Include="Resources\AbsoluteCoordinate_Icon.png" />
-    <None Include="Resources\CodeLine_Icon.png" />
     <None Include="Resources\CodeGeneratorIcon.png" />
     <None Include="Resources\Parameter_Icon.png" />
   </ItemGroup>

@@ -46,7 +46,7 @@ namespace SaladSlicer.Gh.Parameters.CodeGeneration
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.Parameter_Icon; }
+            get { return Properties.Resources.Param_AbsoluteCoordinate_Icon; }
         }
 
         /// <summary>
