@@ -5,13 +5,15 @@
 
 // System Libs
 using Rhino.Geometry;
+// Salad Libs
+using SaladSlicer.Core.Interfaces;
 
 namespace SaladSlicer.Core.CodeGeneration
 {
     /// <summary>
     /// Represents an Absolute Coordinate.
     /// </summary>
-    public class AbsoluteCoordinate : IProgram
+    public class AbsoluteCoordinate : IProgram, IGeometry
     {
         #region fields
         private Plane _plane;
@@ -65,6 +67,15 @@ namespace SaladSlicer.Core.CodeGeneration
         {
             return this.Duplicate() as IProgram;
         }
+
+        /// <summary>
+        /// Returns an exact duplicate of this Absolute Coordinater instance as an IGeometry.
+        /// </summary>
+        /// <returns> The exact duplicate of this Absolute Coordinate instance as an IGeometry. </returns>
+        public IGeometry DuplicateGeometryObject()
+        {
+            return this.Duplicate() as IGeometry;
+        }
         #endregion
 
         #region methods
@@ -84,6 +95,27 @@ namespace SaladSlicer.Core.CodeGeneration
         public void ToSinumerik(ProgramGenerator programGenerator)
         {
             programGenerator.Program.Add($"X{_plane.OriginX:0.###} Y{_plane.OriginY:0.###} Z{_plane.OriginZ:0.###}");
+        }
+
+        /// <summary>
+        /// Returns the Bounding Box of the object.
+        /// </summary>
+        /// <returns> The Bounding Box. </returns>
+        /// <param name="accurate"> If true, a physically accurate bounding box will be computed. If not, a bounding box estimate will be computed. </param>
+
+        public BoundingBox GetBoundingBox(bool accurate)
+        {
+            return BoundingBox.Empty;
+        }
+
+        /// <summary>
+        /// Transforms the geometry.
+        /// </summary>
+        /// <param name="xform"> Transformation to apply to geometry. </param>
+        /// <returns> True on success, false on failure. </returns>
+        public bool Transform(Transform xform)
+        {
+            return _plane.Transform(xform);
         }
         #endregion
 

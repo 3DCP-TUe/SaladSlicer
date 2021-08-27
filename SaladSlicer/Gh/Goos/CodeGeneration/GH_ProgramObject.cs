@@ -9,9 +9,8 @@ using Rhino.Geometry;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
 // Salad Slicer Libs
-using SaladSlicer.Core.CodeGeneration;
-using SaladSlicer.Core.Slicers;
 using SaladSlicer.Gh.Goos.Slicers;
+using SaladSlicer.Core.Interfaces;
 
 namespace SaladSlicer.Gh.Goos.CodeGeneration
 {
@@ -36,7 +35,7 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
         /// <summary>
         /// Initializes a new Program Oject Goo instance from an IProgram instance.
         /// </summary>
-        /// <param name="programObject"> IObject Value to store inside this Goo instance. </param>
+        /// <param name="programObject"> IProgram Value to store inside this Goo instance. </param>
         public GH_ProgramObject(IProgram programObject)
         {
             this.Value = programObject;
@@ -228,11 +227,11 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
                 return null;
             }
 
-            else if (Value is ISlicer slicer)
+            else if (Value is IGeometry geo)
             {
-                ISlicer slicerObject = slicer.DuplicateObject();
-                slicerObject.Transform(xform);
-                return new GH_ProgramObject(slicerObject as IProgram);
+                IGeometry geoObject = geo.DuplicateGeometryObject();
+                geoObject.Transform(xform);
+                return new GH_ProgramObject(geoObject as IProgram);
             }
 
             else

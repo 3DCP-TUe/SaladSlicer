@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using Rhino.Geometry;
 using SaladSlicer.Core.CodeGeneration;
 
-namespace SaladSlicer.Core.Slicers
+namespace SaladSlicer.Core.Interfaces
 {
     /// <summary>
     /// Represents the interface for all classes that can generate code lines for a program.
@@ -18,10 +18,10 @@ namespace SaladSlicer.Core.Slicers
     {
         #region constructors
         /// <summary>
-        /// Returns an exact duplicate of this IObject.
+        /// Returns an exact duplicate of this ISlicer
         /// </summary>
-        /// <returns> The exact duplicate of this IObject. </returns>
-        ISlicer DuplicateObject();
+        /// <returns> The exact duplicate of this ISlicer. </returns>
+        ISlicer DuplicateSlicerObject();
         #endregion
 
         #region methods
@@ -30,13 +30,6 @@ namespace SaladSlicer.Core.Slicers
         /// </summary>
         /// <param name="programGenerator"> The program generator. </param>
         void ToSinumerik(ProgramGenerator programGenerator);
-
-        /// <summary>
-        /// Transforms the geometry.
-        /// </summary>
-        /// <param name="xform"> Transformation to apply to geometry. </param>
-        /// <returns> True on success, false on failure. </returns>
-        bool Transform(Transform xform);
 
         /// <summary>
         /// Returns the path.
@@ -55,13 +48,6 @@ namespace SaladSlicer.Core.Slicers
         /// </summary>
         /// <returns> The linearized path. </returns>
         Curve GetLinearizedPath();
-
-        /// <summary>
-        /// Returns the Bounding Box of the object.
-        /// </summary>
-        /// <returns> The Bounding Box. </returns>
-        /// <param name="accurate"> If true, a physically accurate bounding box will be computed. </param>
-        BoundingBox GetBoundingBox(bool accurate);
         #endregion
 
         #region properties
