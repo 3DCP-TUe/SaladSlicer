@@ -24,7 +24,7 @@ namespace SaladSlicer.Core.Geometry.Seams
         /// </summary>
         /// <param name="curves">The list of curves</param>
         /// <returns></returns>
-        public static Curve JoinLinear(List<Curve> curves)
+        public static (Curve,List<Curve>) JoinLinear(List<Curve> curves)
         {
             //Make a duplicate
             List<Curve> curvesCopy = curves.ConvertAll(curve => curve.DuplicateCurve());
@@ -35,7 +35,7 @@ namespace SaladSlicer.Core.Geometry.Seams
             //Join curves and transitions
             Curve joinedCurve = Curves.MergeCurves(curvesCopy, transitions);
 
-            return joinedCurve;
+            return (joinedCurve,transitions);
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace SaladSlicer.Core.Geometry.Seams
         /// </summary>
         /// <param name="curves">The list of curves</param>
         /// <returns></returns>
-        public static Curve JoinOutsideArc(List<Curve> curves)
+        public static (Curve, List<Curve>) JoinOutsideArc(List<Curve> curves)
         {
             //Make a duplicate
             List<Curve> curvesCopy = curves.ConvertAll(curve => curve.DuplicateCurve());
@@ -54,7 +54,7 @@ namespace SaladSlicer.Core.Geometry.Seams
             //Join curves and transitions
             Curve joinedCurve = Curves.MergeCurves(curvesCopy, transitions);
 
-            return joinedCurve;
+            return (joinedCurve, transitions);
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace SaladSlicer.Core.Geometry.Seams
         /// </summary>
         /// <param name="curves">The list of curves</param>
         /// <returns></returns>
-        public static Curve JoinBezier(List<Curve> curves)
+        public static (Curve, List<Curve>) JoinBezier(List<Curve> curves)
         {
             //Make a duplicate
             List<Curve> curvesCopy = curves.ConvertAll(curve => curve.DuplicateCurve());
@@ -73,7 +73,7 @@ namespace SaladSlicer.Core.Geometry.Seams
             //Join curves and transitions
             Curve joinedCurve = Curves.MergeCurves(curvesCopy, transitions);
 
-            return joinedCurve;
+            return (joinedCurve, transitions);
         }
 
         /// <summary>
