@@ -63,7 +63,7 @@
     <Compile Include="Core\Geometry\Curves.cs" />
     <Compile Include="Core\CodeGeneration\FeedRate.cs" />
     <Compile Include="Core\CodeGeneration\AbsoluteCoordinate.cs" />
-    <Compile Include="Core\CodeGeneration\IObject.cs" />
+    <Compile Include="Core\Slicers\ISlicer.cs" />
     <Compile Include="Core\CodeGeneration\ProgramGenerator.cs" />
     <Compile Include="Core\CodeGeneration\CodeLine.cs" />
     <Compile Include="Core\CodeGeneration\IProgram.cs" />

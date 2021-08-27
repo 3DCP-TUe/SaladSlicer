@@ -34,7 +34,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddTextParameter("Code", "C", "Custom code line as a Text.", GH_ParamAccess.item);
+            pManager.AddTextParameter("Text", "T", "Text to create Program Object.", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddGenericParameter("Program Line", "PL", "Custom code line as a Program Line.", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Program Object", "PO", "Text as a Program Object.", GH_ParamAccess.item);
         }
 
         /// <summary>

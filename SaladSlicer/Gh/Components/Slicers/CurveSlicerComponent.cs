@@ -46,7 +46,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddParameter(new Param_Object(), "Program Object", "PO", "Sliced curve as a program object.", GH_ParamAccess.item);
+            pManager.AddParameter(new Param_Object(), "Slicer Object", "SO", "Sliced curve as a program object.", GH_ParamAccess.item);
         }
 
         /// <summary>

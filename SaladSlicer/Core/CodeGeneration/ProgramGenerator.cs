@@ -58,7 +58,7 @@ namespace SaladSlicer.Core.CodeGeneration
             // G-code of different objects
             for (int i = 0; i < _objects.Count; i++)
             {
-                _objects[i].ToProgram(this);
+                _objects[i].ToSinumerik(this);
             }
 
             // Program end

@@ -18,7 +18,7 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
     /// <summary>
     /// Represents the GH_ProgramObject class.
     /// </summary>
-    public class GH_Object : GH_GeometricGoo<IObject>, IGH_PreviewData
+    public class GH_Object : GH_GeometricGoo<ISlicer>, IGH_PreviewData
     {
         #region (de)serialisation
         //TODO
@@ -37,7 +37,7 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
         /// Initializes a new Oject Goo instance from an IObject instance.
         /// </summary>
         /// <param name="programObject"> IObject Value to store inside this Goo instance. </param>
-        public GH_Object(IObject programObject)
+        public GH_Object(ISlicer programObject)
         {
             this.Value = programObject;
         }
@@ -101,7 +101,7 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
             }
 
             // Cast to IObject
-            if (typeof(Q).IsAssignableFrom(typeof(IObject)))
+            if (typeof(Q).IsAssignableFrom(typeof(ISlicer)))
             {
                 target = (Q)(object)this.Value;
                 return true;
@@ -195,9 +195,9 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
             }
 
             // Cast from IObject
-            if (typeof(IObject).IsAssignableFrom(source.GetType()))
+            if (typeof(ISlicer).IsAssignableFrom(source.GetType()))
             {
-                this.Value = source as IObject;
+                this.Value = source as ISlicer;
                 return true;
             }
 
@@ -278,7 +278,7 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
 
             else
             {
-                IObject programObject = Value.DuplicateObject();
+                ISlicer programObject = Value.DuplicateObject();
                 programObject.Transform(xform);
                 return new GH_Object(programObject);
             }
