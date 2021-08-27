@@ -118,7 +118,7 @@
     <Compile Include="Gh\Goos\Slicers\GH_OpenPlanar2DSlicer.cs" />
     <Compile Include="Gh\Goos\Slicers\GH_ClosedPlanar2DSlicer.cs" />
     <Compile Include="Gh\Goos\Slicers\GH_CurveSlicer.cs" />
-    <Compile Include="Gh\Goos\CodeGeneration\GH_Object.cs" />
+    <Compile Include="Gh\Goos\Slicers\GH_SlicerObject.cs" />
     <Compile Include="Gh\Goos\CodeGeneration\GH_ProgramGroup.cs" />
     <Compile Include="Gh\Parameters\CodeGeneration\Param_FeedRate.cs" />
     <Compile Include="Gh\Parameters\CodeGeneration\Param_AbsoluteCoordinate.cs" />
@@ -127,7 +127,7 @@
     <Compile Include="Gh\Parameters\Slicers\Param_OpenPlanar2DSlicer.cs" />
     <Compile Include="Gh\Parameters\Slicers\Param_ClosedPlanar2DSlicer.cs" />
     <Compile Include="Gh\Parameters\Slicers\Param_CurveSlicer.cs" />
-    <Compile Include="Gh\Parameters\CodeGeneration\Param_Object.cs" />
+    <Compile Include="Gh\Parameters\Slicers\Param_Object.cs" />
     <Compile Include="Gh\Parameters\CodeGeneration\Param_CodeLine.cs" />
     <Compile Include="Gh\Utils\HelperMethods.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
