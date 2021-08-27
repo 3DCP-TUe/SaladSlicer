@@ -141,6 +141,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\2.5D.png" />
+    <None Include="Resources\CodeGenerator_Icon.png" />
+    <None Include="Resources\SaladLogo_Icon.png" />
     <None Include="Resources\CurveFramesByDistance_Icon.png" />
     <None Include="Resources\AlternateCurves_Icon.png" />
     <None Include="Resources\AlignCurves_Icon.png" />
