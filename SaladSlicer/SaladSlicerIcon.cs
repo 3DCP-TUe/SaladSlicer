@@ -9,7 +9,7 @@ namespace SaladSlicer
     {
         public override Grasshopper.Kernel.GH_LoadingInstruction PriorityLoad()
         {
-            Grasshopper.Instances.ComponentServer.AddCategoryIcon("Salad Slicer", Properties.Resources.saladSlicer_Icon);
+            Grasshopper.Instances.ComponentServer.AddCategoryIcon("Salad Slicer", Properties.Resources.SaladLogo_Icon2);
             Grasshopper.Instances.ComponentServer.AddCategoryShortName("Salad Slicer", "Salad");
             Grasshopper.Instances.ComponentServer.AddCategorySymbolName("Salad Slicer", 'S');
             return Grasshopper.Kernel.GH_LoadingInstruction.Proceed;
