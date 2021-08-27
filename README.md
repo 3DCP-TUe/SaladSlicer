@@ -19,7 +19,6 @@ Salad Slicer is an open source Rhinoceros Grasshopper plugin developed for slici
 
 - Slicing planar 2.5D objects from a 2D curve
 - Slicing planar 3D objects from a 3D mesh
-- Slicing non-planar 3D objects from a 3D mesh
 - Possibility to define your own slicers and/or reconstruct and customize the pre-defined slicers with the components from the Geometry category. 
 - Possibility to construct an NC program (G-code) for the sliced geometry. 
 - Possibility to convert all sliced objects to planes that can be used to construct programs for, for example, ABB and KUKA robots. 
