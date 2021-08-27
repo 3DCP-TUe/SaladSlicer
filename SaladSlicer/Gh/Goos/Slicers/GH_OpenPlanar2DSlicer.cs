@@ -101,7 +101,7 @@ namespace SaladSlicer.Gh.Goos.Slicers
             }
 
             // Cast to IObject
-            if (typeof(Q).IsAssignableFrom(typeof(IObject)))
+            if (typeof(Q).IsAssignableFrom(typeof(ISlicer)))
             {
                 target = (Q)(object)this.Value;
                 return true;
@@ -183,7 +183,7 @@ namespace SaladSlicer.Gh.Goos.Slicers
             }
 
             // Cast from IObject
-            if (typeof(IObject).IsAssignableFrom(source.GetType()))
+            if (typeof(ISlicer).IsAssignableFrom(source.GetType()))
             {
                 if (source is OpenPlanar2DSlicer slicer)
                 {

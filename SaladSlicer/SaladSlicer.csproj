@@ -64,7 +64,7 @@
     <Compile Include="Core\Geometry\Curves.cs" />
     <Compile Include="Core\CodeGeneration\FeedRate.cs" />
     <Compile Include="Core\CodeGeneration\AbsoluteCoordinate.cs" />
-    <Compile Include="Core\CodeGeneration\IObject.cs" />
+    <Compile Include="Core\Slicers\ISlicer.cs" />
     <Compile Include="Core\CodeGeneration\ProgramGenerator.cs" />
     <Compile Include="Core\CodeGeneration\CodeLine.cs" />
     <Compile Include="Core\CodeGeneration\IProgram.cs" />
@@ -152,7 +152,6 @@
   <ItemGroup>
     <Content Include="Resources\2.5D.png" />
     <EmbeddedResource Include="Resources\SaladLogo_Icon2.png" />
-    <None Include="Resources\SaladLogo_Icon.png" />
     <None Include="Resources\CodeGenerator_Icon.png" />
     <None Include="Resources\CurveFramesByDistance_Icon.png" />
     <None Include="Resources\AlternateCurves_Icon.png" />
@@ -162,7 +161,6 @@
     <None Include="Resources\ConvertVelocityMmminMms_Icon.png" />
     <None Include="Resources\ConvertVelocityMmsMmmin_Icon.png" />
     <None Include="Resources\GetContours_Icon.png" />
-    <EmbeddedResource Include="Resources\saladSlicer_Icon.png" />
     <None Include="Resources\SeamsAtClosestPoint_Icon.png" />
     <None Include="Resources\SeamAtClosestPoint_Icon.png" />
     <None Include="Resources\SeamAtParameter_Icon.png" />
