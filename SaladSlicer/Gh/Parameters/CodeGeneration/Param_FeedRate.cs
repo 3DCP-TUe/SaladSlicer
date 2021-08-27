@@ -24,8 +24,8 @@ namespace SaladSlicer.Gh.Parameters.CodeGeneration
         /// </summary>
         public Param_FeedRate()
           : base(new GH_InstanceDescription("Feed Rate", // Parameter name
-              "AC", // Component nickname
-              "Defines an Feed Rate.", // Description
+              "FR", // Component nickname
+              "Defines a Feed Rate.", // Description
               "Salad Slicer", // Category
               "Parameters")) // Subcategory)
         { 
