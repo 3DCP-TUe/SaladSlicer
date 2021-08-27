@@ -313,6 +313,16 @@ namespace SaladSlicer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap GroupProgramObjects_Icon {
+            get {
+                object obj = ResourceManager.GetObject("GroupProgramObjects_Icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Info_Icon {
             get {
                 object obj = ResourceManager.GetObject("Info_Icon", resourceCulture);
@@ -346,6 +356,16 @@ namespace SaladSlicer.Properties {
         internal static System.Drawing.Bitmap OpenPlanar2DSlicer_Icon {
             get {
                 object obj = ResourceManager.GetObject("OpenPlanar2DSlicer_Icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Param_AbsoluteCoordinate_Icon {
+            get {
+                object obj = ResourceManager.GetObject("Param_AbsoluteCoordinate_Icon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -403,9 +423,29 @@ namespace SaladSlicer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Param_ProgramGroup_Icon {
+            get {
+                object obj = ResourceManager.GetObject("Param_ProgramGroup_Icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Param_ProgramObject_Icon {
             get {
                 object obj = ResourceManager.GetObject("Param_ProgramObject_Icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Param_SetFeedRate_Icon {
+            get {
+                object obj = ResourceManager.GetObject("Param_SetFeedRate_Icon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -506,6 +546,16 @@ namespace SaladSlicer.Properties {
         internal static System.Drawing.Bitmap TransposeSurface_Icon {
             get {
                 object obj = ResourceManager.GetObject("TransposeSurface_Icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap UnGroupProgramObjects_Icon {
+            get {
+                object obj = ResourceManager.GetObject("UnGroupProgramObjects_Icon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
