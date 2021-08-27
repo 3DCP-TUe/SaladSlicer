@@ -163,26 +163,20 @@ namespace SaladSlicer.Core.Geometry
 
         /// <summary>
         /// Returns a list with aligned contours. 
-        /// Checks directions of all curves and aligns (reverses) them if necessary. 
+        /// Checks start point of all curves and aligns (reverses) them if necessary. 
         /// </summary>
         /// <param name="contours"> List with contours. </param>
         /// <returns> List with aligned curves. </returns>
         public static List<Curve> AlignContours(List<Curve> contours)
         {
-            List<Curve> result = Locations.SeamsAtClosestPoint(contours);
-
-            for (int i = 1; i < result.Count; i++)
+            for (int i = 1; i < contours.Count; i++)
             {
-                Vector3d tan1 = result[i - 1].TangentAtStart;
-                Vector3d tan2 = result[i].TangentAtStart;
-
-                double angle1 = Vector3d.VectorAngle(tan1, tan2);
-                double angle2 = Vector3d.VectorAngle(tan1, -tan2);
-
-                if (angle1 > angle2) { result[i].Reverse(); }
+                Point3d point1 = contours[i - 1].PointAtStart;
+                Point3d[] points = { contours[i].PointAtStart, contours[i].PointAtEnd };
+                if (point1.DistanceTo(points[0]) > point1.DistanceTo(points[1])) { contours[i].Reverse();}
             }
 
-            return result;
+            return contours;
         }
 
         /// <summary>

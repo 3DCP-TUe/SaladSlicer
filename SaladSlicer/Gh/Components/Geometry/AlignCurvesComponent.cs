@@ -29,7 +29,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         public AlignCurvesComponent()
           : base("Align Curves", // Component name
               "AC", // Component nickname
-              "Aligns a set of curves / orients the direction in the same direction.", // Description
+              "Aligns a set of curves by checking the start and end points and reversing if necessary.", // Description
               "Salad Slicer", // Category
               "Geometry") // Subcategory
         {
