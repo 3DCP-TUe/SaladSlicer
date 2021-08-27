@@ -48,7 +48,7 @@ namespace SaladSlicer.Gh.Parameters.Slicers
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.Param_ProgramObject_Icon; }
+            get { return Properties.Resources.Param_SlicerObject_Icon; }
         }
 
         /// <summary>

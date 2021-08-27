@@ -453,6 +453,16 @@ namespace SaladSlicer.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Param_SlicerObject_Icon {
+            get {
+                object obj = ResourceManager.GetObject("Param_SlicerObject_Icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Parameter_Icon {
             get {
                 object obj = ResourceManager.GetObject("Parameter_Icon", resourceCulture);

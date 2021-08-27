@@ -153,6 +153,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\2.5D.png" />
+    <None Include="Resources\Param_CodeLine_Icon.png" />
+    <None Include="Resources\Param_SlicerObject_Icon.png" />
+    <None Include="Resources\Param_ProgramObject_Icon.png" />
     <None Include="Resources\GroupProgramObjects_Icon.png" />
     <None Include="Resources\UnGroupProgramObjects_Icon.png" />
     <None Include="Resources\Param_ProgramGroup_Icon.png" />
@@ -178,9 +181,7 @@
     <None Include="Resources\CurveFramesByCurvature_Icon.png" />
     <None Include="Resources\JoinClosedCurves_Icon.png" />
     <None Include="Resources\JoinOpenCurves_Icon.png" />
-    <None Include="Resources\Param_ProgramObject_Icon.png" />
     <None Include="Resources\DeconstructProgramObject_Icon.png" />
-    <None Include="Resources\Param_CodeLine_Icon.png" />
     <None Include="Resources\Param_CurveSlicer_Icon.png" />
     <None Include="Resources\Param_OpenPlanar2DSlicer_Icon.png" />
     <None Include="Resources\OpenPlanar2DSlicer_Icon.png" />
