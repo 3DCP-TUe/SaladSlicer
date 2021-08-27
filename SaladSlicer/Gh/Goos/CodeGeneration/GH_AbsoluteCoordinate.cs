@@ -4,6 +4,7 @@
 // see <https://github.com/3DCP-TUe/SaladSlicer>.
 
 // Grasshopper Libs
+using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
 // Rhino Libs
 using Rhino.Geometry;
@@ -16,7 +17,7 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
     /// <summary>
     /// Represents the GH_AbsoluteCoordinate class.
     /// </summary>
-    public class GH_AbsoluteCoordinate : GH_Goo<AbsoluteCoordinate>
+    public class GH_AbsoluteCoordinate : GH_GeometricGoo<AbsoluteCoordinate>, IGH_PreviewData
     {
         #region (de)serialisation
         //TODO
@@ -54,6 +55,15 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
             {
                 return new GH_AbsoluteCoordinate(this.Value.Duplicate());
             }
+        }
+
+        /// <summary>
+        /// Returns a complete duplicate of this Goo insance.
+        /// </summary>
+        /// <returns> A duplicate of the Closed Planar 2D Slicer Goo instance. </returns>
+        public override IGH_GeometricGoo DuplicateGeometry()
+        {
+            return this.Duplicate() as IGH_GeometricGoo;
         }
         #endregion
 
@@ -248,6 +258,93 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
         public override string TypeName
         {
             get { return "Absolute Coordinate"; }
+        }
+        #endregion
+
+        #region transformation methods
+        /// <summary>
+        /// Transforms the object or a deformable representation of the object.
+        /// </summary>
+        /// <param name="xform"> Transformation matrix. </param>
+        /// <returns> Transformed geometry. </returns>
+        public override IGH_GeometricGoo Transform(Transform xform)
+        {
+            if (Value == null)
+            {
+                return null;
+            }
+
+            else if (Value.IsValid == false)
+            {
+                return null;
+            }
+
+            else
+            {
+                AbsoluteCoordinate absoluteCoordinate = Value.Duplicate();
+                absoluteCoordinate.Transform(xform);
+                return new GH_AbsoluteCoordinate(absoluteCoordinate);
+            }
+        }
+
+        /// <summary>
+        /// Morph the object or a deformable representation of the object.
+        /// </summary>
+        /// <param name="xmorph"> Spatial deform. </param>
+        /// <returns> Deformed geometry. </returns>
+        public override IGH_GeometricGoo Morph(SpaceMorph xmorph)
+        {
+            return null;
+        }
+        #endregion
+
+        #region preview data
+        /// <summary>
+        /// Compute an aligned boundingbox.
+        /// </summary>
+        /// <param name="xform"> Transformation to apply to geometry for BoundingBox computation. </param>
+        /// <returns> The world aligned boundingbox of the transformed geometry. </returns>
+        public override BoundingBox GetBoundingBox(Transform xform)
+        {
+            return BoundingBox.Empty;
+        }
+
+        /// <summary>
+        /// Gets the boundingbox for this geometry.
+        /// </summary>
+        public override BoundingBox Boundingbox
+        {
+            get { return this.GetBoundingBox(new Transform()); }
+        }
+
+        /// <summary>
+        /// Gets the clipping box for this data.
+        /// </summary>
+        public BoundingBox ClippingBox
+        {
+            get { return this.GetBoundingBox(new Transform()); }
+        }
+
+        /// <summary>
+        /// Implement this function to draw all shaded meshes. 
+        /// If the viewport does not support shading, this function will not be called.
+        /// </summary>
+        /// <param name="args"> Drawing arguments. </param>
+        public void DrawViewportMeshes(GH_PreviewMeshArgs args)
+        {
+
+        }
+
+        /// <summary>
+        /// Implement this function to draw all wire and point previews.
+        /// </summary>
+        /// <param name="args"> Drawing arguments. </param>
+        public void DrawViewportWires(GH_PreviewWireArgs args)
+        {
+            if (this.Value.Plane.Origin != null)
+            {
+                args.Pipeline.DrawPoint(this.Value.Plane.Origin, args.Color);
+            }
         }
         #endregion
     }

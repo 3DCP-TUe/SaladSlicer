@@ -9,6 +9,8 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 // Grasshopper Libs
 using Grasshopper.Kernel;
+// Rhino Libs
+using Rhino.Geometry;
 // Salad Slicer Libs
 using SaladSlicer.Gh.Goos.CodeGeneration;
 
@@ -17,7 +19,7 @@ namespace SaladSlicer.Gh.Parameters.CodeGeneration
     /// <summary>
     /// Represents the Param_AbsoluteCoordinate class
     /// </summary>
-    public class Param_AbsoluteCoordinate : GH_PersistentParam<GH_AbsoluteCoordinate>
+    public class Param_AbsoluteCoordinate : GH_PersistentGeometryParam<GH_AbsoluteCoordinate>, IGH_PreviewObject
     {
         /// <summary>
         /// Initializes a new instance of the Param_AbsoluteCoordinate class
@@ -112,6 +114,54 @@ namespace SaladSlicer.Gh.Parameters.CodeGeneration
             };
 
             return item;
+        }
+        #endregion
+
+        #region preview methods
+        /// <summary>
+        /// Implement this function to draw all shaded meshes. 
+        /// If the viewport does not support shading, this function will not be called.
+        /// </summary>
+        /// <param name="args"> Drawing arguments. </param>
+        public void DrawViewportMeshes(IGH_PreviewArgs args)
+        {
+            Preview_DrawMeshes(args);
+        }
+
+        /// <summary>
+        /// Implement this function to draw all wire and point previews.
+        /// </summary>
+        /// <param name="args"> Drawing arguments. </param>
+        public void DrawViewportWires(IGH_PreviewArgs args)
+        {
+            Preview_DrawWires(args);
+        }
+
+        private bool m_hidden = false;
+
+        /// <summary>
+        /// Gets or sets the hidden flag for this component. Does not affect Hidden flags on parameters associated with this component.
+        /// </summary>
+        public bool Hidden
+        {
+            get { return m_hidden; }
+            set { m_hidden = value; }
+        }
+
+        /// <summary>
+        /// Gets the clipping box for this data. The clipping box is typically the same as the boundingbox.
+        /// </summary>
+        public BoundingBox ClippingBox
+        {
+            get { return Preview_ComputeClippingBox(); }
+        }
+
+        /// <summary>
+        /// If a single parameter is PreviewCapable, so is the component. Override this property if you need special Preview flags.
+        /// </summary>
+        public bool IsPreviewCapable
+        {
+            get { return true; }
         }
         #endregion
     }

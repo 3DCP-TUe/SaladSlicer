@@ -105,7 +105,7 @@ namespace SaladSlicer.Core.CodeGeneration
 
         public BoundingBox GetBoundingBox(bool accurate)
         {
-            return new BoundingBox();
+            return BoundingBox.Empty;
         }
 
         /// <summary>
