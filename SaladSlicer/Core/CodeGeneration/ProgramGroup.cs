@@ -4,17 +4,17 @@
 // see <https://github.com/3DCP-TUe/SaladSlicer>.
 
 // System Libs
-using Rhino.Geometry;
+using System.Collections.Generic;
 
 namespace SaladSlicer.Core.CodeGeneration
 {
     /// <summary>
-    /// Represents an Absolute Coordinate.
+    /// Represents a Group of Program Objects.
     /// </summary>
-    public class AbsoluteCoordinate : IProgram
+    public class ProgramGroup : IProgram
     {
         #region fields
-        private Plane _plane;
+        private List<IProgram> _objects;
         #endregion
 
         #region (de)serialisation
@@ -23,44 +23,44 @@ namespace SaladSlicer.Core.CodeGeneration
 
         #region constructors
         /// <summary>
-        /// Initializes an empty instance of the AbsoluteCoordinate class.
+        /// Initializes an empty instance of the ProgramGroup class.
         /// </summary>         
-        public AbsoluteCoordinate()
+        public ProgramGroup()
         {
-            _plane = Plane.Unset;
+            _objects = new List<IProgram>();
         }
 
         /// <summary>
-        /// Initializes a new instance of the AbsoluteCoordinate class.
+        /// Initializes a new instance of the ProgramGroup class.
         /// </summary>
-        /// <param name="plane">Plane representing the origin of the point and optionally the direction (x-axis) of the movement.</param>
-        public AbsoluteCoordinate(Plane plane)
+        /// <param name="objects">List with program objects to store inside this group. </param>
+        public ProgramGroup(List<IProgram> objects)
         {
-            _plane = plane;
+            _objects = objects;
         }
 
         /// <summary>
-        /// Initializes a new instance of the Absolute Coordinate class by duplicating an existing Absolute Coordinate instance. 
+        /// 
         /// </summary>
-        /// <param name="absoluteCoordinate"> The Absolute Coordinate instance to duplicate. </param>
-        public AbsoluteCoordinate(AbsoluteCoordinate absoluteCoordinate)
+        /// <param name="group"></param>
+        public ProgramGroup(ProgramGroup group)
         {
-            _plane = absoluteCoordinate.Plane;
+            _objects = group.Objects; // TODO: Deep copy..
         }
 
         /// <summary>
-        /// Returns an exact duplicate of this Absolute Coordinate instance.
+        /// Returns an exact duplicate of this Program Group instance.
         /// </summary>
-        /// <returns> The exact duplicate of this Absolute Coordinate instance. </returns>
-        public AbsoluteCoordinate Duplicate()
+        /// <returns> The exact duplicate of this Program Group instance. </returns>
+        public ProgramGroup Duplicate()
         {
-            return new AbsoluteCoordinate(this);
+            return new ProgramGroup(this);
         }
 
         /// <summary>
-        /// Returns an exact duplicate of this Absolute Coordinate instance as an IProgram
+        /// Returns an exact duplicate of this Program Group instance as an IProgram
         /// </summary>
-        /// <returns> The exact duplicate of this Absolute Coordinate instance as an IProgram. </returns>
+        /// <returns> The exact duplicate of this Program Group instance as an IProgram. </returns>
         public IProgram DuplicateProgramObject()
         {
             return this.Duplicate() as IProgram;
@@ -74,7 +74,7 @@ namespace SaladSlicer.Core.CodeGeneration
         /// <returns> A string that represents the current object. </returns>
         public override string ToString()
         {
-            return ($"X{_plane.OriginX:0.###} Y{_plane.OriginY:0.###} Z{_plane.OriginZ:0.###}");
+            return "Program Group";
         }
 
         /// <summary>
@@ -83,7 +83,10 @@ namespace SaladSlicer.Core.CodeGeneration
         /// <param name="programGenerator"> The program generator. </param>
         public void ToProgram(ProgramGenerator programGenerator)
         {
-            programGenerator.Program.Add($"X{_plane.OriginX:0.###} Y{_plane.OriginY:0.###} Z{_plane.OriginZ:0.###}");
+            for (int i = 0; i < _objects.Count; i++)
+            {
+                _objects[i].ToProgram(programGenerator);
+            }
         }
         #endregion
 
@@ -95,18 +98,18 @@ namespace SaladSlicer.Core.CodeGeneration
         {
             get
             { 
-                if (_plane == null) { return false; } 
+                if (_objects == null) { return false; } 
                 return true;
             }
         }
 
         /// <summary>
-        /// Gets or sets the plane.
+        /// Gets or sets the objects.
         /// </summary>
-        public Plane Plane
+        public List<IProgram> Objects
         {
-            get { return _plane; }
-            set { _plane = value; }
+            get { return _objects; }
+            set { _objects = value; }
         }
         #endregion
     }

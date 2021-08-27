@@ -9,6 +9,7 @@ using System;
 using Grasshopper.Kernel;
 // Salad Slicer Libs
 using SaladSlicer.Core.CodeGeneration;
+using SaladSlicer.Gh.Parameters.CodeGeneration;
 
 namespace SaladSlicer.Gh.Components.CodeGeneration
 {
@@ -42,7 +43,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddGenericParameter("Program Line", "PL", "Custom code line as a Program Line.", GH_ParamAccess.item);
+            pManager.AddParameter(new Param_CodeLine(), "Program Line", "PL", "Custom code line as a Program Line.", GH_ParamAccess.item);
         }
 
         /// <summary>

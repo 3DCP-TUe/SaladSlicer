@@ -7,9 +7,11 @@
 using System;
 // Grasshopper Libs
 using Grasshopper.Kernel;
+// Rhino Lib
+using Rhino.Geometry;
 // Salad Slicer Libs
 using SaladSlicer.Core.CodeGeneration;
-using Rhino.Geometry;
+using SaladSlicer.Gh.Parameters.CodeGeneration;
 
 namespace SaladSlicer.Gh.Components.CodeGeneration
 {
@@ -43,7 +45,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddGenericParameter("Program Line", "PL", "Absolute Coordinate as a Program Line.", GH_ParamAccess.item);
+            pManager.AddParameter(new Param_AbsoluteCoordinate(), "Program Line", "PL", "Absolute Coordinate as a Program Line.", GH_ParamAccess.item);
         }
 
         /// <summary>

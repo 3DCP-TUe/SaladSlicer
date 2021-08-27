@@ -14,6 +14,10 @@ namespace SaladSlicer.Core.CodeGeneration
         private double _feedRate;
         #endregion
 
+        #region (de)serialisation
+        //TODO
+        #endregion
+
         #region constructors
         /// <summary>
         /// Initializes an empty instance of the FeedRate class.
@@ -30,6 +34,33 @@ namespace SaladSlicer.Core.CodeGeneration
         public FeedRate(double feedRate)
         {
             _feedRate = feedRate;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the Feed Rate class by duplicating an existing Feed Rate instance. 
+        /// </summary>
+        /// <param name="feedRate"> The Feed Rate instance to duplicate. </param>
+        public FeedRate(FeedRate feedRate)
+        {
+            _feedRate = feedRate.Feedrate;
+        }
+
+        /// <summary>
+        /// Returns an exact duplicate of this Feed Rate instance.
+        /// </summary>
+        /// <returns> The exact duplicate of this Feed Rate instance. </returns>
+        public FeedRate Duplicate()
+        {
+            return new FeedRate(this);
+        }
+
+        /// <summary>
+        /// Returns an exact duplicate of this Feed Rate instance as an IProgram
+        /// </summary>
+        /// <returns> The exact duplicate of this Feed Rate instance as an IProgram. </returns>
+        public IProgram DuplicateProgramObject()
+        {
+            return this.Duplicate() as IProgram;
         }
         #endregion
 

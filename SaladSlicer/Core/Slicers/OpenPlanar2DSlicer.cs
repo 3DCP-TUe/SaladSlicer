@@ -95,6 +95,15 @@ namespace SaladSlicer.Core.Slicers
         }
 
         /// <summary>
+        /// Returns an exact duplicate of this Planar 2D Slicer instance as an IProgram.
+        /// </summary>
+        /// <returns> The exact duplicate of this Planar 2D Slicer instance as an IProgram. </returns>
+        public IProgram DuplicateProgramObject()
+        {
+            return this.Duplicate() as IProgram;
+        }
+
+        /// <summary>
         /// Returns an exact duplicate of this Planar 2D Slicer instance as an IObject.
         /// </summary>
         /// <returns> The exact duplicate of this Planar 2D Slicer instance as an IObject. </returns>

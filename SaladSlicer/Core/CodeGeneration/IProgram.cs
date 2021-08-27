@@ -11,7 +11,11 @@ namespace SaladSlicer.Core.CodeGeneration
     public interface IProgram
     {
         #region constructors
-
+        /// <summary>
+        /// Returns an exact duplicate of this IProgram.
+        /// </summary>
+        /// <returns> The exact duplicate of this IProgram. </returns>
+        IProgram DuplicateProgramObject();
         #endregion
 
         #region methods

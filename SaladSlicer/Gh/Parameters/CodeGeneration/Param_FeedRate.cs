@@ -15,17 +15,17 @@ using SaladSlicer.Gh.Goos.CodeGeneration;
 namespace SaladSlicer.Gh.Parameters.CodeGeneration
 {
     /// <summary>
-    /// Represents the Param_CodeLine class
+    /// Represents the Param_FeedRate class
     /// </summary>
-    public class Param_CodeLine : GH_PersistentParam<GH_CodeLine>
+    public class Param_FeedRate : GH_PersistentParam<GH_FeedRate>
     {
         /// <summary>
-        /// Initializes a new instance of the Param_CodeLine class
+        /// Initializes a new instance of the Param_FeedRate class
         /// </summary>
-        public Param_CodeLine()
-          : base(new GH_InstanceDescription("Code Line", // Parameter name
-              "CL", // Component nickname
-              "Defines a custom Code Line.", // Description
+        public Param_FeedRate()
+          : base(new GH_InstanceDescription("Feed Rate", // Parameter name
+              "AC", // Component nickname
+              "Defines an Feed Rate.", // Description
               "Salad Slicer", // Category
               "Parameters")) // Subcategory)
         { 
@@ -46,7 +46,7 @@ namespace SaladSlicer.Gh.Parameters.CodeGeneration
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.Param_CodeLine_Icon; }
+            get { return Properties.Resources.Parameter_Icon; }
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace SaladSlicer.Gh.Parameters.CodeGeneration
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("8A4FEA90-E6BC-45E4-A148-F666521D0DDB"); }
+            get { return new Guid("5D839DEF-81D8-4EDD-94F1-05943B580795"); }
         }
         #endregion
 
@@ -66,7 +66,7 @@ namespace SaladSlicer.Gh.Parameters.CodeGeneration
         /// </summary>
         /// <param name="values"> Empty list. </param>
         /// <returns> Canceled result. </returns>
-        protected override GH_GetterResult Prompt_Plural(ref List<GH_CodeLine> values)
+        protected override GH_GetterResult Prompt_Plural(ref List<GH_FeedRate> values)
         {
             return GH_GetterResult.cancel;
         }
@@ -77,7 +77,7 @@ namespace SaladSlicer.Gh.Parameters.CodeGeneration
         /// </summary>
         /// <param name="value"> Null item.  </param>
         /// <returns> Canceled result. </returns>
-        protected override GH_GetterResult Prompt_Singular(ref GH_CodeLine value)
+        protected override GH_GetterResult Prompt_Singular(ref GH_FeedRate value)
         {
             return GH_GetterResult.cancel;
         }

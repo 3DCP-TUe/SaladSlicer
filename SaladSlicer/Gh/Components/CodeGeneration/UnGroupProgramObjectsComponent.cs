@@ -5,6 +5,7 @@
 
 // System Libs
 using System;
+using System.Collections.Generic;
 // Grasshopper Libs
 using Grasshopper.Kernel;
 // Salad Slicer Libs
@@ -14,17 +15,17 @@ using SaladSlicer.Gh.Parameters.CodeGeneration;
 namespace SaladSlicer.Gh.Components.CodeGeneration
 {
     /// <summary>
-    /// Represent a component that generates a custom Code Line.
+    /// Represent a component that generates a set with program objects.
     /// </summary>
-    public class FeedRateComponent : GH_Component
+    public class UnGroupProgramObjectsComponent : GH_Component
     {
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public FeedRateComponent()
-          : base("Set Feedrate", // Component name
-              "F", // Component nickname
-              "Defines a feedrate. This feedrate will be overwritten when a new feedrate is defined", // Description
+        public UnGroupProgramObjectsComponent()
+          : base("Ungroup Program Objects", // Component name
+              "UG", // Component nickname
+              "Ungroup a set of program objects.", // Description
               "Salad Slicer", // Category
               "Code Generation") // Subcategory
         {
@@ -35,7 +36,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddNumberParameter("Feedrate", "F", "Feedrate.", GH_ParamAccess.item);
+            pManager.AddParameter(new Param_ProgramGroup(), "Program Group", "G", "Group with program objects", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -43,7 +44,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddParameter(new Param_FeedRate(), "Program Line", "PL", "Feedrate as a Program Line.", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Program Objects", "PO", "Program objects inside group.", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -53,16 +54,13 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             // Declare variable of input parameters
-            double feedRate = new double();
+            ProgramGroup group = new ProgramGroup();
 
             // Access the input parameters individually. 
-            if (!DA.GetData(0, ref feedRate)) return;
-
-            // Create the code line
-            FeedRate programObject = new FeedRate(feedRate);
+            if (!DA.GetData(0, ref group)) return;
 
             // Assign the output parameters
-            DA.SetData(0, programObject);
+            DA.SetDataList(0, group.Objects);
         }
 
         /// <summary>
@@ -70,7 +68,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         public override GH_Exposure Exposure
         {
-            get { return GH_Exposure.primary; }
+            get { return GH_Exposure.senary; }
         }
 
         /// <summary>
@@ -86,7 +84,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.SetFeedRate_Icon; }
+            get { return Properties.Resources.ExampleIcon; }
         }
 
         /// <summary>
@@ -95,7 +93,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("D07E167C-5294-4FB9-AE80-71526A415C8B"); }
+            get { return new Guid("D2B0943A-E765-4B29-8014-614F22016471"); }
         }
     }
 }
