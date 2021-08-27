@@ -11,9 +11,9 @@ using SaladSlicer.Core.CodeGeneration;
 namespace SaladSlicer.Gh.Goos.CodeGeneration
 {
     /// <summary>
-    /// Represents the GH_CodeLine class.
+    /// Represents the GH_FeedRate class.
     /// </summary>
-    public class GH_CodeLine : GH_Goo<CodeLine>
+    public class GH_FeedRate : GH_Goo<FeedRate>
     {
         #region (de)serialisation
         //TODO
@@ -21,35 +21,35 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
 
         #region constructors
         /// <summary>
-        /// Initializes an empty instance of the GH_CodeLine class.
+        /// Initializes an empty instance of the GH_FeedRate class.
         /// </summary>
-        public GH_CodeLine()
+        public GH_FeedRate()
         {
             this.Value = null;
         }
 
         /// <summary>
-        /// Initializes a new Code Line Goo instance from a Code Line instance.
+        /// Initializes a new Feed Rate Goo instance from a Feed Rate instance.
         /// </summary>
-        /// <param name="codeLine"> Code Line Value to store inside this Goo instance. </param>
-        public GH_CodeLine(CodeLine codeLine)
+        /// <param name="feedRate"> Feed Rate Value to store inside this Goo instance. </param>
+        public GH_FeedRate(FeedRate feedRate)
         {
-            this.Value = codeLine;
+            this.Value = feedRate;
         }
 
         /// <summary>
         /// Returns a complete duplicate of this Goo instance.
         /// </summary>
-        /// <returns> A duplicate of the Code Line Goo. </returns>
+        /// <returns> A duplicate of the Feed Rate Goo. </returns>
         public override IGH_Goo Duplicate()
         {
             if (this.Value == null)
             {
-                return new GH_CodeLine();
+                return new GH_FeedRate();
             }
             else
             {
-                return new GH_CodeLine(this.Value.Duplicate());
+                return new GH_FeedRate(this.Value.Duplicate());
             }
         }
         #endregion
@@ -63,7 +63,7 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
         {
             if (this.Value == null)
             {
-                return "Null Code Line";
+                return "Null Feed Rate";
             }
             else
             {
@@ -86,17 +86,31 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
                 return false;
             }
 
-            // Cast to Code Line
-            if (typeof(Q).IsAssignableFrom(typeof(CodeLine)))
+            // Cast to Feed Rate
+            if (typeof(Q).IsAssignableFrom(typeof(FeedRate)))
             {
                 target = (Q)(object)this.Value;
                 return true;
             }
 
-            // Cast to Code Line Goo
-            if (typeof(Q).IsAssignableFrom(typeof(GH_CodeLine)))
+            // Cast to Feed Rate Goo
+            if (typeof(Q).IsAssignableFrom(typeof(GH_FeedRate)))
             {
-                target = (Q)(object)new GH_CodeLine(this.Value);
+                target = (Q)(object)new GH_FeedRate(this.Value);
+                return true;
+            }
+
+            // Cast to double
+            if (typeof(Q).IsAssignableFrom(typeof(double)))
+            {
+                target = (Q)(object)this.Value.Feedrate;
+                return true;
+            }
+
+            // Cast to Number Goo
+            if (typeof(Q).IsAssignableFrom(typeof(GH_Number)))
+            {
+                target = (Q)(object)new GH_Number(this.Value.Feedrate);
                 return true;
             }
 
@@ -118,18 +132,25 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
                 return false; 
             }
 
-            // Cast from Code Line
-            if (typeof(CodeLine).IsAssignableFrom(source.GetType()))
+            // Cast from Feed Rate
+            if (typeof(FeedRate).IsAssignableFrom(source.GetType()))
             {
-                this.Value = source as CodeLine;
+                this.Value = source as FeedRate;
                 return true;
             }
 
-            // Cast from Text
-            if (typeof(GH_String).IsAssignableFrom(source.GetType()))
+            // Cast from double
+            if (typeof(double).IsAssignableFrom(source.GetType()))
             {
-                GH_String goo = source as GH_String;
-                this.Value = new CodeLine(goo.Value);
+                this.Value = new FeedRate((double)source);
+                return true;
+            }
+
+            // Cast from Number Goo
+            if (typeof(GH_Number).IsAssignableFrom(source.GetType()))
+            {
+                GH_Number goo = source as GH_Number;
+                this.Value = new FeedRate(goo.Value);
                 return true;
             }
 
@@ -159,9 +180,9 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
         {
             get
             {
-                if (this.Value == null) { return "No internal Code Line instance"; }
+                if (this.Value == null) { return "No internal Feed Rate instance"; }
                 if (this.Value.IsValid) { return string.Empty; }
-                return "Invalid Code Line instance: Did you define a Text?";
+                return "Invalid Feed Rate instance: Did you define a Text?";
             }
         }
 
@@ -170,7 +191,7 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
         /// </summary>
         public override string TypeDescription
         {
-            get { return "Defines a Code Line."; }
+            get { return "Defines a Feed Rate."; }
         }
 
         /// <summary>
@@ -178,7 +199,7 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
         /// </summary>
         public override string TypeName
         {
-            get { return "Code Line"; }
+            get { return "Feed Rate"; }
         }
         #endregion
     }

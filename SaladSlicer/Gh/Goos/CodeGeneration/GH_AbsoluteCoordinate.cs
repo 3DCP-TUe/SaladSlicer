@@ -5,15 +5,17 @@
 
 // Grasshopper Libs
 using Grasshopper.Kernel.Types;
+// Rhino Libs
+using Rhino.Geometry;
 // Salad Slicer Libs
 using SaladSlicer.Core.CodeGeneration;
 
 namespace SaladSlicer.Gh.Goos.CodeGeneration
 {
     /// <summary>
-    /// Represents the GH_CodeLine class.
+    /// Represents the GH_AbsoluteCoordinate class.
     /// </summary>
-    public class GH_CodeLine : GH_Goo<CodeLine>
+    public class GH_AbsoluteCoordinate : GH_Goo<AbsoluteCoordinate>
     {
         #region (de)serialisation
         //TODO
@@ -21,35 +23,35 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
 
         #region constructors
         /// <summary>
-        /// Initializes an empty instance of the GH_CodeLine class.
+        /// Initializes an empty instance of the GH_AbsoluteCoordinate class.
         /// </summary>
-        public GH_CodeLine()
+        public GH_AbsoluteCoordinate()
         {
             this.Value = null;
         }
 
         /// <summary>
-        /// Initializes a new Code Line Goo instance from a Code Line instance.
+        /// Initializes a new Absolute Coordinate Goo instance from a Absolute Coordinate instance.
         /// </summary>
-        /// <param name="codeLine"> Code Line Value to store inside this Goo instance. </param>
-        public GH_CodeLine(CodeLine codeLine)
+        /// <param name="absoluteCoordinate"> Absolute Coordinate Value to store inside this Goo instance. </param>
+        public GH_AbsoluteCoordinate(AbsoluteCoordinate absoluteCoordinate)
         {
-            this.Value = codeLine;
+            this.Value = absoluteCoordinate;
         }
 
         /// <summary>
         /// Returns a complete duplicate of this Goo instance.
         /// </summary>
-        /// <returns> A duplicate of the Code Line Goo. </returns>
+        /// <returns> A duplicate of the Absolute Coordinate Goo. </returns>
         public override IGH_Goo Duplicate()
         {
             if (this.Value == null)
             {
-                return new GH_CodeLine();
+                return new GH_AbsoluteCoordinate();
             }
             else
             {
-                return new GH_CodeLine(this.Value.Duplicate());
+                return new GH_AbsoluteCoordinate(this.Value.Duplicate());
             }
         }
         #endregion
@@ -63,7 +65,7 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
         {
             if (this.Value == null)
             {
-                return "Null Code Line";
+                return "Null Absolute Coordinate";
             }
             else
             {
@@ -86,17 +88,45 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
                 return false;
             }
 
-            // Cast to Code Line
-            if (typeof(Q).IsAssignableFrom(typeof(CodeLine)))
+            // Cast to Absolute Coordinate
+            if (typeof(Q).IsAssignableFrom(typeof(AbsoluteCoordinate)))
             {
                 target = (Q)(object)this.Value;
                 return true;
             }
 
-            // Cast to Code Line Goo
-            if (typeof(Q).IsAssignableFrom(typeof(GH_CodeLine)))
+            // Cast to Absolute Coordinate Goo
+            if (typeof(Q).IsAssignableFrom(typeof(GH_AbsoluteCoordinate)))
             {
-                target = (Q)(object)new GH_CodeLine(this.Value);
+                target = (Q)(object)new GH_AbsoluteCoordinate(this.Value);
+                return true;
+            }
+
+            // Cast to Plane
+            if (typeof(Q).IsAssignableFrom(typeof(Plane)))
+            {
+                target = (Q)(object)this.Value.Plane;
+                return true;
+            }
+
+            // Cast to Plane Goo
+            if (typeof(Q).IsAssignableFrom(typeof(GH_Plane)))
+            {
+                target = (Q)(object)new GH_Plane(this.Value.Plane);
+                return true;
+            }
+
+            // Cast to Plane
+            if (typeof(Q).IsAssignableFrom(typeof(Point3d)))
+            {
+                target = (Q)(object)this.Value.Plane.Origin;
+                return true;
+            }
+
+            // Cast to Plane Goo
+            if (typeof(Q).IsAssignableFrom(typeof(GH_Point)))
+            {
+                target = (Q)(object)new GH_Point(this.Value.Plane.Origin);
                 return true;
             }
 
@@ -118,18 +148,42 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
                 return false; 
             }
 
-            // Cast from Code Line
-            if (typeof(CodeLine).IsAssignableFrom(source.GetType()))
+            // Cast from Absolute Coordinate
+            if (typeof(AbsoluteCoordinate).IsAssignableFrom(source.GetType()))
             {
-                this.Value = source as CodeLine;
+                this.Value = source as AbsoluteCoordinate;
                 return true;
             }
 
-            // Cast from Text
-            if (typeof(GH_String).IsAssignableFrom(source.GetType()))
+            // Cast from Plane
+            if (typeof(Plane).IsAssignableFrom(source.GetType()))
             {
-                GH_String goo = source as GH_String;
-                this.Value = new CodeLine(goo.Value);
+                this.Value = new AbsoluteCoordinate((Plane)source);
+                return true;
+            }
+
+            // Cast from Plane Goo
+            if (typeof(GH_Plane).IsAssignableFrom(source.GetType()))
+            {
+                GH_Plane goo = source as GH_Plane;
+                this.Value = new AbsoluteCoordinate(goo.Value);
+                return true;
+            }
+
+            // Cast from Point
+            if (typeof(Point3d).IsAssignableFrom(source.GetType()))
+            {
+                Plane plane = new Plane((Point3d)source, new Vector3d(1, 0, 0), new Vector3d(0, 1, 0));
+                this.Value = new AbsoluteCoordinate(plane);
+                return true;
+            }
+
+            // Cast from Point Goo
+            if (typeof(GH_Point).IsAssignableFrom(source.GetType()))
+            {
+                GH_Point goo = source as GH_Point;
+                Plane plane = new Plane(goo.Value, new Vector3d(1, 0, 0), new Vector3d(0, 1, 0));
+                this.Value = new AbsoluteCoordinate(plane);
                 return true;
             }
 
@@ -159,9 +213,9 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
         {
             get
             {
-                if (this.Value == null) { return "No internal Code Line instance"; }
+                if (this.Value == null) { return "No internal Absolute Coordinate instance"; }
                 if (this.Value.IsValid) { return string.Empty; }
-                return "Invalid Code Line instance: Did you define a Text?";
+                return "Invalid Absolute Coordinate instance: Did you define a Text?";
             }
         }
 
@@ -170,7 +224,7 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
         /// </summary>
         public override string TypeDescription
         {
-            get { return "Defines a Code Line."; }
+            get { return "Defines a Absolute Coordinate."; }
         }
 
         /// <summary>
@@ -178,7 +232,7 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
         /// </summary>
         public override string TypeName
         {
-            get { return "Code Line"; }
+            get { return "Absolute Coordinate"; }
         }
         #endregion
     }

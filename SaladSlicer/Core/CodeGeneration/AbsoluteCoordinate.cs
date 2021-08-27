@@ -17,6 +17,10 @@ namespace SaladSlicer.Core.CodeGeneration
         private Plane _plane;
         #endregion
 
+        #region (de)serialisation
+        //TODO
+        #endregion
+
         #region constructors
         /// <summary>
         /// Initializes an empty instance of the AbsoluteCoordinate class.

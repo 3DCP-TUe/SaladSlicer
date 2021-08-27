@@ -17,6 +17,10 @@ namespace SaladSlicer.Core.CodeGeneration
         private List<IProgram> _objects;
         #endregion
 
+        #region (de)serialisation
+        //TODO
+        #endregion
+
         #region constructors
         /// <summary>
         /// Initializes an empty instance of the ProgramGroup class.

@@ -14,6 +14,10 @@ namespace SaladSlicer.Core.CodeGeneration
         private double _feedRate;
         #endregion
 
+        #region (de)serialisation
+        //TODO
+        #endregion
+
         #region constructors
         /// <summary>
         /// Initializes an empty instance of the FeedRate class.
