@@ -8,9 +8,8 @@ using System;
 // Grasshopper Libs
 using Grasshopper.Kernel;
 // Salad Slicer Libs
-using SaladSlicer.Core.CodeGeneration;
 using SaladSlicer.Core.Slicers;
-using SaladSlicer.Gh.Parameters.CodeGeneration;
+using SaladSlicer.Gh.Parameters.Slicers;
 using SaladSlicer.Gh.Utils;
 
 namespace SaladSlicer.Gh.Components.Slicers
@@ -37,7 +36,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddParameter(new Param_Object(), "Program Object", "PO", "Slicer object.", GH_ParamAccess.item);
+            pManager.AddParameter(new Param_SlicerObject(), "Program Object", "PO", "Slicer object.", GH_ParamAccess.item);
         }
 
         /// <summary>

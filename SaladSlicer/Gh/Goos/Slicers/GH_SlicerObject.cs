@@ -11,14 +11,14 @@ using Grasshopper.Kernel.Types;
 // Salad Slicer Libs
 using SaladSlicer.Core.CodeGeneration;
 using SaladSlicer.Core.Slicers;
-using SaladSlicer.Gh.Goos.Slicers;
+using SaladSlicer.Gh.Goos.CodeGeneration;
 
-namespace SaladSlicer.Gh.Goos.CodeGeneration
+namespace SaladSlicer.Gh.Goos.Slicers
 {
     /// <summary>
-    /// Represents the GH_ProgramObject class.
+    /// Represents the GH_SlicerObject class.
     /// </summary>
-    public class GH_Object : GH_GeometricGoo<ISlicer>, IGH_PreviewData
+    public class GH_SlicerObject : GH_GeometricGoo<ISlicer>, IGH_PreviewData
     {
         #region (de)serialisation
         //TODO
@@ -26,20 +26,20 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
 
         #region constructors
         /// <summary>
-        /// Initializes an empty instance of the GH_ProgramObject class.
+        /// Initializes an empty instance of the GH_SlicerObject class.
         /// </summary>
-        public GH_Object()
+        public GH_SlicerObject()
         {
             this.Value = null;
         }
 
         /// <summary>
-        /// Initializes a new Oject Goo instance from an IObject instance.
+        /// Initializes a new Slicer Oject Goo instance from an ISlicer instance.
         /// </summary>
-        /// <param name="programObject"> IObject Value to store inside this Goo instance. </param>
-        public GH_Object(ISlicer programObject)
+        /// <param name="slicermObject"> IObject Value to store inside this Goo instance. </param>
+        public GH_SlicerObject(ISlicer slicerObject)
         {
-            this.Value = programObject;
+            this.Value = slicerObject;
         }
 
         /// <summary>
@@ -50,11 +50,11 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
         {
             if (this.Value == null)
             {
-                return new GH_Object();
+                return new GH_SlicerObject();
             }
             else
             {
-                return new GH_Object(this.Value.DuplicateObject());
+                return new GH_SlicerObject(this.Value.DuplicateObject());
             }
         }
 
@@ -77,7 +77,7 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
         {
             if (this.Value == null)
             {
-                return "Null Program Object";
+                return "Null Slicer Object";
             }
             else
             {
@@ -100,17 +100,17 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
                 return false;
             }
 
-            // Cast to IObject
+            // Cast to ISlicer
             if (typeof(Q).IsAssignableFrom(typeof(ISlicer)))
             {
                 target = (Q)(object)this.Value;
                 return true;
             }
 
-            // Cast to IObject Goo
-            if (typeof(Q).IsAssignableFrom(typeof(GH_Object)))
+            // Cast to ISlicer Goo
+            if (typeof(Q).IsAssignableFrom(typeof(GH_SlicerObject)))
             {
-                target = (Q)(object)new GH_Object(this.Value);
+                target = (Q)(object)new GH_SlicerObject(this.Value);
                 return true;
             }
 
@@ -202,9 +202,9 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
             }
 
             // Cast from IObject Goo 
-            if (typeof(GH_Object).IsAssignableFrom(source.GetType()))
+            if (typeof(GH_SlicerObject).IsAssignableFrom(source.GetType()))
             {
-                GH_Object goo = source as GH_Object;
+                GH_SlicerObject goo = source as GH_SlicerObject;
                 this.Value = goo.Value;
                 return true;
             }
@@ -235,9 +235,9 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
         {
             get
             {
-                if (this.Value == null) { return "No internal Program Object instance"; }
+                if (this.Value == null) { return "No internal Slicer Object instance"; }
                 if (this.Value.IsValid) { return string.Empty; }
-                return "Invalid Program Object instance.";
+                return "Invalid Slicer Object instance.";
             }
         }
 
@@ -246,7 +246,7 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
         /// </summary>
         public override string TypeDescription
         {
-            get { return "Defines a Program Object."; }
+            get { return "Defines a Slicer Object."; }
         }
 
         /// <summary>
@@ -254,7 +254,7 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
         /// </summary>
         public override string TypeName
         {
-            get { return "Program Object"; }
+            get { return "Slicer Object"; }
         }
         #endregion
 
@@ -278,9 +278,9 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
 
             else
             {
-                ISlicer programObject = Value.DuplicateObject();
-                programObject.Transform(xform);
-                return new GH_Object(programObject);
+                ISlicer slicerObject = Value.DuplicateObject();
+                slicerObject.Transform(xform);
+                return new GH_SlicerObject(slicerObject);
             }
         }
 

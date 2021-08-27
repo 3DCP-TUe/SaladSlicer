@@ -12,7 +12,7 @@ using Rhino.Geometry;
 using Grasshopper.Kernel;
 // Salad Slicer Libs
 using SaladSlicer.Core.Slicers;
-using SaladSlicer.Gh.Parameters.CodeGeneration;
+using SaladSlicer.Gh.Parameters.Slicers;
 
 namespace SaladSlicer.Gh.Components.Slicers
 {
@@ -51,7 +51,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddParameter(new Param_Object(), "Slicer Object", "SO", "3D Slicer object.", GH_ParamAccess.item);
+            pManager.AddParameter(new Param_ClosedPlanar3DSlicer(), "Slicer Object", "SO", "3D Slicer object.", GH_ParamAccess.item);
         }
 
         /// <summary>

@@ -12,22 +12,22 @@ using Grasshopper.Kernel;
 // Rhino Libs
 using Rhino.Geometry;
 // Salad Slicer Libs
-using SaladSlicer.Gh.Goos.CodeGeneration;
+using SaladSlicer.Gh.Goos.Slicers;
 
-namespace SaladSlicer.Gh.Parameters.CodeGeneration
+namespace SaladSlicer.Gh.Parameters.Slicers
 {
     /// <summary>
     /// Represents the Param_Object class
     /// </summary>
-    public class Param_Object : GH_PersistentGeometryParam<GH_Object>, IGH_PreviewObject
+    public class Param_SlicerObject : GH_PersistentGeometryParam<GH_SlicerObject>, IGH_PreviewObject
     {
         /// <summary>
         /// Initializes a new instance of the Param_Object class
         /// </summary>
-        public Param_Object()
-          : base(new GH_InstanceDescription("Program Object", // Parameter name
-              "PO", // Component nickname
-              "Defines a Progran Object.", // Description
+        public Param_SlicerObject()
+          : base(new GH_InstanceDescription("Slicer Object", // Parameter name
+              "SO", // Component nickname
+              "Defines a Slicer Object.", // Description
               "Salad Slicer", // Category
               "Parameters")) // Subcategory)
         { 
@@ -68,7 +68,7 @@ namespace SaladSlicer.Gh.Parameters.CodeGeneration
         /// </summary>
         /// <param name="values"> Empty list. </param>
         /// <returns> Canceled result. </returns>
-        protected override GH_GetterResult Prompt_Plural(ref List<GH_Object> values)
+        protected override GH_GetterResult Prompt_Plural(ref List<GH_SlicerObject> values)
         {
             return GH_GetterResult.cancel;
         }
@@ -79,7 +79,7 @@ namespace SaladSlicer.Gh.Parameters.CodeGeneration
         /// </summary>
         /// <param name="value"> Null item.  </param>
         /// <returns> Canceled result. </returns>
-        protected override GH_GetterResult Prompt_Singular(ref GH_Object value)
+        protected override GH_GetterResult Prompt_Singular(ref GH_SlicerObject value)
         {
             return GH_GetterResult.cancel;
         }

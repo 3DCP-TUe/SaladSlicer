@@ -108,9 +108,9 @@ namespace SaladSlicer.Gh.Goos.Slicers
             }
 
             // Cast to IObject Goo
-            if (typeof(Q).IsAssignableFrom(typeof(GH_Object)))
+            if (typeof(Q).IsAssignableFrom(typeof(GH_SlicerObject)))
             {
-                target = (Q)(object)new GH_Object(this.Value);
+                target = (Q)(object)new GH_SlicerObject(this.Value);
                 return true;
             }
 
@@ -193,9 +193,9 @@ namespace SaladSlicer.Gh.Goos.Slicers
             }
 
             // Cast from IObject Goo 
-            if (typeof(GH_Object).IsAssignableFrom(source.GetType()))
+            if (typeof(GH_SlicerObject).IsAssignableFrom(source.GetType()))
             {
-                GH_Object goo = source as GH_Object;
+                GH_SlicerObject goo = source as GH_SlicerObject;
 
                 if (goo.Value is ClosedPlanar3DSlicer slicer)
                 {
