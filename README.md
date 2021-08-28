@@ -6,11 +6,11 @@
   
  <p align="center"> 
   <img src="https://img.shields.io/github/v/release/3DCP-TUe/SaladSlicer?label=stable&style=flat-square">
-  <img src="https://img.shields.io/github/v/release/3DCP-TUe/SaladSlice?label=latest&include_prereleases&style=flat-square">
-  <img src="https://img.shields.io/github/downloads/3DCP-TUe/SaladSlice/total?style=flat-square">
-  <img src="https://img.shields.io/github/license/3DCP-TUe/SaladSlice?style=flat-square">
-  <img src="https://img.shields.io/github/issues-raw/3DCP-TUe/SaladSlice?style=flat-square">
-  <img src="https://img.shields.io/github/issues-closed-raw/3DCP-TUe/SaladSlice?style=flat-square">
+  <img src="https://img.shields.io/github/v/release/3DCP-TUe/SaladSlicer?label=latest&include_prereleases&style=flat-square">
+  <img src="https://img.shields.io/github/downloads/3DCP-TUe/SaladSlicer/total?style=flat-square">
+  <img src="https://img.shields.io/github/license/3DCP-TUe/SaladSlicer?style=flat-square">
+  <img src="https://img.shields.io/github/issues-raw/3DCP-TUe/SaladSlicer?style=flat-square">
+  <img src="https://img.shields.io/github/issues-closed-raw/3DCP-TUe/SaladSlicer?style=flat-square">
 </p>
 
 ---
