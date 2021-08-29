@@ -45,7 +45,7 @@ namespace SaladSlicer.Core.CodeGeneration
         /// </summary>
         /// <param name="_objects"> The objects to gerenator the program for. </param>
         /// <returns> The program as a list with code lines. </returns>
-        public List<string> CreateProgram(List<IProgram> _objects)
+        public List<string> CreateProgram(List<IProgram> _objects, int type)
         {
             _program.Clear();
 
@@ -56,18 +56,46 @@ namespace SaladSlicer.Core.CodeGeneration
             _program.Add("; ----------------------------------------------------------------------");
             _program.Add(" ");
 
+            // Program start
+            if (type == 0) { }
+            else if(type == 1){
+                _program.Add("M140 S50; Set bed temperature ");
+                _program.Add("M104 S200; Set hot end temperature");
+                _program.Add("M105; Report temperature ");
+                _program.Add("M190 S50; Wait for bed temperature ");
+                _program.Add("M109 S200; Wait for hot end temperature ");
+                _program.Add("M106");
+                _program.Add("M201 X500.00 Y500.00 Z100.00 E5000.00; Setup machine max acceleration");
+                _program.Add("M203 X500.00 Y500.00 Z10.00 E50.00; Setup machine max feedrate");
+                _program.Add("M204 P500.00 R1000.00 T500.00; Setup Print/ Retract / Travel acceleration");
+                _program.Add("M205 X8.00 Y8.00 Z0.40 E5.00; Setup Jerk");
+                _program.Add("M82 ; absolute extrusion mode");
+                _program.Add("G92 E0; Set current extruder position as 0");
+            }
+
             // G-code of different objects
             for (int i = 0; i < _objects.Count; i++)
             {
-                _objects[i].ToSinumerik(this);
+                _objects[i].ToProgram(this, type);
             }
 
             // Program end
-            _program.Add(" ");
-            _program.Add("M30");
-            _program.Add(" ");
-            _program.Add(" ");
-            _program.Add(" ");
+            if (type == 0){
+                _program.Add(" ");
+                _program.Add("M30");
+                _program.Add(" ");
+                _program.Add(" ");
+                _program.Add(" ");
+            }
+            else if (type == 1)
+            {
+                _program.Add(" ");
+                _program.Add("M106 S0; Turn - off fan");
+                _program.Add("M104 S0; Turn - off hotend ");
+                _program.Add("M140 S0; Turn - off bed ");
+                _program.Add("M84 X Y E; Disable all steppers but Z ");
+                _program.Add(" ");
+            }
 
             return _program;
         }

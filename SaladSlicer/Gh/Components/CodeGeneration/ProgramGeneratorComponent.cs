@@ -13,6 +13,8 @@ using Grasshopper.Kernel;
 // Salad Slicer Libs
 using SaladSlicer.Core.CodeGeneration;
 using SaladSlicer.Core.Interfaces;
+using SaladSlicer.Core.Enumerations;
+using SaladSlicer.Gh.Utils;
 
 namespace SaladSlicer.Gh.Components.CodeGeneration
 {
@@ -23,6 +25,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
     {
         #region fields
         private List<string> _program = new List<string>();
+        private bool _expire = false;
         #endregion
 
         /// <summary>
@@ -43,6 +46,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddGenericParameter("Program/Slicer Objects", "O", "All Slicer Objects and Program Objects that can generate a NC program", GH_ParamAccess.list);
+            pManager.AddIntegerParameter("Program type", "T", "Sets the type of NC program (G-Code) to be generated",GH_ParamAccess.item,0);
         }
 
         /// <summary>
@@ -59,16 +63,27 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// <param name="DA">The DA object can be used to retrieve data from input parameters and to store data in output parameters.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
+            //Create a value list
+            _expire = HelperMethods.CreateValueList(this, 1, typeof(ProgramTypes));
+
+            // Expire solution of this component
+            if (_expire == true)
+            {
+                _expire = false;
+                this.ExpireSolution(true);
+            }
             // Declare variable of input parameters
             List<IProgram> objects = new List<IProgram>();
+            int type = new int();
 
             // Access the input parameters individually. 
             if (!DA.GetDataList(0, objects)) return;
+            if (!DA.GetData(1, ref type)) return;
 
             // Create the program
             _program.Clear();
             ProgramGenerator programGenerator = new ProgramGenerator();
-            _program = programGenerator.CreateProgram(objects);
+            _program = programGenerator.CreateProgram(objects,type);
 
             // Assign the output parameters
             DA.SetDataList(0, _program);
