@@ -74,16 +74,16 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
             }
             // Declare variable of input parameters
             List<IProgram> objects = new List<IProgram>();
-            int type = new int();
+            int programType = new int();
 
             // Access the input parameters individually. 
             if (!DA.GetDataList(0, objects)) return;
-            if (!DA.GetData(1, ref type)) return;
+            if (!DA.GetData(1, ref programType)) return;
 
             // Create the program
             _program.Clear();
             ProgramGenerator programGenerator = new ProgramGenerator();
-            _program = programGenerator.CreateProgram(objects,type);
+            _program = programGenerator.CreateProgram(objects,programType);
 
             // Assign the output parameters
             DA.SetDataList(0, _program);

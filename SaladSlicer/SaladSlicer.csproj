@@ -58,6 +58,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\CodeGeneration\SetTemperature.cs" />
     <Compile Include="Core\CodeGeneration\ProgramGroup.cs" />
     <Compile Include="Core\Geometry\Meshes.cs" />
     <Compile Include="Core\Geometry\Frames.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="Core\Slicers\ClosedPlanar2DSlicer.cs" />
     <Compile Include="Core\Slicers\ClosedPlanar3DSlicer.cs" />
     <Compile Include="Core\Utils\HelperMethods.cs" />
+    <Compile Include="Gh\Components\CodeGeneration\SetTemperatureComponent.cs" />
     <Compile Include="Gh\Components\CodeGeneration\UnGroupProgramObjectsComponent.cs" />
     <Compile Include="Gh\Components\CodeGeneration\GroupProgramObjectsComponent.cs" />
     <Compile Include="Gh\Components\CodeGeneration\FeedRateComponent.cs" />
