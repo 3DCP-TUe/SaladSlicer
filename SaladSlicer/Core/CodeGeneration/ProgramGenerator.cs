@@ -5,9 +5,12 @@
 
 // System Libs
 using System.Collections.Generic;
+//Rhino Libs
+using Rhino.Geometry;
 // Salad Slicer Libs
 using SaladSlicer.Core.Utils;
 using SaladSlicer.Core.Interfaces;
+
 
 namespace SaladSlicer.Core.CodeGeneration
 {
@@ -26,7 +29,6 @@ namespace SaladSlicer.Core.CodeGeneration
         /// </summary>
         public ProgramGenerator()
         {
-
         }
         #endregion
 
@@ -45,7 +47,7 @@ namespace SaladSlicer.Core.CodeGeneration
         /// </summary>
         /// <param name="_objects"> The objects to gerenator the program for. </param>
         /// <returns> The program as a list with code lines. </returns>
-        public List<string> CreateProgram(List<IProgram> _objects, int type)
+        public List<string> CreateProgram(List<IProgram> _objects, int programType)
         {
             _program.Clear();
 
@@ -56,44 +58,49 @@ namespace SaladSlicer.Core.CodeGeneration
             _program.Add("; ----------------------------------------------------------------------");
             _program.Add(" ");
 
-            // Program start
-            if (type == 0) { }
-            else if(type == 1){
-                _program.Add("M140 S50; Set bed temperature ");
-                _program.Add("M104 S200; Set hot end temperature");
-                _program.Add("M105; Report temperature ");
-                _program.Add("M190 S50; Wait for bed temperature ");
-                _program.Add("M109 S200; Wait for hot end temperature ");
-                _program.Add("M106");
+            // Program start settings
+            if (programType == 0) { }
+            else if(programType == 1){
+                _program.Add("; ----------------------------------------------------------------------");
+                _program.Add("; START SETTINGS");
+                _program.Add("; ----------------------------------------------------------------------");
+                _program.Add("M106; Turn on fans");
                 _program.Add("M201 X500.00 Y500.00 Z100.00 E5000.00; Setup machine max acceleration");
                 _program.Add("M203 X500.00 Y500.00 Z10.00 E50.00; Setup machine max feedrate");
                 _program.Add("M204 P500.00 R1000.00 T500.00; Setup Print/ Retract / Travel acceleration");
                 _program.Add("M205 X8.00 Y8.00 Z0.40 E5.00; Setup Jerk");
                 _program.Add("M82 ; absolute extrusion mode");
-                _program.Add("G92 E0; Set current extruder position as 0");
+                _program.Add("G90; Absolute coordinates ");
+                _program.Add("G28; Move home");
             }
 
             // G-code of different objects
             for (int i = 0; i < _objects.Count; i++)
             {
-                _objects[i].ToProgram(this, type);
+                _objects[i].ToProgram(this, programType);
             }
 
-            // Program end
-            if (type == 0){
+            // Program end settings
+            _program.Add("; ----------------------------------------------------------------------");
+            _program.Add("; END SETTINGS");
+            _program.Add("; ----------------------------------------------------------------------");
+            if (programType == 0){
                 _program.Add(" ");
                 _program.Add("M30");
                 _program.Add(" ");
                 _program.Add(" ");
                 _program.Add(" ");
             }
-            else if (type == 1)
+            else if (programType == 1)
             {
                 _program.Add(" ");
-                _program.Add("M106 S0; Turn - off fan");
-                _program.Add("M104 S0; Turn - off hotend ");
-                _program.Add("M140 S0; Turn - off bed ");
-                _program.Add("M84 X Y E; Disable all steppers but Z ");
+                _program.Add("G91; Relative coordinates ");
+                _program.Add("Z10 E-2; Move off object and retract extrusion material ");
+                _program.Add("G90; Absolute coordinates ");
+                _program.Add("G28; Move home ");
+                _program.Add("M106 S0; Turn off fan");
+                _program.Add("M104 S0; Turn off hotend temperature");
+                _program.Add("M140 S0; Turn off bed temperature");
                 _program.Add(" ");
             }
 
@@ -137,6 +144,40 @@ namespace SaladSlicer.Core.CodeGeneration
             _program.Add(" ");
             _program.Add("; ----------------------------------------------------------------------");
             _program.Add(" ");
+        }
+
+        /// <summary>
+        /// Adds coordinates.
+        /// </summary>
+        public void AddCoordinates(List<Plane> frames, int type)
+        {
+            if (type == 0)
+            {
+                for (int i = 0; i < frames.Count; i++)
+                {
+                    Point3d point = frames[i].Origin;
+                    _program.Add($"X{point.X:0.###} Y{point.Y:0.###} Z{point.Z:0.###}");
+                }
+            }
+            else if (type == 1)
+            {
+                _program.Add("G92 E0; Set current extruder position as 0");
+                double distance = 0;
+                for (int i = 0; i < frames.Count; i++)
+                {
+                    if (i == 0)
+                    {
+                        Point3d point = frames[i].Origin;
+                        _program.Add($"G1 X{point.X:0.###} Y{point.Y:0.###} Z{point.Z:0.###} E{distance / 12:0.#####}");
+                    }
+                    else
+                    {
+                        Point3d point = frames[i].Origin;
+                        distance = distance + point.DistanceTo(frames[i - 1].Origin);
+                        _program.Add($"G1 X{point.X:0.###} Y{point.Y:0.###} Z{point.Z:0.###} E{distance / 12:0.#####}");
+                    }
+                }
+            }
         }
         #endregion
 

@@ -350,12 +350,7 @@ namespace SaladSlicer.Core.Slicers
             {
                 programGenerator.Program.Add(" ");
                 programGenerator.Program.Add($"; LAYER {i + 1:0}");
-
-                for (int j = 0; j < _framesByLayer[i].Count; j++)
-                {
-                    Point3d point = _framesByLayer[i][j].Origin;
-                    programGenerator.Program.Add($"X{point.X:0.###} Y{point.Y:0.###} Z{point.Z:0.###}");
-                }
+                programGenerator.AddCoordinates(_framesByLayer[i], programType);
             }
 
             // End
