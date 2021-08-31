@@ -5,25 +5,35 @@
 
 // System Libs
 using System;
+using System.Collections.Generic;
 // Grasshopper Libs
 using Grasshopper.Kernel;
-// Rhino Lib
-using Rhino.Geometry;
 // Salad Slicer Libs
 using SaladSlicer.Core.CodeGeneration;
-using SaladSlicer.Gh.Parameters.CodeGeneration;
+using SaladSlicer.Core.Interfaces;
+using SaladSlicer.Core.Slicers;
+using SaladSlicer.Gh.Utils;
+using SaladSlicer.Core.Enumerations;
+using SaladSlicer.Gh.Parameters.Slicers;
 
 namespace SaladSlicer.Gh.Components.CodeGeneration
 {
-    public class SetTemperatureComponent :GH_Component
+    /// <summary>
+    /// Represent a component that generates a custom Code Line.
+    /// </summary>
+    public class AddVariableComponent : GH_Component
     {
+        #region fields
+        private bool _expire = false;
+        #endregion
+
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public SetTemperatureComponent()
-          : base("Set Temperature", // Component name
-              "ST", // Component nickname
-              "Defines the temperature settings as a Program Object", // Description
+        public AddVariableComponent()
+          : base("Add Variable", // Component name
+              "Add Var", // Component nickname
+              "Defines an additional variable that is controlled by the code besides the standard X,Y and Z axis. Examples can be extruders (E) feedrate (F) or a rotational axis (C).", // Description
               "Salad Slicer", // Category
               "Code Generation") // Subcategory
         {
@@ -34,8 +44,10 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddNumberParameter("Hotend", "H", "Hotend Temperature, not used if zero.", GH_ParamAccess.item,180);
-            pManager.AddNumberParameter("Bed", "B", "Bed Temperature, not used if zero.", GH_ParamAccess.item, 50);
+            pManager.AddGenericParameter("Slicer Object", "SO", "Slicer Object to which the variable should be added.", GH_ParamAccess.item);
+            pManager.AddTextParameter("Prefix", "P", "Prefix.", GH_ParamAccess.item,"E");
+            pManager.AddNumberParameter("Method", "M", "Method that is used to calculate the value of the added variable.", GH_ParamAccess.item,0);
+            pManager.AddNumberParameter("Factor", "F", "Factor to use.", GH_ParamAccess.item,12);
         }
 
         /// <summary>
@@ -43,27 +55,43 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddGenericParameter("Program Object", "PO", "Temperature settings as a Program Object.", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Slicer Object", "SO", "Slicer Object to which the axis is added", GH_ParamAccess.item);
         }
+
         /// <summary>
         /// This is the method that actually does the work.
         /// </summary>
         /// <param name="DA">The DA object can be used to retrieve data from input parameters and to store data in output parameters.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
+            //Create a value list
+            _expire = HelperMethods.CreateValueList(this, 2, typeof(AddVariableMethod));
+
+            // Expire solution of this component
+            if (_expire == true)
+            {
+                _expire = false;
+                this.ExpireSolution(true);
+            }
             // Declare variable of input parameters
-            double hotEnd =new double();
-            double bed = new double();
+
+            IAddVariable slicerObject = new CurveSlicer();
+            string prefix = "";
+            double factor = new double();
+            double type = new double();
 
             // Access the input parameters individually. 
-            if (!DA.GetData(0, ref hotEnd)) return;
-            if (!DA.GetData(1, ref bed)) return;
+            if (!DA.GetData(0, ref slicerObject)) return;
+            if (!DA.GetData(1, ref prefix)) return;
+            if (!DA.GetData(2, ref type)) return;
+            if (!DA.GetData(3, ref factor)) return;
 
             // Create the code line
-            SetTemperature tempObject = new SetTemperature(hotEnd,bed);
+            IAddVariable newSlicerObject = slicerObject.DuplicateAddVariableObject();
+            newSlicerObject.AddVariable(prefix, factor);        
 
             // Assign the output parameters
-            DA.SetData(0, tempObject);
+            DA.SetData(0, newSlicerObject);
         }
 
         /// <summary>
@@ -96,7 +124,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("2FCE3C3B-94D8-4F40-8B1B-94160F6C4968"); }
+            get { return new Guid("65CE8F8A-C5DC-4249-9F6B-4591D2D31887"); }
         }
     }
 }

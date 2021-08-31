@@ -49,4 +49,16 @@ namespace SaladSlicer.Core.Enumerations
         /// </summary>
         Marlin = 1,
     }
+    public enum AddVariableMethod : int
+    {
+        /// <summary>
+        /// Generates the variable value as a factor of the global displacement
+        /// </summary>
+        ByDisplacement = 0,
+
+        /// <summary>
+        /// Generates the variable value based as a factor of the distance the previous layer
+        /// </summary>
+        ByLayerdistance = 1,
+    }
 }

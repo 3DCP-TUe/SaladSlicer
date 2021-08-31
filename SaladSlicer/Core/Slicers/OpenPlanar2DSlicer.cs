@@ -19,7 +19,7 @@ namespace SaladSlicer.Core.Slicers
     /// <summary>
     /// Represents the Planar 2D Slicer class.
     /// </summary>
-    public class OpenPlanar2DSlicer : IProgram, ISlicer, IGeometry
+    public class OpenPlanar2DSlicer : IProgram, ISlicer, IGeometry, IAddVariable
     {
         #region fields
         private Curve _baseContour;
@@ -28,6 +28,8 @@ namespace SaladSlicer.Core.Slicers
         private List<Curve> _contours = new List<Curve>();
         private List<double> _heights = new List<double>();
         private readonly List<List<Plane>> _framesByLayer = new List<List<Plane>>() { };
+        private List<List<double>> _addedVariable=new List<List<double>>(0);
+        private string _prefix="";
         #endregion
 
         #region constructors
@@ -120,6 +122,15 @@ namespace SaladSlicer.Core.Slicers
         {
             return this.Duplicate() as IGeometry;
         }
+
+        /// <summary>
+        /// Returns an exact duplicate of this Open Planar 2D Slicer instance as an IAddVariable
+        /// </summary>
+        /// <returns> The exact duplicate of this Open Planar 2D Slicer instance as an IAddVariable. </returns>
+        public IAddVariable DuplicateAddVariableObject()
+        {
+            return this.Duplicate() as IAddVariable;
+        }
         #endregion
 
         #region methods
@@ -181,6 +192,7 @@ namespace SaladSlicer.Core.Slicers
             for (int i = 0; i < _contours.Count; i++)
             {
                 _framesByLayer.Add(Geometry.Frames.GetFramesByDistanceAndSegment(_contours[i], _distance, true, true));
+                _addedVariable.Add(new List<double>());
             }
 
             for (int i = 1; i < _framesByLayer.Count; i += 2)
@@ -264,12 +276,41 @@ namespace SaladSlicer.Core.Slicers
                 {
                     programGenerator.Program.Add(" ");
                     programGenerator.Program.Add($"; LAYER {i + 1:0}");
-                    programGenerator.AddCoordinates(_framesByLayer[i], programType);
+                    programGenerator.AddCoordinates(_framesByLayer[i], programType,_prefix,_addedVariable[i]);
                 }
             }
 
             // End
             programGenerator.AddFooter();
+        }
+
+        /// <summary>
+        /// Adds an additional variable to the program, besides X, Y and Z.
+        /// </summary>
+        /// <param name="prefix">Prefix to use for the variable.</param>
+        /// <param name="factor">Factor difference between method variable and added variable.</param>
+        public void AddVariable(string prefix, double factor)
+        {
+            _prefix = prefix;
+            double distance = 0;
+            List<double> AddedVariable = new List<double>();
+            for (int i = 0; i < _framesByLayer.Count; i++)
+            {
+                for (int j = 0; j < _framesByLayer[i].Count; j++)
+                {
+                    if (j == 0)
+                    {
+                        AddedVariable.Add(distance * factor);
+                    }
+                    else
+                    {
+                        Point3d point = _framesByLayer[i][j].Origin;
+                        distance += point.DistanceTo(_framesByLayer[i][j - 1].Origin);
+                        AddedVariable.Add(distance * factor);
+                    }
+                }
+                _addedVariable.Add(AddedVariable);
+            }
         }
 
         /// <summary>

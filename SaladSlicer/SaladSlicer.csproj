@@ -65,6 +65,7 @@
     <Compile Include="Core\Geometry\Curves.cs" />
     <Compile Include="Core\CodeGeneration\FeedRate.cs" />
     <Compile Include="Core\CodeGeneration\AbsoluteCoordinate.cs" />
+    <Compile Include="Core\Interfaces\IAddVariable.cs" />
     <Compile Include="Core\Interfaces\IGeometry.cs" />
     <Compile Include="Core\Interfaces\ISlicer.cs" />
     <Compile Include="Core\CodeGeneration\ProgramGenerator.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="Core\Slicers\ClosedPlanar2DSlicer.cs" />
     <Compile Include="Core\Slicers\ClosedPlanar3DSlicer.cs" />
     <Compile Include="Core\Utils\HelperMethods.cs" />
+    <Compile Include="Gh\Components\CodeGeneration\AddVariableComponent.cs" />
     <Compile Include="Gh\Components\CodeGeneration\SetTemperatureComponent.cs" />
     <Compile Include="Gh\Components\CodeGeneration\UnGroupProgramObjectsComponent.cs" />
     <Compile Include="Gh\Components\CodeGeneration\GroupProgramObjectsComponent.cs" />

@@ -149,32 +149,48 @@ namespace SaladSlicer.Core.CodeGeneration
         /// <summary>
         /// Adds coordinates.
         /// </summary>
-        public void AddCoordinates(List<Plane> frames, int type)
+        public void AddCoordinates(List<Plane> frames, int type, string prefix, List<double> addVariable)
         {
             if (type == 0)
             {
-                for (int i = 0; i < frames.Count; i++)
+                if (prefix == "")
                 {
-                    Point3d point = frames[i].Origin;
-                    _program.Add($"X{point.X:0.###} Y{point.Y:0.###} Z{point.Z:0.###}");
+                    for (int i = 0; i < frames.Count; i++)
+                    {
+                        Point3d point = frames[i].Origin;
+                        _program.Add($"X{point.X:0.###} Y{point.Y:0.###} Z{point.Z:0.###}");
+                    }
                 }
+                else
+                {
+                    for (int i = 0; i < frames.Count; i++)
+                    {
+                        Point3d point = frames[i].Origin;
+                        _program.Add($"X{point.X:0.###} Y{point.Y:0.###} Z{point.Z:0.###} {prefix}{addVariable[i]:0.#####}");
+                    }
+                }
+                
             }
             else if (type == 1)
             {
-                _program.Add("G92 E0; Set current extruder position as 0");
-                double distance = 0;
-                for (int i = 0; i < frames.Count; i++)
+                if (prefix == "E")
                 {
-                    if (i == 0)
+                    _program.Add("G92 E0; Set current extruder position as 0");
+                }
+                    if (prefix == "")
+                {
+                    for (int i = 0; i < frames.Count; i++)
                     {
-                        Point3d point = frames[i].Origin;
-                        _program.Add($"G1 X{point.X:0.###} Y{point.Y:0.###} Z{point.Z:0.###} E{distance / 12:0.#####}");
+                            Point3d point = frames[i].Origin;
+                            _program.Add($"G1 X{point.X:0.###} Y{point.Y:0.###} Z{point.Z:0.###}");
                     }
-                    else
+                }
+                else
+                {  
+                    for (int i = 0; i < frames.Count; i++)
                     {
-                        Point3d point = frames[i].Origin;
-                        distance = distance + point.DistanceTo(frames[i - 1].Origin);
-                        _program.Add($"G1 X{point.X:0.###} Y{point.Y:0.###} Z{point.Z:0.###} E{distance / 12:0.#####}");
+                            Point3d point = frames[i].Origin;
+                            _program.Add($"G1 X{point.X:0.###} Y{point.Y:0.###} Z{point.Z:0.###} {prefix}{addVariable[i]:0.#####}");
                     }
                 }
             }

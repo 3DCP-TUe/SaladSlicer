@@ -13,8 +13,8 @@ namespace SaladSlicer.Core.CodeGeneration
     public class SetTemperature : IProgram
     {
         #region fields
-        private double _hotEndTemperature = 0;
-        private double _bedTemperature = 0;
+        private readonly double _hotEndTemperature = 0;
+        private readonly double _bedTemperature = 0;
         #endregion
 
         #region constructors
