@@ -203,12 +203,19 @@ namespace SaladSlicer.Core.Geometry.Seams
             List<Curve> curvesCopy = curves.ConvertAll(curve => curve.DuplicateCurve());
 
             for (int i = 0; i < curves.Count; i++)
-            {
-                curvesCopy[i].LengthParameter(curvesCopy[i].GetLength() - length, out double param);
-                Curve[] tempCurves = curvesCopy[i].Split(param);
-                curvesCopy[i] = tempCurves[0];
+            {   if (i <  curves.Count - 1) // All curves but the last
+                {
+                    curvesCopy[i].LengthParameter(curvesCopy[i].GetLength() - 0.5*length, out double param);
+                    Curve[] tempCurves = curvesCopy[i].Split(param);
+                    curvesCopy[i] = tempCurves[0];
+                }
+                if (i > 0) // All curves but the first
+                {
+                    curvesCopy[i].LengthParameter(0.5*length, out double param);
+                    Curve[] tempCurves = curvesCopy[i].Split(param);
+                    curvesCopy[i] = tempCurves[1];
+                }
             }
-
             return curvesCopy;
         }
         #endregion
