@@ -171,9 +171,19 @@ namespace SaladSlicer.Core.Geometry
         {
             for (int i = 1; i < contours.Count; i++)
             {
-                Point3d point1 = contours[i - 1].PointAtStart;
-                Point3d[] points = { contours[i].PointAtStart, contours[i].PointAtEnd };
-                if (point1.DistanceTo(points[0]) > point1.DistanceTo(points[1])) { contours[i].Reverse();}
+                if (contours[i].IsClosed == false)
+                {
+                    Point3d point1 = contours[i - 1].PointAtStart;
+                    Point3d[] points = { contours[i].PointAtStart, contours[i].PointAtEnd };
+                    if (point1.DistanceTo(points[0]) > point1.DistanceTo(points[1])) { contours[i].Reverse(); }
+                }
+                else
+                {
+                    Vector3d vector1 = contours[i - 1].TangentAtStart;
+                    Vector3d vector2 = contours[i].TangentAtStart;
+                    double angle = Vector3d.VectorAngle(vector1, vector2);
+                    if (angle > Math.PI/2) { contours[i].Reverse(); }
+                }
             }
 
             return contours;
