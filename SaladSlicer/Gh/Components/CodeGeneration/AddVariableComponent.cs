@@ -46,7 +46,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         {
             pManager.AddGenericParameter("Slicer Object", "SO", "Slicer Object to which the variable should be added.", GH_ParamAccess.item);
             pManager.AddTextParameter("Prefix", "P", "Prefix.", GH_ParamAccess.item,"E");
-            pManager.AddNumberParameter("Method", "M", "Method that is used to calculate the value of the added variable.", GH_ParamAccess.item,0);
+            pManager.AddIntegerParameter("Method", "M", "Method that is used to calculate the value of the added variable.", GH_ParamAccess.item,0);
             pManager.AddNumberParameter("Factor", "F", "Factor to use.", GH_ParamAccess.item,12);
         }
 
@@ -78,18 +78,28 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
             IAddVariable slicerObject = new CurveSlicer();
             string prefix = "";
             double factor = new double();
-            double type = new double();
+            int  method = new int();
 
             // Access the input parameters individually. 
             if (!DA.GetData(0, ref slicerObject)) return;
             if (!DA.GetData(1, ref prefix)) return;
-            if (!DA.GetData(2, ref type)) return;
+            if (!DA.GetData(2, ref method)) return;
             if (!DA.GetData(3, ref factor)) return;
+
+            // Warnings
+            if (slicerObject.Contours.Count<2 && method == 1) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, $"Cannot use the ByLayerdistance method on less than two curves."); }
 
             // Create the code line
             IAddVariable newSlicerObject = slicerObject.DuplicateAddVariableObject();
-            newSlicerObject.AddVariable(prefix, factor);        
-
+            if (method == 0)
+            {
+                newSlicerObject.AddVariableByDisplacement(prefix, factor);
+            }
+            else if (method == 1)
+            {
+                newSlicerObject.AddVariableByLayerDistance(prefix, factor);
+            }
+            
             // Assign the output parameters
             DA.SetData(0, newSlicerObject);
         }

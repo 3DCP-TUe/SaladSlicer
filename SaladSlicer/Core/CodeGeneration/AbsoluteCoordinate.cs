@@ -117,14 +117,20 @@ namespace SaladSlicer.Core.CodeGeneration
         /// </summary>
         /// <param name="prefix">Prefix to use for the variable.</param>
         /// <param name="factor">Factor difference between method variable and added variable.</param>
-        public void AddVariable(string prefix, double factor)
+        public void AddVariableByDisplacement(string prefix, double factor)
         {
-            _prefix = prefix;
-            List<double> AddedVariable = new List<double>();
-            AddedVariable.Add(factor);
-            _addedVariable = AddedVariable;
+                _prefix = prefix;
+                List<double> AddedVariable = new List<double>();
+                AddedVariable.Add(factor);
+                _addedVariable = AddedVariable;
         }
 
+        /// <summary>
+        /// Empty method.
+        /// </summary>
+        public void AddVariableByLayerDistance(string prefix, double factor)
+        {
+        }
 
         /// <summary>
         /// Returns the Bounding Box of the object.
@@ -168,6 +174,14 @@ namespace SaladSlicer.Core.CodeGeneration
         {
             get { return _plane; }
             set { _plane = value; }
+        }
+
+        /// <summary>
+        /// Empty contour property.
+        /// </summary>
+        public List<Curve> Contours
+        {
+            get { return new List<Curve>(); }
         }
         #endregion
     }

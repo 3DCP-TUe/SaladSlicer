@@ -29,7 +29,7 @@ namespace SaladSlicer.Core.Slicers
         private readonly List<List<Plane>> _framesByLayer = new List<List<Plane>>() { };
         private double _seamLocation;
         private double _seamLength;
-        private List<List<double>> _addedVariable = new List<List<double>>(0);
+        private List<List<double>> _addedVariable = new List<List<double>>();
         private string _prefix = "";
         #endregion
 
@@ -196,6 +196,7 @@ namespace SaladSlicer.Core.Slicers
         private void CreateFrames()
         {
             _framesByLayer.Clear();
+            _addedVariable.Clear();
 
             for (int i = 0; i < _contours.Count; i++)
             {
@@ -311,14 +312,14 @@ namespace SaladSlicer.Core.Slicers
         /// Adds an additional variable to the program, besides X, Y and Z.
         /// </summary>
         /// <param name="prefix">Prefix to use for the variable.</param>
-        /// <param name="ratio">Ratio between the variable and the displacement.</param>
-        public void AddVariable(string prefix, double factor)
+        /// <param name="factor">Factor between the variable and the displacement.</param>
+        public void AddVariableByDisplacement(string prefix, double factor)
         {
             _prefix = prefix;
-            double distance = 0;
-            List<double> AddedVariable = new List<double>();
             for (int i = 0; i < _framesByLayer.Count; i++)
             {
+                double distance = 0;
+                List<double> AddedVariable = new List<double>();
                 for (int j = 0; j < _framesByLayer[i].Count; j++)
                 {
                     if (j == 0)
@@ -332,6 +333,47 @@ namespace SaladSlicer.Core.Slicers
                         AddedVariable.Add(distance * factor);
                     }
                  }
+                _addedVariable.Add(AddedVariable);
+            }
+        }
+
+        /// <summary>
+        /// Adds a variable by multiplying a factor with the interlayer distance. Only one distance is used for the outerlayers, while the average of two is used for the intermediates. 
+        /// </summary>
+        /// <param name="prefix">Prefix to use for the variable.</param>
+        /// <param name="factor">Factor between the variable and the interlayer distance.</param>
+        public void AddVariableByLayerDistance(string prefix, double factor)
+        {
+            _prefix = prefix;
+            for (int i = 0; i < _framesByLayer.Count; i++)
+            {
+                List<double> AddedVariable = new List<double>();
+                for (int j = 0; j < _framesByLayer[i].Count; j++)
+                {
+                    if (i == 0)
+                    {
+                        Point3d point = _framesByLayer[i][j].Origin;
+                        _contours[i + 1].ClosestPoint(point, out double parameter);
+                        double distance = point.DistanceTo(_contours[i + 1].PointAt(parameter));
+                        AddedVariable.Add(distance * factor);
+                    }
+                    else if (i == _framesByLayer.Count-1)
+                    {
+                        Point3d point = _framesByLayer[i][j].Origin;
+                        _contours[i - 1].ClosestPoint(point, out double parameter);
+                        double distance = point.DistanceTo(_contours[i - 1].PointAt(parameter));
+                        AddedVariable.Add(distance * factor);
+                    }
+                    else
+                    {
+                        Point3d point = _framesByLayer[i][j].Origin;
+                        _contours[i - 1].ClosestPoint(point, out double parameter1);
+                        _contours[i + 1].ClosestPoint(point, out double parameter2);
+                        double distance1 = point.DistanceTo(_contours[i - 1].PointAt(parameter1));
+                        double distance2 = point.DistanceTo(_contours[i + 1].PointAt(parameter2));
+                        AddedVariable.Add((distance1 + distance2) / 2 * factor);
+                    }
+                }
                 _addedVariable.Add(AddedVariable);
             }
         }

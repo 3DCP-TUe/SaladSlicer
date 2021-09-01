@@ -25,9 +25,21 @@ namespace SaladSlicer.Core.Interfaces
 
         #region methods
         /// <summary>
+        /// Adds a variable by distance.
+        /// </summary>
+        void AddVariableByDisplacement(string prefix, double factor);
+
+        /// <summary>
         /// Adds a variable.
         /// </summary>
-        void AddVariable(string prefix, double factor);
+        void AddVariableByLayerDistance(string prefix, double factor);
+        #endregion
+
+        #region properties
+        /// <summary>
+        /// Gets the contours.
+        /// </summary>
+        List<Curve> Contours { get; }
         #endregion
     }
 }
