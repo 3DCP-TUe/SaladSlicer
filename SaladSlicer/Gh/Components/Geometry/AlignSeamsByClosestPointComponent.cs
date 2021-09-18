@@ -11,14 +11,14 @@ using Grasshopper.Kernel;
 // Rhino Libs
 using Rhino.Geometry;
 // Using Salad Slicer Libs
-using SaladSlicer.Core.Geometry;
+using SaladSlicer.Core.Geometry.Seams;
 
 namespace SaladSlicer.Gh.Components.Geometry
 {
     /// <summary>
-    /// Represents the component that aligns the curves.
+    /// Represents the component that set a seam based on the closest points.
     /// </summary>
-    public class AlignCurvesComponent : GH_Component
+    public class AlignSeamsByClosestPointComponent : GH_Component
     {
         #region fields
         #endregion
@@ -26,10 +26,10 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public AlignCurvesComponent()
-          : base("Align Curves", // Component name
-              "AC", // Component nickname
-              "Aligns a set of curves by checking the start and end points and reversing if necessary.", // Description
+        public AlignSeamsByClosestPointComponent()
+          : base("Align Seams by Closest Point", // Component name
+              "ASCP", // Component nickname
+              "Set the start points of set with closed curves as the closest point to the start point of the curve before.", // Description
               "Salad Slicer", // Category
               "Geometry") // Subcategory
         {
@@ -40,7 +40,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddCurveParameter("Curves", "C", "Curves as a list with Curves", GH_ParamAccess.list);
+            pManager.AddCurveParameter("Curves", "C", "Closed curves as a list with Curves", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddCurveParameter("Curves", "C", "Curves as a list with Curves.", GH_ParamAccess.list);
+            pManager.AddCurveParameter("Curves", "C", "Closed curves as a list with Curves.", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace SaladSlicer.Gh.Components.Geometry
             if (!DA.GetDataList(0, curves)) return;
 
             // Create the new curves
-            List<Curve> result = Curves.AlignCurves(curves);
+            List<Curve> result = Locations.AlignSeamsByClosestPoint(curves);
 
             // Assign the output parameters
             DA.SetDataList(0, result);
@@ -75,7 +75,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         public override GH_Exposure Exposure
         {
-            get { return GH_Exposure.quarternary; }
+            get { return GH_Exposure.secondary; }
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.AlignCurves_Icon; }
+            get { return Properties.Resources.SeamsAtClosestPoint_Icon; }
         }
 
         /// <summary>
@@ -100,8 +100,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("5466193D-47FB-4C21-8755-94D8736F3730"); }
+            get { return new Guid("98A21F29-D2D2-430E-B1E5-86D4846D1CC3"); }
         }
-
     }
 }

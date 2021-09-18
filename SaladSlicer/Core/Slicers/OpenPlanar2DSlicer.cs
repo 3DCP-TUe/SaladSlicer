@@ -30,6 +30,10 @@ namespace SaladSlicer.Core.Slicers
         private readonly List<List<Plane>> _framesByLayer = new List<List<Plane>>() { };
         #endregion
 
+        #region (de)serialisation
+        //TODO
+        #endregion
+
         #region constructors
         /// <summary>
         /// Initializes an empty instance of the Open Planar 2D Slicer class.

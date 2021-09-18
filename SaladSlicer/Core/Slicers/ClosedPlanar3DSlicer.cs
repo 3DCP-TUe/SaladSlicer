@@ -32,7 +32,10 @@ namespace SaladSlicer.Core.Slicers
         private double _seamLocation;
         private double _seamLength;
         private bool _reverse;
+        #endregion
 
+        #region (de)serialisation
+        //TODO
         #endregion
 
         #region constructors
@@ -231,9 +234,10 @@ namespace SaladSlicer.Core.Slicers
             }
 
             // Set seam location
-            _contours = Curves.AlignContours(_contours);
+            _contours = Curves.AlignCurves(_contours);
             _contours[0] = Locations.SeamAtLength(_contours[0], _seamLocation, true);
-            _contours = Locations.SeamsAtClosestPoint(_contours);
+            //_contours[0] = Geometry.Seams.Locations.SeamAtLength(_contours[0], _contours[0].GetLength() - 0.5 * _seamLength, false); //TODO: to discuss... 
+            _contours = Locations.AlignSeamsByClosestPoint(_contours);
 
             // Reverse the contours
             if (_reverse == true)
@@ -250,7 +254,11 @@ namespace SaladSlicer.Core.Slicers
         /// </summary>
         private void CreatePath()
         {
-            _path = Transitions.InterpolatedTransitions(_contours, _seamLength, 0.25 * _distance);
+            List<Curve> trimmed = Transitions.TrimCurveFromEnds(_contours, _seamLength);
+            List<Curve> transitions = Transitions.InterpolatedTransitions(_contours, _seamLength, 0.25 * _distance);
+
+            _path.Clear();
+            _path = Curves.WeaveCurves(trimmed, transitions);
         }
 
         /// <summary>

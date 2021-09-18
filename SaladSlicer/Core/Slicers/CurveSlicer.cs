@@ -24,6 +24,10 @@ namespace SaladSlicer.Core.Slicers
         private List<Plane> _frames = new List<Plane>();
         #endregion
 
+        #region (de)serialisation
+        //TODO
+        #endregion
+
         #region constructors
         /// <summary>
         /// Initializes an empty instance of the Curve Slicer class.
@@ -108,7 +112,6 @@ namespace SaladSlicer.Core.Slicers
         {
             this.CreateFrames();
         }
-
 
         /// <summary>
         /// Creates the frames of the path.

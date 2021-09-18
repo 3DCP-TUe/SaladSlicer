@@ -75,10 +75,8 @@ namespace SaladSlicer.Gh.Components.Geometry
 
             // Declare variable of input parameters
             List<Curve> curves = new List<Curve>();
-            int type =new int();
-            Curve joinedCurve;
-            double changeLength=new double();
-            List<Curve> transitions = new List<Curve>();
+            int type = new int();
+            double changeLength = new double();
 
             // Access the input parameters individually. 
             if (!DA.GetDataList(0, curves)) return;
@@ -91,25 +89,27 @@ namespace SaladSlicer.Gh.Components.Geometry
             if (type != 0 && type != 1 && type != 2)
             {
                 AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Comment type value <" + type + "> is invalid. " +
-                    "In can only be set to 0, 1 and 2. Use 0 for linear, 1 for bezier and 2 for interpolated connections.");
+                    "It can only be set to 0, 1 and 2. Use 0 for linear, 1 for bezier and 2 for interpolated connections.");
             }
-            
-            // Create the code line
-            List<Curve> curvesCopy = curves.ConvertAll(curve => curve.DuplicateCurve());
-            
+
+            // Delcare variables
+            List<Curve> transitions = new List<Curve>();
+            List<Curve> curvesCopy;
+            Curve joinedCurve;
+
             if (type == 0)
             {
-                curvesCopy = Transitions.CutTransitionEnd(curves, changeLength);
+                curvesCopy = Transitions.TrimCurveFromEnds(curves, changeLength);
                 (joinedCurve,transitions) = Transitions.JoinLinear(curvesCopy);
             }
             else if (type == 1)
             {
-                curvesCopy = Transitions.CutTransitionEnd(curves, changeLength);
+                curvesCopy = Transitions.TrimCurveFromEnds(curves, changeLength);
                 (joinedCurve, transitions) = Transitions.JoinBezier(curvesCopy);
             }
             else if (type == 2)
             {
-                joinedCurve = Transitions.JoinInterpolated(curvesCopy, changeLength);
+                (joinedCurve, transitions) = Transitions.JoinInterpolated(curves, changeLength);
             }
             else
             {

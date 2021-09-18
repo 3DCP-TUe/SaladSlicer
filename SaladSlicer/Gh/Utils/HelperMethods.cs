@@ -7,7 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-//Grasshopper
+// Grasshopper Libs
 using Grasshopper;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Data;
@@ -26,9 +26,8 @@ namespace SaladSlicer.Gh.Utils
         /// Creates a Grasshopper value list and returns true if it's created
         /// </summary>
         /// <param name="component">Component to connect to</param>
-        /// <param name="inputIndex">Intex of the input to connect the list to</param>
+        /// <param name="inputIndex">Index of the input to connect the list to</param>
         /// <param name="enumType">Enumeration to take values from</param>
-        /// <param name="expire">_expire field parameter</param>
         /// <returns></returns>
         public static bool CreateValueList(GH_Component component,int inputIndex, Type enumType)
         {
@@ -56,7 +55,6 @@ namespace SaladSlicer.Gh.Utils
 
                 // Add the value list to the active canvas
                 Instances.ActiveCanvas.Document.AddObject(obj, false);
-                //obj.ToggleItem(1);
 
                 // Connect the value list to the input parameter
                 parameter.AddSource(obj);
@@ -67,12 +65,12 @@ namespace SaladSlicer.Gh.Utils
                 // Expire value list
                 obj.ExpireSolution(true);
 
-                //Return that it's created
+                // Return that it's created
                 return true; 
             }
             else
             {
-                //Return that it isn't created
+                // Return that it isn't created
                 return false;
             }
         }
