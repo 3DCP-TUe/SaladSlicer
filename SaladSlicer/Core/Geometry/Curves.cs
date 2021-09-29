@@ -18,6 +18,20 @@ namespace SaladSlicer.Core.Geometry
     {
         #region method
         /// <summary>
+        /// Returns a curve with a domain that starts at zero by shifting the current domain.
+        /// </summary>
+        /// <param name="curve"> The curve. </param>
+        /// <returns> The curve with a new domain. </returns>
+        public static Curve ResetDomain(Curve curve)
+        {
+            Curve result = curve.DuplicateCurve();
+            Interval domain = new Interval(curve.Domain.Min - curve.Domain.Min, curve.Domain.Max - curve.Domain.Min);
+            result.Domain = domain;
+
+            return result;
+        }
+
+        /// <summary>
         /// Returns the number of closed curves in a list of curves
         /// </summary>
         /// <param name="curves">The list of curves</param>

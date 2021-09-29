@@ -41,6 +41,7 @@ namespace SaladSlicer.Core.Geometry.Seams
             if (param >= result.Domain.T0 & param <= result.Domain.T1)
             {
                 result.ChangeClosedCurveSeam(param);
+                result = Curves.ResetDomain(result);
             }
             else 
             {
@@ -93,6 +94,7 @@ namespace SaladSlicer.Core.Geometry.Seams
             }
 
             result.ChangeClosedCurveSeam(param);
+            result = Curves.ResetDomain(result);
 
             return result;
         }
@@ -114,6 +116,7 @@ namespace SaladSlicer.Core.Geometry.Seams
 
             result.ClosestPoint(point, out double param);
             result.ChangeClosedCurveSeam(param);
+            result = Curves.ResetDomain(result);
 
             return result;
         }
