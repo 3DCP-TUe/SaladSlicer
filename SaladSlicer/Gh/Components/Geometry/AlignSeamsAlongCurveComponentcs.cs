@@ -94,7 +94,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return null; }
+            get { return Properties.Resources.AlignSeamsCurve_Icon; }
         }
 
         /// <summary>
