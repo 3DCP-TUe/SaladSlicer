@@ -8,8 +8,6 @@ using System;
 using System.Collections.Generic;
 // Rhino Libs
 using Rhino.Geometry;
-// Salad Libs
-using SaladSlicer.Core.Geometry;
 
 namespace SaladSlicer.Core.Geometry.Seams
 {
@@ -24,18 +22,15 @@ namespace SaladSlicer.Core.Geometry.Seams
         /// </summary>
         /// <param name="curves">The list of curves</param>
         /// <returns></returns>
-        public static (Curve,List<Curve>) JoinLinear(List<Curve> curves)
+        public static (Curve, List<Curve>) JoinLinear(List<Curve> curves)
         {
-            //Make a duplicate
-            List<Curve> curvesCopy = curves.ConvertAll(curve => curve.DuplicateCurve());
+            // Create linear transitions
+            List<Curve> transitions = LinearTransitions(curves);
 
-            //Create linear transitions
-            List<Curve> transitions = LinearTransitions(curvesCopy);
+            // Join curves and transitions
+            Curve joinedCurve = Curves.MergeCurves(curves, transitions);
 
-            //Join curves and transitions
-            Curve joinedCurve = Curves.MergeCurves(curvesCopy, transitions);
-
-            return (joinedCurve,transitions);
+            return (joinedCurve, transitions);
         }
 
         /// <summary>
@@ -45,14 +40,11 @@ namespace SaladSlicer.Core.Geometry.Seams
         /// <returns></returns>
         public static (Curve, List<Curve>) JoinOutsideArc(List<Curve> curves)
         {
-            //Make a duplicate
-            List<Curve> curvesCopy = curves.ConvertAll(curve => curve.DuplicateCurve());
+            // Create arc transitions
+            List<Curve> transitions = OutsideArcTransitions(curves);
 
-            //Create arc transitions
-            List<Curve> transitions = OutsideArcTransitions(curvesCopy);
-
-            //Join curves and transitions
-            Curve joinedCurve = Curves.MergeCurves(curvesCopy, transitions);
+            // Join curves and transitions
+            Curve joinedCurve = Curves.MergeCurves(curves, transitions);
 
             return (joinedCurve, transitions);
         }
@@ -64,14 +56,11 @@ namespace SaladSlicer.Core.Geometry.Seams
         /// <returns></returns>
         public static (Curve, List<Curve>) JoinBezier(List<Curve> curves)
         {
-            //Make a duplicate
-            List<Curve> curvesCopy = curves.ConvertAll(curve => curve.DuplicateCurve());
+            // Create bezier transitions
+            List<Curve> transitions = BezierTransitions(curves);
 
-            //Create bezier transitions
-            List<Curve> transitions = BezierTransitions(curvesCopy);
-
-            //Join curves and transitions
-            Curve joinedCurve = Curves.MergeCurves(curvesCopy, transitions);
+            // Join curves and transitions
+            Curve joinedCurve = Curves.MergeCurves(curves, transitions);
 
             return (joinedCurve, transitions);
         }
@@ -85,12 +74,16 @@ namespace SaladSlicer.Core.Geometry.Seams
         /// <param name="length">The length over the transition between two curves.</param>
         /// <param name="precision">The precision of the transition.</param>
         /// <returns>The connected curve with interpolated transitions.</returns>
-        public static Curve JoinInterpolated(List<Curve> curves, double length = 100.0, double precision = 10.0)
+        public static (Curve, List<Curve>) JoinInterpolated(List<Curve> curves, double length = 100.0, double precision = 1.0)
         {
-            Curve result = Curve.JoinCurves(InterpolatedTransitions(curves, length, precision))[0];
-            result.Domain = new Interval(0, result.GetLength());
+            // Create trimmed contours and transitions
+            List<Curve> trimmed = TrimCurveFromEnds(curves, length);
+            List<Curve> transitions = InterpolatedTransitions(curves, length, precision);
 
-            return result;
+            // Join curves and transitions
+            Curve joinedCurve = Curves.MergeCurves(trimmed, transitions);
+
+            return (joinedCurve, transitions);
         }
 
         /// <summary>
@@ -126,9 +119,7 @@ namespace SaladSlicer.Core.Geometry.Seams
 
             for (int i = 0; i < curves.Count - 1; i++)
             {
-                Arc arc = new Arc(endFrames[i].Origin,
-                    endFrames[i].XAxis,
-                    startFrames[i + 1].Origin);
+                Arc arc = new Arc(endFrames[i].Origin, endFrames[i].XAxis, startFrames[i + 1].Origin);
                 transitions.Add(arc.ToNurbsCurve());
             }
 
@@ -165,51 +156,113 @@ namespace SaladSlicer.Core.Geometry.Seams
         /// <param name="length">The length over the transition between two curves.</param>
         /// <param name="precision">The precision of the transition.</param>
         /// <returns>The list with connected curves.</returns>
-        public static List<Curve> InterpolatedTransitions(List<Curve> curves, double length = 100.0, double precision = 10.0)
+        public static List<Curve> InterpolatedTransitions(List<Curve> curves, double length = 100.0, double precision = 1.0)
         {
-            List<Curve> result = new List<Curve>();
-            List<Curve> part1 = new List<Curve>();
-            List<Curve> part2 = new List<Curve>();
+            List<Curve> contours = new List<Curve>();
+            List<Curve> cuts = new List<Curve>();
+            List<Curve> transitions = new List<Curve>();
 
+            // Trim ends
             for (int i = 0; i < curves.Count; i++)
             {
-                Curve[] splitCurves = Curves.SplitAtLength(curves[i], curves[i].GetLength() - length);
-                part1.Add(splitCurves[0].DuplicateCurve());
-                part2.Add(splitCurves[1].DuplicateCurve());
+                contours.Add(TrimCurveFromEnds(curves[i], length, out Curve cut));
+                cuts.Add(cut);
             }
 
-            for (int i = 0; i < curves.Count; i++)
+            // Interpolate transitions
+            for (int i = 0; i < curves.Count - 1; i++)
             {
-                result.Add(part1[i]);
-
                 if (i < curves.Count - 1)
                 {
-                    int n = Math.Max((int)(part2[i].GetLength() / Convert.ToDouble(precision)), 8);
-                    result.Add(Curves.InterpolateCurves(part2[i], part2[i + 1], n));
+                    int n = Math.Max(Convert.ToInt32((cuts[i].GetLength() / Convert.ToDouble(precision))), 8);
+                    transitions.Add(Curves.InterpolateCurves(cuts[i], cuts[i + 1], n));
                 }
+            }
+
+            return transitions;
+        }
+
+        /// <summary>
+        /// Returns a curve that is trimmed at both ends by a given length. 
+        /// </summary>
+        /// <param name="curve"> Curve. </param>
+        /// <param name="length"> Total length to be cut off. </param>
+        /// <returns> Trimmed curve. </returns>
+        public static Curve TrimCurveFromEnds(Curve curve, double length)
+        {
+            return TrimCurveFromEnds(curve, length, out _);
+        }
+
+        /// <summary>
+        /// Returns a curve that is trimmed at both ends by a given length. 
+        /// </summary>
+        /// <param name="curve"> Curve. </param>
+        /// <param name="length"> Total length to be cut off. </param>
+        /// <returns> Trimmed curve. </returns>
+        public static Curve TrimCurveFromEnds(Curve curve, double length, out Curve cut)
+        {
+            if (length <= 0)
+            {
+                throw new Exception("The method Trim Curve from Ends requires a length larger than zero.");
+            }
+
+            Curve[] temp1;
+            Curve[] temp2;
+
+            curve.LengthParameter(curve.GetLength() - 0.5 * length, out double param1);
+            temp1 = curve.Split(param1);
+            Curve result = temp1[0];
+
+            result.LengthParameter(0.5 * length, out double param2);
+            temp2 = result.Split(param2);
+            result = temp2[1];
+            
+            if (curve.IsClosed == true)
+            {
+                cut = Curve.JoinCurves(new List<Curve>() { temp1[1], temp2[0] })[0];
+            }
+            else
+            {
+                cut = null;
             }
 
             return result;
         }
 
         /// <summary>
-        /// Cuts of the end of every curve in a list of curves
+        /// Returns a list with curves that are trimmed at both ends by a given length. 
         /// </summary>
-        /// <param name="curves">List of curves</param>
-        /// <param name="length">Length to be cut off</param>
+        /// <param name="curves"> List of curves. </param>
+        /// <param name="length"> Total length to be cut off. </param>
         /// <returns></returns>
-        public static List<Curve> CutTransitionEnd(List<Curve> curves, double length)//Doesn't allow for changelength 0
+        public static List<Curve> TrimCurveFromEnds(List<Curve> curves, double length)
         {
-            List<Curve> curvesCopy = curves.ConvertAll(curve => curve.DuplicateCurve());
+            return TrimCurveFromEnds(curves, length, out _);
+        }
+
+        /// <summary>
+        /// Returns a list with curves that are trimmed at both ends by a given length. 
+        /// </summary>
+        /// <param name="curves"> List of curves. </param>
+        /// <param name="length"> Total length to be cut off. </param>
+        /// <returns></returns>
+        public static List<Curve> TrimCurveFromEnds(List<Curve> curves, double length, out List<Curve> cuts)
+        {
+            if (length <= 0)
+            {
+                throw new Exception("The method Trim Curve from Ends requires a length larger than zero.");
+            }
+
+            List<Curve> result = new List<Curve>();
+            cuts = new List<Curve>();
 
             for (int i = 0; i < curves.Count; i++)
             {
-                curvesCopy[i].LengthParameter(curvesCopy[i].GetLength() - length, out double param);
-                Curve[] tempCurves = curvesCopy[i].Split(param);
-                curvesCopy[i] = tempCurves[0];
+                result.Add(TrimCurveFromEnds(curves[i], length, out Curve cut));
+                cuts.Add(cut);
             }
 
-            return curvesCopy;
+            return result;
         }
         #endregion
     }

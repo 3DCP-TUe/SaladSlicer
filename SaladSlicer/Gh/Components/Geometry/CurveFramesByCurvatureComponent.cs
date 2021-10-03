@@ -40,7 +40,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddCurveParameter("Curve", "C", "Curve to divide.", GH_ParamAccess.item);
-            pManager.AddNumberParameter("Tolerance", "T", "Tolerance as a Number", GH_ParamAccess.item, 0.001);
+            pManager.AddNumberParameter("Tolerance", "T", "Tolerance as a Number", GH_ParamAccess.item, 0.1);
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         {
             // Declare variable of input parameters
             Curve curve = null;
-            double tolerance = 0.001;
+            double tolerance = 0.1;
 
             // Access the input parameters individually. 
             if (!DA.GetData(0, ref curve)) return;

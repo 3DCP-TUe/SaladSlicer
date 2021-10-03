@@ -10,6 +10,7 @@ using System.Linq;
 using Rhino.Geometry;
 // Slicer Salad Libs
 using SaladSlicer.Core.CodeGeneration;
+using SaladSlicer.Core.Geometry;
 using SaladSlicer.Core.Geometry.Seams;
 using SaladSlicer.Core.Interfaces;
 
@@ -31,6 +32,10 @@ namespace SaladSlicer.Core.Slicers
         private double _seamLength;
         private List<List<double>> _addedVariable = new List<List<double>>();
         private string _prefix = "";
+        #endregion
+
+        #region (de)serialisation
+        //TODO
         #endregion
 
         #region constructors
@@ -172,6 +177,7 @@ namespace SaladSlicer.Core.Slicers
         {
             _contours.Clear();
             Curve contour = Geometry.Seams.Locations.SeamAtLength(_baseContour, _seamLocation, true);
+            //contour = Geometry.Seams.Locations.SeamAtLength(contour, contour.GetLength() - 0.5 * _seamLength, false); //TODO: to discuss... 
             contour.Domain = new Interval(0, contour.GetLength());
 
             for (int i = 0; i < _heights.Count; i++)
@@ -186,8 +192,11 @@ namespace SaladSlicer.Core.Slicers
         /// </summary>
         private void CreatePath()
         {
+            List<Curve> trimmed = Transitions.TrimCurveFromEnds(_contours, _seamLength);
+            List<Curve> transitions = Transitions.InterpolatedTransitions(_contours, _seamLength, 0.25 * _distance);
+            
             _path.Clear();
-            _path = Transitions.InterpolatedTransitions(_contours, _seamLength, 0.25 * _distance);
+            _path = Curves.WeaveCurves(trimmed, transitions);
         }
 
         /// <summary>

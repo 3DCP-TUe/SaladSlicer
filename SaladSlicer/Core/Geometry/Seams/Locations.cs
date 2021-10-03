@@ -117,28 +117,65 @@ namespace SaladSlicer.Core.Geometry.Seams
 
             return result;
         }
+
+        /// <summary>
+        /// Returns a curve with as starting point the closest point on the curve to the given guiding curve. 
+        /// </summary>
+        /// <param name="curve"> Curve. </param>
+        /// <param name="guide"> Guiding curve. </param>
+        /// <returns> The closed curve with a new point at start. </returns>
+        public static Curve SeamClosestToCurve(Curve curve, Curve guide)
+        {
+            if (curve.IsClosed == false)
+            {
+                throw new Exception("The method Seam Closest to Curve requires a closed curve.");
+            }
+
+            curve.ClosestPoints(guide, out Point3d point, out _);
+            Curve result = SeamAtClosestPoint(curve, point);
+
+            return result;
+        }
         #endregion
 
         #region methods for lists with curves
         /// <summary>
         /// Returns a list with curves with as starting point the closest point to the starting point of the curve before. 
         /// </summary>
-        /// <param name="contours"> The contours as a list with curves. </param>
-        /// <returns></returns>
-        public static List<Curve> SeamsAtClosestPoint(List<Curve> contours)
+        /// <param name="curves"> The contours as a list with curves. </param>
+        /// <returns> List with closed curves with a new point at start. </returns>
+        public static List<Curve> AlignSeamsByClosestPoint(List<Curve> curves)
         {
             List<Curve> result = new List<Curve>() { };
-            result.Add(contours[0].DuplicateCurve());
+            result.Add(curves[0].DuplicateCurve());
 
-            Point3d testPoint = contours[0].PointAtStart;
-            contours[0].ClosestPoint(testPoint, out double t);
+            Point3d testPoint = curves[0].PointAtStart;
+            curves[0].ClosestPoint(testPoint, out double t);
 
-            for (int i = 1; i < contours.Count; i++)
+            for (int i = 1; i < curves.Count; i++)
             {
-                testPoint = contours[i - 1].PointAt(t);
-                contours[i].ClosestPoint(testPoint, out t);
-                result.Add(SeamAtParam(contours[i], t));
+                testPoint = curves[i - 1].PointAt(t);
+                curves[i].ClosestPoint(testPoint, out t);
+                result.Add(SeamAtParam(curves[i], t));
             }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Returns a list with curves with as starting point the closest point on the curve to the given guiding curve. 
+        /// </summary>
+        /// <param name="curves"> List with curves. </param>
+        /// <param name="guide"> Guiding curve. </param>
+        /// <returns> List with closed curves with a new point at start. </returns>
+        public static List<Curve> AlignSeamsAlongCurve(List<Curve> curves, Curve guide)
+        {
+            List<Curve> result = new List<Curve>() { };
+
+            for (int i = 0; i < curves.Count; i++)
+            {
+                result.Add(SeamClosestToCurve(curves[i], guide));
+            }    
 
             return result;
         }

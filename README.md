@@ -6,11 +6,11 @@
   
  <p align="center"> 
   <img src="https://img.shields.io/github/v/release/3DCP-TUe/SaladSlicer?label=stable&style=flat-square">
-  <img src="https://img.shields.io/github/v/release/3DCP-TUe/SaladSlice?label=latest&include_prereleases&style=flat-square">
-  <img src="https://img.shields.io/github/downloads/3DCP-TUe/SaladSlice/total?style=flat-square">
-  <img src="https://img.shields.io/github/license/3DCP-TUe/SaladSlice?style=flat-square">
-  <img src="https://img.shields.io/github/issues-raw/3DCP-TUe/SaladSlice?style=flat-square">
-  <img src="https://img.shields.io/github/issues-closed-raw/3DCP-TUe/SaladSlice?style=flat-square">
+  <img src="https://img.shields.io/github/v/release/3DCP-TUe/SaladSlicer?label=latest&include_prereleases&style=flat-square">
+  <img src="https://img.shields.io/github/downloads/3DCP-TUe/SaladSlicer/total?style=flat-square">
+  <img src="https://img.shields.io/github/license/3DCP-TUe/SaladSlicer?style=flat-square">
+  <img src="https://img.shields.io/github/issues-raw/3DCP-TUe/SaladSlicer?style=flat-square">
+  <img src="https://img.shields.io/github/issues-closed-raw/3DCP-TUe/SaladSlicer?style=flat-square">
 </p>
 
 ---
@@ -19,7 +19,6 @@ Salad Slicer is an open source Rhinoceros Grasshopper plugin developed for slici
 
 - Slicing planar 2.5D objects from a 2D curve
 - Slicing planar 3D objects from a 3D mesh
-- Slicing non-planar 3D objects from a 3D mesh
 - Possibility to define your own slicers and/or reconstruct and customize the pre-defined slicers with the components from the Geometry category. 
 - Possibility to construct an NC program (G-code) for the sliced geometry. 
 - Possibility to convert all sliced objects to planes that can be used to construct programs for, for example, ABB and KUKA robots. 

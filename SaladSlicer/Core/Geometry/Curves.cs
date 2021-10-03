@@ -8,8 +8,6 @@ using System;
 using System.Collections.Generic;
 // Rhino Libs
 using Rhino.Geometry;
-// Salad Slicer Libs
-using SaladSlicer.Core.Geometry.Seams;
 
 namespace SaladSlicer.Core.Geometry
 {
@@ -26,7 +24,8 @@ namespace SaladSlicer.Core.Geometry
         /// <returns></returns>
         public static double NumberClosed(List<Curve> curves)
         {
-            double numberClosed = 0 ;
+            double numberClosed = 0;
+
             for (int i = 0; i < curves.Count; i++)
             {
                 bool close = curves[i].IsClosed;
@@ -46,12 +45,14 @@ namespace SaladSlicer.Core.Geometry
         /// <returns></returns>
         public static List<Curve> AlternateCurves(List<Curve> curves)
         {
-            for (int i = 1; i < curves.Count; i += 2)
+            List<Curve> result = curves.ConvertAll(curve => curve.DuplicateCurve());
+
+            for (int i = 1; i < result.Count; i += 2)
             {
-                curves[i].Reverse();
+                result[i].Reverse();
             }
             
-            return curves;
+            return result;
         }
 
         /// <summary>
@@ -102,40 +103,36 @@ namespace SaladSlicer.Core.Geometry
         /// <returns></returns>
         public static Curve MergeCurves(List<Curve> curves, List<Curve> transitions)
         {
-            Curve curve1=curves[0];
-            
-            for (int i = 0; i < transitions.Count; i++)
-            {
-                curve1 = Curve.JoinCurves(new List<Curve>() {curve1, transitions[i] })[0];
-                curve1 = Curve.JoinCurves(new List<Curve>() {curve1, curves[i+1] })[0];
-            }
-            return curve1;
+            List<Curve> weave = WeaveCurves(curves, transitions);
+            Curve result = Curve.JoinCurves(weave)[0];
+
+            return result;
         }
 
         /// <summary>
         /// Returns a woven list with curves from two lists of curves. 
         /// </summary>
-        /// <param name="curves1"> First list with curves. </param>
-        /// <param name="curves2"> Second list with curves. </param>
+        /// <param name="curves"> First list with curves. </param>
+        /// <param name="transitions"> Second list with curves. </param>
         /// <returns> Woven list with curves. </returns>
-        public static List<Curve> WeaveCurves(List<Curve> curves1, List<Curve> curves2)
+        public static List<Curve> WeaveCurves(List<Curve> curves, List<Curve> transitions)
         {
             List<Curve> result = new List<Curve>() { };
 
-            int n1 = curves1.Count;
-            int n2 = curves2.Count;
+            int n1 = curves.Count;
+            int n2 = transitions.Count;
             int n = Math.Max(n1, n2);
 
             for (int i = 0; i < n + 1; i++)
             {
                 if (i < n1)
                 {
-                    result.Add(curves1[i].DuplicateCurve());
+                    result.Add(curves[i].DuplicateCurve());
                 }
 
                 if (i < n2)
                 {
-                    result.Add(curves2[i].DuplicateCurve());
+                    result.Add(transitions[i].DuplicateCurve());
                 }
             }
 
@@ -162,21 +159,27 @@ namespace SaladSlicer.Core.Geometry
         }
 
         /// <summary>
-        /// Returns a list with aligned contours. 
-        /// Checks start point of all curves and aligns (reverses) them if necessary. 
+        /// Returns a list with aligned curves. 
+        /// Checks the direction of all curves and aligns (reverses) them if necessary. 
         /// </summary>
-        /// <param name="contours"> List with contours. </param>
+        /// <param name="curves"> List with curves. </param>
         /// <returns> List with aligned curves. </returns>
-        public static List<Curve> AlignContours(List<Curve> contours)
+        public static List<Curve> AlignCurves(List<Curve> curves)
         {
-            for (int i = 1; i < contours.Count; i++)
+            List<Curve> result = curves.ConvertAll(curve => curve.DuplicateCurve());
+
+            for (int i = 1; i < result.Count; i++)
             {
-                Point3d point1 = contours[i - 1].PointAtStart;
-                Point3d[] points = { contours[i].PointAtStart, contours[i].PointAtEnd };
-                if (point1.DistanceTo(points[0]) > point1.DistanceTo(points[1])) { contours[i].Reverse();}
+                bool match = Curve.DoDirectionsMatch(result[i - 1], result[i]);
+
+                if (match == false)
+                {
+                    result[i].Reverse();
+                    result[i].Domain = curves[i].Domain;
+                }
             }
 
-            return contours;
+            return result;
         }
 
         /// <summary>
@@ -186,13 +189,13 @@ namespace SaladSlicer.Core.Geometry
         /// </summary>
         /// <param name="curve1"> The first curve. </param>
         /// <param name="curve2"> The second curve. </param>
-        /// <param name="precision"> The precision. </param>
+        /// <param name="tolerance"> The tolarance defined as the distance between interpolation points. </param>
         /// <returns></returns>
-        public static Curve InterpolateCurves(Curve curve1, Curve curve2, double precision = 10.0)
+        public static Curve InterpolateCurves(Curve curve1, Curve curve2, double tolerance = 1.0)
         {
             List<Point3d> points = new List<Point3d>() { };
             double length = Math.Max(curve1.GetLength(), curve2.GetLength());
-            int n = Math.Max((int)(length / precision), 8);
+            int n = Math.Max((int)(length / tolerance), 8);
 
             double[] param1 = curve1.DivideByCount(n, true);
             double[] param2 = curve2.DivideByCount(n, true);

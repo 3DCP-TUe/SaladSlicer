@@ -5,6 +5,7 @@
 
 // System Libs
 using System;
+using System.Linq;
 using System.Collections.Generic;
 // Rhino Libs
 using Rhino.Geometry;
@@ -225,7 +226,7 @@ namespace SaladSlicer.Core.Geometry
         /// <param name="includeStart"> Indicates if the start frame is included. </param>
         /// <param name="includeEnd"> Indicates if the end frame is included. </param>
         /// <returns> The list with frames. </returns>
-        public static List<Plane> GetFramesByCurvature(Curve curve, double tolerance = 0.001, bool includeStart = true, bool includeEnd = true)
+        public static List<Plane> GetFramesByCurvature(Curve curve, double tolerance = 0.1, bool includeStart = true, bool includeEnd = true)
         {
             List<Plane> result = new List<Plane>();
 
@@ -258,6 +259,9 @@ namespace SaladSlicer.Core.Geometry
             plane = new Plane(point, x, y);
             result.Add(plane);
 
+            // Sort frames along curve
+            result = SortFramesAlongCurve(result, curve);
+
             if (includeStart == true && includeEnd == true)
             {
                 return result;
@@ -278,6 +282,28 @@ namespace SaladSlicer.Core.Geometry
             {
                 return result.GetRange(1, result.Count - 1);
             }
+        }
+
+        /// <summary>
+        /// Returns a list with frames that are sorted along a curve.
+        /// </summary>
+        /// <param name="frames"> Unsorted list with frames. </param>
+        /// <param name="curve"> Curve. </param>
+        /// <returns> Sorted list with frames. </returns>
+        public static List<Plane> SortFramesAlongCurve(List<Plane> frames, Curve curve)
+        {
+            Plane[] items = frames.ToArray();
+            double[] keys = new double[frames.Count];
+
+            for (int i = 0; i < frames.Count; i++)
+            {
+                curve.ClosestPoint(frames[i].Origin, out double t);
+                keys[i] = t;
+            }
+
+            Array.Sort(keys, items);
+
+            return items.ToList();
         }
         #endregion
     }
