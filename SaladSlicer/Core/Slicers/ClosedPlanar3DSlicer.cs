@@ -34,6 +34,8 @@ namespace SaladSlicer.Core.Slicers
         private bool _reverse;
         private List<List<double>> _addedVariable = new List<List<double>>(0);
         private string _prefix = "";
+        #endregion
+
         #region (de)serialisation
         //TODO
         #endregion
