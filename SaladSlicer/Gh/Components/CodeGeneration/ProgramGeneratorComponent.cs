@@ -46,7 +46,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddGenericParameter("Program/Slicer Objects", "O", "All Slicer Objects and Program Objects that can generate a NC program", GH_ParamAccess.list);
-            pManager.AddIntegerParameter("Program type", "T", "Sets the type of NC program (G-Code) to be generated",GH_ParamAccess.item,0);
+            pManager.AddIntegerParameter("Flavor", "F", "Sets the flavor of G-Code to be generated",GH_ParamAccess.item,0);
         }
 
         /// <summary>

@@ -59,7 +59,15 @@ namespace SaladSlicer.Core.CodeGeneration
             _program.Add(" ");
 
             // Program start settings
-            if (programType == 0) { }
+            if (programType == 0)
+            {
+                _program.Add("; ----------------------------------------------------------------------");
+                _program.Add("; START SETTINGS");
+                _program.Add("; ----------------------------------------------------------------------");
+                _program.Add("G90; Absolute coordinates ");
+                _program.Add("BSPLINE; Bspline interpolation") ;
+                _program.Add("G642; Continuous-path mode with smoothing within the defined tolerances");
+            }
             else if(programType == 1){
                 _program.Add("; ----------------------------------------------------------------------");
                 _program.Add("; START SETTINGS");
@@ -71,6 +79,7 @@ namespace SaladSlicer.Core.CodeGeneration
                 _program.Add("M205 X8.00 Y8.00 Z0.40 E5.00; Setup Jerk");
                 _program.Add("M82 ; absolute extrusion mode");
                 _program.Add("G90; Absolute coordinates ");
+                _program.Add("G1; Linear movements ");
                 _program.Add("G28; Move home");
             }
 
@@ -151,47 +160,25 @@ namespace SaladSlicer.Core.CodeGeneration
         /// </summary>
         public void AddCoordinates(List<Plane> frames, int type, string prefix, List<double> addVariable)
         {
-            if (type == 0)
+            if (prefix == "E")
             {
-                if (prefix == "")
-                {
-                    for (int i = 0; i < frames.Count; i++)
-                    {
-                        Point3d point = frames[i].Origin;
-                        _program.Add($"X{point.X:0.###} Y{point.Y:0.###} Z{point.Z:0.###}");
-                    }
-                }
-                else
-                {
-                    for (int i = 0; i < frames.Count; i++)
-                    {
-                        Point3d point = frames[i].Origin;
-                        _program.Add($"X{point.X:0.###} Y{point.Y:0.###} Z{point.Z:0.###} {prefix}{addVariable[i]:0.#####}");
-                    }
-                }
-                
+                _program.Add("G92 E0; Set current extruder position as 0");
             }
-            else if (type == 1)
+
+            if (prefix == "")
             {
-                if (prefix == "E")
+                for (int i = 0; i < frames.Count; i++)
                 {
-                    _program.Add("G92 E0; Set current extruder position as 0");
+                    Point3d point = frames[i].Origin;
+                    _program.Add($"X{point.X:0.###} Y{point.Y:0.###} Z{point.Z:0.###}");
                 }
-                    if (prefix == "")
+            }
+            else
+            {
+                for (int i = 0; i < frames.Count; i++)
                 {
-                    for (int i = 0; i < frames.Count; i++)
-                    {
-                            Point3d point = frames[i].Origin;
-                            _program.Add($"G1 X{point.X:0.###} Y{point.Y:0.###} Z{point.Z:0.###}");
-                    }
-                }
-                else
-                {  
-                    for (int i = 0; i < frames.Count; i++)
-                    {
-                            Point3d point = frames[i].Origin;
-                            _program.Add($"G1 X{point.X:0.###} Y{point.Y:0.###} Z{point.Z:0.###} {prefix}{addVariable[i]:0.#####}");
-                    }
+                    Point3d point = frames[i].Origin;
+                    _program.Add($"X{point.X:0.###} Y{point.Y:0.###} Z{point.Z:0.###} {prefix}{addVariable[i]:0.#####}");
                 }
             }
         }

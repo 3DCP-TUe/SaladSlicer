@@ -22,7 +22,7 @@ namespace SaladSlicer.Core.Slicers
         private Curve _curve;
         private double _distance;
         private List<Plane> _frames = new List<Plane>();
-        private List<double> _addedVariable=new List<double>(0);
+        private List<double> _addedVariable=new List<double>();
         private string _prefix="";
         #endregion
 
@@ -164,38 +164,18 @@ namespace SaladSlicer.Core.Slicers
             programGenerator.AddFooter();
         }
 
+
         /// <summary>
         /// Adds an additional variable to the program, besides X, Y and Z.
         /// </summary>
         /// <param name="prefix">Prefix to use for the variable.</param>
-        /// <param name="factor">Factor difference between method variable and added variable.</param>
-        public void AddVariableByDisplacement(string prefix, double factor)
+        /// <param name="values">List of values to be added.</param>
+        public void AddVariable(string prefix, List<List<double>> values)
         {
-                _prefix = prefix;
-                double distance = 0;
-                List<double> AddedVariable = new List<double>();
-                for (int i = 0; i < _frames.Count; i++)
-                {
-                    if (i == 0)
-                    {
-                        AddedVariable.Add(distance * factor);
-                    }
-                    else
-                    {
-                        Point3d point = _frames[i].Origin;
-                        distance += point.DistanceTo(_frames[i - 1].Origin);
-                        AddedVariable.Add(distance * factor);
-                    }
-                }
-                _addedVariable = AddedVariable;
+            _prefix = prefix;
+            _addedVariable = values[0];
         }
 
-        /// <summary>
-        /// Empty method.
-        /// </summary>
-        public void AddVariableByLayerDistance(string prefix, double factor)
-        {
-        }
 
         /// <summary>
         /// Returns the path.
@@ -222,6 +202,53 @@ namespace SaladSlicer.Core.Slicers
         public Curve GetLinearizedPath()
         {
             return new PolylineCurve(this.GetPoints());
+        }
+
+        /// <summary>
+        /// Returns distance of every frame along the curve.
+        /// </summary>
+        /// <returns> List with distances. </returns>
+        public List<List<double>> GetDistancesAlongContours()
+        {
+            List<List<double>> distances = new List<List<double>>();
+            double distance = 0;
+            List<double> distancesTemp = new List<double>();
+            for (int j = 0; j < _frames.Count; j++)
+            {
+                if (j == 0)
+                {
+                    distancesTemp.Add(distance);
+                }
+                else
+                {
+                    Point3d point = _frames[j].Origin;
+                    distance += point.DistanceTo(_frames[j - 1].Origin);
+                    distancesTemp.Add(distance);
+                }
+            }
+            distances.Add(distancesTemp);
+            return distances;
+        }
+
+        /// <summary>
+        /// Calculates the distance between every frame and the closest point on the previous layer.
+        /// </summary>
+        /// <param name="plane">Plane to calculate closest point to for the first layer</param>
+        /// <returns></returns>
+        public List<List<double>> GetDistanceToPreviousLayer(Plane plane)
+        {
+            List<List<double>> distances = new List<List<double>>();
+            List<double> distancesTemp = new List<double>();
+            for (int j = 0; j < _frames.Count; j++)
+            {
+                double distance;
+                Point3d point = _frames[j].Origin;
+                Point3d point2 = plane.ClosestPoint(point);
+                distance = point.DistanceTo(point2);
+                distancesTemp.Add(distance);
+            }
+            distances.Add(distancesTemp);
+            return distances;
         }
 
         /// <summary>

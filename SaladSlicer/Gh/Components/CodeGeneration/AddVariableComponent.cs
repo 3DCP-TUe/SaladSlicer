@@ -8,6 +8,8 @@ using System;
 using System.Collections.Generic;
 // Grasshopper Libs
 using Grasshopper.Kernel;
+using Grasshopper.Kernel.Data;
+using Grasshopper.Kernel.Types;
 // Salad Slicer Libs
 using SaladSlicer.Core.CodeGeneration;
 using SaladSlicer.Core.Interfaces;
@@ -24,7 +26,6 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
     public class AddVariableComponent : GH_Component
     {
         #region fields
-        private bool _expire = false;
         #endregion
 
         /// <summary>
@@ -46,8 +47,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         {
             pManager.AddGenericParameter("Slicer Object", "SO", "Slicer Object to which the variable should be added.", GH_ParamAccess.item);
             pManager.AddTextParameter("Prefix", "P", "Prefix.", GH_ParamAccess.item,"E");
-            pManager.AddIntegerParameter("Method", "M", "Method that is used to calculate the value of the added variable.", GH_ParamAccess.item,0);
-            pManager.AddNumberParameter("Factor", "F", "Factor to use.", GH_ParamAccess.item,12);
+            pManager.AddNumberParameter("Values", "V", "Values of the axis to be added. Should have equal size as the frames in the object.", GH_ParamAccess.tree);
         }
 
         /// <summary>
@@ -64,42 +64,31 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// <param name="DA">The DA object can be used to retrieve data from input parameters and to store data in output parameters.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
-            //Create a value list
-            _expire = HelperMethods.CreateValueList(this, 2, typeof(AddVariableMethod));
-
-            // Expire solution of this component
-            if (_expire == true)
-            {
-                _expire = false;
-                this.ExpireSolution(true);
-            }
             // Declare variable of input parameters
-
             IAddVariable slicerObject = new CurveSlicer();
             string prefix = "";
-            double factor = new double();
-            int  method = new int();
+            List<List<double>> values = new List<List<double>>();
 
             // Access the input parameters individually. 
             if (!DA.GetData(0, ref slicerObject)) return;
             if (!DA.GetData(1, ref prefix)) return;
-            if (!DA.GetData(2, ref method)) return;
-            if (!DA.GetData(3, ref factor)) return;
-
-            // Warnings
-            if (slicerObject.Contours.Count<2 && method == 1) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, $"Cannot use the ByLayerdistance method on less than two curves."); }
+            if (!DA.GetDataTree(2, out Grasshopper.Kernel.Data.GH_Structure<Grasshopper.Kernel.Types.GH_Number> tree)) return;
 
             // Create the code line
             IAddVariable newSlicerObject = slicerObject.DuplicateAddVariableObject();
-            if (method == 0)
+            for (int i = 0; i<tree.PathCount; i++)
             {
-                newSlicerObject.AddVariableByDisplacement(prefix, factor);
+                List<double> valueTemp = new List<double>();
+                GH_Path path = tree.get_Path(i);
+                List<GH_Number> branch = (List<GH_Number>)tree.get_Branch(path);
+                for (int j =0; j < branch.Count; j++)
+                {
+                    valueTemp.Add(branch[j].Value);
+                }
+                values.Add(valueTemp);
             }
-            else if (method == 1)
-            {
-                newSlicerObject.AddVariableByLayerDistance(prefix, factor);
-            }
-            
+            newSlicerObject.AddVariable(prefix, values);
+
             // Assign the output parameters
             DA.SetData(0, newSlicerObject);
         }

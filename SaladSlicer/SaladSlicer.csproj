@@ -100,6 +100,8 @@
     <Compile Include="Gh\Components\Geometry\AlignCurvesComponent.cs" />
     <Compile Include="Gh\Components\Geometry\AlignSeamsByClosestPointComponent.cs" />
     <Compile Include="Gh\Components\Slicers\ClosedPlanar3DSlicerComponent.cs" />
+    <Compile Include="Gh\Components\Slicers\GetDistanceToPreviousLayerComponent .cs" />
+    <Compile Include="Gh\Components\Slicers\GetDistancesAlongContoursComponent.cs" />
     <Compile Include="Gh\Components\Slicers\GetFramesComponent.cs" />
     <Compile Include="Gh\Components\Slicers\GetEndFramesComponent.cs" />
     <Compile Include="Gh\Components\Slicers\GetContours.cs" />

@@ -48,6 +48,18 @@ namespace SaladSlicer.Core.Interfaces
         /// </summary>
         /// <returns> The linearized path. </returns>
         Curve GetLinearizedPath();
+
+        /// <summary>
+        /// Returns distance of every frame along the curve.
+        /// </summary>
+        /// <returns> List with distances. </returns>
+        List<List<double>> GetDistancesAlongContours();
+
+        /// <summary>
+        /// Returns distance of every frame to the previous layer
+        /// </summary>
+        /// <returns> List with distances. </returns>
+        List<List<double>> GetDistanceToPreviousLayer(Plane plane);
         #endregion
 
         #region properties

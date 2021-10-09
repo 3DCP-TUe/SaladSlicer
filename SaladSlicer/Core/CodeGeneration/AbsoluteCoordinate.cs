@@ -19,7 +19,7 @@ namespace SaladSlicer.Core.CodeGeneration
     {
         #region fields
         private Plane _plane;
-        private List<double> _addedVariable = new List<double>(0);
+        private List<double> _addedVariable = new List<double>();
         private string _prefix="";
         #endregion
 
@@ -112,24 +112,16 @@ namespace SaladSlicer.Core.CodeGeneration
             programGenerator.AddCoordinates(plane, programType,_prefix, _addedVariable);
         }
 
+
         /// <summary>
         /// Adds an additional variable to the program, besides X, Y and Z.
         /// </summary>
         /// <param name="prefix">Prefix to use for the variable.</param>
-        /// <param name="factor">Factor difference between method variable and added variable.</param>
-        public void AddVariableByDisplacement(string prefix, double factor)
+        /// <param name="values">List of values to be added.</param>
+        public void AddVariable(string prefix, List<List<double>> values)
         {
-                _prefix = prefix;
-                List<double> AddedVariable = new List<double>();
-                AddedVariable.Add(factor);
-                _addedVariable = AddedVariable;
-        }
-
-        /// <summary>
-        /// Empty method.
-        /// </summary>
-        public void AddVariableByLayerDistance(string prefix, double factor)
-        {
+            _prefix = prefix;
+            _addedVariable = values[0];
         }
 
         /// <summary>

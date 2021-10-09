@@ -288,78 +288,54 @@ namespace SaladSlicer.Core.Slicers
             programGenerator.AddFooter();
         }
 
+        
+
+        /// <summary>
+        /// Calculates the distance between every frame and the closest point on the previous layer.
+        /// </summary>
+        /// <param name="plane">Plane to calculate closest point to for the first layer</param>
+        /// <returns></returns>
+        public List<List<double>> GetDistanceToPreviousLayer(Plane plane)
+        {
+            List<List<double>> distances = new List<List<double>>();
+            for (int i = 0; i < _framesByLayer.Count; i++)
+            {
+                List<double> distancesTemp = new List<double>();
+                for (int j = 0; j < _framesByLayer[i].Count; j++)
+                {
+                    double distance;
+                    Point3d point = _framesByLayer[i][j].Origin;
+                    if (i == 0)
+                    {
+                        Point3d point2 = plane.ClosestPoint(point);
+                        distance = point.DistanceTo(point2);
+                    }
+                    else
+                    {
+                        _contours[i - 1].ClosestPoint(point, out double parameter);
+                        distance = point.DistanceTo(_contours[i - 1].PointAt(parameter));
+                        distancesTemp.Add(distance);
+                    }
+                    distancesTemp.Add(distance);
+                }
+                distances.Add(distancesTemp);
+            }
+            return distances;
+        }
+
         /// <summary>
         /// Adds an additional variable to the program, besides X, Y and Z.
         /// </summary>
         /// <param name="prefix">Prefix to use for the variable.</param>
-        /// <param name="factor">Factor difference between method variable and added variable.</param>
-        public void AddVariableByDisplacement(string prefix, double factor)
+        /// <param name="values">List of values to be added.</param>
+        public void AddVariable(string prefix, List<List<double>> values)
         {
             _prefix = prefix;
-            double distance = 0;
-                
-            for (int i = 0; i < _framesByLayer.Count; i++)
+            for (int i = 0; i < values.Count; i++)
             {
-                List<double> AddedVariable = new List<double>();
-                for (int j = 0; j < _framesByLayer[i].Count; j++)
-                {
-                    if (j == 0)
-                    {
-                        AddedVariable.Add(distance * factor);
-                    }
-                    else
-                    {
-                        Point3d point = _framesByLayer[i][j].Origin;
-                        distance += point.DistanceTo(_framesByLayer[i][j - 1].Origin);
-                        AddedVariable.Add(distance * factor);
-                    }
-                }
-                _addedVariable.Add(AddedVariable);
-                AddedVariable.Clear();
+                _addedVariable.Add(values[i]);
             }
         }
-
-        /// <summary>
-        /// Adds a variable by multiplying a factor with the interlayer distance. Only one distance is used for the outerlayers, while the average of two is used for the intermediates. 
-        /// </summary>
-        /// <param name="prefix">Prefix to use for the variable.</param>
-        /// <param name="factor">Factor between the variable and the interlayer distance.</param>
-        public void AddVariableByLayerDistance(string prefix, double factor)
-        {
-            _prefix = prefix;
-            for (int i = 0; i < _framesByLayer.Count; i++)
-            {
-                List<double> AddedVariable = new List<double>();
-                for (int j = 0; j < _framesByLayer[i].Count; j++)
-                {
-                    if (i == 0)
-                    {
-                        Point3d point = _framesByLayer[i][j].Origin;
-                        _contours[i + 1].ClosestPoint(point, out double parameter);
-                        double distance = point.DistanceTo(_contours[i + 1].PointAt(parameter));
-                        AddedVariable.Add(distance * factor);
-                    }
-                    else if (i == _framesByLayer.Count - 1)
-                    {
-                        Point3d point = _framesByLayer[i][j].Origin;
-                        _contours[i - 1].ClosestPoint(point, out double parameter);
-                        double distance = point.DistanceTo(_contours[i - 1].PointAt(parameter));
-                        AddedVariable.Add(distance * factor);
-                    }
-                    else
-                    {
-                        Point3d point = _framesByLayer[i][j].Origin;
-                        _contours[i - 1].ClosestPoint(point, out double parameter1);
-                        _contours[i + 1].ClosestPoint(point, out double parameter2);
-                        double distance1 = point.DistanceTo(_contours[i - 1].PointAt(parameter1));
-                        double distance2 = point.DistanceTo(_contours[i + 1].PointAt(parameter2));
-                        AddedVariable.Add((distance1 + distance2) / 2 * factor);
-                    }
-                }
-                _addedVariable.Add(AddedVariable);
-            }
-        }
-
 
         /// <summary>
         /// Returns the path.
@@ -398,6 +374,36 @@ namespace SaladSlicer.Core.Slicers
         public Curve GetLinearizedPath()
         {
             return new PolylineCurve(this.GetPoints());
+        }
+
+        /// <summary>
+        /// Returns distance of every frame along the curve.
+        /// </summary>
+        /// <returns> List with distances. </returns>
+        public List<List<double>> GetDistancesAlongContours()
+        {
+
+            List<List<double>> distances = new List<List<double>>();
+            for (int i = 0; i < _framesByLayer.Count; i++)
+            {
+                double distance = 0;
+                List<double> distancesTemp = new List<double>();
+                for (int j = 0; j < _framesByLayer[i].Count; j++)
+                {
+                    if (j == 0)
+                    {
+                        distancesTemp.Add(distance);
+                    }
+                    else
+                    {
+                        Point3d point = _framesByLayer[i][j].Origin;
+                        distance += point.DistanceTo(_framesByLayer[i][j - 1].Origin);
+                        distancesTemp.Add(distance);
+                    }
+                }
+                distances.Add(distancesTemp);
+            }
+            return distances;
         }
 
         /// <summary>
