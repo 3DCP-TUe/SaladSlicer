@@ -161,6 +161,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\2.5D.png" />
+    <None Include="Resources\AlignSeamsCurve_Icon.png" />
     <None Include="Resources\Param_CodeLine_Icon.png" />
     <None Include="Resources\Param_SlicerObject_Icon.png" />
     <None Include="Resources\Param_ProgramObject_Icon.png" />
