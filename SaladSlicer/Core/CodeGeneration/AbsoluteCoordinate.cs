@@ -4,6 +4,8 @@
 // see <https://github.com/3DCP-TUe/SaladSlicer>.
 
 // System Libs
+using System;
+using System.ComponentModel;
 using System.Collections.Generic;
 // Rhino Libs
 using Rhino.Geometry;
@@ -19,8 +21,8 @@ namespace SaladSlicer.Core.CodeGeneration
     {
         #region fields
         private Plane _plane;
-        private List<double> _addedVariable = new List<double>();
-        private string _prefix="";
+        private List<List<double>> _addedVariable = new List<List<double>>();
+        private List<string> _prefix = new List<string>();
         #endregion
 
         #region (de)serialisation
@@ -52,6 +54,8 @@ namespace SaladSlicer.Core.CodeGeneration
         public AbsoluteCoordinate(AbsoluteCoordinate absoluteCoordinate)
         {
             _plane = absoluteCoordinate.Plane;
+            _prefix = absoluteCoordinate.Prefix;
+            _addedVariable = absoluteCoordinate.AddedVariable[0];
         }
 
         /// <summary>
@@ -109,7 +113,7 @@ namespace SaladSlicer.Core.CodeGeneration
         public void ToProgram(ProgramGenerator programGenerator, int programType)
         {
             List<Plane> plane= new List<Plane>{_plane};
-            programGenerator.AddCoordinates(plane, programType,_prefix, _addedVariable);
+            programGenerator.AddCoordinates(plane,_prefix, _addedVariable);
         }
 
 
@@ -120,8 +124,14 @@ namespace SaladSlicer.Core.CodeGeneration
         /// <param name="values">List of values to be added.</param>
         public void AddVariable(string prefix, List<List<double>> values)
         {
-            _prefix = prefix;
-            _addedVariable = values[0];
+            _prefix.Add(prefix);
+            List<double> newList = new List<double>();
+            newList.Add(values[0][0]);
+            _addedVariable.Add(newList);
+            if (values.Count > 1 || values[0].Count>1)
+            {
+                throw new WarningException("List of added variables is longer than 1, only index {0;0} is used.");
+            }
         }
 
         /// <summary>
@@ -174,6 +184,27 @@ namespace SaladSlicer.Core.CodeGeneration
         public List<Curve> Contours
         {
             get { return new List<Curve>(); }
+        }
+
+        /// <summary>
+        /// Gets a list of prefixes for variables that have been added to the object.
+        /// </summary>
+        public List<string> Prefix
+        {
+            get { return _prefix; }
+        }
+
+        /// <summary>
+        /// Gets a list of variables that have been added to the object.
+        /// </summary>
+        public List<List<List<double>>> AddedVariable
+        {
+            get
+            {
+                List<List<List<double>>> result = new List<List<List<double>>>();
+                result.Add(_addedVariable);
+                return result;
+            }
         }
         #endregion
     }

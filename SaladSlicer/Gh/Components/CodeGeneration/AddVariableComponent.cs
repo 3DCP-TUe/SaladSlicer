@@ -5,6 +5,7 @@
 
 // System Libs
 using System;
+using System.ComponentModel;
 using System.Collections.Generic;
 // Grasshopper Libs
 using Grasshopper.Kernel;
@@ -72,7 +73,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
             // Access the input parameters individually. 
             if (!DA.GetData(0, ref slicerObject)) return;
             if (!DA.GetData(1, ref prefix)) return;
-            if (!DA.GetDataTree(2, out Grasshopper.Kernel.Data.GH_Structure<Grasshopper.Kernel.Types.GH_Number> tree)) return;
+            if (!DA.GetDataTree(2, out GH_Structure<GH_Number> tree)) return;
 
             // Create the code line
             IAddVariable newSlicerObject = slicerObject.DuplicateAddVariableObject();
@@ -87,7 +88,18 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
                 }
                 values.Add(valueTemp);
             }
-            newSlicerObject.AddVariable(prefix, values);
+            try
+            {
+                newSlicerObject.AddVariable(prefix, values);
+            }
+            catch (WarningException warning)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, warning.Message);
+            }
+            catch (Exception error)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Error, error.Message);
+            }
 
             // Assign the output parameters
             DA.SetData(0, newSlicerObject);

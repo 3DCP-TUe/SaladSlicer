@@ -35,6 +35,17 @@ namespace SaladSlicer.Core.Interfaces
         /// Gets the contours.
         /// </summary>
         List<Curve> Contours { get; }
+
+        /// <summary>
+        /// Gets a list of prefixes for variables that have been added to the object.
+        /// </summary>
+        List<string> Prefix { get; }
+
+
+        /// <summary>
+        /// Gets a list of variables that have been added to the object.
+        /// </summary>
+        List<List<List<double>>> AddedVariable { get; }
         #endregion
     }
 }

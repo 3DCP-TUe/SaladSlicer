@@ -30,8 +30,8 @@ namespace SaladSlicer.Core.Slicers
         private readonly List<List<Plane>> _framesByLayer = new List<List<Plane>>() { };
         private double _seamLocation;
         private double _seamLength;
-        private List<List<double>> _addedVariable = new List<List<double>>();
-        private string _prefix = "";
+        private List<List<List<double>>> _addedVariable = new List<List<List<double>>>(0);
+        private List<string> _prefix = new List<string>();
         #endregion
 
         #region (de)serialisation
@@ -95,7 +95,8 @@ namespace SaladSlicer.Core.Slicers
             _distance = slicer.Distance;
             _path = slicer.Path.ConvertAll(curve => curve.DuplicateCurve());
             _contours = slicer.Contours.ConvertAll(curve => curve.DuplicateCurve());
-            
+            _prefix = slicer.Prefix;
+            _addedVariable = slicer.AddedVariable;
             _framesByLayer = new List<List<Plane>>();
               
             for (int i = 0; i<slicer.FramesByLayer.Count; i++)
@@ -205,12 +206,11 @@ namespace SaladSlicer.Core.Slicers
         private void CreateFrames()
         {
             _framesByLayer.Clear();
-            _addedVariable.Clear();
-
+            _addedVariable.Add(new List<List<double>>());
             for (int i = 0; i < _contours.Count; i++)
             {
                 _framesByLayer.Add(new List<Plane>() { });
-                _addedVariable.Add(new List<double>());
+                _addedVariable[0].Add(new List<double>());
             }
 
             for (int i = 0; i < _contours.Count; i++)
@@ -277,7 +277,7 @@ namespace SaladSlicer.Core.Slicers
             if (this.ConstantHeightIncrease() && programType == 0)
             {
                 double layerHeight = _heights[1] - _heights[0];
-
+            
                 // Initialize loop
                 programGenerator.Program.Add($"R10 = {layerHeight:0.###}         ; Height of a single layer");
                 programGenerator.Program.Add(" ");
@@ -292,7 +292,7 @@ namespace SaladSlicer.Core.Slicers
                     Point3d point = _framesByLayer[0][i].Origin;
                     programGenerator.Program.Add($"X{point.X:0.###} Y{point.Y:0.###} Z={point.Z:0.###}+R10*R20");
                 }
-
+            
                 programGenerator.Program.Add(" ");
                 programGenerator.Program.Add("R20 = R20 + 1            ; Increase layer number");
                 programGenerator.Program.Add("IF R20 < R21 GOTOB LINE1");
@@ -300,12 +300,18 @@ namespace SaladSlicer.Core.Slicers
 
             // Create standard code for objects with irregular height increase
             else if(programType == 0 || programType == 1)
-            {
+            { 
                 for (int i = 0; i < _framesByLayer.Count; i++)
                 {
                     programGenerator.Program.Add(" ");
                     programGenerator.Program.Add($"; LAYER {i + 1:0}");
-                    programGenerator.AddCoordinates(_framesByLayer[i], programType, _prefix, _addedVariable[i]);
+                    //Rearange _addedVariable
+                    List<List<double>> addedVariable2 = new List<List<double>>();
+                    for (int k = 0; k < _addedVariable.Count; k++)
+                    {
+                        addedVariable2.Add(_addedVariable[k][i]);
+                    }
+                    programGenerator.AddCoordinates(_framesByLayer[i], _prefix, addedVariable2);
                 }
             }
             else
@@ -324,10 +330,14 @@ namespace SaladSlicer.Core.Slicers
         /// <param name="values">List of values to be added.</param>
         public void AddVariable(string prefix, List<List<double>> values)
         {
-            _prefix = prefix;
-            for (int i = 0; i < values.Count; i++)
+            _prefix.Add(prefix);
+            if (_addedVariable[0][0].Count < 1)
             {
-                _addedVariable.Add(values[i]);
+                _addedVariable[0] = values;
+            }
+            else
+            {
+                _addedVariable.Add(values);
             }
         }
 
@@ -402,20 +412,17 @@ namespace SaladSlicer.Core.Slicers
                 List<double> distancesTemp= new List<double>();
                 for (int j = 0; j<_framesByLayer[i].Count; j++)
                 {
-                    double distance;
                     Point3d point = _framesByLayer[i][j].Origin;
                     if (i == 0)
                     {
                         Point3d point2 = plane.ClosestPoint(point);
-                        distance = point.DistanceTo(point2);
+                        distancesTemp.Add(point.DistanceTo(point2));
                     }
                     else
                     {
-                      _contours[i - 1].ClosestPoint(point, out double parameter);
-                      distance = point.DistanceTo(_contours[i - 1].PointAt(parameter));
-                      distancesTemp.Add(distance);
+                        _contours[i - 1].ClosestPoint(point, out double parameter);
+                        distancesTemp.Add(point.DistanceTo(_contours[i - 1].PointAt(parameter)));
                     }
-                    distancesTemp.Add(distance);
                 }
                 distances.Add(distancesTemp);
             }
@@ -659,6 +666,22 @@ namespace SaladSlicer.Core.Slicers
         public Point3d PointAtEnd
         {
             get { return this.FrameAtEnd.Origin; }
+        }
+
+        /// <summary>
+        /// Gets a list of prefixes for variables that have been added to the object.
+        /// </summary>
+        public List<string> Prefix
+        {
+            get { return _prefix; }
+        }
+
+        /// <summary>
+        /// Gets a list of variables that have been added to the object.
+        /// </summary>
+        public List<List<List<double>>> AddedVariable
+        {
+            get { return _addedVariable; }
         }
         #endregion
     }

@@ -22,8 +22,8 @@ namespace SaladSlicer.Core.Slicers
         private Curve _curve;
         private double _distance;
         private List<Plane> _frames = new List<Plane>();
-        private List<double> _addedVariable=new List<double>();
-        private string _prefix="";
+        private List<List<double>> _addedVariable=new List<List<double>>();
+        private List<string> _prefix=new List<string>();
         #endregion
 
         #region (de)serialisation
@@ -58,6 +58,8 @@ namespace SaladSlicer.Core.Slicers
             _curve = slicer.Curve.DuplicateCurve();
             _distance = slicer.Distance;
             _frames = new List<Plane>(slicer.Frames);
+            _prefix = slicer.Prefix;
+            _addedVariable = slicer.AddedVariable[0];
         }
 
         /// <summary>
@@ -131,6 +133,7 @@ namespace SaladSlicer.Core.Slicers
         {
             _frames.Clear();
             _frames = Geometry.Frames.GetFramesByDistanceAndSegment(_curve, _distance, true, true);
+            _addedVariable.Add(new List<double>());
         }
 
         
@@ -158,7 +161,7 @@ namespace SaladSlicer.Core.Slicers
             }
 
             // Coords
-            programGenerator.AddCoordinates(_frames, programType, _prefix, _addedVariable);
+            programGenerator.AddCoordinates(_frames, _prefix, _addedVariable);
                
             // End
             programGenerator.AddFooter();
@@ -172,8 +175,15 @@ namespace SaladSlicer.Core.Slicers
         /// <param name="values">List of values to be added.</param>
         public void AddVariable(string prefix, List<List<double>> values)
         {
-            _prefix = prefix;
-            _addedVariable = values[0];
+            _prefix.Add(prefix);
+            if (_addedVariable[0].Count < 1)
+            {
+                _addedVariable[0] = values[0];
+            }
+            else
+            {
+                _addedVariable.Add(values[0]);
+            }
         }
 
 
@@ -403,10 +413,25 @@ namespace SaladSlicer.Core.Slicers
             get { return _frames[_frames.Count - 1].Origin; }
         }
 
-        public List<double> AddedVariable
+        /// <summary>
+        /// Gets a list of prefixes for variables that have been added to the object.
+        /// </summary>
+        public List<string> Prefix
         {
-            get { return _addedVariable; }
+            get { return _prefix; }
         }
+
+        /// <summary>
+        /// Gets a list of variables that have been added to the object.
+        /// </summary>
+        public List<List<List<double>>> AddedVariable
+        {
+            get {
+                List<List<List<double>>> result = new List<List<List<double>>>();
+                result.Add(_addedVariable);
+                return result; }
+        }
+
             
     #endregion
 }

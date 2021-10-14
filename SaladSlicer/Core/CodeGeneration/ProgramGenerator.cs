@@ -158,27 +158,35 @@ namespace SaladSlicer.Core.CodeGeneration
         /// <summary>
         /// Adds coordinates.
         /// </summary>
-        public void AddCoordinates(List<Plane> frames, int type, string prefix, List<double> addVariable)
+        public void AddCoordinates(List<Plane> frames, List<string> prefix, List<List<double>> addVariable)
         {
-            if (prefix == "E")
+            for (int i = 0; i < prefix.Count; i++)
             {
-                _program.Add("G92 E0; Set current extruder position as 0");
-            }
-
-            if (prefix == "")
-            {
-                for (int i = 0; i < frames.Count; i++)
+                if (prefix[i] == "E")
                 {
-                    Point3d point = frames[i].Origin;
+                    _program.Add("G92 E0; Set current extruder position as 0");
+                }
+            }
+            
+            if (prefix.Count == 0)
+            {
+                for (int j = 0; j < frames.Count; j++)
+                {
+                    Point3d point = frames[j].Origin;
                     _program.Add($"X{point.X:0.###} Y{point.Y:0.###} Z{point.Z:0.###}");
                 }
             }
             else
             {
-                for (int i = 0; i < frames.Count; i++)
+                for (int j = 0; j < frames.Count; j++)
                 {
-                    Point3d point = frames[i].Origin;
-                    _program.Add($"X{point.X:0.###} Y{point.Y:0.###} Z{point.Z:0.###} {prefix}{addVariable[i]:0.#####}");
+                    string variablesString = "";
+                    for (int i = 0; i < prefix.Count; i++)
+                    {
+                        variablesString+=$" {prefix[i]}{addVariable[i][j]:0.###}";
+                    }
+                    Point3d point = frames[j].Origin;
+                    _program.Add($"X{point.X:0.###} Y{point.Y:0.###} Z{point.Z:0.###}" + variablesString);
                 }
             }
         }
