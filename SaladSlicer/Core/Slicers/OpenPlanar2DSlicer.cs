@@ -4,6 +4,7 @@
 // see <https://github.com/3DCP-TUe/SaladSlicer>.
 
 // System Libs
+using System;
 using System.Collections.Generic;
 using System.Linq;
 // Rhino Libs
@@ -341,6 +342,15 @@ namespace SaladSlicer.Core.Slicers
             {
                 _addedVariable.Add(values);
             }
+        }
+
+        /// <summary>
+        /// Returns the OpenPlanar2DSlicer object as a string
+        /// </summary>
+        /// <returns>The string</returns>
+        public string ToSingleString()
+        {
+            throw new Exception("A Slicer Object cannot be represented by a single string");
         }
 
         /// <summary>

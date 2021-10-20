@@ -4,6 +4,7 @@
 // see <https://github.com/3DCP-TUe/SaladSlicer>.
 
 // System Libs
+using System;
 using System.Collections.Generic;
 // Salad Libs
 using SaladSlicer.Core.Interfaces;
@@ -77,6 +78,15 @@ namespace SaladSlicer.Core.CodeGeneration
         public override string ToString()
         {
             return "Program Group";
+        }
+
+        /// <summary>
+        /// Returns the ProgramGroup object as a string
+        /// </summary>
+        /// <returns>The string</returns>
+        public string ToSingleString()
+        {
+            throw new Exception("Grouped Program Objects cannot be represented by a single string");
         }
 
         /// <summary>

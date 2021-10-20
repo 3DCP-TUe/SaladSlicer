@@ -402,6 +402,15 @@ namespace SaladSlicer.Core.Slicers
             }
         }
 
+        /// <summary>
+        /// Returns the AbsoluteCoordinate object as a string
+        /// </summary>
+        /// <returns>The string</returns>
+        public string ToSingleString()
+        {
+            throw new Exception("A Slicer Object cannot be represented by a single string");
+        }
+
 
         /// <summary>
         /// Returns the path.

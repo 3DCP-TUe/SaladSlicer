@@ -3,7 +3,8 @@
 // Free Software Foundation. For more information and the LICENSE file, 
 // see <https://github.com/3DCP-TUe/SaladSlicer>.
 
-// System Libs
+// System Libs]
+using System;
 using System.Collections.Generic;
 // Rhino Libs
 using Rhino.Geometry;
@@ -186,6 +187,14 @@ namespace SaladSlicer.Core.Slicers
             }
         }
 
+        /// <summary>
+        /// Returns the AbsoluteCoordinate object as a string
+        /// </summary>
+        /// <returns>The string</returns>
+        public string ToSingleString()
+        {
+            throw new Exception("A Slicer Object cannot be represented by a single string");
+        }
 
         /// <summary>
         /// Returns the path.
@@ -374,8 +383,10 @@ namespace SaladSlicer.Core.Slicers
         {
             get 
             {
-                List<List<Plane>> result = new List<List<Plane>>();
-                result.Add(new List<Plane>());
+                List<List<Plane>> result = new List<List<Plane>>
+                {
+                    new List<Plane>()
+                };
                 result[0].AddRange(_frames);
                 return result; 
             }
@@ -427,8 +438,10 @@ namespace SaladSlicer.Core.Slicers
         public List<List<List<double>>> AddedVariable
         {
             get {
-                List<List<List<double>>> result = new List<List<List<double>>>();
-                result.Add(_addedVariable);
+                List<List<List<double>>> result = new List<List<List<double>>>
+                {
+                    _addedVariable
+                };
                 return result; }
         }
 

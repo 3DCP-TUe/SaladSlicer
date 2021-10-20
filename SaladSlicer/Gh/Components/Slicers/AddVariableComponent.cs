@@ -19,7 +19,7 @@ using SaladSlicer.Gh.Utils;
 using SaladSlicer.Core.Enumerations;
 using SaladSlicer.Gh.Parameters.Slicers;
 
-namespace SaladSlicer.Gh.Components.CodeGeneration
+namespace SaladSlicer.Gh.Components.Slicers
 {
     /// <summary>
     /// Represent a component that generates a custom Code Line.
@@ -34,10 +34,10 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         public AddVariableComponent()
           : base("Add Variable", // Component name
-              "Add Var", // Component nickname
+              "AV", // Component nickname
               "Defines an additional variable that is controlled by the code besides the standard X,Y and Z axis. Examples can be extruders (E) feedrate (F) or a rotational axis (C).", // Description
               "Salad Slicer", // Category
-              "Code Generation") // Subcategory
+              "Slicers") // Subcategory
         {
         }
 
@@ -110,7 +110,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         public override GH_Exposure Exposure
         {
-            get { return GH_Exposure.tertiary; }
+            get { return GH_Exposure.secondary; }
         }
 
         /// <summary>

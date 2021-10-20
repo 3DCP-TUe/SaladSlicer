@@ -27,6 +27,11 @@ namespace SaladSlicer.Core.Interfaces
         /// </summary>
         /// <param name="programGenerator"> The program generator. </param>
         void ToProgram(ProgramGenerator programGenerator,int type);
+
+        /// <summary>
+        /// Returns the Program Object as a single CodeLine.
+        /// </summary>
+        string ToSingleString();
         #endregion
 
         #region properties

@@ -7,6 +7,8 @@
 using System;
 using System.Runtime.Serialization;
 using System.Security.Permissions;
+// Grasshopper Libs 
+using Grasshopper.Kernel.Types;
 // Salad Libs
 using SaladSlicer.Core.Interfaces;
 
@@ -110,6 +112,11 @@ namespace SaladSlicer.Core.CodeGeneration
             {
                 return "Custom Code Line";
             }
+        }
+
+        public string ToSingleString()
+        {
+            return this.Code;
         }
 
         /// <summary>

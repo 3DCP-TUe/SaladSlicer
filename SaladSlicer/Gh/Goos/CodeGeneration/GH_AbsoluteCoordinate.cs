@@ -17,7 +17,7 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
     /// <summary>
     /// Represents the GH_AbsoluteCoordinate class.
     /// </summary>
-    public class GH_AbsoluteCoordinate : GH_GeometricGoo<AbsoluteCoordinate>, IGH_PreviewData
+    public class GH_AbsoluteCoordinate : GH_GeometricGoo<AbsoluteCoordinate>, IGH_PreviewData, IGH_Goo
     {
         #region (de)serialisation
         //TODO
