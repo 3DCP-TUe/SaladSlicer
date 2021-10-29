@@ -90,6 +90,7 @@
     <Compile Include="Gh\Components\Geometry\CurveFramesByCurvatureComponent.cs" />
     <Compile Include="Gh\Components\Geometry\SeamAtClosestPointComponent.cs" />
     <Compile Include="Gh\Components\Geometry\AlternateCurvesComponent.cs" />
+    <Compile Include="Gh\Components\Geometry\SeamAtClosestPlaneIntersectionComponent.cs" />
     <Compile Include="Gh\Components\Geometry\SeamAtParamComponent.cs" />
     <Compile Include="Gh\Components\Geometry\SeamAtLengthComponent.cs" />
     <Compile Include="Gh\Components\Geometry\JoinClosedCurvesComponent.cs" />
