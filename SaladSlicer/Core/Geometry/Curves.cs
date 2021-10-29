@@ -12,7 +12,7 @@ using Rhino.Geometry;
 namespace SaladSlicer.Core.Geometry
 {
     /// <summary>
-    /// A static class that contains a number of methods to manipulate curves.
+    /// Represents a static class that contains a number of methods to manipulate curves.
     /// </summary>
     public static class Curves
     {

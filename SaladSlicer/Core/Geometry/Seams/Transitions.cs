@@ -12,7 +12,7 @@ using Rhino.Geometry;
 namespace SaladSlicer.Core.Geometry.Seams
 {
     /// <summary>
-    /// A static class that contains a number of methods to create transitions between curves. 
+    /// Represents a static class that contains a number of methods to create transitions between curves. 
     /// </summary>
     public static class Transitions
     {

@@ -17,7 +17,7 @@ namespace SaladSlicer.Gh.Components.Geometry
     /// <summary>
     /// Represents the component that set a seam based on the parameter.
     /// </summary>
-    public class RedefineStartpointComponent : GH_Component
+    public class SeamAtParamComponent : GH_Component
     {
         #region fields
         #endregion
@@ -25,7 +25,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public RedefineStartpointComponent()
+        public SeamAtParamComponent()
           : base("Seam at Parameter", // Component name
               "SP", // Component nickname
               "Redefines the startpoint of a closed curve based on a parameter between 0 and 1.", // Description
@@ -40,7 +40,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddCurveParameter("Curve", "C", "Curve", GH_ParamAccess.item);
-            pManager.AddNumberParameter("Parameter", "P", "A parameter that redefines the startpoint of the curve.",  GH_ParamAccess.item, 0.0);
+            pManager.AddNumberParameter("Parameter", "t", "A parameter that redefines the startpoint of the curve.",  GH_ParamAccess.item, 0.0);
         }
 
         /// <summary>
