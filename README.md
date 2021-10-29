@@ -15,7 +15,7 @@
 
 ---
 
-Salad Slicer is an open source Rhinoceros Grasshopper plugin developed for slicing objects for 3D concrete printing, however, the plugin is also suitable for slicing objects to print other materials such as ceramics or polymers. Among other functionalities, Salad Slicer offers: 
+Salad Slicer is an open-source Rhinoceros Grasshopper plugin developed for slicing objects for 3D concrete printing, however, the plugin is also suitable for slicing objects to print other materials such as ceramics or polymers. Among other functionalities, Salad Slicer offers: 
 
 - Slicing planar 2.5D objects from a 2D curve
 - Slicing planar 3D objects from a 3D mesh
@@ -37,16 +37,16 @@ You can find a collection of example files demonstrating the main features of Sa
 **Code contributions**: We accept code contributions through [pull requests](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-requests). For this you have to [fork](https://help.github.com/en/github/getting-started-with-github/fork-a-repo) or [clone](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository) this repository. To compile the code all necessary references are placed in the folder [DLLs](https://github.com/3DCP-TUe/SaladSlicer/tree/master/DLLs). We only accept code contributions if they are commented. You can read more about this topic [here](https://docs.microsoft.com/en-us/dotnet/csharp/codedoc). If you want to make a significant contribution, please let us know what you want to add or change to avoid doing things twice. For questions or if you want to discuss your contribution you can reach out to one of the [developers](https://github.com/3DCP-TUe/SaladSlicer/graphs/contributors). 
 
 ## Credits
-Salad Slicer is an open source project that is developed and initiated by the [3D Concrete Printing Research Group at Eindhoven University of Technology](https://www.tue.nl/en/research/research-groups/structural-engineering-and-design/3d-concrete-printing/). The technical development is executed by the PhD and PDEng candidates who are listed [here](https://github.com/3DCP-TUe/SaladSlicer/graphs/contributors).
+Salad Slicer is an open-source project that is developed and initiated by the [3D Concrete Printing Research Group at Eindhoven University of Technology](https://www.tue.nl/en/research/research-groups/structural-engineering-and-design/3d-concrete-printing/). The technical development is executed by the PhD and PDEng candidates who are listed [here](https://github.com/3DCP-TUe/SaladSlicer/graphs/contributors).
 
-We would like to acknowledge the authors of [Robot Components](https://github.com/RobotComponents/RobotComponents) for making their Grasshopper plugin available and open source. The code structure of Salad Slicer is heavily influenced by [Robot Components](https://github.com/RobotComponents/RobotComponents). As an acknowledgement, we have provided [Example Files](https://github.com/3DCP-TUe/SaladSlicer/tree/master/ExampleFiles) wherein we demonstrate how to use Salad Slicer in combination with [Robot Components](https://github.com/RobotComponents/RobotComponents). 
+We would like to acknowledge the authors of [Robot Components](https://github.com/RobotComponents/RobotComponents) for making their Grasshopper plugin available and open source. The code structure of Salad Slicer is heavily influenced by [Robot Components](https://github.com/RobotComponents/RobotComponents). As an acknowledgment, we have provided [Example Files](https://github.com/3DCP-TUe/SaladSlicer/tree/master/ExampleFiles) wherein we demonstrate how to use Salad Slicer in combination with [Robot Components](https://github.com/RobotComponents/RobotComponents). 
 
 ## Cite Salad Slicer
-Salad Slicer is a free to use Grasshopper plugin and does not legally bind you to cite it. However, we have invested time and effort in creating Salad Slicer and would appreciate a citation if used. To cite Salad Slicer in publications use:
+Salad Slicer is a free-to-use Grasshopper plugin and does not legally bind you to cite it. However, we have invested time and effort in creating Salad Slicer and would appreciate a citation if used. To cite Salad Slicer in publications use:
 
 ```
 3D Concrete Printing Research Group at Eindhoven University of Technology (2021). 
-Salad Slicer v0.1.0: A slicer for 3D concrete printing. 
+Salad Slicer v0.2.0: A slicer for 3D concrete printing. 
 URL https://github.com/3DCP-TUe/SaladSlicer
 ```
 
@@ -73,3 +73,5 @@ Salad Slicer is distributed in the hope that it will be useful, but WITHOUT ANY 
 You should have received a copy of the GNU General Public License along with Salad Slicer; If not, see <http://www.gnu.org/licenses/>.
 
 @license GPL-3.0 <https://www.gnu.org/licenses/gpl.html>
+
+Contact us if you want to obtain a copy of the source code with a different license. 
