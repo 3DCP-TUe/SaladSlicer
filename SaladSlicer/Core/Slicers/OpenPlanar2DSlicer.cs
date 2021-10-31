@@ -230,6 +230,7 @@ namespace SaladSlicer.Core.Slicers
                         programGenerator.Program.Add("TANGOF(C)");
                     }
 
+
                     for (int j = 0; j < _framesByLayer[i].Count; j++)
                     {
                         if (j == 0)
@@ -246,7 +247,7 @@ namespace SaladSlicer.Core.Slicers
                                     {
                                         variablesString += $" {_prefix[k]}{_addedVariable[k][i][j]:0.###}";
                                     }
-                                    programGenerator.Program.Add($"G1 X{point.X:0.###} Y{point.Y:0.###} Z={point.Z:0.###}" + variablesString);
+                                    programGenerator.Program.Add($"G1 X{point.X:0.###} Y{point.Y:0.###} Z{point.Z:0.###}" + variablesString);
                             }
 
                             if (i % 2 == 0 & j == 0)

@@ -81,7 +81,7 @@
     <Compile Include="Core\Slicers\ClosedPlanar3DSlicer.cs" />
     <Compile Include="Core\Utils\HelperMethods.cs" />
     <Compile Include="Gh\Components\CodeGeneration\ProgramSettingsComponent.cs" />
-    <Compile Include="Gh\Components\Slicers\MergeProgramObjectsComponent.cs" />
+    <Compile Include="Gh\Components\CodeGeneration\MergeProgramObjectsComponent.cs" />
     <Compile Include="Gh\Components\Slicers\AddVariableComponent.cs" />
     <Compile Include="Gh\Components\CodeGeneration\SetTemperatureComponent.cs" />
     <Compile Include="Gh\Components\CodeGeneration\UnGroupProgramObjectsComponent.cs" />
@@ -164,6 +164,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\2.5D.png" />
+    <None Include="Resources\GetDistancesBetweenContours_Icon.png" />
+    <None Include="Resources\GetDistancesAlongContours_Icon.png" />
+    <None Include="Resources\AddVariable_Icon.png" />
+    <None Include="Resources\GetDistances_Icon.psd" />
+    <None Include="Resources\ProgramSettings_Icon.png" />
+    <None Include="Resources\MergeProgramObject_Icon.png" />
     <None Include="Resources\AlignSeamsCurve_Icon.png" />
     <None Include="Resources\Param_CodeLine_Icon.png" />
     <None Include="Resources\Param_SlicerObject_Icon.png" />

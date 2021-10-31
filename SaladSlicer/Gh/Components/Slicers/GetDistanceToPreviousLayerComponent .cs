@@ -41,7 +41,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddParameter(new Param_SlicerObject(), "Program Object", "PO", "Slicer object.", GH_ParamAccess.item);
+            pManager.AddParameter(new Param_SlicerObject(), "Slicer Object", "SO", "Slicer object.", GH_ParamAccess.item);
             pManager.AddPlaneParameter("Plane", "P", "Plane (printbed) to calculate distance to for frames in the first layer.", GH_ParamAccess.item);
         }
 
@@ -93,7 +93,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.GetContours_Icon; }
+            get { return Properties.Resources.GetDistancesBetweenContours_Icon; }
         }
 
         /// <summary>
