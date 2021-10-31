@@ -217,14 +217,6 @@ namespace SaladSlicer.Core.Slicers
             // Header
             programGenerator.AddSlicerHeader("2.5D OPEN PLANAR OBJECT", _contours.Count, this.GetLength());
 
-            // Settings
-            if (programType == 0)
-            {
-                programGenerator.Program.Add("TANG(C, X, Y, 1)");
-                programGenerator.Program.Add("TANGON(C, 0)");
-                programGenerator.Program.Add(" ");
-            }
-
             // Coords
             if (programType == 0)
             {
@@ -243,7 +235,19 @@ namespace SaladSlicer.Core.Slicers
                         if (j == 0)
                         {
                             Point3d point = _framesByLayer[i][j].Origin;
-                            programGenerator.Program.Add($"G1 X{point.X:0.###} Y{point.Y:0.###} Z{point.Z:0.###}");
+                            if (_prefix.Count == 0)
+                            {
+                                programGenerator.Program.Add($"G1 X{point.X:0.###} Y{point.Y:0.###} Z{point.Z:0.###}");
+                            }
+                            else
+                            {
+                                string variablesString = "";
+                                for (int k = 0; k < _prefix.Count; k++)
+                                    {
+                                        variablesString += $" {_prefix[k]}{_addedVariable[k][i][j]:0.###}";
+                                    }
+                                    programGenerator.Program.Add($"G1 X{point.X:0.###} Y{point.Y:0.###} Z={point.Z:0.###}" + variablesString);
+                            }
 
                             if (i % 2 == 0 & j == 0)
                             {
@@ -260,7 +264,12 @@ namespace SaladSlicer.Core.Slicers
                         else
                         {
                             Point3d point = _framesByLayer[i][j].Origin;
-                            programGenerator.Program.Add($"X{point.X:0.###} Y{point.Y:0.###} Z{point.Z:0.###}");
+                            List<List<double>> addedVariable2 = new List<List<double>>();
+                            for (int k = 0; k < _addedVariable.Count; k++)
+                            {
+                                addedVariable2.Add(_addedVariable[k][i]);
+                            }
+                            programGenerator.AddCoordinates(_framesByLayer[i], _prefix, addedVariable2);
                         }
                     }
                 }
@@ -276,7 +285,7 @@ namespace SaladSlicer.Core.Slicers
                     {
                         addedVariable2.Add(_addedVariable[k][i]);
                     }
-                    programGenerator.AddCoordinates(_framesByLayer[i], _prefix, addedVariable2);;
+                    programGenerator.AddCoordinates(_framesByLayer[i], _prefix, addedVariable2);
                 }
             }
 
