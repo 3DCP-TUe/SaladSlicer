@@ -222,18 +222,8 @@ namespace SaladSlicer.Core.Slicers
             {
                 programGenerator.Program.Add("TANG(C, X, Y, 1)");
                 programGenerator.Program.Add("TANGON(C, 0)");
-                programGenerator.Program.Add("BSPLINE");
-                programGenerator.Program.Add("G642");
-                programGenerator.Program.Add("G90");
                 programGenerator.Program.Add(" ");
             }
-            else
-            {
-                programGenerator.Program.Add("; No settings defined for this type of program");
-            }
-            // TODO
-            // FEEDRATE?
-            // WORK OFFSET?
 
             // Coords
             if (programType == 0)

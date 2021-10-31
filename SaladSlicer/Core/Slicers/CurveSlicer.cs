@@ -147,20 +147,6 @@ namespace SaladSlicer.Core.Slicers
             // Header
             programGenerator.AddSlicerHeader("CURVE SLICER OBJECT", this.GetLength());
 
-            // Settings
-            if (programType == 0)
-            {
-                programGenerator.Program.Add("BSPLINE");
-                programGenerator.Program.Add("G642");
-                programGenerator.Program.Add("G90");
-                programGenerator.Program.Add(" ");
-            }
-            else
-            {
-                programGenerator.Program.Add("G90");
-                programGenerator.Program.Add(" ");
-            }
-
             // Coords
             programGenerator.AddCoordinates(_frames, _prefix, _addedVariable);
                

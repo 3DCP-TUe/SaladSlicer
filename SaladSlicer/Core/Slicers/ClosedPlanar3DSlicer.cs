@@ -353,20 +353,6 @@ namespace SaladSlicer.Core.Slicers
             // Header
             programGenerator.AddSlicerHeader("3D CLOSED PLANAR OBJECT", _contours.Count, this.GetLength());
 
-            // Settings
-            if (programType == 0)
-            {
-                programGenerator.Program.Add("; Settings");
-                programGenerator.Program.Add("BSPLINE");
-                programGenerator.Program.Add("G642                ; Continuous-path mode with smoothing within the defined tolerances");
-                programGenerator.Program.Add("G90                 ; Set to absolute programming");
-                programGenerator.Program.Add(" ");
-            }
-            else
-            {
-                programGenerator.Program.Add("; No settings defined for this type of program");
-            }
-
             // Coords
             for (int i = 0; i < _framesByLayer.Count; i++)
             {

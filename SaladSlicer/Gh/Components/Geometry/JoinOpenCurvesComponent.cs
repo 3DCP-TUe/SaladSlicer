@@ -5,6 +5,7 @@
 
 // System Libs
 using System;
+using System.Drawing;
 using System.Collections.Generic;
 // Grasshopper Libs
 using Grasshopper.Kernel;
@@ -23,6 +24,7 @@ namespace SaladSlicer.Gh.Components.Geometry
     {
         #region fields
         private bool _expire = false;
+        private bool _valueListAdded = false; 
         #endregion
 
         /// <summary>
@@ -62,11 +64,17 @@ namespace SaladSlicer.Gh.Components.Geometry
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             //Create a value list
-            _expire = HelperMethods.CreateValueList(this, 1, typeof(OpenTransition));
+            if (_valueListAdded == false)
+            {
+                PointF location = new PointF(this.Params.Input[0].Attributes.InputGrip.X - 120, this.Params.Input[0].Attributes.InputGrip.Y - 11);
+                _expire = HelperMethods.CreateValueList(this, 1, typeof(OpenTransition));
+                _valueListAdded = true;
+            }
 
             // Expire solution of this component
             if (_expire == true)
             {
+                _valueListAdded = true;
                 _expire = false;
                 this.ExpireSolution(true);
             }

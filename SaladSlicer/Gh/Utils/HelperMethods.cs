@@ -34,7 +34,7 @@ namespace SaladSlicer.Gh.Utils
             if (component.Params.Input[inputIndex].SourceCount == 0)
             {
                 var parameter = component.Params.Input[inputIndex];
-
+                
                 // Creates the empty value list
                 GH_ValueList obj = new GH_ValueList();
                 obj.CreateAttributes();
@@ -51,7 +51,14 @@ namespace SaladSlicer.Gh.Utils
                 }
 
                 // Make point where the valuelist should be created on the canvas
-                obj.Attributes.Pivot = new PointF(parameter.Attributes.InputGrip.X - 120, parameter.Attributes.InputGrip.Y - 11);
+                if (parameter.Attributes.Pivot.X<1 && parameter.Attributes.Pivot.Y < 1)
+                {
+                    obj.Attributes.Pivot = new PointF(component.Attributes.Pivot.X + parameter.Attributes.InputGrip.X - 120, component.Attributes.Pivot.Y + parameter.Attributes.InputGrip.Y - 11);
+                }
+                else
+                {
+                    obj.Attributes.Pivot = new PointF(parameter.Attributes.InputGrip.X - 120, parameter.Attributes.InputGrip.Y - 11);
+                }
 
                 // Add the value list to the active canvas
                 Instances.ActiveCanvas.Document.AddObject(obj, false);

@@ -4,6 +4,8 @@
 // see <https://github.com/3DCP-TUe/SaladSlicer>.
 
 // System Libs
+using System;
+using System.ComponentModel;
 using System.Collections.Generic;
 //Rhino Libs
 using Rhino.Geometry;
@@ -21,6 +23,9 @@ namespace SaladSlicer.Core.CodeGeneration
     {
         #region fields
         private readonly List<string> _program = new List<string>();
+        private int _programType = new int();
+        private double _hotEndTemperature = new double();
+        private double _bedTemperature = new double();
         #endregion
 
         #region constructors
@@ -47,9 +52,11 @@ namespace SaladSlicer.Core.CodeGeneration
         /// </summary>
         /// <param name="_objects"> The objects to gerenator the program for. </param>
         /// <returns> The program as a list with code lines. </returns>
-        public List<string> CreateProgram(List<IProgram> _objects, int programType)
+        public List<string> CreateProgram(List<IProgram> _objects)
         {
             _program.Clear();
+            // Check if the first object has a program type
+            
 
             // Header
             _program.Add("; ----------------------------------------------------------------------");
@@ -59,60 +66,83 @@ namespace SaladSlicer.Core.CodeGeneration
             _program.Add(" ");
 
             // Program start settings
-            if (programType == 0)
-            {
-                _program.Add("; ----------------------------------------------------------------------");
-                _program.Add("; START SETTINGS");
-                _program.Add("; ----------------------------------------------------------------------");
-                _program.Add("G90; Absolute coordinates ");
-                _program.Add("BSPLINE; Bspline interpolation") ;
-                _program.Add("G642; Continuous-path mode with smoothing within the defined tolerances");
-            }
-            else if(programType == 1){
-                _program.Add("; ----------------------------------------------------------------------");
-                _program.Add("; START SETTINGS");
-                _program.Add("; ----------------------------------------------------------------------");
-                _program.Add("M106; Turn on fans");
-                _program.Add("M201 X500.00 Y500.00 Z100.00 E5000.00; Setup machine max acceleration");
-                _program.Add("M203 X500.00 Y500.00 Z10.00 E50.00; Setup machine max feedrate");
-                _program.Add("M204 P500.00 R1000.00 T500.00; Setup Print/ Retract / Travel acceleration");
-                _program.Add("M205 X8.00 Y8.00 Z0.40 E5.00; Setup Jerk");
-                _program.Add("M82 ; absolute extrusion mode");
-                _program.Add("G90; Absolute coordinates ");
-                _program.Add("G1; Linear movements ");
-                _program.Add("G28; Move home");
-            }
+            //if (programType == 0)
+            //{
+            //    _program.Add("; ----------------------------------------------------------------------");
+            ///    _program.Add("; START SETTINGS");
+            //    _program.Add("; ----------------------------------------------------------------------");
+            //    _program.Add("G90; Absolute coordinates ");
+            //    _program.Add("BSPLINE; Bspline interpolation") ;
+            //    _program.Add("G642; Continuous-path mode with smoothing within the defined tolerances");
+            //}
+            //else if(programType == 1){
+            //    _program.Add("; ----------------------------------------------------------------------");
+            //    _program.Add("; START SETTINGS");
+            //    _program.Add("; ----------------------------------------------------------------------");
+            //    _program.Add("M106; Turn on fans");
+            //    _program.Add("M201 X500.00 Y500.00 Z100.00 E5000.00; Setup machine max acceleration");
+            //    _program.Add("M203 X500.00 Y500.00 Z10.00 E50.00; Setup machine max feedrate");
+            //    _program.Add("M204 P500.00 R1000.00 T500.00; Setup Print/ Retract / Travel acceleration");
+           //     _program.Add("M205 X8.00 Y8.00 Z0.40 E5.00; Setup Jerk");
+           //     _program.Add("M82 ; absolute extrusion mode");
+           //     _program.Add("G90; Absolute coordinates ");
+           //     _program.Add("G1; Linear movements ");
+          // //     _program.Add("G28; Move home");
+         //   }
 
             // G-code of different objects
             for (int i = 0; i < _objects.Count; i++)
             {
-                _objects[i].ToProgram(this, programType);
+                if (i==0 && _objects[0].GetType() != typeof(ProgramSettings))
+                {
+                    _program.Add("; ----------------------------------------------------------------------");
+                    _program.Add("; SETTINGS");
+                    _program.Add("; ----------------------------------------------------------------------");
+                    _program.Add("; NO PROGRAM SETTINGS DEFINED");
+                    _program.Add("; Defaults settings are used");
+                    ProgramSettings programSettings = new ProgramSettings();
+                    programSettings.ToProgram(this, 0);
+                }
+                _objects[i].ToProgram(this, _programType);
             }
 
             // Program end settings
             _program.Add("; ----------------------------------------------------------------------");
             _program.Add("; END SETTINGS");
             _program.Add("; ----------------------------------------------------------------------");
-            if (programType == 0){
+            
+            if (_programType == 0){
                 _program.Add(" ");
                 _program.Add("M30");
                 _program.Add(" ");
                 _program.Add(" ");
                 _program.Add(" ");
             }
-            else if (programType == 1)
+            else if (_programType == 1)
             {
                 _program.Add(" ");
                 _program.Add("G91; Relative coordinates ");
                 _program.Add("Z10 E-2; Move off object and retract extrusion material ");
                 _program.Add("G90; Absolute coordinates ");
                 _program.Add("G28; Move home ");
+                if (this.HotEndTemperature != 0 || this.BedTemperature != 0)
+                {
+                    if (_hotEndTemperature >= 0)
+                    {
+                        this.HotEndTemperature = 0;
+                        _program.Add($"M109 R{_hotEndTemperature:0.#}; Set and wait for hotend temperature to 0");
+                        _program.Add("M105; Report temperature");
+                    }
+                    if (_bedTemperature >= 0)
+                    {
+                        this.BedTemperature = 0;
+                        _program.Add($"M190 R{_bedTemperature:0.#}; Set and wait for bed temperature to 0");
+                        _program.Add("M105; Report temperature");
+                    }
+                }
                 _program.Add("M106 S0; Turn off fan");
-                _program.Add("M104 S0; Turn off hotend temperature");
-                _program.Add("M140 S0; Turn off bed temperature");
                 _program.Add(" ");
             }
-
             return _program;
         }
 
@@ -211,6 +241,23 @@ namespace SaladSlicer.Core.CodeGeneration
         public List<string> Program
         {
             get { return _program; }
+        }
+
+        public double HotEndTemperature
+        {
+            get { return _hotEndTemperature; }
+            set { _hotEndTemperature = value; }
+        }
+        public double BedTemperature
+        {
+            get { return _bedTemperature; }
+            set { _bedTemperature = value; }
+        }
+
+        public int ProgramType
+        {
+            get { return _programType; }
+            set { _programType = value; }
         }
         #endregion 
     }

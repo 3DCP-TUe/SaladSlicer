@@ -259,19 +259,6 @@ namespace SaladSlicer.Core.Slicers
             // Header
             programGenerator.AddSlicerHeader("2.5D CLOSED PLANAR OBJECT", _contours.Count, this.GetLength());
 
-            if (programType == 0)
-            {
-                // Settings
-                programGenerator.Program.Add("; Settings");
-                programGenerator.Program.Add("BSPLINE");
-                programGenerator.Program.Add("G642                ; Continuous-path mode with smoothing within the defined tolerances");
-                programGenerator.Program.Add("G90                 ; Set to absolute programming");
-                programGenerator.Program.Add(" ");
-            }
-            else
-            {
-                programGenerator.Program.Add("; No settings defined for this type of program");
-            }
 
             // Create a loop for objects with an constant height increase per layer
             
@@ -288,12 +275,27 @@ namespace SaladSlicer.Core.Slicers
                 programGenerator.Program.Add("; Start loop");
                 programGenerator.Program.Add("LINE1:");
                 
-                for (int i = 0; i < _framesByLayer[0].Count; i++)
+                if (_prefix.Count == 0)
                 {
-                    Point3d point = _framesByLayer[0][i].Origin;
-                    programGenerator.Program.Add($"X{point.X:0.###} Y{point.Y:0.###} Z={point.Z:0.###}+R10*R20");
+                    for (int i = 0; i < _framesByLayer[0].Count; i++)
+                    {
+                        Point3d point = _framesByLayer[0][i].Origin;
+                        programGenerator.Program.Add($"X{point.X:0.###} Y{point.Y:0.###} Z={point.Z:0.###}+R10*R20");
+                    }
                 }
-            
+                else
+                {
+                    for (int i = 0; i < _framesByLayer[0].Count; i++)
+                    {
+                        string variablesString = "";
+                        for (int j = 0; j < _prefix.Count; j++)
+                        {
+                            variablesString += $" {_prefix[j]}{_addedVariable[j][0][i]:0.###}";
+                        }
+                        Point3d point = _framesByLayer[0][i].Origin;
+                        programGenerator.Program.Add($"X{point.X:0.###} Y{point.Y:0.###} Z={point.Z:0.###}+R10*R20"+ variablesString);
+                    }
+                }
                 programGenerator.Program.Add(" ");
                 programGenerator.Program.Add("R20 = R20 + 1            ; Increase layer number");
                 programGenerator.Program.Add("IF R20 < R21 GOTOB LINE1");

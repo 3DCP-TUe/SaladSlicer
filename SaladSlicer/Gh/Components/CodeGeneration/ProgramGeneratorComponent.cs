@@ -5,6 +5,7 @@
 
 // System Libs
 using System;
+using System.ComponentModel;
 using System.IO;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -25,7 +26,6 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
     {
         #region fields
         private List<string> _program = new List<string>();
-        private bool _expire = false;
         #endregion
 
         /// <summary>
@@ -46,7 +46,6 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddGenericParameter("Program/Slicer Objects", "O", "All Slicer Objects and Program Objects that can generate a NC program", GH_ParamAccess.list);
-            pManager.AddIntegerParameter("Flavor", "F", "Sets the flavor of G-Code to be generated",GH_ParamAccess.item,0);
         }
 
         /// <summary>
@@ -63,27 +62,27 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// <param name="DA">The DA object can be used to retrieve data from input parameters and to store data in output parameters.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
-            //Create a value list
-            _expire = HelperMethods.CreateValueList(this, 1, typeof(ProgramTypes));
-
-            // Expire solution of this component
-            if (_expire == true)
-            {
-                _expire = false;
-                this.ExpireSolution(true);
-            }
             // Declare variable of input parameters
             List<IProgram> objects = new List<IProgram>();
-            int programType = new int();
 
             // Access the input parameters individually. 
             if (!DA.GetDataList(0, objects)) return;
-            if (!DA.GetData(1, ref programType)) return;
 
             // Create the program
             _program.Clear();
             ProgramGenerator programGenerator = new ProgramGenerator();
-            _program = programGenerator.CreateProgram(objects,programType);
+            try 
+            {
+                _program = programGenerator.CreateProgram(objects); 
+            }
+            catch (WarningException warning)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, warning.Message);
+            }
+            catch (Exception error)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Error, error.Message);
+            }
 
             // Assign the output parameters
             DA.SetDataList(0, _program);

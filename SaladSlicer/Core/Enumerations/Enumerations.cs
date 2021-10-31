@@ -49,6 +49,20 @@ namespace SaladSlicer.Core.Enumerations
         /// </summary>
         Marlin = 1,
     }
+
+    public enum InterpolationTypes : int
+    {
+        /// <summary>
+        /// BSPLINE interpolation (G-Code)
+        /// </summary>
+        G642 = 0,
+
+        /// <summary>
+        /// Linear interpolation
+        /// </summary>
+        G1 = 1,
+    }
+
     public enum AddVariableMethod : int
     {
         /// <summary>
