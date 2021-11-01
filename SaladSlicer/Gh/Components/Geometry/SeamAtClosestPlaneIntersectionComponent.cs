@@ -15,9 +15,9 @@ using SaladSlicer.Core.Geometry.Seams;
 namespace SaladSlicer.Gh.Components.Geometry
 {
     /// <summary>
-    /// Represents the component that set a seam based on the parameter.
+    /// Represents the component that set a seam at the closest plane intersection.
     /// </summary>
-    public class SeamAtParamComponent : GH_Component
+    public class SeamAtClosestPlaneIntersection : GH_Component
     {
         #region fields
         #endregion
@@ -25,10 +25,10 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public SeamAtParamComponent()
-          : base("Seam at Parameter", // Component name
-              "SP", // Component nickname
-              "Redefines the startpoint of a closed curve based on a parameter between 0 and 1.", // Description
+        public SeamAtClosestPlaneIntersection()
+          : base("Seam at Closest Plane Intersection", // Component name
+              "SCPI", // Component nickname
+              "Redefines the startpoint of a closed curve based on the plane intersection closest to the plane origin.", // Description
               "Salad Slicer", // Category
               "Geometry") // Subcategory
         {
@@ -39,8 +39,8 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddCurveParameter("Curve", "C", "Curve", GH_ParamAccess.item);
-            pManager.AddNumberParameter("Parameter", "t", "A parameter that redefines the startpoint of the curve.",  GH_ParamAccess.item, 0.0);
+            pManager.AddCurveParameter("Curve", "C", "Curve.", GH_ParamAccess.item);
+            pManager.AddPlaneParameter("Plane", "P", "Plane.",  GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -59,11 +59,11 @@ namespace SaladSlicer.Gh.Components.Geometry
         {
             // Declare variable of input parameters
             Curve curve = null;
-            double param = 0.0;
+            Plane plane = Plane.WorldXY;
 
             // Access the input parameters individually. 
             if (!DA.GetData(0, ref curve)) return;
-            if (!DA.GetData(1, ref param)) return;
+            if (!DA.GetData(1, ref plane)) return;
 
             // Declare the output variable
             Curve result = curve;
@@ -71,7 +71,7 @@ namespace SaladSlicer.Gh.Components.Geometry
             // Create the new curve
             try
             {
-                result = Locations.SeamAtParam(curve, param);
+                result = Locations.SeamAtClosestPlaneIntersection(curve, plane);
             }
             catch (Exception e)
             {
@@ -103,7 +103,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.SeamAtParameter_Icon; }
+            get { return null; }
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("F791CB38-CA24-4C92-9343-648CF6AE1203"); }
+            get { return new Guid("0A6F67B0-0BEB-49B8-BCDD-027C667CC4C1"); }
         }
 
     }

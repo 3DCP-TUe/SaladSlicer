@@ -14,7 +14,7 @@ using Rhino.Geometry.Collections;
 namespace SaladSlicer.Core.Geometry
 {
     /// <summary>
-    /// A static class that contains a number of methods to manipulate and create frames.
+    /// Represents a static class that contains a number of methods to manipulate and create frames.
     /// </summary>
     public static class Frames
     {

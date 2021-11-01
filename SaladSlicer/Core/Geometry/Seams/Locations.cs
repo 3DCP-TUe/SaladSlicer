@@ -8,11 +8,12 @@ using System;
 using System.Collections.Generic;
 // Rhino Libs
 using Rhino.Geometry;
+using Rhino.Geometry.Intersect;
 
 namespace SaladSlicer.Core.Geometry.Seams
 {
     /// <summary>
-    /// A static class that contains a number of methods to manipulate the start point of closed curves.
+    /// Represents a static class that contains a number of methods to manipulate the start point of closed curves.
     /// </summary>
     public static class Locations
     {
@@ -23,7 +24,7 @@ namespace SaladSlicer.Core.Geometry.Seams
         /// <param name="curve">The closed curve to change the point at start from.</param>
         /// <param name="param">The parameter of the new point at start.</param>
         /// <param name="reparametrized"> Indicates if the curve domain is normalized [0 - 1]. </param>
-        /// <returns> The closed curve with a new point at start. </returns>
+        /// <returns> The closed curve with a new point at start location. </returns>
         public static Curve SeamAtParam(Curve curve, double param, bool reparametrized = false)
         {
             if (curve.IsClosed == false)
@@ -57,7 +58,7 @@ namespace SaladSlicer.Core.Geometry.Seams
         /// <param name="curve"> The closed curve to change the point at start from. </param>
         /// <param name="length"> The position of the new start point defined by the length. </param>
         /// <param name="normalized"> Indicates if the length factor is normalized [0 - 1] </param>
-        /// <returns> The closed curve with a new point at start. </returns>
+        /// <returns> The closed curve with a new point at start location. </returns>
         public static Curve SeamAtLength(Curve curve, double length, bool normalized = false)
         {
             if (curve.IsClosed == false)
@@ -104,7 +105,7 @@ namespace SaladSlicer.Core.Geometry.Seams
         /// </summary>
         /// <param name="curve"> The closed curve to change the point at start from. </param>
         /// <param name="point"> The test point. </param>
-        /// <returns> The closed curve with a new point at start. </returns>
+        /// <returns> The closed curve with a new point at start location. </returns>
         public static Curve SeamAtClosestPoint(Curve curve, Point3d point)
         {
             if (curve.IsClosed == false)
@@ -122,11 +123,11 @@ namespace SaladSlicer.Core.Geometry.Seams
         }
 
         /// <summary>
-        /// Returns a curve with as starting point the closest point on the curve to the given guiding curve. 
+        /// Returns a curve with as starting point the closest point on the curve to the given guiding curve. Requires a closed curve. 
         /// </summary>
-        /// <param name="curve"> Curve. </param>
+        /// <param name="curve"> The closed curve to change the point at start from. </param>
         /// <param name="guide"> Guiding curve. </param>
-        /// <returns> The closed curve with a new point at start. </returns>
+        /// <returns> The closed curve with a new point at start location. </returns>
         public static Curve SeamClosestToCurve(Curve curve, Curve guide)
         {
             if (curve.IsClosed == false)
@@ -139,13 +140,57 @@ namespace SaladSlicer.Core.Geometry.Seams
 
             return result;
         }
+
+        /// <summary>
+        /// Returns a curve with as starting point the plane intersection point that is the closest to the plane origin. 
+        /// Requires a closed curve. 
+        /// </summary>
+        /// <param name="curve"> The closed curve to change the point at start from. </param>
+        /// <param name="plane"> The intersection plane. </param>
+        /// <returns> The closed curve with a new point at start location. </returns>
+        public static Curve SeamAtClosestPlaneIntersection(Curve curve, Plane plane)
+        {
+            CurveIntersections intersections = Intersection.CurvePlane(curve, plane, 0.0);
+            
+            // No intersections
+            if (intersections == null)
+            {
+                throw new Exception("No intersections found between the curve and the plane.");
+            }
+
+            else if (intersections.Count == 0)
+            {
+                throw new Exception("No intersections found between the curve and the plane.");
+            }
+
+            // Intersection closest to origin
+            else
+            {
+                double shortestDistance = double.MaxValue;
+                Point3d closestPoint = plane.Origin;
+
+                for (int i = 0; i < intersections.Count; i++)
+                {
+                    double dist = intersections[i].PointA.DistanceTo(plane.Origin);
+
+                    if (dist < shortestDistance)
+                    {
+                        shortestDistance = dist;
+                        closestPoint = intersections[i].PointA;
+                    }
+                }
+
+                return SeamAtClosestPoint(curve, closestPoint);
+            }
+        }
         #endregion
 
         #region methods for lists with curves
         /// <summary>
-        /// Returns a list with curves with as starting point the closest point to the starting point of the curve before. 
+        /// Returns a list with curves with as starting point the closest point to the starting 
+        /// point of the curve before. Requires closed curves.
         /// </summary>
-        /// <param name="curves"> The contours as a list with curves. </param>
+        /// <param name="curves"> The closed curves to change the point at start from. </param>
         /// <returns> List with closed curves with a new point at start. </returns>
         public static List<Curve> AlignSeamsByClosestPoint(List<Curve> curves)
         {
@@ -166,10 +211,11 @@ namespace SaladSlicer.Core.Geometry.Seams
         }
 
         /// <summary>
-        /// Returns a list with curves with as starting point the closest point on the curve to the given guiding curve. 
+        /// Returns a list with curves with as starting point the closest point on the curve 
+        /// to the given guiding curve. Requires closed curves.
         /// </summary>
-        /// <param name="curves"> List with curves. </param>
-        /// <param name="guide"> Guiding curve. </param>
+        /// <param name="curves"> The closed curves to change the point at start from. </param>
+        /// <param name="guide"> The guiding curve. </param>
         /// <returns> List with closed curves with a new point at start. </returns>
         public static List<Curve> AlignSeamsAlongCurve(List<Curve> curves, Curve guide)
         {
@@ -182,6 +228,27 @@ namespace SaladSlicer.Core.Geometry.Seams
 
             return result;
         }
+
+        /// <summary>
+        /// Returns a list with curves with as curve starting point the plane intersection point 
+        /// that is the closest to the plane origin. Requires closed curves.
+        /// </summary>
+        /// <param name="curves"> The closed curves to change the point at start from. </param>
+        /// <param name="plane"> The intersection plane. </param>
+        /// <returns> List with closed curves with a new point at start.</returns>
+
+        public static List<Curve> AlignSeamsAlongClosestPlaneIntersection(List<Curve> curves, Plane plane)
+        {
+            List<Curve> result = new List<Curve>() { };
+
+            for (int i = 0; i < curves.Count; i++)
+            {
+                result.Add(SeamAtClosestPlaneIntersection(curves[i], plane));
+            }
+
+            return result;
+        }
+
         #endregion
     }
 }
