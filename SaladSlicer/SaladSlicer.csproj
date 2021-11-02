@@ -75,6 +75,7 @@
     <Compile Include="Core\Enumerations\Enumerations.cs" />
     <Compile Include="Core\Geometry\Seams\Transitions.cs" />
     <Compile Include="Core\Geometry\Seams\Locations.cs" />
+    <Compile Include="Core\Slicers\CurvesTransitionsSlicer.cs" />
     <Compile Include="Core\Slicers\OpenPlanar2DSlicer.cs" />
     <Compile Include="Core\Slicers\CurveSlicer.cs" />
     <Compile Include="Core\Slicers\ClosedPlanar2DSlicer.cs" />
@@ -104,6 +105,7 @@
     <Compile Include="Gh\Components\Geometry\AlignCurvesComponent.cs" />
     <Compile Include="Gh\Components\Geometry\AlignSeamsByClosestPointComponent.cs" />
     <Compile Include="Gh\Components\Slicers\ClosedPlanar3DSlicerComponent.cs" />
+    <Compile Include="Gh\Components\Slicers\CurvesTransitionsSlicerComponent.cs" />
     <Compile Include="Gh\Components\Slicers\GetDistanceToPreviousLayerComponent .cs" />
     <Compile Include="Gh\Components\Slicers\GetDistancesAlongContoursComponent.cs" />
     <Compile Include="Gh\Components\Slicers\GetFramesComponent.cs" />

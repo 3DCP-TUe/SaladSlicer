@@ -46,7 +46,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddCurveParameter("Curves", "C", "List of curves", GH_ParamAccess.list);
-            pManager.AddIntegerParameter("Connection type", "T", "Sets the type of connection [0 = Linear,1 = Bezier]", GH_ParamAccess.item, 0);
+            pManager.AddIntegerParameter("Connection type", "T", "Sets the type of connection [0 = Linear,1 = Bezier]", GH_ParamAccess.item);
             pManager.AddNumberParameter("Changelength", "L", "Sets the length over which to connect to the next layer", GH_ParamAccess.item, 100);
         }
 
@@ -55,8 +55,9 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddCurveParameter("Curve", "C", "Joined curve.", GH_ParamAccess.item);
-            pManager.AddCurveParameter("Connections", "C", "List of connections between input curves.", GH_ParamAccess.list);
+            pManager.AddCurveParameter("Joined Curve", "JC", "Joined curve.", GH_ParamAccess.item);
+            pManager.AddCurveParameter("Trimmed Curves", "TC", "List of curves between connections.", GH_ParamAccess.list);
+            pManager.AddCurveParameter("Connections", "Co", "List of connections between input curves.", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -68,7 +69,6 @@ namespace SaladSlicer.Gh.Components.Geometry
             //Create a value list
             if (_valueListAdded == false)
             {
-                PointF location = new PointF(this.Params.Input[1].Attributes.InputGrip.X - 120, this.Params.Input[0].Attributes.InputGrip.Y - 11);
                 _expire = HelperMethods.CreateValueList(this, 1, typeof(ClosedTransition));
                 _valueListAdded = true;
             }
@@ -101,7 +101,7 @@ namespace SaladSlicer.Gh.Components.Geometry
 
             // Delcare variables
             List<Curve> transitions = new List<Curve>();
-            List<Curve> curvesCopy;
+            List<Curve> curvesCopy = new List<Curve>();
             Curve joinedCurve;
 
             if (type == 0)
@@ -116,6 +116,7 @@ namespace SaladSlicer.Gh.Components.Geometry
             }
             else if (type == 2)
             {
+                curvesCopy = Transitions.TrimCurveFromEnds(curves, changeLength);
                 (joinedCurve, transitions) = Transitions.JoinInterpolated(curves, changeLength);
             }
             else
@@ -125,7 +126,8 @@ namespace SaladSlicer.Gh.Components.Geometry
 
             // Assign the output parameters
             DA.SetData(0, joinedCurve);
-            DA.SetDataList(1, transitions);
+            DA.SetDataList(1, curvesCopy);
+            DA.SetDataList(2, transitions);
         }
 
         /// <summary>
