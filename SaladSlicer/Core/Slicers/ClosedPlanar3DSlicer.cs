@@ -395,6 +395,30 @@ namespace SaladSlicer.Core.Slicers
         }
 
         /// <summary>
+        /// Returns a list with curvatures of the path at the frame location.
+        /// </summary>
+        /// <returns> The list with curvatures. </returns>
+        public List<List<Vector3d>> GetCurvatures()
+        {
+            List<List<Vector3d>> result = new List<List<Vector3d>>();
+
+            Curve path = GetInterpolatedPath(); 
+
+            for (int i = 0; i < _framesByLayer.Count; i++)
+            {
+                result.Add(new List<Vector3d>() { });
+
+                for (int j = 0; j < _framesByLayer[i].Count; j++)
+                {
+                    path.ClosestPoint(_framesByLayer[i][j].Origin, out double t);
+                    result[i].Add(path.CurvatureAt(t));
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Returns the length of the path.
         /// </summary>
         /// <returns> The length of the path. </returns>

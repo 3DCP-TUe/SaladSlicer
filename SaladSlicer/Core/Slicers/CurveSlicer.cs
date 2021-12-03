@@ -4,6 +4,7 @@
 // see <https://github.com/3DCP-TUe/SaladSlicer>.
 
 // System Libs
+using System;
 using System.Collections.Generic;
 // Rhino Libs
 using Rhino.Geometry;
@@ -173,6 +174,27 @@ namespace SaladSlicer.Core.Slicers
         public Curve GetLinearizedPath()
         {
             return new PolylineCurve(this.GetPoints());
+        }
+
+        /// <summary>
+        /// Returns a list with curvatures of the path at the frame location.
+        /// </summary>
+        /// <returns> The list with curvatures. </returns>
+        public List<List<Vector3d>> GetCurvatures()
+        {
+            List<List<Vector3d>> result = new List<List<Vector3d>>();
+
+            Curve path = GetPath();
+
+            result.Add(new List<Vector3d>() { });
+
+            for (int i = 0; i < _frames.Count; i++)
+            {
+                path.ClosestPoint(_frames[i].Origin, out double t);
+                result[0].Add(path.CurvatureAt(t));
+            }
+
+            return result;
         }
 
         /// <summary>

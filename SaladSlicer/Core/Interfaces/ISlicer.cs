@@ -48,6 +48,12 @@ namespace SaladSlicer.Core.Interfaces
         /// </summary>
         /// <returns> The linearized path. </returns>
         Curve GetLinearizedPath();
+
+        /// <summary>
+        /// Returns a list with curvatures of the path at the frame location.
+        /// </summary>
+        /// <returns> The list with curvatures. </returns>
+        List<List<Vector3d>> GetCurvatures();
         #endregion
 
         #region properties
