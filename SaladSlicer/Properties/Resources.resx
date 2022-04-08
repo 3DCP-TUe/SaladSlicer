@@ -121,6 +121,9 @@
   <data name="AbsoluteCoordinate_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\AbsoluteCoordinate_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="AddVariable_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\AddVariable_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="AlignCurves_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\AlignCurves_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -187,6 +190,15 @@
   <data name="GetContours_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\GetContours_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="GetDistancesAlongContours_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\GetDistancesAlongContours_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GetDistancesBetweenContours_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\GetDistancesBetweenContours_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GetDistances_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\GetDistances_Icon.psd;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="GetInterpolatedPath_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\GetInterpolatedPath_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -207,6 +219,9 @@
   </data>
   <data name="JoinOpenCurves_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\JoinOpenCurves_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MergeProgramObject_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MergeProgramObject_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="OpenPlanar2DSlicer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\OpenPlanar2DSlicer_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -249,6 +264,9 @@
   </data>
   <data name="PlaneVisualizer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\PlaneVisualizer_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ProgramSettings_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ProgramSettings_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="SaladLogo_Icon2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SaladLogo_Icon2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

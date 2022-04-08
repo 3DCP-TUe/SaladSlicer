@@ -5,28 +5,31 @@
 
 // System Libs
 using System;
+using System.Collections.Generic;
 // Grasshopper Libs
 using Grasshopper.Kernel;
+using Grasshopper.Kernel.Types;
+using Grasshopper.Kernel.Data;
 // Salad Slicer Libs
 using SaladSlicer.Core.Slicers;
-using SaladSlicer.Core.Interfaces;
 using SaladSlicer.Gh.Parameters.Slicers;
-using SaladSlicer.Gh.Utils;
+using SaladSlicer.Gh.Utils ;
+using SaladSlicer.Core.Interfaces;
 
 namespace SaladSlicer.Gh.Components.Slicers
 {
     /// <summary>
-    /// Represent a component that gets the frames.
+    /// Represent a component that creates the contours.
     /// </summary>
-    public class GetFramesComponent : GH_Component
+    public class GetDistancesAlongContoursComponent : GH_Component
     {
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public GetFramesComponent()
-          : base("Get Frames", // Component name
-              "F", // Component nickname
-              "Defines the frames of a sliced object.", // Description
+        public GetDistancesAlongContoursComponent()
+          : base("Get Distances Along Contours", // Component name
+              "DBC", // Component nickname
+              "Gets the distance of every frame to the beginning of the contours", // Description
               "Salad Slicer", // Category
               "Slicers") // Subcategory
         {
@@ -37,7 +40,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddParameter(new Param_SlicerObject(), "Program Object", "PO", "Slicer object.", GH_ParamAccess.item);
+            pManager.AddParameter(new Param_SlicerObject(), "Slicer Object", "SO", "Slicer object.", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -45,7 +48,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddPlaneParameter("Frames", "F", "Frames as a datatree with Planes.", GH_ParamAccess.tree);
+            pManager.AddNumberParameter("Distances", "D", "List of distances", GH_ParamAccess.tree);
         }
 
         /// <summary>
@@ -61,8 +64,9 @@ namespace SaladSlicer.Gh.Components.Slicers
             if (!DA.GetData(0, ref slicer)) return;
 
             // Assign the output parameters
-            DA.SetDataTree(0, HelperMethods.ListInListToDataTree(slicer.FramesByLayer));
+            DA.SetDataTree(0, HelperMethods.ListInListToDataTree(slicer.GetDistancesAlongContours()));
         }
+
 
         /// <summary>
         /// Gets the exposure of this object in the Graphical User Interface.
@@ -85,7 +89,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.Frames_Icon; }
+            get { return Properties.Resources.GetDistancesAlongContours_Icon; }
         }
 
         /// <summary>
@@ -94,7 +98,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("5633DCEE-C741-4FFF-AB58-44C48384FC4E"); }
+            get { return new Guid("AEA874C9-4D80-4513-B3D9-91E6F1AD600E"); }
         }
     }
 }

@@ -5,30 +5,40 @@
 
 // System Libs
 using System;
+using System.ComponentModel;
+using System.Collections.Generic;
 // Grasshopper Libs
 using Grasshopper.Kernel;
+using Grasshopper.Kernel.Data;
+using Grasshopper.Kernel.Types;
 // Salad Slicer Libs
-using SaladSlicer.Core.Slicers;
+using SaladSlicer.Core.CodeGeneration;
 using SaladSlicer.Core.Interfaces;
-using SaladSlicer.Gh.Parameters.Slicers;
+using SaladSlicer.Core.Slicers;
 using SaladSlicer.Gh.Utils;
+using SaladSlicer.Core.Enumerations;
+using SaladSlicer.Gh.Parameters.Slicers;
+using SaladSlicer.Gh.Goos.CodeGeneration;
 
-namespace SaladSlicer.Gh.Components.Slicers
+namespace SaladSlicer.Gh.Components.CodeGeneration
 {
     /// <summary>
-    /// Represent a component that gets the frames.
+    /// Represent a component that generates a custom Code Line.
     /// </summary>
-    public class GetFramesComponent : GH_Component
+    public class MergeProgramObjectsComponent : GH_Component
     {
+        #region fields
+        #endregion
+
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public GetFramesComponent()
-          : base("Get Frames", // Component name
-              "F", // Component nickname
-              "Defines the frames of a sliced object.", // Description
+        public MergeProgramObjectsComponent()
+          : base("Merge Program Object", // Component name
+              "MPO", // Component nickname
+              "Merges Program Objects so that they appear on a single line the program.", // Description
               "Salad Slicer", // Category
-              "Slicers") // Subcategory
+              "Code Generation") // Subcategory
         {
         }
 
@@ -37,7 +47,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddParameter(new Param_SlicerObject(), "Program Object", "PO", "Slicer object.", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Program Objects", "POs", "List of program object that should be added together.", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -45,7 +55,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddPlaneParameter("Frames", "F", "Frames as a datatree with Planes.", GH_ParamAccess.tree);
+            pManager.AddGenericParameter("Program Object", "PO", "Merged Program Objects", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -55,13 +65,34 @@ namespace SaladSlicer.Gh.Components.Slicers
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             // Declare variable of input parameters
-            ISlicer slicer = new ClosedPlanar2DSlicer();
+            List<IProgram> list = new List<IProgram>();
 
             // Access the input parameters individually. 
-            if (!DA.GetData(0, ref slicer)) return;
+            if (!DA.GetDataList(0, list)) return;
+
+            // Create the code line
+            string newCodeLine = "";
+            for (int i = 0; i < list.Count; i++)
+            {
+                string string2 = "";
+                try 
+                {
+                    string2 = list[i].ToSingleString();
+                }
+                catch (WarningException warning)
+                {
+                    AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, warning.Message);
+                }
+                catch (Exception error)
+                {
+                    AddRuntimeMessage(GH_RuntimeMessageLevel.Error, error.Message);
+                }
+                newCodeLine = $"{newCodeLine} {string2}";
+            }
+            CodeLine result = new CodeLine(newCodeLine);
 
             // Assign the output parameters
-            DA.SetDataTree(0, HelperMethods.ListInListToDataTree(slicer.FramesByLayer));
+            DA.SetData(0, result);
         }
 
         /// <summary>
@@ -69,7 +100,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         public override GH_Exposure Exposure
         {
-            get { return GH_Exposure.tertiary; }
+            get { return GH_Exposure.secondary; }
         }
 
         /// <summary>
@@ -85,7 +116,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.Frames_Icon; }
+            get { return Properties.Resources.MergeProgramObject_Icon; }
         }
 
         /// <summary>
@@ -94,7 +125,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("5633DCEE-C741-4FFF-AB58-44C48384FC4E"); }
+            get { return new Guid("0D084C71-4A4C-4230-BC45-6412FFA8073B"); }
         }
     }
 }

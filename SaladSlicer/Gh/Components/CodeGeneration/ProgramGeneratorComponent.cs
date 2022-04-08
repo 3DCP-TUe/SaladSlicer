@@ -5,6 +5,7 @@
 
 // System Libs
 using System;
+using System.ComponentModel;
 using System.IO;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -13,6 +14,8 @@ using Grasshopper.Kernel;
 // Salad Slicer Libs
 using SaladSlicer.Core.CodeGeneration;
 using SaladSlicer.Core.Interfaces;
+using SaladSlicer.Core.Enumerations;
+using SaladSlicer.Gh.Utils;
 
 namespace SaladSlicer.Gh.Components.CodeGeneration
 {
@@ -68,7 +71,18 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
             // Create the program
             _program.Clear();
             ProgramGenerator programGenerator = new ProgramGenerator();
-            _program = programGenerator.CreateProgram(objects);
+            try 
+            {
+                _program = programGenerator.CreateProgram(objects); 
+            }
+            catch (WarningException warning)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, warning.Message);
+            }
+            catch (Exception error)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Error, error.Message);
+            }
 
             // Assign the output parameters
             DA.SetDataList(0, _program);

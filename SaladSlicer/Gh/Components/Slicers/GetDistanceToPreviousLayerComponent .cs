@@ -5,28 +5,32 @@
 
 // System Libs
 using System;
+using System.Collections.Generic;
+using Rhino.Geometry;
 // Grasshopper Libs
 using Grasshopper.Kernel;
+using Grasshopper.Kernel.Types;
+using Grasshopper.Kernel.Data;
 // Salad Slicer Libs
 using SaladSlicer.Core.Slicers;
-using SaladSlicer.Core.Interfaces;
 using SaladSlicer.Gh.Parameters.Slicers;
-using SaladSlicer.Gh.Utils;
+using SaladSlicer.Gh.Utils ;
+using SaladSlicer.Core.Interfaces;
 
 namespace SaladSlicer.Gh.Components.Slicers
 {
     /// <summary>
-    /// Represent a component that gets the frames.
+    /// Represent a component that creates the contours.
     /// </summary>
-    public class GetFramesComponent : GH_Component
+    public class GetDistanceToPreviousLayerComponent : GH_Component
     {
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public GetFramesComponent()
-          : base("Get Frames", // Component name
-              "F", // Component nickname
-              "Defines the frames of a sliced object.", // Description
+        public GetDistanceToPreviousLayerComponent()
+          : base("Get Distances To Previous Contours", // Component name
+              "DPC", // Component nickname
+              "Gets the distance of every frame to previous contour", // Description
               "Salad Slicer", // Category
               "Slicers") // Subcategory
         {
@@ -37,7 +41,8 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddParameter(new Param_SlicerObject(), "Program Object", "PO", "Slicer object.", GH_ParamAccess.item);
+            pManager.AddParameter(new Param_SlicerObject(), "Slicer Object", "SO", "Slicer object.", GH_ParamAccess.item);
+            pManager.AddPlaneParameter("Plane", "P", "Plane (printbed) to calculate distance to for frames in the first layer.", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -45,7 +50,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddPlaneParameter("Frames", "F", "Frames as a datatree with Planes.", GH_ParamAccess.tree);
+            pManager.AddNumberParameter("Distances", "D", "List of distances", GH_ParamAccess.tree);
         }
 
         /// <summary>
@@ -56,13 +61,16 @@ namespace SaladSlicer.Gh.Components.Slicers
         {
             // Declare variable of input parameters
             ISlicer slicer = new ClosedPlanar2DSlicer();
+            Plane plane = new Plane();
 
             // Access the input parameters individually. 
             if (!DA.GetData(0, ref slicer)) return;
+            if (!DA.GetData(1, ref plane)) return;
 
             // Assign the output parameters
-            DA.SetDataTree(0, HelperMethods.ListInListToDataTree(slicer.FramesByLayer));
+            DA.SetDataTree(0, HelperMethods.ListInListToDataTree(slicer.GetDistanceToPreviousLayer(plane)));
         }
+
 
         /// <summary>
         /// Gets the exposure of this object in the Graphical User Interface.
@@ -85,7 +93,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.Frames_Icon; }
+            get { return Properties.Resources.GetDistancesBetweenContours_Icon; }
         }
 
         /// <summary>
@@ -94,7 +102,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("5633DCEE-C741-4FFF-AB58-44C48384FC4E"); }
+            get { return new Guid("941B95AE-3F20-47DB-B81D-B7F8A2600EDA"); }
         }
     }
 }

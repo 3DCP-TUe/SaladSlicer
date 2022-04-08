@@ -3,7 +3,7 @@
 // Free Software Foundation. For more information and the LICENSE file, 
 // see <https://github.com/3DCP-TUe/SaladSlicer>.
 
-// System Libs
+// System Libs]
 using System;
 using System.Collections.Generic;
 // Rhino Libs
@@ -11,20 +11,23 @@ using Rhino.Geometry;
 // Slicer Salad Libs
 using SaladSlicer.Core.CodeGeneration;
 using SaladSlicer.Core.Interfaces;
+using SaladSlicer.Core.Geometry;
 
 namespace SaladSlicer.Core.Slicers
 {
     /// <summary>
     /// Represents the Planar 2D Slicer class.
     /// </summary>
-    public class CurveSlicer : IProgram, ISlicer, IGeometry, IAddVariable
+    public class CurvesTransitionsSlicer : IProgram, ISlicer, IGeometry, IAddVariable
     {
         #region fields
-        private Curve _curve;
+        private List<Curve> _contours = new List<Curve>();
+        private List<Curve> _transitions = new List<Curve>();
+        private List<Curve> _path = new List<Curve>();
         private double _distance;
-        private List<Plane> _frames = new List<Plane>();
-        private List<List<double>> _addedVariable=new List<List<double>>();
-        private List<string> _prefix=new List<string>();
+        private readonly List<List<Plane>> _framesByLayer = new List<List<Plane>>() { };
+        private List<List<List<double>>> _addedVariable = new List<List<List<double>>>(0);
+        private List<string> _prefix = new List<string>();
         #endregion
 
         #region (de)serialisation
@@ -35,7 +38,7 @@ namespace SaladSlicer.Core.Slicers
         /// <summary>
         /// Initializes an empty instance of the Curve Slicer class.
         /// </summary>
-        public CurveSlicer()
+        public CurvesTransitionsSlicer()
         {
         }
 
@@ -44,9 +47,10 @@ namespace SaladSlicer.Core.Slicers
         /// </summary>
         /// <param name="curve"> The curve. </param>
         /// <param name="distance"> The desired distance between two frames. </param>
-        public CurveSlicer(Curve curve,double distance)
+        public CurvesTransitionsSlicer(List<Curve> curve,List<Curve> transitions, double distance)
         {
-            _curve = curve;
+            _contours = curve;
+            _transitions = transitions;
             _distance = distance;
         }
 
@@ -54,55 +58,56 @@ namespace SaladSlicer.Core.Slicers
         /// Initializes a new instance of the Curve Slocer class by duplicating an existing Curve Slicer instance. 
         /// </summary>
         /// <param name="slicer"> The Curve Slicer instance to duplicate. </param>
-        public CurveSlicer(CurveSlicer slicer)
+        public CurvesTransitionsSlicer(CurvesTransitionsSlicer slicer)
         {
-            _curve = slicer.Curve.DuplicateCurve();
+            _contours = slicer.Contours;
+            _transitions = slicer.Transitions;
             _distance = slicer.Distance;
-            _frames = new List<Plane>(slicer.Frames);
+            _framesByLayer = slicer.FramesByLayer;
             _prefix = slicer.Prefix;
-            _addedVariable = slicer.AddedVariable[0];
+            _addedVariable = slicer.AddedVariable;
         }
 
         /// <summary>
-        /// Returns an exact duplicate of this Curve Slicer instance.
+        /// Returns an exact duplicate of this  Curves Transitions Slicer instance.
         /// </summary>
-        /// <returns> The exact duplicate of this Curve Slicer instance. </returns>
-        public CurveSlicer Duplicate()
+        /// <returns> The exact duplicate of this Curves Transitions Slicer instance. </returns>
+        public CurvesTransitionsSlicer Duplicate()
         {
-            return new CurveSlicer(this);
+            return new CurvesTransitionsSlicer(this);
         }
 
         /// <summary>
-        /// Returns an exact duplicate of this Curve Slicer instance as an IProgram.
+        /// Returns an exact duplicate of this Curves Transitions Slicer as an IProgram.
         /// </summary>
-        /// <returns> The exact duplicate of this Curve Slicer instance as an IProgram. </returns>
+        /// <returns> The exact duplicate of this Curves Transitions Slicer as an IProgram. </returns>
         public IProgram DuplicateProgramObject()
         {
             return this.Duplicate() as IProgram;
         }
 
         /// <summary>
-        /// Returns an exact duplicate of this Curve Slicer instance as an ISlicer.
+        /// Returns an exact duplicate of this Curves Transitions Slicer instance as an ISlicer.
         /// </summary>
-        /// <returns> The exact duplicate of this Curve Slicer instance as an ISlicer. </returns>
+        /// <returns> The exact duplicate of this Curves Transitions Slicer instance as an ISlicer. </returns>
         public ISlicer DuplicateSlicerObject()
         {
             return this.Duplicate() as ISlicer;
         }
 
         /// <summary>
-        /// Returns an exact duplicate of this Curve Slicer instance as an IGeometry.
+        /// Returns an exact duplicate of this Curves Transitions Slicer instance as an IGeometry.
         /// </summary>
-        /// <returns> The exact duplicate of this Curve Slicer instance as an IGeometry. </returns>
+        /// <returns> The exact duplicate of this Curves Transitions Slicer instance as an IGeometry. </returns>
         public IGeometry DuplicateGeometryObject()
         {
             return this.Duplicate() as IGeometry;
         }
 
         /// <summary>
-        /// Returns an exact duplicate of this Curve Slicer instance as an IAddVariable
+        /// Returns an exact duplicate of this Curves Transitions Slicer instance as an IAddVariable
         /// </summary>
-        /// <returns> The exact duplicate of this Curve Slicer instance as an IAddVariable. </returns>
+        /// <returns> The exact duplicate of this Curves Transitions Slicer instance as an IAddVariable. </returns>
         public IAddVariable DuplicateAddVariableObject()
         {
             return this.Duplicate() as IAddVariable;
@@ -116,7 +121,7 @@ namespace SaladSlicer.Core.Slicers
         /// <returns> A string that represents the current object. </returns>
         public override string ToString()
         {
-            return "Sliced curve";
+            return "Curves and Transitions as Slicer Object";
         }
 
         /// <summary>
@@ -124,7 +129,17 @@ namespace SaladSlicer.Core.Slicers
         /// </summary>
         public void Slice()
         {
+            this.CreatePath();
             this.CreateFrames();
+        }
+
+        /// <summary>
+        /// Creates the path of the object
+        /// </summary>
+        private void CreatePath()
+        {
+            _path.Clear();
+            _path = Curves.WeaveCurves(_contours, _transitions);
         }
 
         /// <summary>
@@ -132,12 +147,27 @@ namespace SaladSlicer.Core.Slicers
         /// </summary>
         private void CreateFrames()
         {
-            _frames.Clear();
-            _frames = Geometry.Frames.GetFramesByDistanceAndSegment(_curve, _distance, true, true);
-            _addedVariable.Add(new List<double>());
+            _framesByLayer.Clear();
+            _addedVariable.Add(new List<List<double>>());
+            for (int i = 0; i < _contours.Count; i++)
+            {
+                _framesByLayer.Add(new List<Plane>() { });
+                _addedVariable[0].Add(new List<double>());
+            }
+
+            for (int i = 0; i < _contours.Count; i++)
+            {
+                // Contours
+                _framesByLayer[i].AddRange(Geometry.Frames.GetFramesByDistanceAndSegment(_path[i * 2], _distance, true, true));
+
+                // Transitions
+                if (i < _contours.Count - 1)
+                {
+                    _framesByLayer[i].AddRange(Geometry.Frames.GetFramesByDistanceAndSegment(_path[i * 2 + 1], _distance, false, false));
+                }
+            }
         }
 
-        
         /// <summary>
         /// Adds the NC program lines generated by this object to the program.
         /// </summary>
@@ -145,11 +175,22 @@ namespace SaladSlicer.Core.Slicers
         public void ToProgram(ProgramGenerator programGenerator,int programType)
         {
             // Header
-            programGenerator.AddSlicerHeader("CURVE SLICER OBJECT", this.GetLength());
+            programGenerator.AddSlicerHeader("CUSTOM SLICER OBJECT", this.GetLength());
 
             // Coords
-            programGenerator.AddCoordinates(_frames, _prefix, _addedVariable);
-               
+            for (int i = 0; i < _framesByLayer.Count; i++)
+            {
+                programGenerator.Program.Add(" ");
+                programGenerator.Program.Add($"; LAYER {i + 1:0}");
+                //Rearange _addedVariable
+                List<List<double>> addedVariable2 = new List<List<double>>();
+                for (int k = 0; k < _addedVariable.Count; k++)
+                {
+                    addedVariable2.Add(_addedVariable[k][i]);
+                }
+                programGenerator.AddCoordinates(_framesByLayer[i], _prefix, addedVariable2);
+            }
+
             // End
             programGenerator.AddFooter();
         }
@@ -163,13 +204,13 @@ namespace SaladSlicer.Core.Slicers
         public void AddVariable(string prefix, List<List<double>> values)
         {
             _prefix.Add(prefix);
-            if (_addedVariable[0].Count < 1)
+            if (_addedVariable[0][0].Count < 1)
             {
-                _addedVariable[0] = values[0];
+                _addedVariable[0] = values;
             }
             else
             {
-                _addedVariable.Add(values[0]);
+                _addedVariable.Add(values);
             }
         }
 
@@ -188,7 +229,7 @@ namespace SaladSlicer.Core.Slicers
         /// <returns> The path. </returns>
         public Curve GetPath()
         {
-            return _curve;
+            return Curve.JoinCurves(_path)[0];
         }
 
         /// <summary>
@@ -216,24 +257,29 @@ namespace SaladSlicer.Core.Slicers
         public List<List<double>> GetDistancesAlongContours()
         {
             List<List<double>> distances = new List<List<double>>();
-            double distance = 0;
-            List<double> distancesTemp = new List<double>();
-            for (int j = 0; j < _frames.Count; j++)
+            for (int i = 0; i < _framesByLayer.Count; i++)
             {
-                if (j == 0)
+                double distance = 0;
+                List<double> distancesTemp = new List<double>();
+                for (int j = 0; j < _framesByLayer[i].Count; j++)
                 {
-                    distancesTemp.Add(distance);
+                    if (j == 0)
+                    {
+                        distancesTemp.Add(distance);
+                    }
+                    else
+                    {
+                        Point3d point = _framesByLayer[i][j].Origin;
+                        distance += point.DistanceTo(_framesByLayer[i][j - 1].Origin);
+                        distancesTemp.Add(distance);
+                    }
                 }
-                else
-                {
-                    Point3d point = _frames[j].Origin;
-                    distance += point.DistanceTo(_frames[j - 1].Origin);
-                    distancesTemp.Add(distance);
-                }
+                distances.Add(distancesTemp);
             }
-            distances.Add(distancesTemp);
             return distances;
         }
+
+
 
         /// <summary>
         /// Calculates the distance between every frame and the closest point on the previous layer.
@@ -243,37 +289,26 @@ namespace SaladSlicer.Core.Slicers
         public List<List<double>> GetDistanceToPreviousLayer(Plane plane)
         {
             List<List<double>> distances = new List<List<double>>();
-            List<double> distancesTemp = new List<double>();
-            for (int j = 0; j < _frames.Count; j++)
+            for (int i = 0; i < _framesByLayer.Count; i++)
             {
-                double distance;
-                Point3d point = _frames[j].Origin;
-                Point3d point2 = plane.ClosestPoint(point);
-                distance = point.DistanceTo(point2);
-                distancesTemp.Add(distance);
+                List<double> distancesTemp = new List<double>();
+                for (int j = 0; j < _framesByLayer[i].Count; j++)
+                {
+                    Point3d point = _framesByLayer[i][j].Origin;
+                    if (i == 0)
+                    {
+                        Point3d point2 = plane.ClosestPoint(point);
+                        distancesTemp.Add(point.DistanceTo(point2));
+                    }
+                    else
+                    {
+                        _contours[i - 1].ClosestPoint(point, out double parameter);
+                        distancesTemp.Add(point.DistanceTo(_contours[i - 1].PointAt(parameter)));
+                    }
+                }
+                distances.Add(distancesTemp);
             }
-            distances.Add(distancesTemp);
             return distances;
-        }
-        
-        /// Returns a list with curvatures of the path at the frame location.
-        /// </summary>
-        /// <returns> The list with curvatures. </returns>
-        public List<List<Vector3d>> GetCurvatures()
-        {
-            List<List<Vector3d>> result = new List<List<Vector3d>>();
-
-            Curve path = GetPath();
-
-            result.Add(new List<Vector3d>() { });
-
-            for (int i = 0; i < _frames.Count; i++)
-            {
-                path.ClosestPoint(_frames[i].Origin, out double t);
-                result[0].Add(path.CurvatureAt(t));
-            }
-
-            return result;
         }
 
         /// <summary>
@@ -282,20 +317,28 @@ namespace SaladSlicer.Core.Slicers
         /// <returns> The length of the path. </returns>
         public double GetLength()
         {
-            return _curve.GetLength();
+            double length = 0.0;
+
+            for (int i = 0; i < _path.Count; i++)
+            {
+                length += _path[i].GetLength();
+            }
+            return length;
         }
+
 
         /// <summary>
         /// Returns all the points of the path.
         /// </summary>
         /// <returns> The list with points. </returns>
-        public List<Point3d> GetPoints() 
+        public List<Point3d> GetPoints()
         {
             List<Point3d> points = new List<Point3d>();
+            List<Plane> frames = this.Frames;
 
-            for (int i = 0; i < _frames.Count; i++)
+            for (int i = 0; i < frames.Count; i++)
             {
-                points.Add(_frames[i].Origin);
+                points.Add(frames[i].Origin);
             }
 
             return points;
@@ -319,42 +362,49 @@ namespace SaladSlicer.Core.Slicers
         /// <returns> True on success, false on failure. </returns>
         public bool Transform(Transform xform)
         {
-            _curve.Transform(xform);
-            
-            for (int i = 0; i < _frames.Count; i++)
+            for (int i = 0; i < _framesByLayer.Count; i++)
             {
-                Plane frame = _frames[i];
-                frame.Transform(xform);
-                _frames[i] = frame;
+                for (int j = 0; j < _framesByLayer[i].Count; j++)
+                {
+                    Plane frame = _framesByLayer[i][j];
+                    frame.Transform(xform);
+                    _framesByLayer[i][j] = frame;
+                }
             }
-            
+
+            for (int i = 0; i < _path.Count; i++)
+            {
+                _path[i].Transform(xform);
+            }
+
+            for (int i = 0; i < _contours.Count; i++)
+            {
+                _contours[i].Transform(xform);
+            }
+
+            for (int i = 0; i < _transitions.Count; i++)
+            {
+                _transitions[i].Transform(xform);
+            }
+
             return true;
         }
         #endregion
 
-        #region properties
-        /// <summary>
-        /// Gets a value indicating whether or not the object is valid.
-        /// </summary>
+            #region properties
+            /// <summary>
+            /// Gets a value indicating whether or not the object is valid.
+            /// </summary>
         public bool IsValid
         {
             get
             {
-                if (_curve == null) { return false; }
-                if (_frames == null) { return false; }
+                if (_contours == null) { return false; }
+                if (_transitions == null) { return false; }
+                if (_framesByLayer == null) { return false; }
                 if (_distance <= 0.0) { return false; }
-                if (_frames.Count == 0) { return false; }
                 return true;
             }
-        }
-
-        /// <summary>
-        /// Gets or sets the base curve/contour. 
-        /// </summary>
-        public Curve Curve
-        {
-            get { return _curve; }
-            set { _curve = value; }
         }
 
         /// <summary>
@@ -362,7 +412,12 @@ namespace SaladSlicer.Core.Slicers
         /// </summary>
         public List<Curve> Contours
         {
-            get { return new List<Curve>() { _curve }; }
+            get { return _contours; }
+        }
+
+        public List<Curve> Transitions
+        {
+            get { return _transitions; }
         }
 
         /// <summary>
@@ -375,26 +430,28 @@ namespace SaladSlicer.Core.Slicers
         }
 
         /// <summary>
+        /// Gets the frames of the path sorted by layer. 
+        /// </summary>
+        public List<List<Plane>> FramesByLayer
+        {
+            get { return _framesByLayer; }
+        }
+
+        /// <summary>
         /// Gets the frames of the path.
         /// </summary>
         public List<Plane> Frames
         {
-            get { return _frames; }
-        }
-
-        /// <summary>
-        /// Gets the frames of the path by layer
-        /// </summary>
-        public List<List<Plane>> FramesByLayer
-        {
-            get 
+            get
             {
-                List<List<Plane>> result = new List<List<Plane>>
+                List<Plane> frames = new List<Plane>() { };
+
+                for (int i = 0; i < _framesByLayer.Count; i++)
                 {
-                    new List<Plane>()
-                };
-                result[0].AddRange(_frames);
-                return result; 
+                    frames.AddRange(_framesByLayer[i]);
+                }
+
+                return frames;
             }
         }
 
@@ -403,7 +460,7 @@ namespace SaladSlicer.Core.Slicers
         /// </summary>
         public Plane FrameAtStart
         {
-            get { return _frames[0]; }
+            get { return _framesByLayer[0][0]; }
         }
 
         /// <summary>
@@ -411,7 +468,7 @@ namespace SaladSlicer.Core.Slicers
         /// </summary>
         public Plane FrameAtEnd
         {
-            get { return _frames[_frames.Count - 1]; }
+            get { return _framesByLayer[_framesByLayer.Count - 1][_framesByLayer[_framesByLayer.Count - 1].Count - 1]; }
         }
 
         /// <summary>
@@ -419,7 +476,7 @@ namespace SaladSlicer.Core.Slicers
         /// </summary>
         public Point3d PointAtStart
         {
-            get { return _frames[0].Origin; }
+            get { return this.FrameAtStart.Origin; }
         }
 
         /// <summary>
@@ -427,7 +484,7 @@ namespace SaladSlicer.Core.Slicers
         /// </summary>
         public Point3d PointAtEnd
         {
-            get { return _frames[_frames.Count - 1].Origin; }
+            get { return this.FrameAtEnd.Origin; }
         }
 
         /// <summary>
@@ -443,15 +500,10 @@ namespace SaladSlicer.Core.Slicers
         /// </summary>
         public List<List<List<double>>> AddedVariable
         {
-            get {
-                List<List<List<double>>> result = new List<List<List<double>>>
-                {
-                    _addedVariable
-                };
-                return result; }
+            get { return _addedVariable; }
         }
 
-            
-    #endregion
-}
+
+        #endregion
+    }
 }

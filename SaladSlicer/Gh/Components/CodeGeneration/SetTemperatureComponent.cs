@@ -7,28 +7,25 @@
 using System;
 // Grasshopper Libs
 using Grasshopper.Kernel;
+// Rhino Lib
+using Rhino.Geometry;
 // Salad Slicer Libs
-using SaladSlicer.Core.Slicers;
-using SaladSlicer.Core.Interfaces;
-using SaladSlicer.Gh.Parameters.Slicers;
-using SaladSlicer.Gh.Utils;
+using SaladSlicer.Core.CodeGeneration;
+using SaladSlicer.Gh.Parameters.CodeGeneration;
 
-namespace SaladSlicer.Gh.Components.Slicers
+namespace SaladSlicer.Gh.Components.CodeGeneration
 {
-    /// <summary>
-    /// Represent a component that gets the frames.
-    /// </summary>
-    public class GetFramesComponent : GH_Component
+    public class SetTemperatureComponent :GH_Component
     {
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public GetFramesComponent()
-          : base("Get Frames", // Component name
-              "F", // Component nickname
-              "Defines the frames of a sliced object.", // Description
+        public SetTemperatureComponent()
+          : base("Set Temperature", // Component name
+              "ST", // Component nickname
+              "Defines the temperature settings as a Program Object", // Description
               "Salad Slicer", // Category
-              "Slicers") // Subcategory
+              "Code Generation") // Subcategory
         {
         }
 
@@ -37,7 +34,8 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddParameter(new Param_SlicerObject(), "Program Object", "PO", "Slicer object.", GH_ParamAccess.item);
+            pManager.AddNumberParameter("Hotend", "H", "Hotend Temperature, not used if zero.", GH_ParamAccess.item,180);
+            pManager.AddNumberParameter("Bed", "B", "Bed Temperature, not used if zero.", GH_ParamAccess.item, 50);
         }
 
         /// <summary>
@@ -45,9 +43,8 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddPlaneParameter("Frames", "F", "Frames as a datatree with Planes.", GH_ParamAccess.tree);
+            pManager.AddGenericParameter("Program Object", "PO", "Temperature settings as a Program Object.", GH_ParamAccess.item);
         }
-
         /// <summary>
         /// This is the method that actually does the work.
         /// </summary>
@@ -55,13 +52,18 @@ namespace SaladSlicer.Gh.Components.Slicers
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             // Declare variable of input parameters
-            ISlicer slicer = new ClosedPlanar2DSlicer();
+            double hotEnd =new double();
+            double bed = new double();
 
             // Access the input parameters individually. 
-            if (!DA.GetData(0, ref slicer)) return;
+            if (!DA.GetData(0, ref hotEnd)) return;
+            if (!DA.GetData(1, ref bed)) return;
+
+            // Create the code line
+            SetTemperature tempObject = new SetTemperature(hotEnd,bed);
 
             // Assign the output parameters
-            DA.SetDataTree(0, HelperMethods.ListInListToDataTree(slicer.FramesByLayer));
+            DA.SetData(0, tempObject);
         }
 
         /// <summary>
@@ -69,7 +71,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         public override GH_Exposure Exposure
         {
-            get { return GH_Exposure.tertiary; }
+            get { return GH_Exposure.hidden; }
         }
 
         /// <summary>
@@ -85,7 +87,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.Frames_Icon; }
+            get { return Properties.Resources.ExampleIcon; }
         }
 
         /// <summary>
@@ -94,7 +96,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("5633DCEE-C741-4FFF-AB58-44C48384FC4E"); }
+            get { return new Guid("2FCE3C3B-94D8-4F40-8B1B-94160F6C4968"); }
         }
     }
 }

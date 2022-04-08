@@ -58,12 +58,15 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\CodeGeneration\ProgramSettings.cs" />
+    <Compile Include="Core\CodeGeneration\SetTemperature.cs" />
     <Compile Include="Core\CodeGeneration\ProgramGroup.cs" />
     <Compile Include="Core\Geometry\Meshes.cs" />
     <Compile Include="Core\Geometry\Frames.cs" />
     <Compile Include="Core\Geometry\Curves.cs" />
     <Compile Include="Core\CodeGeneration\FeedRate.cs" />
     <Compile Include="Core\CodeGeneration\AbsoluteCoordinate.cs" />
+    <Compile Include="Core\Interfaces\IAddVariable.cs" />
     <Compile Include="Core\Interfaces\IGeometry.cs" />
     <Compile Include="Core\Interfaces\ISlicer.cs" />
     <Compile Include="Core\CodeGeneration\ProgramGenerator.cs" />
@@ -72,11 +75,16 @@
     <Compile Include="Core\Enumerations\Enumerations.cs" />
     <Compile Include="Core\Geometry\Seams\Transitions.cs" />
     <Compile Include="Core\Geometry\Seams\Locations.cs" />
+    <Compile Include="Core\Slicers\CurvesTransitionsSlicer.cs" />
     <Compile Include="Core\Slicers\OpenPlanar2DSlicer.cs" />
     <Compile Include="Core\Slicers\CurveSlicer.cs" />
     <Compile Include="Core\Slicers\ClosedPlanar2DSlicer.cs" />
     <Compile Include="Core\Slicers\ClosedPlanar3DSlicer.cs" />
     <Compile Include="Core\Utils\HelperMethods.cs" />
+    <Compile Include="Gh\Components\CodeGeneration\ProgramSettingsComponent.cs" />
+    <Compile Include="Gh\Components\CodeGeneration\MergeProgramObjectsComponent.cs" />
+    <Compile Include="Gh\Components\Slicers\AddVariableComponent.cs" />
+    <Compile Include="Gh\Components\CodeGeneration\SetTemperatureComponent.cs" />
     <Compile Include="Gh\Components\CodeGeneration\UnGroupProgramObjectsComponent.cs" />
     <Compile Include="Gh\Components\CodeGeneration\GroupProgramObjectsComponent.cs" />
     <Compile Include="Gh\Components\CodeGeneration\FeedRateComponent.cs" />
@@ -97,6 +105,9 @@
     <Compile Include="Gh\Components\Geometry\AlignCurvesComponent.cs" />
     <Compile Include="Gh\Components\Geometry\AlignSeamsByClosestPointComponent.cs" />
     <Compile Include="Gh\Components\Slicers\ClosedPlanar3DSlicerComponent.cs" />
+    <Compile Include="Gh\Components\Slicers\CurvesTransitionsSlicerComponent.cs" />
+    <Compile Include="Gh\Components\Slicers\GetDistanceToPreviousLayerComponent .cs" />
+    <Compile Include="Gh\Components\Slicers\GetDistancesAlongContoursComponent.cs" />
     <Compile Include="Gh\Components\Slicers\GetCurvaturesComponents.cs" />
     <Compile Include="Gh\Components\Slicers\GetFramesComponent.cs" />
     <Compile Include="Gh\Components\Slicers\GetEndFramesComponent.cs" />
@@ -157,6 +168,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\2.5D.png" />
+    <None Include="Resources\GetDistancesBetweenContours_Icon.png" />
+    <None Include="Resources\GetDistancesAlongContours_Icon.png" />
+    <None Include="Resources\AddVariable_Icon.png" />
+    <None Include="Resources\GetDistances_Icon.psd" />
+    <None Include="Resources\ProgramSettings_Icon.png" />
+    <None Include="Resources\MergeProgramObject_Icon.png" />
     <None Include="Resources\AlignSeamsCurve_Icon.png" />
     <None Include="Resources\Param_CodeLine_Icon.png" />
     <None Include="Resources\Param_SlicerObject_Icon.png" />

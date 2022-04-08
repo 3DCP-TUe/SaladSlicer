@@ -5,6 +5,7 @@
 
 // System Libs
 using System;
+using System.Drawing;
 using System.Collections.Generic;
 // Grasshopper Libs
 using Grasshopper.Kernel;
@@ -23,6 +24,7 @@ namespace SaladSlicer.Gh.Components.Geometry
     {
         #region fields
         private bool _expire = false;
+        private bool _valueListAdded = false; 
         #endregion
 
         /// <summary>
@@ -51,7 +53,8 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddCurveParameter("Curve", "C", "Joined curve.", GH_ParamAccess.item);
+            pManager.AddCurveParameter("Joined Curve", "JC", "Joined curve.", GH_ParamAccess.item);
+            pManager.AddCurveParameter("Trimmed Curves", "TC", "List of curves between connections.", GH_ParamAccess.list);
             pManager.AddCurveParameter("Connections", "C", "List of connections between input curves.", GH_ParamAccess.list);
         }
 
@@ -62,17 +65,24 @@ namespace SaladSlicer.Gh.Components.Geometry
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             //Create a value list
-            _expire = HelperMethods.CreateValueList(this, 1, typeof(OpenTransition));
+            if (_valueListAdded == false)
+            {
+                PointF location = new PointF(this.Params.Input[0].Attributes.InputGrip.X - 120, this.Params.Input[0].Attributes.InputGrip.Y - 11);
+                _expire = HelperMethods.CreateValueList(this, 1, typeof(OpenTransition));
+                _valueListAdded = true;
+            }
 
             // Expire solution of this component
             if (_expire == true)
             {
+                _valueListAdded = true;
                 _expire = false;
                 this.ExpireSolution(true);
             }
 
             // Declare variable of input parameters
             List<Curve> curves = new List<Curve>();
+            List<Curve> curvesCopy = new List<Curve>();
             int type = new int();
             Curve joinedCurve;
             List<Curve> transitions=new List<Curve>();
@@ -82,6 +92,7 @@ namespace SaladSlicer.Gh.Components.Geometry
             if (!DA.GetData(1, ref type)) return;
 
             // Create the code line            
+            curvesCopy =curves.ConvertAll(curve => curve.DuplicateCurve());
             if (type == 0)
             {
                 (joinedCurve,transitions) = Transitions.JoinLinear(curves);
@@ -97,7 +108,8 @@ namespace SaladSlicer.Gh.Components.Geometry
 
             // Assign the output parameters
             DA.SetData(0, joinedCurve);
-            DA.SetDataList(1, transitions);
+            DA.SetDataList(1, curvesCopy);
+            DA.SetDataList(2, transitions);
         }
         
         /// <summary>

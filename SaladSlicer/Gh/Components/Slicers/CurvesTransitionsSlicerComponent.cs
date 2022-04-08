@@ -5,28 +5,29 @@
 
 // System Libs
 using System;
+using System.Collections.Generic;
+//Rhino Libs
+using Rhino.Geometry;
 // Grasshopper Libs
 using Grasshopper.Kernel;
 // Salad Slicer Libs
 using SaladSlicer.Core.Slicers;
-using SaladSlicer.Core.Interfaces;
 using SaladSlicer.Gh.Parameters.Slicers;
-using SaladSlicer.Gh.Utils;
 
 namespace SaladSlicer.Gh.Components.Slicers
 {
     /// <summary>
-    /// Represent a component that gets the frames.
+    /// Represent a component that creates a program object as a sliced curve.
     /// </summary>
-    public class GetFramesComponent : GH_Component
+    public class CurvesTransitionsSlicerComponent : GH_Component
     {
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public GetFramesComponent()
-          : base("Get Frames", // Component name
-              "F", // Component nickname
-              "Defines the frames of a sliced object.", // Description
+        public CurvesTransitionsSlicerComponent()
+          : base("Curves Transitions Slicer", // Component name
+              "CTS", // Component nickname
+              "Slices a list of curves and transitions to a Slicer Object.", // Description
               "Salad Slicer", // Category
               "Slicers") // Subcategory
         {
@@ -37,7 +38,9 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddParameter(new Param_SlicerObject(), "Program Object", "PO", "Slicer object.", GH_ParamAccess.item);
+            pManager.AddCurveParameter("Trimmed Curves", "TC", "List of curves with length n.", GH_ParamAccess.list);
+            pManager.AddCurveParameter("Connections", "Co", "List of connections with length n-1.", GH_ParamAccess.list);
+            pManager.AddNumberParameter("Distance", "D", "Distance between frames as a Number", GH_ParamAccess.item, 20.0);
         }
 
         /// <summary>
@@ -45,7 +48,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddPlaneParameter("Frames", "F", "Frames as a datatree with Planes.", GH_ParamAccess.tree);
+            pManager.AddGenericParameter("Slicer Object", "SO", "Sliced curves and transitions as a Slicer Object.", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -55,13 +58,24 @@ namespace SaladSlicer.Gh.Components.Slicers
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             // Declare variable of input parameters
-            ISlicer slicer = new ClosedPlanar2DSlicer();
+            List<Curve> contours = new List<Curve>();
+            List<Curve> transitions = new List<Curve>();
+            double distance = 20.0;
 
             // Access the input parameters individually. 
-            if (!DA.GetData(0, ref slicer)) return;
+            if (!DA.GetDataList(0, contours)) return;
+            if (!DA.GetDataList(1, transitions)) return;
+            if (!DA.GetData(2, ref distance)) return;
+
+            // Check input values
+            if (distance <= 0.0) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "The distance between two frames cannot be smaller than or equal to zero."); }
+
+            // Create the slicer object
+            CurvesTransitionsSlicer slicer = new CurvesTransitionsSlicer(contours, transitions, distance);
+            slicer.Slice();
 
             // Assign the output parameters
-            DA.SetDataTree(0, HelperMethods.ListInListToDataTree(slicer.FramesByLayer));
+            DA.SetData(0, slicer);
         }
 
         /// <summary>
@@ -69,7 +83,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         public override GH_Exposure Exposure
         {
-            get { return GH_Exposure.tertiary; }
+            get { return GH_Exposure.primary; }
         }
 
         /// <summary>
@@ -85,7 +99,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.Frames_Icon; }
+            get { return null; }
         }
 
         /// <summary>
@@ -94,7 +108,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("5633DCEE-C741-4FFF-AB58-44C48384FC4E"); }
+            get { return new Guid("F36953E2-A076-4750-B475-BF15018384CF"); }
         }
     }
 }
