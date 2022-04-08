@@ -21,13 +21,13 @@ namespace SaladSlicer.Core.Slicers
     public class CurvesTransitionsSlicer : IProgram, ISlicer, IGeometry, IAddVariable
     {
         #region fields
-        private List<Curve> _contours = new List<Curve>();
-        private List<Curve> _transitions = new List<Curve>();
+        private readonly List<Curve> _contours = new List<Curve>();
+        private readonly List<Curve> _transitions = new List<Curve>();
         private List<Curve> _path = new List<Curve>();
         private double _distance;
         private readonly List<List<Plane>> _framesByLayer = new List<List<Plane>>() { };
-        private List<List<List<double>>> _addedVariable = new List<List<List<double>>>(0);
-        private List<string> _prefix = new List<string>();
+        private readonly List<List<List<double>>> _addedVariable = new List<List<List<double>>>(0);
+        private readonly List<string> _prefix = new List<string>();
         #endregion
 
         #region (de)serialisation
@@ -279,7 +279,28 @@ namespace SaladSlicer.Core.Slicers
             return distances;
         }
 
+        /// Returns a list with curvatures of the path at the frame location.
+        /// </summary>
+        /// <returns> The list with curvatures. </returns>
+        public List<List<Vector3d>> GetCurvatures()
+        {
+            List<List<Vector3d>> result = new List<List<Vector3d>>();
 
+            Curve path = GetInterpolatedPath();
+
+            for (int i = 0; i < _framesByLayer.Count; i++)
+            {
+                result.Add(new List<Vector3d>() { });
+
+                for (int j = 0; j < _framesByLayer[i].Count; j++)
+                {
+                    path.ClosestPoint(_framesByLayer[i][j].Origin, out double t);
+                    result[i].Add(path.CurvatureAt(t));
+                }
+            }
+
+            return result;
+        }
 
         /// <summary>
         /// Calculates the distance between every frame and the closest point on the previous layer.
@@ -391,10 +412,10 @@ namespace SaladSlicer.Core.Slicers
         }
         #endregion
 
-            #region properties
-            /// <summary>
-            /// Gets a value indicating whether or not the object is valid.
-            /// </summary>
+        #region properties
+        /// <summary>
+        /// Gets a value indicating whether or not the object is valid.
+        /// </summary>
         public bool IsValid
         {
             get

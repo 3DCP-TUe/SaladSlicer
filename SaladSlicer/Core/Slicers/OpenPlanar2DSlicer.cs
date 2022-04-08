@@ -29,8 +29,8 @@ namespace SaladSlicer.Core.Slicers
         private List<Curve> _contours = new List<Curve>();
         private List<double> _heights = new List<double>();
         private readonly List<List<Plane>> _framesByLayer = new List<List<Plane>>() { };
-        private List<List<List<double>>> _addedVariable=new List<List<List<double>>>(0);
-        private List<string> _prefix=new List<string>();
+        private readonly List<List<List<double>>> _addedVariable=new List<List<List<double>>>(0);
+        private readonly List<string> _prefix=new List<string>();
         #endregion
 
         #region (de)serialisation

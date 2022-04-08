@@ -32,8 +32,8 @@ namespace SaladSlicer.Core.Slicers
         private double _seamLocation;
         private double _seamLength;
         private bool _reverse;
-        private List<List<List<double>>> _addedVariable = new List<List<List<double>>>(0);
-        private List<string> _prefix = new List<string>();
+        private readonly List<List<List<double>>> _addedVariable = new List<List<List<double>>>(0);
+        private readonly List<string> _prefix = new List<string>();
         #endregion
 
         #region (de)serialisation

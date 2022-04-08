@@ -23,8 +23,8 @@ namespace SaladSlicer.Core.Slicers
         private Curve _curve;
         private double _distance;
         private List<Plane> _frames = new List<Plane>();
-        private List<List<double>> _addedVariable=new List<List<double>>();
-        private List<string> _prefix=new List<string>();
+        private readonly List<List<double>> _addedVariable=new List<List<double>>();
+        private readonly List<string> _prefix=new List<string>();
         #endregion
 
         #region (de)serialisation
