@@ -3,7 +3,7 @@
 // Free Software Foundation. For more information and the LICENSE file, 
 // see <https://github.com/3DCP-TUe/SaladSlicer>.
 
-// System Libs]
+// System Libs
 using System;
 using System.Collections.Generic;
 // Rhino Libs
@@ -254,6 +254,26 @@ namespace SaladSlicer.Core.Slicers
             }
             distances.Add(distancesTemp);
             return distances;
+        }
+        
+        /// Returns a list with curvatures of the path at the frame location.
+        /// </summary>
+        /// <returns> The list with curvatures. </returns>
+        public List<List<Vector3d>> GetCurvatures()
+        {
+            List<List<Vector3d>> result = new List<List<Vector3d>>();
+
+            Curve path = GetPath();
+
+            result.Add(new List<Vector3d>() { });
+
+            for (int i = 0; i < _frames.Count; i++)
+            {
+                path.ClosestPoint(_frames[i].Origin, out double t);
+                result[0].Add(path.CurvatureAt(t));
+            }
+
+            return result;
         }
 
         /// <summary>

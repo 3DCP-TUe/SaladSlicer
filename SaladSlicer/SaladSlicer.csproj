@@ -108,6 +108,7 @@
     <Compile Include="Gh\Components\Slicers\CurvesTransitionsSlicerComponent.cs" />
     <Compile Include="Gh\Components\Slicers\GetDistanceToPreviousLayerComponent .cs" />
     <Compile Include="Gh\Components\Slicers\GetDistancesAlongContoursComponent.cs" />
+    <Compile Include="Gh\Components\Slicers\GetCurvaturesComponents.cs" />
     <Compile Include="Gh\Components\Slicers\GetFramesComponent.cs" />
     <Compile Include="Gh\Components\Slicers\GetEndFramesComponent.cs" />
     <Compile Include="Gh\Components\Slicers\GetContours.cs" />

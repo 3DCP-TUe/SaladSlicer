@@ -115,6 +115,23 @@ namespace SaladSlicer.Gh.Utils
 
             return result;
         }
+
+        /// <summary>
+        /// Returns a datatree with vectors created from a nested list with vectors.
+        /// </summary>
+        /// <param name="data"> The nested list with vectors. </param>
+        /// <returns> The datatree with vectors. </returns>
+        public static DataTree<Vector3d> ListInListToDataTree(List<List<Vector3d>> data)
+        {
+            DataTree<Vector3d> result = new DataTree<Vector3d>();
+
+            for (int i = 0; i < data.Count; i++)
+            {
+                result.AddRange(data[i], new GH_Path(i));
+            }
+
+            return result;
+        }
     }
 }
 

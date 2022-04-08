@@ -60,6 +60,11 @@ namespace SaladSlicer.Core.Interfaces
         /// </summary>
         /// <returns> List with distances. </returns>
         List<List<double>> GetDistanceToPreviousLayer(Plane plane);
+
+        /// Returns a list with curvatures of the path at the frame location.
+        /// </summary>
+        /// <returns> The list with curvatures. </returns>
+        List<List<Vector3d>> GetCurvatures();
         #endregion
 
         #region properties
