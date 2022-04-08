@@ -1,0 +1,292 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="AbsoluteCoordinate_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\AbsoluteCoordinate_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AddVariable_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\AddVariable_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AlignCurves_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\AlignCurves_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AlignSeamsCurve_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\AlignSeamsCurve_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="AlternateCurves_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\AlternateCurves_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ClosedPlanar2DSlicer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ClosedPlanar2DSlicer_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ClosedPlanar3DSlicer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ClosedPlanar3DSlicer_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CodeGeneratorIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CodeGeneratorIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CodeGenerator_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CodeGenerator_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CodeLine_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CodeLine_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ConvertVelocityMmminMms_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ConvertVelocityMmminMms_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ConvertVelocityMmsMmmin_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ConvertVelocityMmsMmmin_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CurveFramesByCurvature_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CurveFramesByCurvature_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CurveFramesByDistance_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CurveFramesByDistance_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CurveSlicer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CurveSlicer_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DeconstructClosedPlanar2DSlicer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DeconstructClosedPlanar2DSlicer_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DeconstructClosedPlanar3DSlicer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DeconstructClosedPlanar3DSlicer_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DeconstructCurveSlicer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DeconstructCurveSlicer_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DeconstructOpenPlanar2DSlicer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DeconstructOpenPlanar2DSlicer_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DeconstructProgramObject_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DeconstructProgramObject_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="endFrames_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\endFrames_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ExampleIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ExampleIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Frames_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Frames_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GetContours_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\GetContours_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GetDistancesAlongContours_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\GetDistancesAlongContours_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GetDistancesBetweenContours_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\GetDistancesBetweenContours_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GetInterpolatedPath_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\GetInterpolatedPath_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GetLinearizedPath_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\GetLinearizedPath_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GetPath_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\GetPath_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GroupProgramObjects_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\GroupProgramObjects_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Info_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Info_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="JoinClosedCurves_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\JoinClosedCurves_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="JoinOpenCurves_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\JoinOpenCurves_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MergeProgramObject_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MergeProgramObject_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OpenPlanar2DSlicer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\OpenPlanar2DSlicer_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Parameter_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Parameter_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Param_AbsoluteCoordinate_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Param_AbsoluteCoordinate_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Param_ClosedPlanar2DSlicer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Param_ClosedPlanar2DSlicer_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Param_ClosedPlanar3DSlicer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Param_ClosedPlanar3DSlicer_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Param_CodeLine_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Param_CodeLine_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Param_CurveSlicer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Param_CurveSlicer_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Param_OpenPlanar2DSlicer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Param_OpenPlanar2DSlicer_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Param_ProgramGroup_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Param_ProgramGroup_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Param_ProgramObject_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Param_ProgramObject_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Param_SetFeedRate_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Param_SetFeedRate_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Param_SlicerObject_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Param_SlicerObject_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PlaneVisualizer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PlaneVisualizer_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ProgramSettings_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ProgramSettings_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SaladLogo_Icon2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SaladLogo_Icon2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SeamAtClosestPoint_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SeamAtClosestPoint_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SeamAtLength_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SeamAtLength_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SeamAtParameter_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SeamAtParameter_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SeamsAtClosestPoint_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SeamsAtClosestPoint_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SetFeedRate_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SetFeedRate_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TransposeSurface_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TransposeSurface_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="UnGroupProgramObjects_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\UnGroupProgramObjects_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="_2_5D" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\2.5D.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+</root>

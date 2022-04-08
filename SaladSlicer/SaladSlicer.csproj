@@ -33,18 +33,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GH_IO">
-      <HintPath>..\DLLs\GH_IO.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="GH_Util">
-      <HintPath>..\DLLs\GH_Util.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Grasshopper">
-      <HintPath>..\DLLs\Grasshopper.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="RhinoCommon">
       <HintPath>..\DLLs\RhinoCommon.dll</HintPath>
       <Private>False</Private>
@@ -58,102 +46,34 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\CodeGeneration\ProgramSettings.cs" />
-    <Compile Include="Core\CodeGeneration\SetTemperature.cs" />
-    <Compile Include="Core\CodeGeneration\ProgramGroup.cs" />
-    <Compile Include="Core\Geometry\Meshes.cs" />
-    <Compile Include="Core\Geometry\Frames.cs" />
-    <Compile Include="Core\Geometry\Curves.cs" />
-    <Compile Include="Core\CodeGeneration\FeedRate.cs" />
-    <Compile Include="Core\CodeGeneration\AbsoluteCoordinate.cs" />
-    <Compile Include="Core\Interfaces\IAddVariable.cs" />
-    <Compile Include="Core\Interfaces\IGeometry.cs" />
-    <Compile Include="Core\Interfaces\ISlicer.cs" />
-    <Compile Include="Core\CodeGeneration\ProgramGenerator.cs" />
-    <Compile Include="Core\CodeGeneration\CodeLine.cs" />
-    <Compile Include="Core\Interfaces\IProgram.cs" />
-    <Compile Include="Core\Enumerations\Enumerations.cs" />
-    <Compile Include="Core\Geometry\Seams\Transitions.cs" />
-    <Compile Include="Core\Geometry\Seams\Locations.cs" />
-    <Compile Include="Core\Slicers\CurvesTransitionsSlicer.cs" />
-    <Compile Include="Core\Slicers\OpenPlanar2DSlicer.cs" />
-    <Compile Include="Core\Slicers\CurveSlicer.cs" />
-    <Compile Include="Core\Slicers\ClosedPlanar2DSlicer.cs" />
-    <Compile Include="Core\Slicers\ClosedPlanar3DSlicer.cs" />
-    <Compile Include="Core\Utils\HelperMethods.cs" />
-    <Compile Include="Gh\Components\CodeGeneration\ProgramSettingsComponent.cs" />
-    <Compile Include="Gh\Components\CodeGeneration\MergeProgramObjectsComponent.cs" />
-    <Compile Include="Gh\Components\Slicers\AddVariableComponent.cs" />
-    <Compile Include="Gh\Components\CodeGeneration\SetTemperatureComponent.cs" />
-    <Compile Include="Gh\Components\CodeGeneration\UnGroupProgramObjectsComponent.cs" />
-    <Compile Include="Gh\Components\CodeGeneration\GroupProgramObjectsComponent.cs" />
-    <Compile Include="Gh\Components\CodeGeneration\FeedRateComponent.cs" />
-    <Compile Include="Gh\Components\CodeGeneration\AbsoluteCoordinateComponent.cs" />
-    <Compile Include="Gh\Components\Deconstruct\DeconstructClosedPlaner3DSlicerComponent.cs" />
-    <Compile Include="Gh\Components\Deconstruct\DeconstructCurveSlicerComponent.cs" />
-    <Compile Include="Gh\Components\Deconstruct\DeconstructOpenPlaner2DSlicerComponent.cs" />
-    <Compile Include="Gh\Components\Deconstruct\DeconstructClosedPlaner2DSlicerComponent.cs" />
-    <Compile Include="Gh\Components\Geometry\AlignSeamsAlongCurveComponentcs.cs" />
-    <Compile Include="Gh\Components\Geometry\CurveFramesByDistanceComponent.cs" />
-    <Compile Include="Gh\Components\Geometry\CurveFramesByCurvatureComponent.cs" />
-    <Compile Include="Gh\Components\Geometry\SeamAtClosestPointComponent.cs" />
-    <Compile Include="Gh\Components\Geometry\AlternateCurvesComponent.cs" />
-    <Compile Include="Gh\Components\Geometry\SeamAtClosestPlaneIntersectionComponent.cs" />
-    <Compile Include="Gh\Components\Geometry\SeamAtParamComponent.cs" />
-    <Compile Include="Gh\Components\Geometry\SeamAtLengthComponent.cs" />
-    <Compile Include="Gh\Components\Geometry\JoinClosedCurvesComponent.cs" />
-    <Compile Include="Gh\Components\Geometry\AlignCurvesComponent.cs" />
-    <Compile Include="Gh\Components\Geometry\AlignSeamsByClosestPointComponent.cs" />
-    <Compile Include="Gh\Components\Slicers\ClosedPlanar3DSlicerComponent.cs" />
-    <Compile Include="Gh\Components\Slicers\CurvesTransitionsSlicerComponent.cs" />
-    <Compile Include="Gh\Components\Slicers\GetDistanceToPreviousLayerComponent .cs" />
-    <Compile Include="Gh\Components\Slicers\GetDistancesAlongContoursComponent.cs" />
-    <Compile Include="Gh\Components\Slicers\GetCurvaturesComponents.cs" />
-    <Compile Include="Gh\Components\Slicers\GetFramesComponent.cs" />
-    <Compile Include="Gh\Components\Slicers\GetEndFramesComponent.cs" />
-    <Compile Include="Gh\Components\Slicers\GetContours.cs" />
-    <Compile Include="Gh\Components\Slicers\GetPathComponent.cs" />
-    <Compile Include="Gh\Components\Slicers\GetLinerazedPathComponent.cs" />
-    <Compile Include="Gh\Components\Slicers\GetInterpolatedPathComponent.cs" />
-    <Compile Include="Gh\Components\Slicers\OpenPlanar2DSlicerComponent.cs" />
-    <Compile Include="Gh\Components\Slicers\CurveSlicerComponent.cs" />
-    <Compile Include="Gh\Components\Slicers\ClosedPlanar2DSlicerComponent.cs" />
-    <Compile Include="Gh\Components\CodeGeneration\CodeLineComponent.cs" />
-    <Compile Include="Gh\Components\CodeGeneration\ProgramGeneratorComponent.cs" />
-    <Compile Include="Gh\Components\Utilities\InfoComponent.cs" />
-    <Compile Include="Gh\Components\Utilities\ConvertVelocityMmsMmminComponent.cs" />
-    <Compile Include="Gh\Components\Utilities\ConvertVelocityMmminMmsComponent.cs" />
-    <Compile Include="Gh\Components\Geometry\JoinOpenCurvesComponent.cs" />
-    <Compile Include="Gh\Components\Utilities\PlaneVisualizerComponent.cs" />
-    <Compile Include="Gh\Components\Utilities\TransposeSurfaceComponent.cs" />
-    <Compile Include="Gh\Goos\CodeGeneration\GH_FeedRate.cs" />
-    <Compile Include="Gh\Goos\CodeGeneration\GH_AbsoluteCoordinate.cs" />
-    <Compile Include="Gh\Goos\CodeGeneration\GH_CodeLine.cs" />
-    <Compile Include="Gh\Goos\Slicers\GH_ClosedPlanar3DSlicer.cs" />
-    <Compile Include="Gh\Goos\Slicers\GH_OpenPlanar2DSlicer.cs" />
-    <Compile Include="Gh\Goos\Slicers\GH_ClosedPlanar2DSlicer.cs" />
-    <Compile Include="Gh\Goos\Slicers\GH_CurveSlicer.cs" />
-    <Compile Include="Gh\Goos\CodeGeneration\GH_ProgramObject.cs" />
-    <Compile Include="Gh\Goos\Slicers\GH_SlicerObject.cs" />
-    <Compile Include="Gh\Goos\CodeGeneration\GH_ProgramGroup.cs" />
-    <Compile Include="Gh\Parameters\CodeGeneration\Param_FeedRate.cs" />
-    <Compile Include="Gh\Parameters\CodeGeneration\Param_AbsoluteCoordinate.cs" />
-    <Compile Include="Gh\Parameters\CodeGeneration\Param_ProgramGroup.cs" />
-    <Compile Include="Gh\Parameters\Slicers\Param_ClosedPlanar3DSlicer.cs" />
-    <Compile Include="Gh\Parameters\Slicers\Param_OpenPlanar2DSlicer.cs" />
-    <Compile Include="Gh\Parameters\Slicers\Param_ClosedPlanar2DSlicer.cs" />
-    <Compile Include="Gh\Parameters\Slicers\Param_CurveSlicer.cs" />
-    <Compile Include="Gh\Parameters\CodeGeneration\Param_ProgramObject.cs" />
-    <Compile Include="Gh\Parameters\Slicers\Param_SlicerObject.cs" />
-    <Compile Include="Gh\Parameters\CodeGeneration\Param_CodeLine.cs" />
-    <Compile Include="Gh\Utils\HelperMethods.cs" />
+    <Compile Include="CodeGeneration\ProgramSettings.cs" />
+    <Compile Include="CodeGeneration\SetTemperature.cs" />
+    <Compile Include="CodeGeneration\ProgramGroup.cs" />
+    <Compile Include="Geometry\Meshes.cs" />
+    <Compile Include="Geometry\Frames.cs" />
+    <Compile Include="Geometry\Curves.cs" />
+    <Compile Include="CodeGeneration\FeedRate.cs" />
+    <Compile Include="CodeGeneration\AbsoluteCoordinate.cs" />
+    <Compile Include="Interfaces\IAddVariable.cs" />
+    <Compile Include="Interfaces\IGeometry.cs" />
+    <Compile Include="Interfaces\ISlicer.cs" />
+    <Compile Include="CodeGeneration\ProgramGenerator.cs" />
+    <Compile Include="CodeGeneration\CodeLine.cs" />
+    <Compile Include="Interfaces\IProgram.cs" />
+    <Compile Include="Enumerations\Enumerations.cs" />
+    <Compile Include="Geometry\Seams\Transitions.cs" />
+    <Compile Include="Geometry\Seams\Locations.cs" />
+    <Compile Include="Slicers\CurvesTransitionsSlicer.cs" />
+    <Compile Include="Slicers\OpenPlanar2DSlicer.cs" />
+    <Compile Include="Slicers\CurveSlicer.cs" />
+    <Compile Include="Slicers\ClosedPlanar2DSlicer.cs" />
+    <Compile Include="Slicers\ClosedPlanar3DSlicer.cs" />
+    <Compile Include="Utils\HelperMethods.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="SaladSlicerIcon.cs" />
-    <Compile Include="SaladSlicerInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -164,63 +84,8 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\ExampleIcon.png" />
+    <Folder Include="Resources\" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="Resources\2.5D.png" />
-    <None Include="Resources\GetDistancesBetweenContours_Icon.png" />
-    <None Include="Resources\GetDistancesAlongContours_Icon.png" />
-    <None Include="Resources\AddVariable_Icon.png" />
-    <None Include="Resources\GetDistances_Icon.psd" />
-    <None Include="Resources\ProgramSettings_Icon.png" />
-    <None Include="Resources\MergeProgramObject_Icon.png" />
-    <None Include="Resources\AlignSeamsCurve_Icon.png" />
-    <None Include="Resources\Param_CodeLine_Icon.png" />
-    <None Include="Resources\Param_SlicerObject_Icon.png" />
-    <None Include="Resources\Param_ProgramObject_Icon.png" />
-    <None Include="Resources\GroupProgramObjects_Icon.png" />
-    <None Include="Resources\UnGroupProgramObjects_Icon.png" />
-    <None Include="Resources\Param_ProgramGroup_Icon.png" />
-    <None Include="Resources\Param_AbsoluteCoordinate_Icon.png" />
-    <None Include="Resources\Param_SetFeedRate_Icon.png" />
-    <None Include="Resources\SetFeedRate_Icon.png" />
-    <None Include="Resources\AbsoluteCoordinate_Icon.png" />
-    <None Include="Resources\CodeLine_Icon.png" />
-    <EmbeddedResource Include="Resources\SaladLogo_Icon2.png" />
-    <None Include="Resources\CodeGenerator_Icon.png" />
-    <None Include="Resources\CurveFramesByDistance_Icon.png" />
-    <None Include="Resources\AlternateCurves_Icon.png" />
-    <None Include="Resources\AlignCurves_Icon.png" />
-    <None Include="Resources\PlaneVisualizer_Icon.png" />
-    <None Include="Resources\TransposeSurface_Icon.png" />
-    <None Include="Resources\ConvertVelocityMmminMms_Icon.png" />
-    <None Include="Resources\ConvertVelocityMmsMmmin_Icon.png" />
-    <None Include="Resources\GetContours_Icon.png" />
-    <None Include="Resources\SeamsAtClosestPoint_Icon.png" />
-    <None Include="Resources\SeamAtClosestPoint_Icon.png" />
-    <None Include="Resources\SeamAtParameter_Icon.png" />
-    <None Include="Resources\SeamAtLength_Icon.png" />
-    <None Include="Resources\CurveFramesByCurvature_Icon.png" />
-    <None Include="Resources\JoinClosedCurves_Icon.png" />
-    <None Include="Resources\JoinOpenCurves_Icon.png" />
-    <None Include="Resources\DeconstructProgramObject_Icon.png" />
-    <None Include="Resources\Param_CurveSlicer_Icon.png" />
-    <None Include="Resources\Param_OpenPlanar2DSlicer_Icon.png" />
-    <None Include="Resources\OpenPlanar2DSlicer_Icon.png" />
-    <None Include="Resources\CurveSlicer_Icon.png" />
-    <None Include="Resources\DeconstructCurveSlicer_Icon.png" />
-    <None Include="Resources\DeconstructOpenPlanar2DSlicer_Icon.png" />
-    <None Include="Resources\ClosedPlanar3DSlicer_Icon.png" />
-    <None Include="Resources\Param_ClosedPlanar3DSlicer_Icon.png" />
-    <None Include="Resources\Param_ClosedPlanar2DSlicer_Icon.png" />
-    <None Include="Resources\ClosedPlanar2DSlicer_Icon.png" />
-    <None Include="Resources\DeconstructClosedPlanar3DSlicer_Icon.png" />
-    <None Include="Resources\DeconstructClosedPlanar2DSlicer_Icon.png" />
-    <None Include="Resources\Info_Icon.png" />
-    <None Include="Resources\CodeGeneratorIcon.png" />
-    <None Include="Resources\Parameter_Icon.png" />
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -230,8 +95,8 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>Copy "$(TargetPath)" "$(TargetDir)$(ProjectName).gha"
-Erase "$(TargetPath)"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <FallbackCulture>en-US</FallbackCulture>
