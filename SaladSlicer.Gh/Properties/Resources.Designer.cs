@@ -223,16 +223,6 @@ namespace SaladSlicer.Gh.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap CurvesTransitionsSlicer_Icon {
-            get {
-                object obj = ResourceManager.GetObject("CurvesTransitionsSlicer_Icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap DeconstructClosedPlanar2DSlicer_Icon {
             get {
                 object obj = ResourceManager.GetObject("DeconstructClosedPlanar2DSlicer_Icon", resourceCulture);
@@ -316,16 +306,6 @@ namespace SaladSlicer.Gh.Properties {
         internal static System.Drawing.Bitmap GetContours_Icon {
             get {
                 object obj = ResourceManager.GetObject("GetContours_Icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap GetCurvatures_Icon {
-            get {
-                object obj = ResourceManager.GetObject("GetCurvatures_Icon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -576,16 +556,6 @@ namespace SaladSlicer.Gh.Properties {
         internal static System.Drawing.Bitmap SaladLogo_Icon2 {
             get {
                 object obj = ResourceManager.GetObject("SaladLogo_Icon2", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap SeamaAtPlane_Icon {
-            get {
-                object obj = ResourceManager.GetObject("SeamaAtPlane_Icon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

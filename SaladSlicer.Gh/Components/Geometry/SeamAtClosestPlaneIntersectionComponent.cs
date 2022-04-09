@@ -103,7 +103,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.SeamaAtPlane_Icon; }
+            get { return null; }
         }
 
         /// <summary>

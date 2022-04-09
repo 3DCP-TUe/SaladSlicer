@@ -27,7 +27,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         public CurvesTransitionsSlicerComponent()
           : base("Curves Transitions Slicer", // Component name
               "CTS", // Component nickname
-              "Slices a list of curves and transitions to a Slicer Object. This component is intented to be used together with the Join Closed Curves and the Join Open Curves components.", // Description
+              "Slices a list of curves and transitions to a Slicer Object.", // Description
               "Salad Slicer", // Category
               "Slicers") // Subcategory
         {
@@ -99,7 +99,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.CurvesTransitionsSlicer_Icon; }
+            get { return null; }
         }
 
         /// <summary>
