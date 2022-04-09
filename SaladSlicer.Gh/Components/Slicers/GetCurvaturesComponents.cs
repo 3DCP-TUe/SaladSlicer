@@ -69,7 +69,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         public override GH_Exposure Exposure
         {
-            get { return GH_Exposure.secondary; }
+            get { return GH_Exposure.tertiary; }
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return null; }
+            get { return Properties.Resources.GetCurvatures_Icon; }
         }
 
         /// <summary>
