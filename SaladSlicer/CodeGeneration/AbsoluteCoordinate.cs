@@ -71,15 +71,6 @@ namespace SaladSlicer.CodeGeneration
         }
 
         /// <summary>
-        /// Returns an exact duplicate of this Absolute Coordinate instance as an IAddVariable
-        /// </summary>
-        /// <returns> The exact duplicate of this Absolute Coordinate instance as an IAddVariable. </returns>
-        public IAddVariable DuplicateAddVariableObject()
-        {
-            return this.Duplicate() as IAddVariable;
-        }
-
-        /// <summary>
         /// Returns an exact duplicate of this Absolute Coordinater instance as an IGeometry.
         /// </summary>
         /// <returns> The exact duplicate of this Absolute Coordinate instance as an IGeometry. </returns>
@@ -168,25 +159,6 @@ namespace SaladSlicer.CodeGeneration
         public List<Curve> Contours
         {
             get { return new List<Curve>(); }
-        }
-
-        /// <summary>
-        /// Gets a list of prefixes for variables that have been added to the object.
-        /// </summary>
-        public List<string> Prefix
-        {
-            get { return new List<string>(); }
-        }
-
-        /// <summary>
-        /// Gets a list of variables that have been added to the object.
-        /// </summary>
-        public List<List<List<double>>> AddedVariable
-        {
-            get
-            {
-                return new List<List<List<double>>>();
-            }
         }
         #endregion
     }
