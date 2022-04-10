@@ -73,7 +73,7 @@ namespace SaladSlicer.Geometry
         /// <param name="mesh"> The mesh. </param>
         /// <param name="heights"> The list with layer heights. </param>
         /// <returns> The list with planar contours. </returns>
-        public static List<List<Curve>> GetPlanarContoursByHeights(Mesh mesh, List<double> heights)
+        public static List<List<Curve>> GetPlanarContoursByHeights(Mesh mesh, IList<double> heights)
         {
             List<List<Curve>> result = new List<List<Curve>>();
 

@@ -17,7 +17,7 @@ namespace SaladSlicer.CodeGeneration
     public class ProgramGroup : IProgram
     {
         #region fields
-        private List<IProgram> _objects;
+        private IList<IProgram> _objects;
         #endregion
 
         #region (de)serialisation
@@ -37,7 +37,7 @@ namespace SaladSlicer.CodeGeneration
         /// Initializes a new instance of the ProgramGroup class.
         /// </summary>
         /// <param name="objects">List with program objects to store inside this group. </param>
-        public ProgramGroup(List<IProgram> objects)
+        public ProgramGroup(IList<IProgram> objects)
         {
             _objects = objects;
         }
@@ -118,7 +118,7 @@ namespace SaladSlicer.CodeGeneration
         /// <summary>
         /// Gets or sets the objects.
         /// </summary>
-        public List<IProgram> Objects
+        public IList<IProgram> Objects
         {
             get { return _objects; }
             set { _objects = value; }

@@ -58,10 +58,10 @@ namespace SaladSlicer.Slicers
         /// <param name="distance"> The desired distance between two frames. </param>
         /// <param name="reverse"> Indicates if the path direction will be reversed. </param>
         /// <param name="heights"> A list with absolute layer heights. </param>
-        public ClosedPlanar3DSlicer(Mesh mesh, double parameter, double length, double distance, bool reverse, List<double> heights)
+        public ClosedPlanar3DSlicer(Mesh mesh, double parameter, double length, double distance, bool reverse, IList<double> heights)
         {
             _mesh = mesh;
-            _heights = heights;
+            _heights = heights as List<double>;
             _seamLocation = parameter;
             _seamLength = length;
             _distance = distance;

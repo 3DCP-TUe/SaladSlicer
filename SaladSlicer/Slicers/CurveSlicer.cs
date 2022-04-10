@@ -44,7 +44,7 @@ namespace SaladSlicer.Slicers
         /// </summary>
         /// <param name="curve"> The curve. </param>
         /// <param name="distance"> The desired distance between two frames. </param>
-        public CurveSlicer(Curve curve,double distance)
+        public CurveSlicer(Curve curve, double distance)
         {
             _curve = curve;
             _distance = distance;
@@ -449,9 +449,7 @@ namespace SaladSlicer.Slicers
                     _addedVariable
                 };
                 return result; }
-        }
-
-            
+        } 
     #endregion
-}
+    }
 }

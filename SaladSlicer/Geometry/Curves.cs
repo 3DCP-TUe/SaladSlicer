@@ -36,7 +36,7 @@ namespace SaladSlicer.Geometry
         /// </summary>
         /// <param name="curves">The list of curves</param>
         /// <returns></returns>
-        public static double NumberClosed(List<Curve> curves)
+        public static double NumberClosed(IList<Curve> curves)
         {
             double numberClosed = 0;
 
@@ -57,9 +57,14 @@ namespace SaladSlicer.Geometry
         /// </summary>
         /// <param name="curves">List of curves</param>
         /// <returns></returns>
-        public static List<Curve> AlternateCurves(List<Curve> curves)
+        public static List<Curve> AlternateCurves(IList<Curve> curves)
         {
-            List<Curve> result = curves.ConvertAll(curve => curve.DuplicateCurve());
+            List<Curve> result = new List<Curve>() { };
+
+            for (int i = 0; i < curves.Count; i++)
+            {
+                result.Add(curves[i].DuplicateCurve());
+            }
 
             for (int i = 1; i < result.Count; i += 2)
             {
@@ -74,7 +79,7 @@ namespace SaladSlicer.Geometry
         /// </summary>
         /// <param name="curves">List of curves</param>
         /// <returns></returns>
-        public static List<Plane> GetStartFrames(List<Curve> curves)
+        public static List<Plane> GetStartFrames(IList<Curve> curves)
         {
             List<Plane> startFrames = new List<Plane>();
             
@@ -94,7 +99,7 @@ namespace SaladSlicer.Geometry
         /// </summary>
         /// <param name="curves">List of curves</param>
         /// <returns></returns>
-        public static List<Plane> GetEndFrames(List<Curve> curves)
+        public static List<Plane> GetEndFrames(IList<Curve> curves)
         {
             List<Plane> endFrames = new List<Plane>();
             
@@ -115,7 +120,7 @@ namespace SaladSlicer.Geometry
         /// <param name="curves">List of curves</param>
         /// <param name="transitions">List of transitions</param>
         /// <returns></returns>
-        public static Curve MergeCurves(List<Curve> curves, List<Curve> transitions)
+        public static Curve MergeCurves(IList<Curve> curves, IList<Curve> transitions)
         {
             List<Curve> weave = WeaveCurves(curves, transitions);
             Curve result = Curve.JoinCurves(weave)[0];
@@ -129,7 +134,7 @@ namespace SaladSlicer.Geometry
         /// <param name="curves"> First list with curves. </param>
         /// <param name="transitions"> Second list with curves. </param>
         /// <returns> Woven list with curves. </returns>
-        public static List<Curve> WeaveCurves(List<Curve> curves, List<Curve> transitions)
+        public static List<Curve> WeaveCurves(IList<Curve> curves, IList<Curve> transitions)
         {
             List<Curve> result = new List<Curve>() { };
 
@@ -178,9 +183,14 @@ namespace SaladSlicer.Geometry
         /// </summary>
         /// <param name="curves"> List with curves. </param>
         /// <returns> List with aligned curves. </returns>
-        public static List<Curve> AlignCurves(List<Curve> curves)
+        public static List<Curve> AlignCurves(IList<Curve> curves)
         {
-            List<Curve> result = curves.ConvertAll(curve => curve.DuplicateCurve());
+            List<Curve> result = new List<Curve>() { };
+
+            for (int i = 0; i < curves.Count; i++) 
+            { 
+                result.Add(curves[i].DuplicateCurve()); 
+            }
 
             for (int i = 1; i < result.Count; i++)
             {

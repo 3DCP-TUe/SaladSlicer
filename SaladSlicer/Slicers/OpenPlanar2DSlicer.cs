@@ -51,10 +51,10 @@ namespace SaladSlicer.Slicers
         /// <param name="curve"> The base contour. </param>
         /// <param name="distance"> The desired distance between two frames. </param>
         /// <param name="heights"> A list with absolute layer heights. </param>
-        public OpenPlanar2DSlicer(Curve curve, double distance, List<double> heights)
+        public OpenPlanar2DSlicer(Curve curve, double distance, IList<double> heights)
         {
             _baseContour = curve;
-            _heights = heights;
+            _heights = heights as List<double>;
             _distance = distance;
         }
 
@@ -292,8 +292,6 @@ namespace SaladSlicer.Slicers
             // End
             programGenerator.AddFooter();
         }
-
-        
 
         /// <summary>
         /// Calculates the distance between every frame and the closest point on the previous layer.

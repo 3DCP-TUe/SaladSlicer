@@ -192,7 +192,7 @@ namespace SaladSlicer.Geometry.Seams
         /// </summary>
         /// <param name="curves"> The closed curves to change the point at start from. </param>
         /// <returns> List with closed curves with a new point at start. </returns>
-        public static List<Curve> AlignSeamsByClosestPoint(List<Curve> curves)
+        public static List<Curve> AlignSeamsByClosestPoint(IList<Curve> curves)
         {
             List<Curve> result = new List<Curve>() { };
             result.Add(curves[0].DuplicateCurve());
@@ -217,7 +217,7 @@ namespace SaladSlicer.Geometry.Seams
         /// <param name="curves"> The closed curves to change the point at start from. </param>
         /// <param name="guide"> The guiding curve. </param>
         /// <returns> List with closed curves with a new point at start. </returns>
-        public static List<Curve> AlignSeamsAlongCurve(List<Curve> curves, Curve guide)
+        public static List<Curve> AlignSeamsAlongCurve(IList<Curve> curves, Curve guide)
         {
             List<Curve> result = new List<Curve>() { };
 
@@ -237,7 +237,7 @@ namespace SaladSlicer.Geometry.Seams
         /// <param name="plane"> The intersection plane. </param>
         /// <returns> List with closed curves with a new point at start.</returns>
 
-        public static List<Curve> AlignSeamsAlongClosestPlaneIntersection(List<Curve> curves, Plane plane)
+        public static List<Curve> AlignSeamsAlongClosestPlaneIntersection(IList<Curve> curves, Plane plane)
         {
             List<Curve> result = new List<Curve>() { };
 
@@ -248,7 +248,6 @@ namespace SaladSlicer.Geometry.Seams
 
             return result;
         }
-
         #endregion
     }
 }

@@ -22,7 +22,7 @@ namespace SaladSlicer.Geometry.Seams
         /// </summary>
         /// <param name="curves">The list of curves</param>
         /// <returns></returns>
-        public static (Curve, List<Curve>) JoinLinear(List<Curve> curves)
+        public static (Curve, List<Curve>) JoinLinear(IList<Curve> curves)
         {
             // Create linear transitions
             List<Curve> transitions = LinearTransitions(curves);
@@ -38,7 +38,7 @@ namespace SaladSlicer.Geometry.Seams
         /// </summary>
         /// <param name="curves">The list of curves</param>
         /// <returns></returns>
-        public static (Curve, List<Curve>) JoinOutsideArc(List<Curve> curves)
+        public static (Curve, List<Curve>) JoinOutsideArc(IList<Curve> curves)
         {
             // Create arc transitions
             List<Curve> transitions = OutsideArcTransitions(curves);
@@ -54,7 +54,7 @@ namespace SaladSlicer.Geometry.Seams
         /// </summary>
         /// <param name="curves">The list of curves</param>
         /// <returns></returns>
-        public static (Curve, List<Curve>) JoinBezier(List<Curve> curves)
+        public static (Curve, List<Curve>) JoinBezier(IList<Curve> curves)
         {
             // Create bezier transitions
             List<Curve> transitions = BezierTransitions(curves);
@@ -74,7 +74,7 @@ namespace SaladSlicer.Geometry.Seams
         /// <param name="length">The length over the transition between two curves.</param>
         /// <param name="precision">The precision of the transition.</param>
         /// <returns>The connected curve with interpolated transitions.</returns>
-        public static (Curve, List<Curve>) JoinInterpolated(List<Curve> curves, double length = 100.0, double precision = 1.0)
+        public static (Curve, List<Curve>) JoinInterpolated(IList<Curve> curves, double length = 100.0, double precision = 1.0)
         {
             // Create trimmed contours and transitions
             List<Curve> trimmed = TrimCurveFromEnds(curves, length);
@@ -91,7 +91,7 @@ namespace SaladSlicer.Geometry.Seams
         /// </summary>
         /// <param name="curves">List of curves</param>
         /// <returns></returns>
-        public static List<Curve> LinearTransitions(List<Curve> curves)
+        public static List<Curve> LinearTransitions(IList<Curve> curves)
         {
             List<Curve> transitions = new List<Curve>();
             List<Plane> startFrames = Curves.GetStartFrames(curves);
@@ -111,7 +111,7 @@ namespace SaladSlicer.Geometry.Seams
         /// </summary>
         /// <param name="curves">List of curves</param>
         /// <returns></returns>
-        public static List<Curve> OutsideArcTransitions(List<Curve> curves)
+        public static List<Curve> OutsideArcTransitions(IList<Curve> curves)
         {
             List<Curve> transitions = new List<Curve>();
             List<Plane> startFrames = Curves.GetStartFrames(curves);
@@ -131,7 +131,7 @@ namespace SaladSlicer.Geometry.Seams
         /// </summary>
         /// <param name="curves"> List of curves. </param>
         /// <returns></returns>
-        public static List<Curve> BezierTransitions(List<Curve> curves)
+        public static List<Curve> BezierTransitions(IList<Curve> curves)
         {
             List<Curve> transitions = new List<Curve>();
             List<Plane> startFrames = Curves.GetStartFrames(curves);
@@ -156,7 +156,7 @@ namespace SaladSlicer.Geometry.Seams
         /// <param name="length">The length over the transition between two curves.</param>
         /// <param name="precision">The precision of the transition.</param>
         /// <returns>The list with connected curves.</returns>
-        public static List<Curve> InterpolatedTransitions(List<Curve> curves, double length = 100.0, double precision = 1.0)
+        public static List<Curve> InterpolatedTransitions(IList<Curve> curves, double length = 100.0, double precision = 1.0)
         {
             List<Curve> contours = new List<Curve>();
             List<Curve> cuts = new List<Curve>();
@@ -235,7 +235,7 @@ namespace SaladSlicer.Geometry.Seams
         /// <param name="curves"> List of curves. </param>
         /// <param name="length"> Total length to be cut off. </param>
         /// <returns></returns>
-        public static List<Curve> TrimCurveFromEnds(List<Curve> curves, double length)
+        public static List<Curve> TrimCurveFromEnds(IList<Curve> curves, double length)
         {
             return TrimCurveFromEnds(curves, length, out _);
         }
@@ -246,7 +246,7 @@ namespace SaladSlicer.Geometry.Seams
         /// <param name="curves"> List of curves. </param>
         /// <param name="length"> Total length to be cut off. </param>
         /// <returns></returns>
-        public static List<Curve> TrimCurveFromEnds(List<Curve> curves, double length, out List<Curve> cuts)
+        public static List<Curve> TrimCurveFromEnds(IList<Curve> curves, double length, out List<Curve> cuts)
         {
             if (length <= 0)
             {

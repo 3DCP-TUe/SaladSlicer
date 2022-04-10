@@ -56,10 +56,10 @@ namespace SaladSlicer.Slicers
         /// <param name="length"> The length of the seam between two layers. </param>
         /// <param name="distance"> The desired distance between two frames. </param>
         /// <param name="heights"> A list with absolute layer heights. </param>
-        public ClosedPlanar2DSlicer(Curve curve, double parameter, double length, double distance, List<double> heights)
+        public ClosedPlanar2DSlicer(Curve curve, double parameter, double length, double distance, IList<double> heights)
         {
             _baseContour = curve;
-            _heights = heights;
+            _heights = heights as List<double>;
             _seamLocation = parameter;
             _seamLength = length;
             _distance = distance;

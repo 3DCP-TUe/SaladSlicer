@@ -47,10 +47,10 @@ namespace SaladSlicer.Slicers
         /// </summary>
         /// <param name="curve"> The curve. </param>
         /// <param name="distance"> The desired distance between two frames. </param>
-        public CurvesTransitionsSlicer(List<Curve> curve,List<Curve> transitions, double distance)
+        public CurvesTransitionsSlicer(IList<Curve> curve, IList<Curve> transitions, double distance)
         {
-            _contours = curve;
-            _transitions = transitions;
+            _contours = curve as List<Curve>;
+            _transitions = transitions as List<Curve>;
             _distance = distance;
         }
 

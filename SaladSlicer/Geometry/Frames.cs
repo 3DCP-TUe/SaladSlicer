@@ -27,7 +27,7 @@ namespace SaladSlicer.Geometry
         /// <param name="curve"> Curve to obtain the curvature from. </param>
         /// <param name="keep"> The least amount of frames to keep that are following within the given threshold. </param>
         /// <param name="threshold"> Threshold value for frame removal. </param>
-        public static List<Plane> ReduceFramesByCurvature(List<Plane> frames, Curve curve, int keep = 5, double threshold = Rhino.RhinoMath.SqrtEpsilon)
+        public static List<Plane> ReduceFramesByCurvature(IList<Plane> frames, Curve curve, int keep = 5, double threshold = Rhino.RhinoMath.SqrtEpsilon)
         {
             List<Plane> result = new List<Plane>();
             List<double> curvatures = new List<double>();
@@ -290,7 +290,7 @@ namespace SaladSlicer.Geometry
         /// <param name="frames"> Unsorted list with frames. </param>
         /// <param name="curve"> Curve. </param>
         /// <returns> Sorted list with frames. </returns>
-        public static List<Plane> SortFramesAlongCurve(List<Plane> frames, Curve curve)
+        public static List<Plane> SortFramesAlongCurve(IList<Plane> frames, Curve curve)
         {
             Plane[] items = frames.ToArray();
             double[] keys = new double[frames.Count];

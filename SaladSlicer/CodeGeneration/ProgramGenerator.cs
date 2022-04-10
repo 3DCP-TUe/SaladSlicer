@@ -52,7 +52,7 @@ namespace SaladSlicer.CodeGeneration
         /// </summary>
         /// <param name="_objects"> The objects to gerenator the program for. </param>
         /// <returns> The program as a list with code lines. </returns>
-        public List<string> CreateProgram(List<IProgram> _objects)
+        public List<string> CreateProgram(IList<IProgram> _objects)
         {
             _program.Clear();
             // Check if the first object has a program type
@@ -188,7 +188,7 @@ namespace SaladSlicer.CodeGeneration
         /// <summary>
         /// Adds coordinates.
         /// </summary>
-        public void AddCoordinates(List<Plane> frames, List<string> prefix, List<List<double>> addVariable)
+        public void AddCoordinates(IList<Plane> frames, IList<string> prefix, IList<List<double>> addVariable)
         {
             for (int i = 0; i < prefix.Count; i++)
             {
