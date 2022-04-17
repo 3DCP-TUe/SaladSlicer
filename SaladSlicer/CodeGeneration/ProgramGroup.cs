@@ -71,7 +71,7 @@ namespace SaladSlicer.CodeGeneration
         /// <returns> The exact duplicate of this Program Group instance as an IProgram. </returns>
         public IProgram DuplicateProgramObject()
         {
-            return this.Duplicate() as IProgram;
+            return this.Duplicate();
         }
         #endregion
 

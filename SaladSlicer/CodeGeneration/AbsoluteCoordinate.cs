@@ -67,7 +67,7 @@ namespace SaladSlicer.CodeGeneration
         /// <returns> The exact duplicate of this Absolute Coordinate instance as an IProgram. </returns>
         public IProgram DuplicateProgramObject()
         {
-            return this.Duplicate() as IProgram;
+            return this.Duplicate();
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace SaladSlicer.CodeGeneration
         /// <returns> The exact duplicate of this Absolute Coordinate instance as an IGeometry. </returns>
         public IGeometry DuplicateGeometryObject()
         {
-            return this.Duplicate() as IGeometry;
+            return this.Duplicate();
         }
         #endregion
 

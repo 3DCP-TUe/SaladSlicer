@@ -83,7 +83,7 @@ namespace SaladSlicer.Slicers
         /// <returns> The exact duplicate of this Curves Transitions Slicer as an IProgram. </returns>
         public IProgram DuplicateProgramObject()
         {
-            return this.Duplicate() as IProgram;
+            return this.Duplicate();
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace SaladSlicer.Slicers
         /// <returns> The exact duplicate of this Curves Transitions Slicer instance as an ISlicer. </returns>
         public ISlicer DuplicateSlicerObject()
         {
-            return this.Duplicate() as ISlicer;
+            return this.Duplicate();
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace SaladSlicer.Slicers
         /// <returns> The exact duplicate of this Curves Transitions Slicer instance as an IGeometry. </returns>
         public IGeometry DuplicateGeometryObject()
         {
-            return this.Duplicate() as IGeometry;
+            return this.Duplicate();
         }
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace SaladSlicer.Slicers
         /// <returns> The exact duplicate of this Curves Transitions Slicer instance as an IAddVariable. </returns>
         public IAddVariable DuplicateAddVariableObject()
         {
-            return this.Duplicate() as IAddVariable;
+            return this.Duplicate();
         }
         #endregion
 
@@ -182,12 +182,15 @@ namespace SaladSlicer.Slicers
             {
                 programGenerator.Program.Add(" ");
                 programGenerator.Program.Add($"; LAYER {i + 1:0}");
+                
                 //Rearange _addedVariable
                 List<List<double>> addedVariable2 = new List<List<double>>();
+                
                 for (int k = 0; k < _addedVariable.Count; k++)
                 {
                     addedVariable2.Add(_addedVariable[k][i]);
                 }
+                
                 programGenerator.AddCoordinates(_framesByLayer[i], _prefix, addedVariable2);
             }
 
@@ -204,6 +207,7 @@ namespace SaladSlicer.Slicers
         public void AddVariable(string prefix, List<List<double>> values)
         {
             _prefix.Add(prefix);
+            
             if (_addedVariable[0][0].Count < 1)
             {
                 _addedVariable[0] = values;
@@ -257,10 +261,12 @@ namespace SaladSlicer.Slicers
         public List<List<double>> GetDistancesAlongContours()
         {
             List<List<double>> distances = new List<List<double>>();
+            
             for (int i = 0; i < _framesByLayer.Count; i++)
             {
-                double distance = 0;
                 List<double> distancesTemp = new List<double>();
+                double distance = 0;
+
                 for (int j = 0; j < _framesByLayer[i].Count; j++)
                 {
                     if (j == 0)
@@ -274,8 +280,10 @@ namespace SaladSlicer.Slicers
                         distancesTemp.Add(distance);
                     }
                 }
+                
                 distances.Add(distancesTemp);
             }
+            
             return distances;
         }
 
@@ -310,9 +318,11 @@ namespace SaladSlicer.Slicers
         public List<List<double>> GetDistanceToPreviousLayer(Plane plane)
         {
             List<List<double>> distances = new List<List<double>>();
+            
             for (int i = 0; i < _framesByLayer.Count; i++)
             {
                 List<double> distancesTemp = new List<double>();
+                
                 for (int j = 0; j < _framesByLayer[i].Count; j++)
                 {
                     Point3d point = _framesByLayer[i][j].Origin;
@@ -327,8 +337,10 @@ namespace SaladSlicer.Slicers
                         distancesTemp.Add(point.DistanceTo(_contours[i - 1].PointAt(parameter)));
                     }
                 }
+                
                 distances.Add(distancesTemp);
             }
+            
             return distances;
         }
 

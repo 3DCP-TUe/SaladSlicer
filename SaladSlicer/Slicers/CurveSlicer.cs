@@ -78,7 +78,7 @@ namespace SaladSlicer.Slicers
         /// <returns> The exact duplicate of this Curve Slicer instance as an IProgram. </returns>
         public IProgram DuplicateProgramObject()
         {
-            return this.Duplicate() as IProgram;
+            return this.Duplicate();
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace SaladSlicer.Slicers
         /// <returns> The exact duplicate of this Curve Slicer instance as an ISlicer. </returns>
         public ISlicer DuplicateSlicerObject()
         {
-            return this.Duplicate() as ISlicer;
+            return this.Duplicate();
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace SaladSlicer.Slicers
         /// <returns> The exact duplicate of this Curve Slicer instance as an IGeometry. </returns>
         public IGeometry DuplicateGeometryObject()
         {
-            return this.Duplicate() as IGeometry;
+            return this.Duplicate();
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace SaladSlicer.Slicers
         /// <returns> The exact duplicate of this Curve Slicer instance as an IAddVariable. </returns>
         public IAddVariable DuplicateAddVariableObject()
         {
-            return this.Duplicate() as IAddVariable;
+            return this.Duplicate();
         }
         #endregion
 
@@ -163,6 +163,7 @@ namespace SaladSlicer.Slicers
         public void AddVariable(string prefix, List<List<double>> values)
         {
             _prefix.Add(prefix);
+            
             if (_addedVariable[0].Count < 1)
             {
                 _addedVariable[0] = values[0];
@@ -217,7 +218,9 @@ namespace SaladSlicer.Slicers
         {
             List<List<double>> distances = new List<List<double>>();
             double distance = 0;
+            
             List<double> distancesTemp = new List<double>();
+            
             for (int j = 0; j < _frames.Count; j++)
             {
                 if (j == 0)
@@ -231,7 +234,9 @@ namespace SaladSlicer.Slicers
                     distancesTemp.Add(distance);
                 }
             }
+            
             distances.Add(distancesTemp);
+            
             return distances;
         }
 
@@ -244,6 +249,7 @@ namespace SaladSlicer.Slicers
         {
             List<List<double>> distances = new List<List<double>>();
             List<double> distancesTemp = new List<double>();
+            
             for (int j = 0; j < _frames.Count; j++)
             {
                 double distance;
@@ -252,7 +258,9 @@ namespace SaladSlicer.Slicers
                 distance = point.DistanceTo(point2);
                 distancesTemp.Add(distance);
             }
+            
             distances.Add(distancesTemp);
+            
             return distances;
         }
         

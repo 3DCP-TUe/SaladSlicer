@@ -18,7 +18,7 @@ using SaladSlicer.Interfaces;
 namespace SaladSlicer.Slicers
 {
     /// <summary>
-    /// Represents the Planar 3D Slicer class.
+    /// Represents the Closed Planar 3D Slicer class.
     /// </summary>
     public class ClosedPlanar3DSlicer : IProgram, ISlicer, IGeometry, IAddVariable
     {
@@ -42,7 +42,7 @@ namespace SaladSlicer.Slicers
 
         #region constructors
         /// <summary>
-        /// Initializes an empty instance of the Planar 3D Slicer class.
+        /// Initializes an empty instance of the Closed Planar 3D Slicer class.
         /// </summary>
         public ClosedPlanar3DSlicer()
         {
@@ -50,7 +50,7 @@ namespace SaladSlicer.Slicers
         }
 
         /// <summary>
-        /// Initializes a new instance of the Planar 3D Slicer class from a list with absolute layer heights. 
+        /// Initializes a new instance of the Closed Planar 3D Slicer class from a list with absolute layer heights. 
         /// </summary>
         /// <param name="mesh"> The base mesh. </param>
         /// <param name="parameter"> The parameter of the starting point. </param>
@@ -69,7 +69,7 @@ namespace SaladSlicer.Slicers
         }
 
         /// <summary>
-        /// Initializes a new instance of the Planar 3D Slicer class from a given number of layers and layer thickness.
+        /// Initializes a new instance of the Closed Planar 3D Slicer class from a given number of layers and layer thickness.
         /// </summary>
         /// <param name="mesh"> The base mesh. </param>
         /// <param name="parameter"> The parameter of the starting point. </param>
@@ -89,9 +89,9 @@ namespace SaladSlicer.Slicers
         }
 
         /// <summary>
-        /// Initializes a new instance of the Planar 3D Slicer class by duplicating an existing Planar 3D Slicer instance. 
+        /// Initializes a new instance of the Closed Planar 3D Slicer class by duplicating an existing Closed Planar 3D Slicer instance. 
         /// </summary>
-        /// <param name="slicer"> The Planar 2D Slicer instance to duplicate. </param>
+        /// <param name="slicer"> The Closed Planar 3D Slicer instance to duplicate. </param>
         public ClosedPlanar3DSlicer(ClosedPlanar3DSlicer slicer)
         {
             _mesh = slicer.Mesh.DuplicateMesh();
@@ -114,48 +114,48 @@ namespace SaladSlicer.Slicers
         }
 
         /// <summary>
-        /// Returns an exact duplicate of this Planar 3D Slicer instance.
+        /// Returns an exact duplicate of this Closed Planar 3D Slicer instance.
         /// </summary>
-        /// <returns> The exact duplicate of this Planar 3D Slicer instance. </returns>
+        /// <returns> The exact duplicate of this Closed Planar 3D Slicer instance. </returns>
         public ClosedPlanar3DSlicer Duplicate()
         {
             return new ClosedPlanar3DSlicer(this);
         }
 
         /// <summary>
-        /// Returns an exact duplicate of this Planar 3D Slicer instance as an IProgram.
+        /// Returns an exact duplicate of this Closed Planar 3D Slicer instance as an IProgram.
         /// </summary>
-        /// <returns> The exact duplicate of this Planar 3D Slicer instance as an IProgram. </returns>
+        /// <returns> The exact duplicate of this Closed Planar 3D Slicer instance as an IProgram. </returns>
         public IProgram DuplicateProgramObject()
         {
-            return this.Duplicate() as IProgram;
+            return this.Duplicate();
         }
 
         /// <summary>
-        /// Returns an exact duplicate of this Planar 3D Slicer instance as an ISlicer.
+        /// Returns an exact duplicate of this Closed Planar 3D Slicer instance as an ISlicer.
         /// </summary>
-        /// <returns> The exact duplicate of this Planar 3D Slicer instance as an ISlicer. </returns>
+        /// <returns> The exact duplicate of this Closed Planar 3D Slicer instance as an ISlicer. </returns>
         public ISlicer DuplicateSlicerObject()
         {
-            return this.Duplicate() as ISlicer;
+            return this.Duplicate();
         }
 
         /// <summary>
-        /// Returns an exact duplicate of this Planar 3D Slicer instance as an IGeometry.
+        /// Returns an exact duplicate of this Closed Planar 3D Slicer instance as an IGeometry.
         /// </summary>
-        /// <returns> The exact duplicate of this Planar 3D Slicer instance as an IGeometry. </returns>
+        /// <returns> The exact duplicate of this Closed Planar 3D Slicer instance as an IGeometry. </returns>
         public IGeometry DuplicateGeometryObject()
         {
-            return this.Duplicate() as IGeometry;
+            return this.Duplicate();
         }
 
         /// <summary>
-        /// Returns an exact duplicate of this Planar 3D Slicer instance as an IAddVariable
+        /// Returns an exact duplicate of this Closed Planar 3D Slicer instance as an IAddVariable
         /// </summary>
-        /// <returns> The exact duplicate of this Planar 3D Slicer instance as an IAddVariable. </returns>
+        /// <returns> The exact duplicate of this Closed Planar 3D Slicer instance as an IAddVariable. </returns>
         public IAddVariable DuplicateAddVariableObject()
         {
-            return this.Duplicate() as IAddVariable;
+            return this.Duplicate();
         }
         #endregion
 
@@ -281,6 +281,7 @@ namespace SaladSlicer.Slicers
         {
             _framesByLayer.Clear();
             _addedVariable.Add(new List<List<double>>());
+            
             for (int i = 0; i < _contours.Count; i++)
             {
                 _framesByLayer.Add(new List<Plane>() { });
@@ -358,11 +359,14 @@ namespace SaladSlicer.Slicers
             {
                 programGenerator.Program.Add(" ");
                 programGenerator.Program.Add($"; LAYER {i + 1:0}");
+                
                 List<List<double>> addedVariable2 = new List<List<double>>();
+                
                 for (int k = 0; k < _addedVariable.Count; k++)
                 {
                     addedVariable2.Add(_addedVariable[k][i]);
                 }
+                
                 programGenerator.AddCoordinates(_framesByLayer[i], _prefix, addedVariable2);
             }
 
@@ -378,6 +382,7 @@ namespace SaladSlicer.Slicers
         public void AddVariable(string prefix, List<List<double>> values)
         {
             _prefix.Add(prefix);
+            
             if (_addedVariable[0][0].Count < 1)
             {
                 _addedVariable[0] = values;
@@ -432,10 +437,12 @@ namespace SaladSlicer.Slicers
         public List<List<double>> GetDistancesAlongContours()
         {
             List<List<double>> distances = new List<List<double>>();
+            
             for (int i = 0; i < _framesByLayer.Count; i++)
             {
-                double distance = 0;
                 List<double> distancesTemp = new List<double>();
+                double distance = 0;
+
                 for (int j = 0; j < _framesByLayer[i].Count; j++)
                 {
                     if (j == 0)
@@ -449,8 +456,10 @@ namespace SaladSlicer.Slicers
                         distancesTemp.Add(distance);
                     }
                 }
+
                 distances.Add(distancesTemp);
             }
+            
             return distances;
         }
 
@@ -462,9 +471,11 @@ namespace SaladSlicer.Slicers
         public List<List<double>> GetDistanceToPreviousLayer(Plane plane)
         {
             List<List<double>> distances = new List<List<double>>();
+            
             for (int i = 0; i < _framesByLayer.Count; i++)
             {
                 List<double> distancesTemp = new List<double>();
+                
                 for (int j = 0; j < _framesByLayer[i].Count; j++)
                 {
                     Point3d point = _framesByLayer[i][j].Origin;
@@ -479,8 +490,10 @@ namespace SaladSlicer.Slicers
                         distancesTemp.Add(point.DistanceTo(_contours[i - 1].PointAt(parameter)));
                     }
                 }
+                
                 distances.Add(distancesTemp);
             }
+            
             return distances;
         }
         
@@ -519,6 +532,7 @@ namespace SaladSlicer.Slicers
             {
                 length += _path[i].GetLength();
             }
+
             return length;
         }
 

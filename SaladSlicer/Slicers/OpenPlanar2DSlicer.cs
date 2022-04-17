@@ -18,7 +18,7 @@ using SaladSlicer.Interfaces;
 namespace SaladSlicer.Slicers
 {
     /// <summary>
-    /// Represents the Planar 2D Slicer class.
+    /// Represents the Open Planar 2D Slicer class.
     /// </summary>
     public class OpenPlanar2DSlicer : IProgram, ISlicer, IGeometry, IAddVariable
     {
@@ -73,7 +73,7 @@ namespace SaladSlicer.Slicers
         }
 
         /// <summary>
-        /// Initializes a new instance of the Open Planar 2D Slicer class by duplicating an existing Planar 2D Slicer instance. 
+        /// Initializes a new instance of the Open Planar 2D Slicer class by duplicating an existing Open Planar 2D Slicer instance. 
         /// </summary>
         /// <param name="slicer"> The Open Planar 2D Slicer instance to duplicate. </param>
         public OpenPlanar2DSlicer(OpenPlanar2DSlicer slicer)
@@ -109,7 +109,7 @@ namespace SaladSlicer.Slicers
         /// <returns> The exact duplicate of this Open Planar 2D Slicer instance as an IProgram. </returns>
         public IProgram DuplicateProgramObject()
         {
-            return this.Duplicate() as IProgram;
+            return this.Duplicate();
         }
 
         /// <summary>
@@ -118,7 +118,7 @@ namespace SaladSlicer.Slicers
         /// <returns> The exact duplicate of this Open Planar 2D Slicer instance as an ISlicer. </returns>
         public ISlicer DuplicateSlicerObject()
         {
-            return this.Duplicate() as ISlicer;
+            return this.Duplicate();
         }
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace SaladSlicer.Slicers
         /// <returns> The exact duplicate of this Open Planar 2D Slicer instance as an IGeometry. </returns>
         public IGeometry DuplicateGeometryObject()
         {
-            return this.Duplicate() as IGeometry;
+            return this.Duplicate();
         }
 
         /// <summary>
@@ -136,7 +136,7 @@ namespace SaladSlicer.Slicers
         /// <returns> The exact duplicate of this Open Planar 2D Slicer instance as an IAddVariable. </returns>
         public IAddVariable DuplicateAddVariableObject()
         {
-            return this.Duplicate() as IAddVariable;
+            return this.Duplicate();
         }
         #endregion
 
@@ -195,6 +195,7 @@ namespace SaladSlicer.Slicers
             _framesByLayer.Clear();
             _contours = Curves.AlternateCurves(_contours);
             _addedVariable.Add(new List<List<double>>());
+            
             for (int i = 0; i < _contours.Count; i++)
             {
                 _framesByLayer.Add(Geometry.Frames.GetFramesByDistanceAndSegment(_contours[i], _distance, true, true));
@@ -205,6 +206,7 @@ namespace SaladSlicer.Slicers
             {
                 _framesByLayer[i].Reverse();
             }
+            
             _contours = Curves.AlternateCurves(_contours);
         }
 
@@ -274,7 +276,7 @@ namespace SaladSlicer.Slicers
                     }
                 }
             }
-            else if(programType==1)
+            else if (programType == 1)
             {
                 for (int i = 0; i < _framesByLayer.Count; i++)
                 {
@@ -301,9 +303,11 @@ namespace SaladSlicer.Slicers
         public List<List<double>> GetDistanceToPreviousLayer(Plane plane)
         {
             List<List<double>> distances = new List<List<double>>();
+            
             for (int i = 0; i < _framesByLayer.Count; i++)
             {
                 List<double> distancesTemp = new List<double>();
+                
                 for (int j = 0; j < _framesByLayer[i].Count; j++)
                 {
                     Point3d point = _framesByLayer[i][j].Origin;
@@ -318,6 +322,7 @@ namespace SaladSlicer.Slicers
                         distancesTemp.Add(point.DistanceTo(_contours[i - 1].PointAt(parameter)));
                     }
                 }
+                
                 distances.Add(distancesTemp);
             }
             return distances;
@@ -331,6 +336,7 @@ namespace SaladSlicer.Slicers
         public void AddVariable(string prefix, List<List<double>> values)
         {
             _prefix.Add(prefix);
+            
             if (_addedVariable[0][0].Count < 1)
             {
                 _addedVariable[0] = values;
@@ -395,12 +401,13 @@ namespace SaladSlicer.Slicers
         /// <returns> List with distances. </returns>
         public List<List<double>> GetDistancesAlongContours()
         {
-
             List<List<double>> distances = new List<List<double>>();
+            
             for (int i = 0; i < _framesByLayer.Count; i++)
             {
-                double distance = 0;
                 List<double> distancesTemp = new List<double>();
+                double distance = 0;
+
                 for (int j = 0; j < _framesByLayer[i].Count; j++)
                 {
                     if (j == 0)
@@ -414,8 +421,10 @@ namespace SaladSlicer.Slicers
                         distancesTemp.Add(distance);
                     }
                 }
+
                 distances.Add(distancesTemp);
             }
+
             return distances;
         }
         
@@ -454,6 +463,7 @@ namespace SaladSlicer.Slicers
             {
                 length += _path[i].GetLength();
             }
+
             return length;
         }
 
