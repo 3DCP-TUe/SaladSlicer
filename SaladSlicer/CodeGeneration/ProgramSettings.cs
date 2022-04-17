@@ -93,7 +93,10 @@ namespace SaladSlicer.CodeGeneration
             if (_programType == 0)
             {
                 programGenerator.Program.Add("; G-Code flavor: Sinumerik");
+                programGenerator.Program.Add("G500; Zero frame");
+                programGenerator.Program.Add("SPCON; Position-controlled spindle ON");
                 programGenerator.Program.Add("G90; Absolute coordinates ");
+                programGenerator.Program.Add("G1 C0 F10000; Moves the C-axis to the zero position");
             }
             else if(_programType == 1)
             {
