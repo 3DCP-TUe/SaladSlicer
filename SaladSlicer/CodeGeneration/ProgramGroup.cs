@@ -43,12 +43,17 @@ namespace SaladSlicer.CodeGeneration
         }
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the Program Group class by duplicating an existing Program Group instance.
         /// </summary>
-        /// <param name="group"></param>
+        /// <param name="group"> The Program Group instance to duplicate. </param>
         public ProgramGroup(ProgramGroup group)
         {
-            _objects = group.Objects; // TODO: Deep copy..
+            _objects = new List<IProgram>() { };
+
+            for (int i = 0; i < group.Objects.Count; i++)
+            {
+                _objects.Add(group.Objects[i].DuplicateProgramObject());
+            }
         }
 
         /// <summary>
