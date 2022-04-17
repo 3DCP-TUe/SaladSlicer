@@ -63,6 +63,7 @@
     <Compile Include="Enumerations\Enumerations.cs" />
     <Compile Include="Geometry\Seams\Transitions.cs" />
     <Compile Include="Geometry\Seams\Locations.cs" />
+    <Compile Include="Slicers\OpenPlanar3DSlicer.cs" />
     <Compile Include="Slicers\CurvesTransitionsSlicer.cs" />
     <Compile Include="Slicers\OpenPlanar2DSlicer.cs" />
     <Compile Include="Slicers\CurveSlicer.cs" />
