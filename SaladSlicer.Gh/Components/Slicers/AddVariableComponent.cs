@@ -52,7 +52,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddGenericParameter("Slicer Object", "SO", "Slicer Object to which the axis is added", GH_ParamAccess.item);
+            pManager.AddGenericParameter("Slicer Object", "SO", "Slicer Object to which the axis is added.", GH_ParamAccess.item);
         }
 
         /// <summary>

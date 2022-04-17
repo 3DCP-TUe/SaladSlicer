@@ -27,7 +27,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         public ClosedPlanar3DSlicerComponent()
           : base("Closed Planar 3D Slicer", // Component name
               "CP3D", // Component nickname
-              "Defines a slicer object for a closed 3D object.", // Description
+              "Defines a slicer object for a closed planar 3D object.", // Description
               "Salad Slicer", // Category
               "Slicers") // Subcategory
         {
@@ -120,7 +120,6 @@ namespace SaladSlicer.Gh.Components.Slicers
         public override Guid ComponentGuid
         {
             get { return new Guid("09714934-F519-444F-B402-24DF3EF8DB22"); }
-          
         }
     }
 }

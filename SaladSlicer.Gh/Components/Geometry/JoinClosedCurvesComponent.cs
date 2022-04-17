@@ -46,7 +46,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddCurveParameter("Curves", "C", "List of curves", GH_ParamAccess.list);
-            pManager.AddIntegerParameter("Connection type", "T", "Sets the type of connection [0 = Linear,1 = Bezier]", GH_ParamAccess.item);
+            pManager.AddIntegerParameter("Transition type", "T", "Sets the type of connection [0 = Linear, 1 = Bezier, 3 = Interpolated]", GH_ParamAccess.item);
             pManager.AddNumberParameter("Changelength", "L", "Sets the length over which to connect to the next layer", GH_ParamAccess.item, 100);
         }
 
