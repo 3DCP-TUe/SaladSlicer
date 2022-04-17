@@ -194,12 +194,12 @@ namespace SaladSlicer.Slicers
         {
             _framesByLayer.Clear();
             _contours = Curves.AlternateCurves(_contours);
-            _addedVariable.Add(new List<List<double>>());
-            
+            //_addedVariable.Add(new List<List<double>>());  // Why? 
+
             for (int i = 0; i < _contours.Count; i++)
             {
                 _framesByLayer.Add(Geometry.Frames.GetFramesByDistanceAndSegment(_contours[i], _distance, true, true));
-                _addedVariable[0].Add(new List<double>());
+                //_addedVariable[0].Add(new List<double>()); // Why? 
             }
 
             for (int i = 1; i < _framesByLayer.Count; i += 2)
@@ -282,50 +282,20 @@ namespace SaladSlicer.Slicers
                 {
                     programGenerator.Program.Add(" ");
                     programGenerator.Program.Add($"; LAYER {i + 1:0}, {_framesByLayer[i].Count} Points");
+                    
                     List<List<double>> addedVariable2 = new List<List<double>>();
+                    
                     for (int k = 0; k < _addedVariable.Count; k++)
                     {
                         addedVariable2.Add(_addedVariable[k][i]);
                     }
+                    
                     programGenerator.AddCoordinates(_framesByLayer[i], _prefix, addedVariable2);
                 }
             }
 
             // End
             programGenerator.AddFooter();
-        }
-
-        /// <summary>
-        /// Calculates the distance between every frame and the closest point on the previous layer.
-        /// </summary>
-        /// <param name="plane">Plane to calculate closest point to for the first layer</param>
-        /// <returns></returns>
-        public List<List<double>> GetDistanceToPreviousLayer(Plane plane)
-        {
-            List<List<double>> distances = new List<List<double>>();
-            
-            for (int i = 0; i < _framesByLayer.Count; i++)
-            {
-                List<double> distancesTemp = new List<double>();
-                
-                for (int j = 0; j < _framesByLayer[i].Count; j++)
-                {
-                    Point3d point = _framesByLayer[i][j].Origin;
-                    if (i == 0)
-                    {
-                        Point3d point2 = plane.ClosestPoint(point);
-                        distancesTemp.Add(point.DistanceTo(point2));
-                    }
-                    else
-                    {
-                        _contours[i - 1].ClosestPoint(point, out double parameter);
-                        distancesTemp.Add(point.DistanceTo(_contours[i - 1].PointAt(parameter)));
-                    }
-                }
-                
-                distances.Add(distancesTemp);
-            }
-            return distances;
         }
 
         /// <summary>
@@ -427,7 +397,67 @@ namespace SaladSlicer.Slicers
 
             return distances;
         }
-        
+
+        /// <summary>
+        /// Returns distance of every frame to the previous layer
+        /// </summary>
+        /// <param name="plane"> Plane to calculate the closest distance to for the first layer. </param>
+        /// <param name="dx"> Distance in x-direction. </param>
+        /// <param name="dy"> Distance in y-direction.</param>
+        /// <param name="dz"> Distance in z-direction.</param>
+        /// <returns> List with distaces. </returns>
+        public List<List<double>> GetDistanceToPreviousLayer(Plane plane, out List<List<double>> dx, out List<List<double>> dy, out List<List<double>> dz)
+        {
+            List<List<double>> distances = new List<List<double>>();
+
+            dx = new List<List<double>>();
+            dy = new List<List<double>>();
+            dz = new List<List<double>>();
+
+            for (int i = 0; i < _framesByLayer.Count; i++)
+            {
+                List<double> temp = new List<double>();
+                List<double> tempx = new List<double>();
+                List<double> tempy = new List<double>();
+                List<double> tempz = new List<double>();
+
+                if (i == 0)
+                {
+                    for (int j = 0; j < _framesByLayer[i].Count; j++)
+                    {
+                        Point3d point = _framesByLayer[i][j].Origin;
+                        Point3d closestPoint = plane.ClosestPoint(point);
+
+                        temp.Add(point.DistanceTo(closestPoint));
+                        tempx.Add(Math.Abs(point.X - closestPoint.X));
+                        tempy.Add(Math.Abs(point.Y - closestPoint.Y));
+                        tempz.Add(Math.Abs(point.Z - closestPoint.Z));
+                    }
+                }
+                else
+                {
+                    for (int j = 0; j < _framesByLayer[i].Count; j++)
+                    {
+                        Point3d point = _framesByLayer[i][j].Origin;
+                        _contours[i - 1].ClosestPoint(point, out double parameter);
+                        Point3d closestPoint = _contours[i - 1].PointAt(parameter); //TODO: This goes wrong at transitions!
+
+                        temp.Add(point.DistanceTo(closestPoint));
+                        tempx.Add(Math.Abs(point.X - closestPoint.X));
+                        tempy.Add(Math.Abs(point.Y - closestPoint.Y));
+                        tempz.Add(Math.Abs(point.Z - closestPoint.Z));
+                    }
+                }
+
+                distances.Add(temp);
+                dx.Add(tempx);
+                dy.Add(tempy);
+                dz.Add(tempz);
+            }
+
+            return distances;
+        }
+
         /// Returns a list with curvatures of the path at the frame location.
         /// </summary>
         /// <returns> The list with curvatures. </returns>

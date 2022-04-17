@@ -9,8 +9,6 @@ using System.Collections.Generic;
 using Rhino.Geometry;
 // Grasshopper Libs
 using Grasshopper.Kernel;
-using Grasshopper.Kernel.Types;
-using Grasshopper.Kernel.Data;
 // Salad Slicer Libs
 using SaladSlicer.Slicers;
 using SaladSlicer.Gh.Parameters.Slicers;
@@ -30,7 +28,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         public GetDistanceToPreviousLayerComponent()
           : base("Get Distances To Previous Contours", // Component name
               "DPC", // Component nickname
-              "Gets the distance of every frame to previous contour", // Description
+              "Gets the distance of every frame to previous contour.", // Description
               "Salad Slicer", // Category
               "Slicers") // Subcategory
         {
@@ -42,7 +40,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             pManager.AddParameter(new Param_SlicerObject(), "Slicer Object", "SO", "Slicer object.", GH_ParamAccess.item);
-            pManager.AddPlaneParameter("Plane", "P", "Plane (printbed) to calculate distance to for frames in the first layer.", GH_ParamAccess.item);
+            pManager.AddPlaneParameter("Plane", "P", "Plane (printbed) to calculate distance to for the frames in the first layer.", GH_ParamAccess.item, Plane.WorldXY);
         }
 
         /// <summary>
@@ -50,7 +48,10 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddNumberParameter("Distances", "D", "List of distances", GH_ParamAccess.tree);
+            pManager.AddNumberParameter("Distances", "D", "List of distances.", GH_ParamAccess.tree);
+            pManager.AddNumberParameter("Delta X", "X", "List of distances in x-direction.", GH_ParamAccess.tree);
+            pManager.AddNumberParameter("Delta Y", "Y", "List of distances in y-direction.", GH_ParamAccess.tree);
+            pManager.AddNumberParameter("Delta Z", "Z", "List of distances in z-direction.", GH_ParamAccess.tree);
         }
 
         /// <summary>
@@ -67,10 +68,15 @@ namespace SaladSlicer.Gh.Components.Slicers
             if (!DA.GetData(0, ref slicer)) return;
             if (!DA.GetData(1, ref plane)) return;
 
-            // Assign the output parameters
-            DA.SetDataTree(0, HelperMethods.ListInListToDataTree(slicer.GetDistanceToPreviousLayer(plane)));
-        }
+            // Output
+            List<List<double>> dist = slicer.GetDistanceToPreviousLayer(plane, out List<List<double>> dx, out List<List<double>> dy, out List<List<double>> dz);
 
+            // Assign the output parameters
+            DA.SetDataTree(0, HelperMethods.ListInListToDataTree(dist));
+            DA.SetDataTree(1, HelperMethods.ListInListToDataTree(dx));
+            DA.SetDataTree(2, HelperMethods.ListInListToDataTree(dy));
+            DA.SetDataTree(3, HelperMethods.ListInListToDataTree(dz));
+        }
 
         /// <summary>
         /// Gets the exposure of this object in the Graphical User Interface.
