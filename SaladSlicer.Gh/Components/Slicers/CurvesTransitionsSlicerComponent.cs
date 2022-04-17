@@ -38,8 +38,8 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddCurveParameter("Trimmed Curves", "TC", "List of curves with length n.", GH_ParamAccess.list);
-            pManager.AddCurveParameter("Connections", "Co", "List of connections with length n-1.", GH_ParamAccess.list);
+            pManager.AddCurveParameter("Contours", "C", "List of curves with length n.", GH_ParamAccess.list);
+            pManager.AddCurveParameter("Transitions", "T", "List of connections with length n-1.", GH_ParamAccess.list);
             pManager.AddNumberParameter("Distance", "D", "Distance between frames as a Number", GH_ParamAccess.item, 20.0);
         }
 
@@ -48,7 +48,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddGenericParameter("Slicer Object", "SO", "Sliced curves and transitions as a Slicer Object.", GH_ParamAccess.item);
+            pManager.AddParameter(new Param_CurvesTransitionsSlicer(), "Slicer Object", "SO", "Sliced curves and transitions as a program object.", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -69,6 +69,7 @@ namespace SaladSlicer.Gh.Components.Slicers
 
             // Check input values
             if (distance <= 0.0) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "The distance between two frames cannot be smaller than or equal to zero."); }
+            if (contours.Count - 1 != transitions.Count) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "The number of defined transitions does not match with the number of contours."); }
 
             // Create the slicer object
             CurvesTransitionsSlicer slicer = new CurvesTransitionsSlicer(contours, transitions, distance);
