@@ -3,6 +3,8 @@
 // Free Software Foundation. For more information and the LICENSE file, 
 // see <https://github.com/3DCP-TUe/SaladSlicer>.
 
+// System Libs
+using System.Collections.Generic;
 // Grasshopper Libs
 using Grasshopper.Kernel.Types;
 // Salad Slicer Libs
@@ -138,6 +140,38 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
             {
                 this.Value = source as ProgramGroup;
                 return true;
+            }
+
+            // Cast from Geometry Group Goo
+            if (typeof(GH_GeometryGroup).IsAssignableFrom(source.GetType()))
+            {
+                GH_GeometryGroup groupGoo = source as GH_GeometryGroup;
+                List<IGH_GeometricGoo> goos = groupGoo.Objects;
+                List<IProgram> programObjects= new List<IProgram>() { };
+                bool nonProgram = false;
+
+                for (int i = 0; i < goos.Count; i++)
+                {
+                    if (goos[i] is GH_GeometricGoo<IProgram> geometricGoo)
+                    {
+                        programObjects.Add(geometricGoo.Value);
+                    }
+                    else if (goos[i] is GH_Goo<IProgram> goo)
+                    {
+                        programObjects.Add(goo.Value);
+                    }
+                    else
+                    {
+                        nonProgram= true;
+                        break;
+                    }
+                }
+
+                if (nonProgram == false)
+                {
+                    Value = new ProgramGroup(programObjects);
+                    return true;
+                }
             }
 
             // Invalid cast
