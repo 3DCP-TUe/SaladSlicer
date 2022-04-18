@@ -37,7 +37,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
-            pManager.AddParameter(new Param_SlicerObject(), "S;icer Object", "PO", "Slicer object.", GH_ParamAccess.item);
+            pManager.AddParameter(new Param_SlicerObject(), "Slicer Object", "SO", "Slicer object.", GH_ParamAccess.item);
         }
 
         /// <summary>
