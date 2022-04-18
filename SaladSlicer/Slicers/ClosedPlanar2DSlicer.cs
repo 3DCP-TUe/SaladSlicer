@@ -207,12 +207,12 @@ namespace SaladSlicer.Slicers
         private void CreateFrames()
         {
             _framesByLayer.Clear();
-            //_addedVariable.Add(new List<List<double>>()); // Why? 
+            _addedVariable.Add(new List<List<double>>()); // Why? 
 
             for (int i = 0; i < _contours.Count; i++)
             {
                 _framesByLayer.Add(new List<Plane>() { });
-                //_addedVariable[0].Add(new List<double>()); // Why? 
+                _addedVariable[0].Add(new List<double>()); // Why? 
             }
 
             for (int i = 0; i < _contours.Count; i++)

@@ -134,7 +134,7 @@ namespace SaladSlicer.Slicers
         {
             _frames.Clear();
             _frames = Geometry.Frames.GetFramesByDistanceAndSegment(_curve, _distance, true, true);
-            //_addedVariable.Add(new List<double>()); // Why? 
+            _addedVariable.Add(new List<double>()); // Why? 
         }
 
 

@@ -265,12 +265,12 @@ namespace SaladSlicer.Slicers
         {
             _framesByLayer.Clear();
             _contours = Curves.AlternateCurves(_contours);
-            // _addedVariable.Add(new List<List<double>>());
+            _addedVariable.Add(new List<List<double>>()); // Why?
 
             for (int i = 0; i < _contours.Count; i++)
             {
                 _framesByLayer.Add(Geometry.Frames.GetFramesByDistanceAndSegment(_contours[i], _distance, true, true));
-                // _addedVariable[0].Add(new List<double>());
+                _addedVariable[0].Add(new List<double>()); // Why?
             }
 
             for (int i = 1; i < _framesByLayer.Count; i += 2)
