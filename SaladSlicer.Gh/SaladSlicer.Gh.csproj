@@ -67,11 +67,11 @@
     <Compile Include="Components\CodeGeneration\ProgramSettingsComponent.cs" />
     <Compile Include="Components\CodeGeneration\SetTemperatureComponent.cs" />
     <Compile Include="Components\CodeGeneration\UnGroupProgramObjectsComponent.cs" />
-    <Compile Include="Components\Deconstruct\DeconstructClosedPlaner2DSlicerComponent.cs" />
-    <Compile Include="Components\Deconstruct\DeconstructClosedPlaner3DSlicerComponent.cs" />
+    <Compile Include="Components\Deconstruct\DeconstructClosedPlanar2DSlicerComponent.cs" />
+    <Compile Include="Components\Deconstruct\DeconstructClosedPlanar3DSlicerComponent.cs" />
     <Compile Include="Components\Deconstruct\DeconstructCurvesTransitionsSlicerComponent.cs" />
     <Compile Include="Components\Deconstruct\DeconstructCurveSlicerComponent.cs" />
-    <Compile Include="Components\Deconstruct\DeconstructOpenPlaner2DSlicerComponent.cs" />
+    <Compile Include="Components\Deconstruct\DeconstructOpenPlanar2DSlicerComponent.cs" />
     <Compile Include="Components\Geometry\AlignCurvesComponent.cs" />
     <Compile Include="Components\Geometry\AlignSeamsAlongCurveComponentcs.cs" />
     <Compile Include="Components\Geometry\AlignSeamsByClosestPointComponent.cs" />
