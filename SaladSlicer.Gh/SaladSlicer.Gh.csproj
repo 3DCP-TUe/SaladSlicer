@@ -69,6 +69,7 @@
     <Compile Include="Components\CodeGeneration\UnGroupProgramObjectsComponent.cs" />
     <Compile Include="Components\Deconstruct\DeconstructClosedPlaner2DSlicerComponent.cs" />
     <Compile Include="Components\Deconstruct\DeconstructClosedPlaner3DSlicerComponent.cs" />
+    <Compile Include="Components\Deconstruct\DeconstructCurvesTransitionsSlicerComponent.cs" />
     <Compile Include="Components\Deconstruct\DeconstructCurveSlicerComponent.cs" />
     <Compile Include="Components\Deconstruct\DeconstructOpenPlaner2DSlicerComponent.cs" />
     <Compile Include="Components\Geometry\AlignCurvesComponent.cs" />
