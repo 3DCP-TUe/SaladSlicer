@@ -90,8 +90,9 @@ namespace SaladSlicer.Slicers
             {
                 _framesByLayer.Add(new List<Plane>(slicer.FramesByLayer[i]));
             }
-            _prefix = slicer.Prefix;
-            _addedVariable = slicer.AddedVariable;
+
+            _prefix = slicer.Prefix; // TODO: check if this is a deep copy? slicer.Prefix.ConvertAll(item => item.Clone() as string)? 
+            _addedVariable = slicer.AddedVariable; // TODO: check if this is a deep copy?
         }
 
         /// <summary>
@@ -194,12 +195,12 @@ namespace SaladSlicer.Slicers
         {
             _framesByLayer.Clear();
             _contours = Curves.AlternateCurves(_contours);
-            _addedVariable.Add(new List<List<double>>());  // Why? 
+            //_addedVariable.Add(new List<List<double>>());  // Why? 
 
             for (int i = 0; i < _contours.Count; i++)
             {
                 _framesByLayer.Add(Geometry.Frames.GetFramesByDistanceAndSegment(_contours[i], _distance, true, true));
-                _addedVariable[0].Add(new List<double>()); // Why? 
+                //_addedVariable[0].Add(new List<double>()); // Why? 
             }
 
             for (int i = 1; i < _framesByLayer.Count; i += 2)
@@ -267,11 +268,13 @@ namespace SaladSlicer.Slicers
                         else
                         {
                             List<List<double>> addedVariable2 = new List<List<double>>();
+                            
                             for (int k = 0; k < _addedVariable.Count; k++)
                             {
                                 addedVariable2.Add(_addedVariable[k][i]);
                             }
-                            programGenerator.AddCoordinates(_framesByLayer[i], _prefix, addedVariable2);
+                            
+                            programGenerator.AddCoordinates(_framesByLayer[i], _prefix, addedVariable2); // TODO: fix, is in the j loop. Should be outside.
                         }
                     }
                 }
@@ -306,15 +309,7 @@ namespace SaladSlicer.Slicers
         public void AddVariable(string prefix, List<List<double>> values)
         {
             _prefix.Add(prefix);
-            
-            if (_addedVariable[0][0].Count < 1)
-            {
-                _addedVariable[0] = values;
-            }
-            else
-            {
-                _addedVariable.Add(values);
-            }
+            _addedVariable.Add(values);
         }
 
         /// <summary>

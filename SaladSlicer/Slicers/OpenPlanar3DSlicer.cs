@@ -98,8 +98,8 @@ namespace SaladSlicer.Slicers
                 _framesByLayer.Add(new List<Plane>(slicer.FramesByLayer[i]));
             }
 
-            _prefix = slicer.Prefix;
-            _addedVariable = slicer.AddedVariable;
+            _prefix = slicer.Prefix; // TODO: check if this is a deep copy? slicer.Prefix.ConvertAll(item => item.Clone() as string)? 
+            _addedVariable = slicer.AddedVariable; // TODO: check if this is a deep copy?
         }
 
         /// <summary>
@@ -265,12 +265,37 @@ namespace SaladSlicer.Slicers
         {
             _framesByLayer.Clear();
             _contours = Curves.AlternateCurves(_contours);
-            _addedVariable.Add(new List<List<double>>()); // Why?
 
             for (int i = 0; i < _contours.Count; i++)
             {
-                _framesByLayer.Add(Geometry.Frames.GetFramesByDistanceAndSegment(_contours[i], _distance, true, true));
-                _addedVariable[0].Add(new List<double>()); // Why?
+                _framesByLayer.Add(new List<Plane>() { });
+            }
+
+            for (int i = 0; i < _contours.Count; i++)
+            {
+                int n = (int)(_path[i * 2].GetLength() / _distance);
+                n = Math.Max(2, n);
+                double[] t = _path[i * 2].DivideByCount(n, true);
+
+                for (int j = 0; j != t.Length; j++)
+                {
+                    Point3d point = _path[i * 2].PointAt(t[j]);
+
+                    MeshPoint meshPoint = _mesh.ClosestMeshPoint(point, 100.0);
+                    Vector3d meshNormal = _mesh.NormalAt(meshPoint);
+
+                    Vector3d x = _path[i * 2].TangentAt(t[j]);
+                    Vector3d y = Vector3d.CrossProduct(x, new Vector3d(0, 0, 1));
+
+                    double angle1 = Vector3d.VectorAngle(y, meshNormal);
+                    double angle2 = Vector3d.VectorAngle(y, -meshNormal);
+
+                    if (angle1 < angle2) { y = meshNormal; }
+                    else { y = -meshNormal; }
+
+                    Plane plane = new Plane(point, x, y);
+                    _framesByLayer[i].Add(plane);
+                }
             }
 
             for (int i = 1; i < _framesByLayer.Count; i += 2)
@@ -344,7 +369,7 @@ namespace SaladSlicer.Slicers
                                 addedVariable2.Add(_addedVariable[k][i]);
                             }
 
-                            programGenerator.AddCoordinates(_framesByLayer[i], _prefix, addedVariable2);
+                            programGenerator.AddCoordinates(_framesByLayer[i], _prefix, addedVariable2); // TODO: fix, is in the j loop. Should be outside.
                         }
                     }
                 }
@@ -379,15 +404,7 @@ namespace SaladSlicer.Slicers
         public void AddVariable(string prefix, List<List<double>> values)
         {
             _prefix.Add(prefix);
-            
-            if (_addedVariable[0][0].Count < 1)
-            {
-                _addedVariable[0] = values;
-            }
-            else
-            {
-                _addedVariable.Add(values);
-            }
+            _addedVariable.Add(values);
         }
 
         /// <summary>

@@ -96,11 +96,11 @@ namespace SaladSlicer.Slicers
             _distance = slicer.Distance;
             _path = slicer.Path.ConvertAll(curve => curve.DuplicateCurve());
             _contours = slicer.Contours.ConvertAll(curve => curve.DuplicateCurve());
-            _prefix = slicer.Prefix;
-            _addedVariable = slicer.AddedVariable;
+            _prefix = slicer.Prefix; // TODO: check if this is a deep copy? slicer.Prefix.ConvertAll(item => item.Clone() as string)? 
+            _addedVariable = slicer.AddedVariable; // TODO: check if this is a deep copy?
             _framesByLayer = new List<List<Plane>>();
               
-            for (int i = 0; i<slicer.FramesByLayer.Count; i++)
+            for (int i = 0; i < slicer.FramesByLayer.Count; i++)
             {
                 _framesByLayer.Add(new List<Plane>(slicer.FramesByLayer[i]));
             }
@@ -207,12 +207,10 @@ namespace SaladSlicer.Slicers
         private void CreateFrames()
         {
             _framesByLayer.Clear();
-            _addedVariable.Add(new List<List<double>>()); // Why? 
 
             for (int i = 0; i < _contours.Count; i++)
             {
                 _framesByLayer.Add(new List<Plane>() { });
-                _addedVariable[0].Add(new List<double>()); // Why? 
             }
 
             for (int i = 0; i < _contours.Count; i++)
@@ -337,15 +335,7 @@ namespace SaladSlicer.Slicers
         public void AddVariable(string prefix, List<List<double>> values)
         {
             _prefix.Add(prefix);
-            
-            if (_addedVariable[0][0].Count < 1)
-            {
-                _addedVariable[0] = values;
-            }
-            else
-            {
-                _addedVariable.Add(values);
-            }
+            _addedVariable.Add(values);
         }
 
         /// <summary>
