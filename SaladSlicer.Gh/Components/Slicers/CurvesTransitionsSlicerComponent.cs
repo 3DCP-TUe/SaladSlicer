@@ -36,7 +36,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// <summary>
         /// Registers all the input parameters for this component.
         /// </summary>
-        protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
+        protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
             pManager.AddCurveParameter("Contours", "C", "List of curves with length n.", GH_ParamAccess.list);
             pManager.AddCurveParameter("Transitions", "T", "List of connections with length n-1.", GH_ParamAccess.list);
@@ -46,7 +46,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// <summary>
         /// Registers all the output parameters for this component.
         /// </summary>
-        protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
+        protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
             pManager.AddParameter(new Param_CurvesTransitionsSlicer(), "Slicer Object", "SO", "Sliced curves and transitions as a program object.", GH_ParamAccess.item);
         }

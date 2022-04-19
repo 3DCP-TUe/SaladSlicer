@@ -43,7 +43,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// <summary>
         /// Registers all the input parameters for this component.
         /// </summary>
-        protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
+        protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
             pManager.AddCurveParameter("Curves", "C", "List of curves", GH_ParamAccess.list);
             pManager.AddIntegerParameter("Transition type", "T", "Sets the type of connection [0 = Linear, 1 = Bezier, 3 = Interpolated]", GH_ParamAccess.item);
@@ -53,7 +53,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// <summary>
         /// Registers all the output parameters for this component.
         /// </summary>
-        protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
+        protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
             pManager.AddCurveParameter("Joined Curve", "JC", "Joined curve.", GH_ParamAccess.item);
             pManager.AddCurveParameter("Trimmed Curves", "TC", "List of curves between connections.", GH_ParamAccess.list);

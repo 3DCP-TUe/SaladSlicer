@@ -45,7 +45,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// <summary>
         /// Registers all the input parameters for this component.
         /// </summary>
-        protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
+        protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
             pManager.AddGenericParameter("Program Objects", "POs", "List of program object that should be added together.", GH_ParamAccess.list);
         }
@@ -53,7 +53,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// <summary>
         /// Registers all the output parameters for this component.
         /// </summary>
-        protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
+        protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
             pManager.AddGenericParameter("Program Object", "PO", "Merged Program Objects", GH_ParamAccess.item);
         }

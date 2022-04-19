@@ -36,7 +36,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// <summary>
         /// Registers all the input parameters for this component.
         /// </summary>
-        protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
+        protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
             pManager.AddCurveParameter("Curve", "C", "Base contour as a Curve.", GH_ParamAccess.item);
             pManager.AddNumberParameter("Seam Location", "F", "Seam location defined as a normalized length factor of the contour.", GH_ParamAccess.item, 0.0);
@@ -48,7 +48,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// <summary>
         /// Registers all the output parameters for this component.
         /// </summary>
-        protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
+        protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
             pManager.AddParameter(new Param_ClosedPlanar2DSlicer(), "Slicer Object", "SO", "2.5D Slicer object.", GH_ParamAccess.item);
         }

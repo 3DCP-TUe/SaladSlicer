@@ -32,7 +32,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// <summary>
         /// Registers all the input parameters for this component.
         /// </summary>
-        protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
+        protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
             pManager.AddNumberParameter("Hotend", "H", "Hotend Temperature, not used if zero.", GH_ParamAccess.item,180);
             pManager.AddNumberParameter("Bed", "B", "Bed Temperature, not used if zero.", GH_ParamAccess.item, 50);
@@ -41,7 +41,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// <summary>
         /// Registers all the output parameters for this component.
         /// </summary>
-        protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
+        protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
             pManager.AddGenericParameter("Program Object", "PO", "Temperature settings as a Program Object.", GH_ParamAccess.item);
         }

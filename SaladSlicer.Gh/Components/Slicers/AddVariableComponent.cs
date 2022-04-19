@@ -40,17 +40,17 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// <summary>
         /// Registers all the input parameters for this component.
         /// </summary>
-        protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
+        protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
             pManager.AddGenericParameter("Slicer Object", "SO", "Slicer Object to which the variable should be added.", GH_ParamAccess.item);
-            pManager.AddTextParameter("Prefix", "P", "Prefix.", GH_ParamAccess.item,"E");
+            pManager.AddTextParameter("Prefix", "P", "Prefix.", GH_ParamAccess.item);
             pManager.AddNumberParameter("Values", "V", "Values of the axis to be added. Should have equal size as the frames in the object.", GH_ParamAccess.tree);
         }
 
         /// <summary>
         /// Registers all the output parameters for this component.
         /// </summary>
-        protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
+        protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
             pManager.AddGenericParameter("Slicer Object", "SO", "Slicer Object to which the axis is added.", GH_ParamAccess.item);
         }
@@ -62,31 +62,35 @@ namespace SaladSlicer.Gh.Components.Slicers
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             // Declare variable of input parameters
-            IAddVariable slicerObject = new CurveSlicer();
+            IAddVariable slicer = new CurveSlicer();
             string prefix = "";
             List<List<double>> values = new List<List<double>>();
 
             // Access the input parameters individually. 
-            if (!DA.GetData(0, ref slicerObject)) return;
+            if (!DA.GetData(0, ref slicer)) return;
             if (!DA.GetData(1, ref prefix)) return;
             if (!DA.GetDataTree(2, out GH_Structure<GH_Number> tree)) return;
 
             // Create the code line
-            IAddVariable newSlicerObject = slicerObject.DuplicateAddVariableObject();
-            for (int i = 0; i<tree.PathCount; i++)
+            IAddVariable slicerCopy = slicer.DuplicateAddVariableObject();
+            
+            for (int i = 0; i < tree.PathCount; i++)
             {
                 List<double> valueTemp = new List<double>();
                 GH_Path path = tree.get_Path(i);
                 List<GH_Number> branch = (List<GH_Number>)tree.get_Branch(path);
+                
                 for (int j =0; j < branch.Count; j++)
                 {
                     valueTemp.Add(branch[j].Value);
                 }
+                
                 values.Add(valueTemp);
             }
+            
             try
             {
-                newSlicerObject.AddVariable(prefix, values);
+                slicerCopy.AddVariable(prefix, values);
             }
             catch (WarningException warning)
             {
@@ -98,7 +102,7 @@ namespace SaladSlicer.Gh.Components.Slicers
             }
 
             // Assign the output parameters
-            DA.SetData(0, newSlicerObject);
+            DA.SetData(0, slicerCopy);
         }
 
         /// <summary>
