@@ -90,16 +90,14 @@ namespace SaladSlicer.Slicers
             _path = slicer.Path.ConvertAll(curve => curve.DuplicateCurve());
             _contours = slicer.Contours.ConvertAll(curve => curve.DuplicateCurve());
             _reverse = slicer.Reverse;
-
+            _prefix = slicer.Prefix.ConvertAll(item => item.Clone() as string);
+            _addedVariable = slicer.AddedVariable.ConvertAll(list => list.ConvertAll(item => item));
             _framesByLayer = new List<List<Plane>>();
 
             for (int i = 0; i < slicer.FramesByLayer.Count; i++)
             {
                 _framesByLayer.Add(new List<Plane>(slicer.FramesByLayer[i]));
             }
-
-            _prefix = slicer.Prefix; // TODO: check if this is a deep copy? slicer.Prefix.ConvertAll(item => item.Clone() as string)? 
-            _addedVariable = slicer.AddedVariable; // TODO: check if this is a deep copy?
         }
 
         /// <summary>

@@ -59,8 +59,8 @@ namespace SaladSlicer.Slicers
             _curve = slicer.Curve.DuplicateCurve();
             _distance = slicer.Distance;
             _frames = new List<Plane>(slicer.Frames);
-            _prefix = slicer.Prefix; // TODO: check if this is a deep copy? slicer.Prefix.ConvertAll(item => item.Clone() as string)? 
-            _addedVariable = slicer.AddedVariable[0]; // TODO: check if this is a deep copy?
+            _prefix = slicer.Prefix.ConvertAll(item => item.Clone() as string);
+            _addedVariable = slicer.AddedVariable[0].ConvertAll(item => item);
         }
 
         /// <summary>

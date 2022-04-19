@@ -64,8 +64,8 @@ namespace SaladSlicer.Slicers
             _transitions = slicer.Transitions;
             _distance = slicer.Distance;
             _framesByLayer = slicer.FramesByLayer;
-            _prefix = slicer.Prefix; // TODO: check if this is a deep copy? slicer.Prefix.ConvertAll(item => item.Clone() as string)? 
-            _addedVariable = slicer.AddedVariable; // TODO: check if this is a deep copy?
+            _prefix = slicer.Prefix.ConvertAll(item => item.Clone() as string);
+            _addedVariable = slicer.AddedVariable.ConvertAll(list => list.ConvertAll(item => item)); 
         }
 
         /// <summary>
