@@ -226,55 +226,49 @@ namespace SaladSlicer.Slicers
                     programGenerator.Program.Add(" ");
                     programGenerator.Program.Add($"; LAYER {i + 1:0}");
 
+                    //Add TANGOF for all layers but the first
                     if (i != 0)
                     {
                         programGenerator.Program.Add("TANGOF(C)");
                     }
 
-
-                    for (int j = 0; j < _framesByLayer[i].Count; j++)
+                    //Move 1 point with the TANGOF
+                    Point3d point = _framesByLayer[i][0].Origin;
+                    if (_prefix.Count == 0)
                     {
-                        if (j == 0)
-                        {
-                            Point3d point = _framesByLayer[i][j].Origin;
-                            if (_prefix.Count == 0)
-                            {
-                                programGenerator.Program.Add($"G1 X{point.X:0.###} Y{point.Y:0.###} Z{point.Z:0.###}");
-                            }
-                            else
-                            {
-                                string variablesString = "";
-                                for (int k = 0; k < _prefix.Count; k++)
-                                    {
-                                        variablesString += $" {_prefix[k]}{_addedVariable[k][i][j]:0.###}";
-                                    }
-                                    programGenerator.Program.Add($"G1 X{point.X:0.###} Y{point.Y:0.###} Z{point.Z:0.###}" + variablesString);
-                            }
-
-                            if (i % 2 == 0 & j == 0)
-                            {
-                                programGenerator.Program.Add("TANGON(C, 0)");
-                            }
-                            else if (j == 0)
-                            {
-                                programGenerator.Program.Add("TANGON(C, 180)");
-                            }
-
-                            programGenerator.Program.Add("BSPLINE");
-                            programGenerator.Program.Add("G642");
-                        }
-                        else
-                        {
-                            List<List<double>> addedVariable2 = new List<List<double>>();
-                            
-                            for (int k = 0; k < _addedVariable.Count; k++)
-                            {
-                                addedVariable2.Add(_addedVariable[k][i]);
-                            }
-                            
-                            programGenerator.AddCoordinates(_framesByLayer[i], _prefix, addedVariable2); // TODO: fix, is in the j loop. Should be outside.
-                        }
+                        programGenerator.Program.Add($"G1 X{point.X:0.###} Y{point.Y:0.###} Z{point.Z:0.###}");
                     }
+                    else
+                    {
+                    string variablesString = "";
+                    for (int k = 0; k < _prefix.Count; k++)
+                    {
+                        variablesString += $" {_prefix[k]}{_addedVariable[k][i][0]:0.###}";
+                    }
+                    programGenerator.Program.Add($"G1 X{point.X:0.###} Y{point.Y:0.###} Z{point.Z:0.###}" + variablesString);
+                    }
+                    
+                    //Turn TANGON again
+                    if (i % 2 == 0)
+                    {
+                    programGenerator.Program.Add("TANGON(C, 0)");
+                    }
+                    else
+                    {
+                        programGenerator.Program.Add("TANGON(C, 180)");
+                    }
+                    
+                    programGenerator.Program.Add("BSPLINE");
+                    programGenerator.Program.Add("G642");
+                    
+                    //Add the rest of the frames in the layer
+                    List<List<double>> addedVariable2 = new List<List<double>>();
+                    for (int k = 0; k < _addedVariable.Count; k++)
+                    {
+                        addedVariable2.Add(_addedVariable[k][i]);
+                    }
+
+                    programGenerator.AddCoordinates(_framesByLayer[i], _prefix, addedVariable2);
                 }
             }
             else if (programType == 1)
