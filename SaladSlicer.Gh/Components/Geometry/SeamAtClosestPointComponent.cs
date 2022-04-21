@@ -5,6 +5,7 @@
 
 // System Libs
 using System;
+using System.ComponentModel;
 // Grasshopper Libs
 using Grasshopper.Kernel;
 // Rhino Libs
@@ -72,6 +73,10 @@ namespace SaladSlicer.Gh.Components.Geometry
             try
             {
                 result = Locations.SeamAtClosestPoint(curve, point);
+            }
+            catch (WarningException w)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, w.Message);
             }
             catch (Exception e)
             {

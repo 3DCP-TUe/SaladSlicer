@@ -5,6 +5,7 @@
 
 // System Libs
 using System;
+using System.ComponentModel;
 using System.Collections.Generic;
 //Rhino Libs
 using Rhino.Geometry;
@@ -71,9 +72,23 @@ namespace SaladSlicer.Gh.Components.Slicers
             if (distance <= 0.0) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "The distance between two frames cannot be smaller than or equal to zero."); }
             if (contour.GetLength() < distance) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "The distance between two frames exceeds the length of the base contour."); }
 
+            // Declare the output variables
+            OpenPlanar2DSlicer slicer = new OpenPlanar2DSlicer();
+
             // Create the slicer object
-            OpenPlanar2DSlicer slicer = new OpenPlanar2DSlicer(contour, distance, heights);
-            slicer.Slice();
+            try
+            {
+                slicer = new OpenPlanar2DSlicer(contour, distance, heights);
+                slicer.Slice();
+            }
+            catch (WarningException warning)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, warning.Message);
+            }
+            catch (Exception error)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Error, error.Message);
+            }
 
             // Assign the output parameters
             DA.SetData(0, slicer);

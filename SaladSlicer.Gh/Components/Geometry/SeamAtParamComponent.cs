@@ -5,6 +5,7 @@
 
 // System Libs
 using System;
+using System.ComponentModel;
 // Grasshopper Libs
 using Grasshopper.Kernel;
 // Rhino Libs
@@ -65,13 +66,17 @@ namespace SaladSlicer.Gh.Components.Geometry
             if (!DA.GetData(0, ref curve)) return;
             if (!DA.GetData(1, ref param)) return;
 
-            // Declare the output variable
+            // Declare the output variables
             Curve result = curve;
 
             // Create the new curve
             try
             {
                 result = Locations.SeamAtParam(curve, param);
+            }
+            catch (WarningException w)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, w.Message);
             }
             catch (Exception e)
             {

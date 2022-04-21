@@ -5,6 +5,7 @@
 
 // System Libs
 using System;
+using System.ComponentModel;
 //Rhino Libs
 using Rhino.Geometry;
 // Grasshopper Libs
@@ -67,9 +68,23 @@ namespace SaladSlicer.Gh.Components.Slicers
             if (distance <= 0.0) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "The distance between two frames cannot be smaller than or equal to zero."); }
             if (contour.GetLength() < distance) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "The distance between two frames exceeds the length of the base contour."); }
        
+            // Declare the output variables
+            CurveSlicer slicer = new CurveSlicer();
+            
             // Create the slicer object
-            CurveSlicer slicer = new CurveSlicer(contour, distance);
-            slicer.Slice();
+            try
+            {
+                slicer = new CurveSlicer(contour, distance);
+                slicer.Slice();
+            }
+            catch (WarningException warning)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, warning.Message);
+            }
+            catch (Exception error)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Error, error.Message);
+            }
 
             // Assign the output parameters
             DA.SetData(0, slicer);

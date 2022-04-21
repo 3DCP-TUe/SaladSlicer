@@ -6,6 +6,7 @@
 // System Libs
 using System;
 using System.Drawing;
+using System.ComponentModel;
 using System.Collections.Generic;
 // Grasshopper Libs
 using Grasshopper.Kernel;
@@ -82,28 +83,38 @@ namespace SaladSlicer.Gh.Components.Geometry
 
             // Declare variable of input parameters
             List<Curve> curves = new List<Curve>();
-            List<Curve> curvesCopy = new List<Curve>();
             int type = new int();
-            Curve joinedCurve;
-            List<Curve> transitions=new List<Curve>();
 
             // Access the input parameters individually. 
             if (!DA.GetDataList(0, curves)) return;
             if (!DA.GetData(1, ref type)) return;
 
-            // Create the code line            
-            curvesCopy =curves.ConvertAll(curve => curve.DuplicateCurve());
-            if (type == 0)
+            // Declare the output variables
+            List<Curve> transitions = new List<Curve>();
+            List<Curve> curvesCopy = new List<Curve>();
+            Curve joinedCurve = Line.Unset.ToNurbsCurve();
+
+            // Create the curves         
+            try
             {
-                (joinedCurve,transitions) = Transitions.JoinLinear(curves);
+                curvesCopy = curves.ConvertAll(curve => curve.DuplicateCurve());
+
+                if (type == 0)
+                {
+                    (joinedCurve, transitions) = Transitions.JoinLinear(curves);
+                }
+                else if (type == 1)
+                {
+                    (joinedCurve, transitions) = Transitions.JoinBezier(curves);
+                }
             }
-            else if (type == 1)
+            catch (WarningException w)
             {
-                (joinedCurve, transitions) = Transitions.JoinBezier(curves);
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, w.Message);
             }
-            else
+            catch (Exception e)
             {
-                joinedCurve = Line.Unset.ToNurbsCurve();
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Error, e.Message);
             }
 
             // Assign the output parameters

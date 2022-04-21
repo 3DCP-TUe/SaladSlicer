@@ -5,6 +5,7 @@
 
 // System Libs
 using System;
+using System.ComponentModel;
 using System.Collections.Generic;
 // Grasshopper Libs
 using Grasshopper.Kernel;
@@ -60,8 +61,22 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
             // Access the input parameters individually. 
             if (!DA.GetDataList(0, objects)) return;
 
-            // Create the code line
-            ProgramGroup group = new ProgramGroup(objects);
+            // Declaret the output variables
+            ProgramGroup group = new ProgramGroup();
+
+            // Create the group
+            try
+            {
+                group = new ProgramGroup(objects);
+            }
+            catch (WarningException w)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, w.Message);
+            }
+            catch (Exception e)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Error, e.Message);
+            }
 
             // Assign the output parameters
             DA.SetData(0, group);

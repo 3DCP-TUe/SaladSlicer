@@ -14,8 +14,6 @@ using Grasshopper.Kernel;
 // Salad Slicer Libs
 using SaladSlicer.CodeGeneration;
 using SaladSlicer.Interfaces;
-using SaladSlicer.Enumerations;
-using SaladSlicer.Gh.Utils;
 
 namespace SaladSlicer.Gh.Components.CodeGeneration
 {
@@ -70,7 +68,11 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
 
             // Create the program
             _program.Clear();
+            
+            // Declare the output variables
             ProgramGenerator programGenerator = new ProgramGenerator();
+            
+            // Create the program
             try 
             {
                 _program = programGenerator.CreateProgram(objects); 

@@ -5,7 +5,6 @@
 
 // System Libs
 using System;
-using System.Collections.Generic;
 // Grasshopper Libs
 using Grasshopper.Kernel;
 // Salad Slicer Libs

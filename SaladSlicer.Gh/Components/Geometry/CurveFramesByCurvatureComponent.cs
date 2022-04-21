@@ -5,6 +5,7 @@
 
 // System Libs
 using System;
+using System.ComponentModel;
 using System.Collections.Generic;
 // Grasshopper Libs
 using Grasshopper.Kernel;
@@ -65,8 +66,22 @@ namespace SaladSlicer.Gh.Components.Geometry
             if (!DA.GetData(0, ref curve)) return;
             if (!DA.GetData(1, ref tolerance)) return;
 
+            // Declare the output variables
+            List<Plane> frames = new List<Plane>();
+
             // Create the frames
-            List<Plane> frames = Frames.GetFramesByCurvature(curve, tolerance, true, true);
+            try
+            {
+                frames = Frames.GetFramesByCurvature(curve, tolerance, true, true);
+            }
+            catch (WarningException w)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, w.Message);
+            }
+            catch (Exception e)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Error, e.Message);
+            }
 
             // Assign the output parameters
             DA.SetDataList(0, frames);

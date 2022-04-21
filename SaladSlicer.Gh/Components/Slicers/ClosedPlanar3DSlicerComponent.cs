@@ -5,6 +5,7 @@
 
 // System Libs
 using System;
+using System.ComponentModel;
 using System.Collections.Generic;
 //Rhino Libs
 using Rhino.Geometry;
@@ -81,9 +82,23 @@ namespace SaladSlicer.Gh.Components.Slicers
             if (seamLocation > 1.0) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Parameter value is not in the range of 0 to 1."); }
             if (distance <= 0.0) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "The distance between two frames cannot be smaller than or equal to zero."); }
 
+            // Declare the output variables
+            ClosedPlanar3DSlicer slicer = new ClosedPlanar3DSlicer();
+
             // Create the slicer object
-            ClosedPlanar3DSlicer slicer = new ClosedPlanar3DSlicer(mesh, seamLocation, seamLength, distance, reverse, heights);
-            slicer.Slice();
+            try
+            {
+                slicer = new ClosedPlanar3DSlicer(mesh, seamLocation, seamLength, distance, reverse, heights);
+                slicer.Slice();
+            }
+            catch (WarningException warning)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, warning.Message);
+            }
+            catch (Exception error)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Error, error.Message);
+            }
 
             // Assign the output parameters
             DA.SetData(0, slicer);

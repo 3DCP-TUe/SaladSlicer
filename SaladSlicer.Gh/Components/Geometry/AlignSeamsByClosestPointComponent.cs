@@ -5,6 +5,7 @@
 
 // System Libs
 using System;
+using System.ComponentModel;
 using System.Collections.Generic;
 // Grasshopper Libs
 using Grasshopper.Kernel;
@@ -63,8 +64,22 @@ namespace SaladSlicer.Gh.Components.Geometry
             // Access the input parameters individually. 
             if (!DA.GetDataList(0, curves)) return;
 
+            // Declare the output variables
+            List<Curve> result = new List<Curve>();
+
             // Create the new curves
-            List<Curve> result = Locations.AlignSeamsByClosestPoint(curves);
+            try
+            {
+                result = Locations.AlignSeamsByClosestPoint(curves);
+            }
+            catch (WarningException w)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, w.Message);
+            }
+            catch (Exception e)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Error, e.Message);
+            }
 
             // Assign the output parameters
             DA.SetDataList(0, result);
