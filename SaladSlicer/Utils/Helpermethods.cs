@@ -24,7 +24,7 @@ namespace SaladSlicer.Utils
         /// </summary>
         /// <param name="obj"> The common object. </param>
         /// <returns> The byte array. </returns>
-        public static byte[] ObjectToByteArray(Object obj)
+        public static byte[] ObjectToByteArray(object obj)
         {
             if (obj == null) { return null; }
 
@@ -43,14 +43,14 @@ namespace SaladSlicer.Utils
         /// </summary>
         /// <param name="data"> The byte array. </param>
         /// <returns> The common object. </returns>
-        public static Object ByteArrayToObject(byte[] data)
+        public static object ByteArrayToObject(byte[] data)
         {
             using (MemoryStream stream = new MemoryStream(data))
             {
                 BinaryFormatter formatter = new BinaryFormatter();
                 stream.Write(data, 0, data.Length);
                 stream.Seek(0, SeekOrigin.Begin);
-                return (Object)formatter.Deserialize(stream);
+                return formatter.Deserialize(stream);
             }
         }
 
