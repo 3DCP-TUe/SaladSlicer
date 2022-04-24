@@ -28,24 +28,35 @@ namespace SaladSlicer.Interfaces
         /// Adds a variable.
         /// </summary>
         void AddVariable(string prefix, List<List<double>> values);
+
+        /// <summary>
+        /// Removes the specific prefix from the added variables.
+        /// </summary>
+        /// <param name="prefix"> The prefix to remove. </param>
+        /// <returns> Indicates whether the prefix wis succesfully found and removed. </returns>
+        bool RemoveAddedVariable(string prefix);
         #endregion
 
         #region properties
-        /// <summary>
-        /// Gets the contours.
-        /// </summary>
-        List<Curve> Contours { get; }
-
         /// <summary>
         /// Gets a list of prefixes for variables that have been added to the object.
         /// </summary>
         List<string> Prefix { get; }
 
+        /// <summary>
+        /// Gets the dictionary with variables that have been added to the object.
+        /// </summary>
+        Dictionary<string, List<List<double>>> AddedVariables { get; }
 
         /// <summary>
         /// Gets a list of variables that have been added to the object.
         /// </summary>
         List<List<List<double>>> AddedVariable { get; }
+
+        /// <summary>
+        /// Gets the frames of the object by layer.
+        /// </summary>
+        List<List<Plane>> FramesByLayer { get; }
         #endregion
     }
 }

@@ -5,6 +5,7 @@
 
 // System Libs]
 using System;
+using System.Linq;
 using System.Collections.Generic;
 // Rhino Libs
 using Rhino.Geometry;
@@ -26,8 +27,7 @@ namespace SaladSlicer.Slicers
         private List<Curve> _path = new List<Curve>();
         private double _distance;
         private readonly List<List<Plane>> _framesByLayer = new List<List<Plane>>() { };
-        private readonly List<List<List<double>>> _addedVariable = new List<List<List<double>>>(0);
-        private readonly List<string> _prefix = new List<string>();
+        private readonly Dictionary<string, List<List<double>>> _addedVariables = new Dictionary<string, List<List<double>>>() { };
         #endregion
 
         #region (de)serialisation
@@ -64,8 +64,7 @@ namespace SaladSlicer.Slicers
             _transitions = slicer.Transitions;
             _distance = slicer.Distance;
             _framesByLayer = slicer.FramesByLayer;
-            _prefix = slicer.Prefix.ConvertAll(item => item.Clone() as string);
-            _addedVariable = slicer.AddedVariable.ConvertAll(list => list.ConvertAll(item => item)); 
+            _addedVariables = slicer.AddedVariables.ToDictionary(entry => entry.Key.Clone() as string, entry => entry.Value.ConvertAll(list => list.ConvertAll(item => item)));
         }
 
         /// <summary>
@@ -185,12 +184,12 @@ namespace SaladSlicer.Slicers
                 //Rearange _addedVariable
                 List<List<double>> addedVariable2 = new List<List<double>>();
                 
-                for (int k = 0; k < _addedVariable.Count; k++)
+                for (int k = 0; k < this.AddedVariable.Count; k++)
                 {
-                    addedVariable2.Add(_addedVariable[k][i]);
+                    addedVariable2.Add(this.AddedVariable[k][i]);
                 }
                 
-                programGenerator.AddCoordinates(_framesByLayer[i], _prefix, addedVariable2);
+                programGenerator.AddCoordinates(_framesByLayer[i], this.Prefix, addedVariable2);
             }
 
             // End
@@ -205,8 +204,17 @@ namespace SaladSlicer.Slicers
         /// <param name="values">List of values to be added.</param>
         public void AddVariable(string prefix, List<List<double>> values)
         {
-            _prefix.Add(prefix);
-            _addedVariable.Add(values);
+            _addedVariables.Add(prefix, values);
+        }
+
+        /// <summary>
+        /// Removes the specific prefix from the added variables.
+        /// </summary>
+        /// <param name="prefix"> The prefix to remove. </param>
+        /// <returns> Indicates whether the prefix wis succesfully found and removed. </returns>
+        public bool RemoveAddedVariable(string prefix)
+        {
+            return _addedVariables.Remove(prefix);
         }
 
         /// <summary>
@@ -538,11 +546,19 @@ namespace SaladSlicer.Slicers
         }
 
         /// <summary>
+        /// Gets the dictionary with variables that have been added to the object.
+        /// </summary>
+        public Dictionary<string, List<List<double>>> AddedVariables
+        {
+            get { return _addedVariables; }
+        }
+
+        /// <summary>
         /// Gets a list of prefixes for variables that have been added to the object.
         /// </summary>
         public List<string> Prefix
         {
-            get { return _prefix; }
+            get { return _addedVariables.Keys.ToList(); }
         }
 
         /// <summary>
@@ -550,10 +566,8 @@ namespace SaladSlicer.Slicers
         /// </summary>
         public List<List<List<double>>> AddedVariable
         {
-            get { return _addedVariable; }
+            get { return _addedVariables.Values.ToList(); }
         }
-
-
         #endregion
     }
 }

@@ -31,8 +31,7 @@ namespace SaladSlicer.Slicers
         private readonly List<List<Plane>> _framesByLayer = new List<List<Plane>>() { };
         private double _seamLocation;
         private double _seamLength;
-        private readonly List<List<List<double>>> _addedVariable = new List<List<List<double>>>(0);
-        private readonly List<string> _prefix = new List<string>();
+        private readonly Dictionary<string, List<List<double>>> _addedVariables = new Dictionary<string, List<List<double>>>() { };
         #endregion
 
         #region (de)serialisation
@@ -96,8 +95,7 @@ namespace SaladSlicer.Slicers
             _distance = slicer.Distance;
             _path = slicer.Path.ConvertAll(curve => curve.DuplicateCurve());
             _contours = slicer.Contours.ConvertAll(curve => curve.DuplicateCurve());
-            _prefix = slicer.Prefix.ConvertAll(item => item.Clone() as string); 
-            _addedVariable = slicer.AddedVariable.ConvertAll(list => list.ConvertAll(item => item));
+            _addedVariables = slicer.AddedVariables.ToDictionary(entry => entry.Key.Clone() as string, entry => entry.Value.ConvertAll(list => list.ConvertAll(item => item)));
             _framesByLayer = new List<List<Plane>>();
               
             for (int i = 0; i < slicer.FramesByLayer.Count; i++)
@@ -273,7 +271,7 @@ namespace SaladSlicer.Slicers
                 programGenerator.Program.Add("; Start loop");
                 programGenerator.Program.Add("LINE1:");
                 
-                if (_prefix.Count == 0)
+                if (this.Prefix.Count == 0)
                 {
                     for (int i = 0; i < _framesByLayer[0].Count; i++)
                     {
@@ -286,9 +284,9 @@ namespace SaladSlicer.Slicers
                     for (int i = 0; i < _framesByLayer[0].Count; i++)
                     {
                         string variablesString = "";
-                        for (int j = 0; j < _prefix.Count; j++)
+                        for (int j = 0; j < this.Prefix.Count; j++)
                         {
-                            variablesString += $" {_prefix[j]}{_addedVariable[j][0][i]:0.###}";
+                            variablesString += $" {this.Prefix[j]}{this.AddedVariable[j][0][i]:0.###}";
                         }
                         Point3d point = _framesByLayer[0][i].Origin;
                         programGenerator.Program.Add($"X{point.X:0.###} Y{point.Y:0.###} Z={point.Z:0.###}+R10*R20"+ variablesString);
@@ -310,12 +308,12 @@ namespace SaladSlicer.Slicers
                     //Rearange _addedVariable
                     List<List<double>> addedVariable2 = new List<List<double>>();
                     
-                    for (int k = 0; k < _addedVariable.Count; k++)
+                    for (int k = 0; k < this.AddedVariable.Count; k++)
                     {
-                        addedVariable2.Add(_addedVariable[k][i]);
+                        addedVariable2.Add(this.AddedVariable[k][i]);
                     }
                     
-                    programGenerator.AddCoordinates(_framesByLayer[i], _prefix, addedVariable2);
+                    programGenerator.AddCoordinates(_framesByLayer[i], this.Prefix, addedVariable2);
                 }
             }
             else
@@ -334,8 +332,17 @@ namespace SaladSlicer.Slicers
         /// <param name="values">List of values to be added.</param>
         public void AddVariable(string prefix, List<List<double>> values)
         {
-            _prefix.Add(prefix);
-            _addedVariable.Add(values);
+            _addedVariables.Add(prefix, values);
+        }
+
+        /// <summary>
+        /// Removes the specific prefix from the added variables.
+        /// </summary>
+        /// <param name="prefix"> The prefix to remove. </param>
+        /// <returns> Indicates whether the prefix wis succesfully found and removed. </returns>
+        public bool RemoveAddedVariable(string prefix)
+        {
+            return _addedVariables.Remove(prefix);
         }
 
         /// <summary>
@@ -729,11 +736,19 @@ namespace SaladSlicer.Slicers
         }
 
         /// <summary>
+        /// Gets the dictionary with variables that have been added to the object.
+        /// </summary>
+        public Dictionary<string, List<List<double>>> AddedVariables 
+        {
+            get { return _addedVariables; }
+        }
+
+        /// <summary>
         /// Gets a list of prefixes for variables that have been added to the object.
         /// </summary>
         public List<string> Prefix
         {
-            get { return _prefix; }
+            get { return _addedVariables.Keys.ToList(); }
         }
 
         /// <summary>
@@ -741,7 +756,7 @@ namespace SaladSlicer.Slicers
         /// </summary>
         public List<List<List<double>>> AddedVariable
         {
-            get { return _addedVariable; }
+            get { return _addedVariables.Values.ToList(); }
         }
         #endregion
     }

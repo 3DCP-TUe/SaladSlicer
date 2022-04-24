@@ -4,15 +4,12 @@
 // see <https://github.com/3DCP-TUe/SaladSlicer>.
 
 // System Libs
-using System;
-using System.ComponentModel;
 using System.Collections.Generic;
 //Rhino Libs
 using Rhino.Geometry;
 // Salad Slicer Libs
 using SaladSlicer.Utils;
 using SaladSlicer.Interfaces;
-
 
 namespace SaladSlicer.CodeGeneration
 {
@@ -220,6 +217,44 @@ namespace SaladSlicer.CodeGeneration
                 }
             }
         }
+
+        /// <summary>
+        /// Returns the coordinate code lines including the added variables from an AddVariable instance.
+        /// </summary>
+        /// <param name="addVariable"> The added variable object to get the coorindate code lines from. </param>
+        /// <returns> The nested list code lines. </returns>
+        public static List<List<string>> GetCoordinateCodeLines(IAddVariable addVariable)
+        {
+            List<List<string>> result = new List<List<string>>();
+            List<List<Plane>> frames = addVariable.FramesByLayer;
+
+            // Coordinates
+            for (int i = 0; i < frames.Count; i++)
+            {
+                List<string> temp = new List<string>() { };
+
+                for (int j = 0; j < frames[i].Count; j++)
+                {
+                    temp.Add($"X{frames[i][j].OriginX:0.###} Y{frames[i][j].OriginY:0.###} Z{frames[i][j].OriginZ:0.###}");
+                }
+
+                result.Add(temp);
+            }
+
+            // Added variables
+            foreach (KeyValuePair<string, List<List<double>>> entry in addVariable.AddedVariables)
+            {
+                for (int i = 0; i < result.Count; i++)
+                {
+                    for (int j = 0; j < result[i].Count; j++)
+                    {
+                        result[i][j] = result[i][j] + $" {entry.Key}{entry.Value:0.###}";
+                    }
+                }
+            }
+
+            return result;
+        }
         #endregion
 
         #region properties
@@ -248,6 +283,7 @@ namespace SaladSlicer.CodeGeneration
             get { return _hotEndTemperature; }
             set { _hotEndTemperature = value; }
         }
+
         public double BedTemperature
         {
             get { return _bedTemperature; }
