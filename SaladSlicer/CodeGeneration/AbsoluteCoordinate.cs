@@ -105,8 +105,7 @@ namespace SaladSlicer.CodeGeneration
         /// <param name="programGenerator"> The program generator. </param>
         public void ToProgram(ProgramGenerator programGenerator, int programType)
         {
-            List<Plane> plane= new List<Plane>{_plane};
-            programGenerator.AddCoordinates(plane, new List<string>(), new List<List<double>>());
+            programGenerator.Program.Add($"X{_plane.OriginX:0.###} Y{_plane.OriginY:0.###} Z{_plane.OriginZ:0.###}");
         }
 
         /// <summary>

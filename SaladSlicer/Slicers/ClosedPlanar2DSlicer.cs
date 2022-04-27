@@ -119,7 +119,7 @@ namespace SaladSlicer.Slicers
         /// <returns> The exact duplicate of this Closed Planar 2D Slicer instance as an IProgram. </returns>
         public IProgram DuplicateProgramObject()
         {
-            return this.Duplicate();
+            return Duplicate();
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace SaladSlicer.Slicers
         /// <returns> The exact duplicate of this Closed Planar 2D Slicer instance as an ISlicer. </returns>
         public ISlicer DuplicateSlicerObject()
         {
-            return this.Duplicate();
+            return Duplicate();
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace SaladSlicer.Slicers
         /// <returns> The exact duplicate of this Planar 2D Slicer instance as an IGeometry. </returns>
         public IGeometry DuplicateGeometryObject()
         {
-            return this.Duplicate();
+            return Duplicate();
         }
 
         /// <summary>
@@ -146,7 +146,7 @@ namespace SaladSlicer.Slicers
         /// <returns> The exact duplicate of this Closed Planar 2D Slicer instance as an IAddVariable. </returns>
         public IAddVariable DuplicateAddVariableObject()
         {
-            return this.Duplicate();
+            return Duplicate();
         }
         #endregion
 
@@ -165,9 +165,9 @@ namespace SaladSlicer.Slicers
         /// </summary>
         public void Slice()
         {
-            this.CreateContours();
-            this.CreatePath();
-            this.CreateFrames();
+            CreateContours();
+            CreatePath();
+            CreateFrames();
         }
 
         /// <summary>
@@ -254,71 +254,46 @@ namespace SaladSlicer.Slicers
         public void ToProgram(ProgramGenerator programGenerator, int programType)
         {
             // Header
-            programGenerator.AddSlicerHeader("2.5D CLOSED PLANAR OBJECT", _contours.Count, this.GetLength());
+            programGenerator.AddSlicerHeader("2.5D CLOSED PLANAR OBJECT", _contours.Count, GetLength());
 
             // Create a loop for objects with an constant height increase per layer
             
-            if (this.ConstantHeightIncrease() && programType == 0)
+            if (ConstantHeightIncrease() && programType == 0 && _addedVariables.Count == 0)
             {
                 double layerHeight = _heights[1] - _heights[0];
-            
+
                 // Initialize loop
-                programGenerator.Program.Add($"R10 = {layerHeight:0.###}         ; Height of a single layer");
+                programGenerator.Program.Add($"R10 = {layerHeight:0.###} ; Height of a single layer");
                 programGenerator.Program.Add(" ");
-                programGenerator.Program.Add("R20 = 0             ; Number of the current layer");
-                programGenerator.Program.Add($"R21 = {_heights.Count,2:G}            ; Total number of layers");
+                programGenerator.Program.Add("R20 = 0 ; Number of the current layer");
+                programGenerator.Program.Add($"R21 = {_heights.Count,2:G} ; Total number of layers");
                 programGenerator.Program.Add(" ");
                 programGenerator.Program.Add("; Start loop");
                 programGenerator.Program.Add("LINE1:");
                 
-                if (this.Prefix.Count == 0)
+                for (int i = 0; i < _framesByLayer[0].Count; i++)
                 {
-                    for (int i = 0; i < _framesByLayer[0].Count; i++)
-                    {
-                        Point3d point = _framesByLayer[0][i].Origin;
-                        programGenerator.Program.Add($"X{point.X:0.###} Y{point.Y:0.###} Z={point.Z:0.###}+R10*R20");
-                    }
+                    Point3d point = _framesByLayer[0][i].Origin;
+                    programGenerator.Program.Add($"X{point.X:0.###} Y{point.Y:0.###} Z={point.Z:0.###}+R10*R20");
                 }
-                else
-                {
-                    for (int i = 0; i < _framesByLayer[0].Count; i++)
-                    {
-                        string variablesString = "";
-                        for (int j = 0; j < this.Prefix.Count; j++)
-                        {
-                            variablesString += $" {this.Prefix[j]}{this.AddedVariable[j][0][i]:0.###}";
-                        }
-                        Point3d point = _framesByLayer[0][i].Origin;
-                        programGenerator.Program.Add($"X{point.X:0.###} Y{point.Y:0.###} Z={point.Z:0.###}+R10*R20"+ variablesString);
-                    }
-                }
+
                 programGenerator.Program.Add(" ");
-                programGenerator.Program.Add("R20 = R20 + 1            ; Increase layer number");
+                programGenerator.Program.Add("R20 = R20 + 1 ; Increase layer number");
                 programGenerator.Program.Add("IF R20 < R21 GOTOB LINE1");
             }
 
-            // Create standard code for objects with irregular height increase
-            else if (programType == 0 || programType == 1)
-            { 
-                for (int i = 0; i < _framesByLayer.Count; i++)
+            // Create standard code for objects with irregular height increase and/or added variables
+            else 
+            {
+                // Add coordinates
+                List<List<string>> coordinates = ProgramGenerator.GetCoordinateCodeLines(this);
+
+                for (int i = 0; i < coordinates.Count; i++)
                 {
                     programGenerator.Program.Add(" ");
                     programGenerator.Program.Add($"; LAYER {i + 1:0}");
-                    
-                    //Rearange _addedVariable
-                    List<List<double>> addedVariable2 = new List<List<double>>();
-                    
-                    for (int k = 0; k < this.AddedVariable.Count; k++)
-                    {
-                        addedVariable2.Add(this.AddedVariable[k][i]);
-                    }
-                    
-                    programGenerator.AddCoordinates(_framesByLayer[i], this.Prefix, addedVariable2);
+                    programGenerator.Program.AddRange(coordinates[i]);
                 }
-            }
-            else
-            {
-                programGenerator.Program.Add("; This program type is not defined for the Closed Planar 2D Slicer");
             }
 
             // End
@@ -333,6 +308,18 @@ namespace SaladSlicer.Slicers
         public void AddVariable(string prefix, List<List<double>> values)
         {
             _addedVariables.Add(prefix, values);
+        }
+
+        /// <summary>
+        /// Adds an additional variable to the program, besides X, Y and Z.
+        /// </summary>
+        /// <param name="addedVariables"> The added variable(s) stored in a dictionary. </param>
+        public void AddVariable(Dictionary<string, List<List<double>>> addedVariables)
+        {
+            foreach (KeyValuePair<string, List<List<double>>> entry in addedVariables)
+            {
+                _addedVariables.Add(entry.Key, entry.Value);
+            }
         }
 
         /// <summary>
@@ -369,7 +356,7 @@ namespace SaladSlicer.Slicers
         /// <returns> The interpolated path. </returns>
         public Curve GetInterpolatedPath()
         {
-            return Curve.CreateInterpolatedCurve(this.GetPoints(), 3, CurveKnotStyle.Chord);
+            return Curve.CreateInterpolatedCurve(GetPoints(), 3, CurveKnotStyle.Chord);
         }
 
         /// <summary>
@@ -378,7 +365,7 @@ namespace SaladSlicer.Slicers
         /// <returns> The linearized path. </returns>
         public Curve GetLinearizedPath()
         {
-            return new PolylineCurve(this.GetPoints());
+            return new PolylineCurve(GetPoints());
         }
 
         /// <summary>
@@ -518,7 +505,7 @@ namespace SaladSlicer.Slicers
         public List<Point3d> GetPoints() 
         {
             List<Point3d> points = new List<Point3d>();
-            List<Plane> frames = this.Frames;
+            List<Plane> frames = Frames;
 
             for (int i = 0; i < frames.Count; i++)
             {
@@ -557,7 +544,7 @@ namespace SaladSlicer.Slicers
 
         public BoundingBox GetBoundingBox(bool accurate)
         {
-            return this.GetPath().GetBoundingBox(accurate);
+            return GetPath().GetBoundingBox(accurate);
         }
 
         /// <summary>
@@ -724,7 +711,7 @@ namespace SaladSlicer.Slicers
         /// </summary>
         public Point3d PointAtStart
         {
-            get { return this.FrameAtStart.Origin; }
+            get { return FrameAtStart.Origin; }
         }
 
         /// <summary>
@@ -732,7 +719,7 @@ namespace SaladSlicer.Slicers
         /// </summary>
         public Point3d PointAtEnd
         {
-            get { return this.FrameAtEnd.Origin; }
+            get { return FrameAtEnd.Origin; }
         }
 
         /// <summary>
@@ -741,22 +728,6 @@ namespace SaladSlicer.Slicers
         public Dictionary<string, List<List<double>>> AddedVariables 
         {
             get { return _addedVariables; }
-        }
-
-        /// <summary>
-        /// Gets a list of prefixes for variables that have been added to the object.
-        /// </summary>
-        public List<string> Prefix
-        {
-            get { return _addedVariables.Keys.ToList(); }
-        }
-
-        /// <summary>
-        /// Gets a list of variables that have been added to the object.
-        /// </summary>
-        public List<List<List<double>>> AddedVariable
-        {
-            get { return _addedVariables.Values.ToList(); }
         }
         #endregion
     }

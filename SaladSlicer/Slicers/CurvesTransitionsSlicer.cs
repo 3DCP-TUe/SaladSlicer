@@ -82,7 +82,7 @@ namespace SaladSlicer.Slicers
         /// <returns> The exact duplicate of this Curves Transitions Slicer as an IProgram. </returns>
         public IProgram DuplicateProgramObject()
         {
-            return this.Duplicate();
+            return Duplicate();
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace SaladSlicer.Slicers
         /// <returns> The exact duplicate of this Curves Transitions Slicer instance as an ISlicer. </returns>
         public ISlicer DuplicateSlicerObject()
         {
-            return this.Duplicate();
+            return Duplicate();
         }
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace SaladSlicer.Slicers
         /// <returns> The exact duplicate of this Curves Transitions Slicer instance as an IGeometry. </returns>
         public IGeometry DuplicateGeometryObject()
         {
-            return this.Duplicate();
+            return Duplicate();
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace SaladSlicer.Slicers
         /// <returns> The exact duplicate of this Curves Transitions Slicer instance as an IAddVariable. </returns>
         public IAddVariable DuplicateAddVariableObject()
         {
-            return this.Duplicate();
+            return Duplicate();
         }
         #endregion
 
@@ -128,8 +128,8 @@ namespace SaladSlicer.Slicers
         /// </summary>
         public void Slice()
         {
-            this.CreatePath();
-            this.CreateFrames();
+            CreatePath();
+            CreateFrames();
         }
 
         /// <summary>
@@ -173,23 +173,16 @@ namespace SaladSlicer.Slicers
         public void ToProgram(ProgramGenerator programGenerator,int programType)
         {
             // Header
-            programGenerator.AddSlicerHeader("CUSTOM SLICER OBJECT", this.GetLength());
+            programGenerator.AddSlicerHeader("CUSTOM SLICER OBJECT", GetLength());
 
-            // Coords
-            for (int i = 0; i < _framesByLayer.Count; i++)
+            // Add coordinates
+            List<List<string>> coordinates = ProgramGenerator.GetCoordinateCodeLines(this);
+
+            for (int i = 0; i < coordinates.Count; i++)
             {
                 programGenerator.Program.Add(" ");
                 programGenerator.Program.Add($"; LAYER {i + 1:0}");
-                
-                //Rearange _addedVariable
-                List<List<double>> addedVariable2 = new List<List<double>>();
-                
-                for (int k = 0; k < this.AddedVariable.Count; k++)
-                {
-                    addedVariable2.Add(this.AddedVariable[k][i]);
-                }
-                
-                programGenerator.AddCoordinates(_framesByLayer[i], this.Prefix, addedVariable2);
+                programGenerator.Program.AddRange(coordinates[i]);
             }
 
             // End
@@ -205,6 +198,18 @@ namespace SaladSlicer.Slicers
         public void AddVariable(string prefix, List<List<double>> values)
         {
             _addedVariables.Add(prefix, values);
+        }
+
+        /// <summary>
+        /// Adds an additional variable to the program, besides X, Y and Z.
+        /// </summary>
+        /// <param name="addedVariables"> The added variable(s) stored in a dictionary. </param>
+        public void AddVariable(Dictionary<string, List<List<double>>> addedVariables)
+        {
+            foreach (KeyValuePair<string, List<List<double>>> entry in addedVariables)
+            {
+                _addedVariables.Add(entry.Key, entry.Value);
+            }
         }
 
         /// <summary>
@@ -241,7 +246,7 @@ namespace SaladSlicer.Slicers
         /// <returns> The interpolated path. </returns>
         public Curve GetInterpolatedPath()
         {
-            return Curve.CreateInterpolatedCurve(this.GetPoints(), 3, CurveKnotStyle.Chord);
+            return Curve.CreateInterpolatedCurve(GetPoints(), 3, CurveKnotStyle.Chord);
         }
 
         /// <summary>
@@ -250,7 +255,7 @@ namespace SaladSlicer.Slicers
         /// <returns> The linearized path. </returns>
         public Curve GetLinearizedPath()
         {
-            return new PolylineCurve(this.GetPoints());
+            return new PolylineCurve(GetPoints());
         }
 
         /// <summary>
@@ -392,7 +397,7 @@ namespace SaladSlicer.Slicers
         public List<Point3d> GetPoints()
         {
             List<Point3d> points = new List<Point3d>();
-            List<Plane> frames = this.Frames;
+            List<Plane> frames = Frames;
 
             for (int i = 0; i < frames.Count; i++)
             {
@@ -410,7 +415,7 @@ namespace SaladSlicer.Slicers
 
         public BoundingBox GetBoundingBox(bool accurate)
         {
-            return this.GetPath().GetBoundingBox(accurate);
+            return GetPath().GetBoundingBox(accurate);
         }
 
         /// <summary>
@@ -534,7 +539,7 @@ namespace SaladSlicer.Slicers
         /// </summary>
         public Point3d PointAtStart
         {
-            get { return this.FrameAtStart.Origin; }
+            get { return FrameAtStart.Origin; }
         }
 
         /// <summary>
@@ -542,7 +547,7 @@ namespace SaladSlicer.Slicers
         /// </summary>
         public Point3d PointAtEnd
         {
-            get { return this.FrameAtEnd.Origin; }
+            get { return FrameAtEnd.Origin; }
         }
 
         /// <summary>
@@ -551,22 +556,6 @@ namespace SaladSlicer.Slicers
         public Dictionary<string, List<List<double>>> AddedVariables
         {
             get { return _addedVariables; }
-        }
-
-        /// <summary>
-        /// Gets a list of prefixes for variables that have been added to the object.
-        /// </summary>
-        public List<string> Prefix
-        {
-            get { return _addedVariables.Keys.ToList(); }
-        }
-
-        /// <summary>
-        /// Gets a list of variables that have been added to the object.
-        /// </summary>
-        public List<List<List<double>>> AddedVariable
-        {
-            get { return _addedVariables.Values.ToList(); }
         }
         #endregion
     }
