@@ -15,6 +15,7 @@ using Rhino.Geometry;
 using SaladSlicer.CodeGeneration;
 using SaladSlicer.Interfaces;
 using SaladSlicer.Geometry;
+using SaladSlicer.Utils;
 
 namespace SaladSlicer.Slicers
 {
@@ -200,7 +201,7 @@ namespace SaladSlicer.Slicers
         /// <param name="values">List of values to be added.</param>
         public void AddVariable(string prefix, List<List<double>> values)
         {
-            _addedVariables.Add(prefix, values);
+            _addedVariables.Add(prefix, HelperMethods.MatchAddedVariable(this, values));
         }
 
         /// <summary>

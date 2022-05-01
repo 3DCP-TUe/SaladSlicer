@@ -4,11 +4,14 @@
 // see <https://github.com/3DCP-TUe/SaladSlicer>.
 
 // System Libs
-using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Diagnostics;
+using System.Collections.Generic;
 using System.Runtime.Serialization.Formatters.Binary;
+// Salad Libs
+using SaladSlicer.Interfaces;
 
 namespace SaladSlicer.Utils
 {
@@ -86,6 +89,114 @@ namespace SaladSlicer.Utils
             string version = split[0] + "." + split[1] + "." + split[2];
 
             return version;
+        }
+
+        /// <summary>
+        /// Matches the data structure of the added variable.
+        /// </summary>
+        /// <param name="addVariable"> The AddVariable interface to check. </param>
+        /// <param name="data"> The data to match with the AddVariable structure. </param>
+        /// <returns> Matched data list. </returns>
+        public static List<List<double>> MatchAddedVariable(IAddVariable addVariable, List<List<double>> data)
+        {
+            // Data is already matching
+            if (CheckAddedVariable(addVariable, data))
+            {
+                return data;
+            }
+
+            // User defined one list that matches the number of frames
+            if (data.Count == 1)
+            {
+                int framesCounter = 0;
+
+                for (int i = 0; i < addVariable.FramesByLayer.Count; i++)
+                {
+                    framesCounter += addVariable.FramesByLayer[i].Count;
+                }
+
+                if (framesCounter == data[0].Count)
+                {
+                    List<List<double>> result1 = new List<List<double>>() { };
+
+                    int counter = 0;
+
+                    for (int i = 0; i < addVariable.FramesByLayer.Count; i++)
+                    {
+                        List<double> temp = new List<double>() { };
+
+                        for (int j = 0; j < addVariable.FramesByLayer[i].Count; j++)
+                        {
+                            temp.Add(data[0][counter]);
+                            counter++;
+                        }
+
+                        result1.Add(temp);
+                    }
+
+                    return result1;
+                }
+            }
+
+            // Otherwise: asynchronisch data mathcing
+            List<List<double>> result2 = new List<List<double>>() { };
+
+            for (int i = 0; i < addVariable.FramesByLayer.Count; i++)
+            {
+                List<double> temp = new List<double>() { };
+                List<double> sub;
+
+                if (i < data.Count)
+                {
+                    sub = data[i];
+                }
+                else
+                {
+                    sub = data[data.Count - 1];
+                }
+
+                for (int j = 0; j < addVariable.FramesByLayer[i].Count; j++)
+                {
+                    if (j < sub.Count)
+                    {
+                        temp.Add(sub[j]);
+                    }
+                    else
+                    {
+                        temp.Add(sub[sub.Count - 1]);
+                    }
+                }
+
+                result2.Add(temp);
+            }
+
+            return result2;
+        }
+
+        /// <summary>
+        /// Checks the data structure of the added variable.
+        /// </summary>
+        /// <param name="addVariable"> The Added Variable interface to check. </param>
+        /// <param name="data"> The data to check with the AddVariable structure. </param>
+        /// <returns> Indicates whether the data structure matches or not. </returns>
+        public static bool CheckAddedVariable(IAddVariable addVariable, List<List<double>> data)
+        {
+            // Check the number of layers
+            if (addVariable.FramesByLayer.Count != data.Count)
+            {
+                return false;
+            }
+
+            // Check frames by layer
+            for (int i = 0; i < addVariable.FramesByLayer.Count; i++)
+            {
+                if (addVariable.FramesByLayer[i].Count != data[i].Count)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }
