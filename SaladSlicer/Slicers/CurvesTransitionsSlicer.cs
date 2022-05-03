@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 // Rhino Libs
 using Rhino.Geometry;
+using Rhino.Geometry.Intersect;
 // Slicer Salad Libs
 using SaladSlicer.CodeGeneration;
 using SaladSlicer.Interfaces;
@@ -26,6 +27,8 @@ namespace SaladSlicer.Slicers
         private List<Curve> _path = new List<Curve>();
         private double _distance;
         private readonly List<List<Plane>> _framesByLayer = new List<List<Plane>>() { };
+        private readonly List<List<Plane>> _framesInContours = new List<List<Plane>>() { };
+        private readonly List<List<Plane>> _framesInTransitions = new List<List<Plane>>() { };
         private readonly List<List<List<double>>> _addedVariable = new List<List<List<double>>>(0);
         private readonly List<string> _prefix = new List<string>();
         #endregion
@@ -152,17 +155,21 @@ namespace SaladSlicer.Slicers
             for (int i = 0; i < _contours.Count; i++)
             {
                 _framesByLayer.Add(new List<Plane>() { });
+                _framesInContours.Add(new List<Plane>() { });
+                _framesInTransitions.Add(new List<Plane>() { });
             }
 
             for (int i = 0; i < _contours.Count; i++)
             {
                 // Contours
                 _framesByLayer[i].AddRange(Geometry.Frames.GetFramesByDistanceAndSegment(_path[i * 2], _distance, true, true));
+                _framesInContours[i].AddRange(Geometry.Frames.GetFramesByDistanceAndSegment(_path[i * 2], _distance, true, true));
 
                 // Transitions
                 if (i < _contours.Count - 1)
                 {
                     _framesByLayer[i].AddRange(Geometry.Frames.GetFramesByDistanceAndSegment(_path[i * 2 + 1], _distance, false, false));
+                    _framesInTransitions[i].AddRange(Geometry.Frames.GetFramesByDistanceAndSegment(_path[i * 2 + 1], _distance, false, false));
                 }
             }
         }
@@ -317,18 +324,19 @@ namespace SaladSlicer.Slicers
             dy = new List<List<double>>();
             dz = new List<List<double>>();
 
-            for (int i = 0; i < _framesByLayer.Count; i++)
+            for (int i = 0; i < _framesInContours.Count; i++)
             {
                 List<double> temp = new List<double>();
                 List<double> tempx = new List<double>();
                 List<double> tempy = new List<double>();
                 List<double> tempz = new List<double>();
 
+                //Contours
                 if (i == 0)
                 {
-                    for (int j = 0; j < _framesByLayer[i].Count; j++)
+                    for (int j = 0; j < _framesInContours[i].Count; j++)
                     {
-                        Point3d point = _framesByLayer[i][j].Origin;
+                        Point3d point = _framesInContours[i][j].Origin;
                         Point3d closestPoint = plane.ClosestPoint(point);
 
                         temp.Add(point.DistanceTo(closestPoint));
@@ -339,11 +347,12 @@ namespace SaladSlicer.Slicers
                 }
                 else
                 {
-                    for (int j = 0; j < _framesByLayer[i].Count; j++)
+                    for (int j = 0; j < _framesInContours[i].Count; j++)
                     {
-                        Point3d point = _framesByLayer[i][j].Origin;
+                        Point3d point = _framesInContours[i][j].Origin;
                         _contours[i - 1].ClosestPoint(point, out double parameter);
-                        Point3d closestPoint = _contours[i - 1].PointAt(parameter); //TODO: This goes wrong at transitions!
+
+                        Point3d closestPoint = _contours[i - 1].PointAt(parameter);
 
                         temp.Add(point.DistanceTo(closestPoint));
                         tempx.Add(Math.Abs(point.X - closestPoint.X));
@@ -352,10 +361,40 @@ namespace SaladSlicer.Slicers
                     }
                 }
 
+                //Transitions: linearly interpolate between last distance on this contour and first on the next contour
+                if (i < _framesInContours.Count - 1)
+                {
+                    //Last distance on current contour
+                    double firstDistance = temp[temp.Count - 1];
+                    double firstDistanceX = tempx[tempx.Count - 1];
+                    double firstDistanceY = tempy[tempy.Count - 1];
+                    double firstDistanceZ = tempz[tempz.Count - 1];
+
+                    //Calculate closest point for first frame in next contour
+                    Point3d tempPoint = _framesInContours[i + 1][0].Origin;
+                    _contours[i].ClosestPoint(tempPoint, out double tempParameter);
+                    Point3d tempClosestPoint = _contours[i].PointAt(tempParameter);
+
+                    double secondDistance = tempPoint.DistanceTo(tempClosestPoint);
+                    double secondDistanceX = Math.Abs(tempPoint.X - tempClosestPoint.X);
+                    double secondDistanceY = Math.Abs(tempPoint.Y - tempClosestPoint.Y);
+                    double secondDistanceZ = Math.Abs(tempPoint.Z - tempClosestPoint.Z);
+
+                    //Linearly interpolate
+                    for (int j = 0; j < _framesInTransitions[i].Count; j++)
+                    {
+                        temp.Add(firstDistance + (j + 1) * (secondDistance - firstDistance) / (_framesInTransitions[i].Count + 1));
+                        tempx.Add(firstDistanceX + (j + 1) * (secondDistanceX - firstDistanceX) / (_framesInTransitions[i].Count + 1));
+                        tempy.Add(firstDistanceY + (j + 1) * (secondDistanceY - firstDistanceY) / (_framesInTransitions[i].Count + 1));
+                        tempz.Add(firstDistanceZ + (j + 1) * (secondDistanceZ - firstDistanceZ) / (_framesInTransitions[i].Count + 1));
+                    }
+                }
+
                 distances.Add(temp);
                 dx.Add(tempx);
                 dy.Add(tempy);
                 dz.Add(tempz);
+
             }
 
             return distances;
