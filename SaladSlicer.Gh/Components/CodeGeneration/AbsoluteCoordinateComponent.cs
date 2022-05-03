@@ -5,6 +5,7 @@
 
 // System Libs
 using System;
+using System.ComponentModel;
 // Grasshopper Libs
 using Grasshopper.Kernel;
 // Rhino Lib
@@ -60,8 +61,22 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
             // Access the input parameters individually. 
             if (!DA.GetData(0, ref plane)) return;
 
-            // Create the code line
-            AbsoluteCoordinate absoluteCoordinate = new AbsoluteCoordinate(plane);
+            // Declare the output variables
+            AbsoluteCoordinate absoluteCoordinate = new AbsoluteCoordinate();
+
+            // Create the absolute coordinate
+            try 
+            {
+                absoluteCoordinate = new AbsoluteCoordinate(plane);
+            }
+            catch (WarningException w)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, w.Message);
+            }
+            catch (Exception e)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Error, e.Message);
+            }
 
             // Assign the output parameters
             DA.SetData(0, absoluteCoordinate);

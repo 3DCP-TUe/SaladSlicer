@@ -5,6 +5,7 @@
 
 // System Libs
 using System;
+using System.ComponentModel;
 // Grasshopper Libs
 using Grasshopper.Kernel;
 // Salad Slicer Libs
@@ -58,8 +59,22 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
             // Access the input parameters individually. 
             if (!DA.GetData(0, ref code)) return;
 
+            // Declare the output variables
+            CodeLine codeLine = new CodeLine();
+
             // Create the code line
-            CodeLine codeLine = new CodeLine(code);
+            try
+            {
+                codeLine = new CodeLine(code);
+            }
+            catch (WarningException w)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, w.Message);
+            }
+            catch (Exception e)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Error, e.Message);
+            }
 
             // Assign the output parameters
             DA.SetData(0, codeLine);

@@ -5,6 +5,7 @@
 
 // System Libs
 using System;
+using System.ComponentModel;
 using System.Collections.Generic;
 //Rhino Libs
 using Rhino.Geometry;
@@ -80,9 +81,23 @@ namespace SaladSlicer.Gh.Components.Slicers
             if (contour.GetLength() < distance) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "The distance between two frames exceeds the length of the base contour."); }
             if (contour.GetLength() < seamLength) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "The length of the layer change exceeds the length of the base contour."); }
 
+            // Declare the output variables
+            ClosedPlanar2DSlicer slicer = new ClosedPlanar2DSlicer();
+
             // Create the slicer object
-            ClosedPlanar2DSlicer slicer = new ClosedPlanar2DSlicer(contour, seamLocation, seamLength, distance, heights);
-            slicer.Slice();
+            try
+            {
+                slicer = new ClosedPlanar2DSlicer(contour, seamLocation, seamLength, distance, heights);
+                slicer.Slice();
+            }
+            catch (WarningException warning)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, warning.Message);
+            }
+            catch (Exception error)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Error, error.Message);
+            }
 
             // Assign the output parameters
             DA.SetData(0, slicer);

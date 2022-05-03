@@ -5,13 +5,11 @@
 
 // System Libs
 using System;
+using System.ComponentModel;
 // Grasshopper Libs
 using Grasshopper.Kernel;
-// Rhino Lib
-using Rhino.Geometry;
 // Salad Slicer Libs
 using SaladSlicer.CodeGeneration;
-using SaladSlicer.Gh.Parameters.CodeGeneration;
 
 namespace SaladSlicer.Gh.Components.CodeGeneration
 {
@@ -52,15 +50,29 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             // Declare variable of input parameters
-            double hotEnd =new double();
+            double hotEnd = new double();
             double bed = new double();
 
             // Access the input parameters individually. 
             if (!DA.GetData(0, ref hotEnd)) return;
             if (!DA.GetData(1, ref bed)) return;
 
-            // Create the code line
-            SetTemperature tempObject = new SetTemperature(hotEnd,bed);
+            // Declare the output variables
+            SetTemperature tempObject = new SetTemperature();
+
+            // Create the set temperature object
+            try
+            {
+                tempObject = new SetTemperature(hotEnd, bed);
+            }
+            catch (WarningException w)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, w.Message);
+            }
+            catch (Exception e)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Error, e.Message);
+            }
 
             // Assign the output parameters
             DA.SetData(0, tempObject);

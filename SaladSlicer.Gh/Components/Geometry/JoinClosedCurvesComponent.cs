@@ -5,7 +5,7 @@
 
 // System Libs
 using System;
-using System.Drawing;
+using System.ComponentModel;
 using System.Collections.Generic;
 // Grasshopper Libs
 using Grasshopper.Kernel;
@@ -99,29 +99,37 @@ namespace SaladSlicer.Gh.Components.Geometry
                     "It can only be set to 0, 1 and 2. Use 0 for linear, 1 for bezier and 2 for interpolated connections.");
             }
 
-            // Delcare variables
+            // Declare the output variables
             List<Curve> transitions = new List<Curve>();
             List<Curve> curvesCopy = new List<Curve>();
-            Curve joinedCurve;
+            Curve joinedCurve = Line.Unset.ToNurbsCurve();
 
-            if (type == 0)
+            // Create the curves
+            try
             {
-                curvesCopy = Transitions.TrimCurveFromEnds(curves, changeLength);
-                (joinedCurve,transitions) = Transitions.JoinLinear(curvesCopy);
+                if (type == 0)
+                {
+                    curvesCopy = Transitions.TrimCurveFromEnds(curves, changeLength);
+                    (joinedCurve, transitions) = Transitions.JoinLinear(curvesCopy);
+                }
+                else if (type == 1)
+                {
+                    curvesCopy = Transitions.TrimCurveFromEnds(curves, changeLength);
+                    (joinedCurve, transitions) = Transitions.JoinBezier(curvesCopy);
+                }
+                else if (type == 2)
+                {
+                    curvesCopy = Transitions.TrimCurveFromEnds(curves, changeLength);
+                    (joinedCurve, transitions) = Transitions.JoinInterpolated(curves, changeLength);
+                }
             }
-            else if (type == 1)
+            catch (WarningException w)
             {
-                curvesCopy = Transitions.TrimCurveFromEnds(curves, changeLength);
-                (joinedCurve, transitions) = Transitions.JoinBezier(curvesCopy);
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, w.Message);
             }
-            else if (type == 2)
+            catch (Exception e)
             {
-                curvesCopy = Transitions.TrimCurveFromEnds(curves, changeLength);
-                (joinedCurve, transitions) = Transitions.JoinInterpolated(curves, changeLength);
-            }
-            else
-            {
-                joinedCurve = Line.Unset.ToNurbsCurve();
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Error, e.Message);
             }
 
             // Assign the output parameters

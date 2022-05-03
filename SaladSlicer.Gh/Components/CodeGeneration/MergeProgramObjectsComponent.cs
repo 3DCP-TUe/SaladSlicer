@@ -9,16 +9,9 @@ using System.ComponentModel;
 using System.Collections.Generic;
 // Grasshopper Libs
 using Grasshopper.Kernel;
-using Grasshopper.Kernel.Data;
-using Grasshopper.Kernel.Types;
 // Salad Slicer Libs
 using SaladSlicer.CodeGeneration;
 using SaladSlicer.Interfaces;
-using SaladSlicer.Slicers;
-using SaladSlicer.Gh.Utils;
-using SaladSlicer.Enumerations;
-using SaladSlicer.Gh.Parameters.Slicers;
-using SaladSlicer.Gh.Goos.CodeGeneration;
 
 namespace SaladSlicer.Gh.Components.CodeGeneration
 {
@@ -72,9 +65,11 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
 
             // Create the code line
             string newCodeLine = "";
+            
             for (int i = 0; i < list.Count; i++)
             {
                 string string2 = "";
+                
                 try 
                 {
                     string2 = list[i].ToSingleString();
@@ -87,8 +82,10 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
                 {
                     AddRuntimeMessage(GH_RuntimeMessageLevel.Error, error.Message);
                 }
+                
                 newCodeLine = $"{newCodeLine} {string2}";
             }
+            
             CodeLine result = new CodeLine(newCodeLine);
 
             // Assign the output parameters

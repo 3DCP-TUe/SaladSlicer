@@ -5,14 +5,11 @@
 
 // System Libs
 using System;
-using System.Drawing;
 using System.ComponentModel;
 // Grasshopper Libs
 using Grasshopper.Kernel;
-using Grasshopper.Kernel.Types;
 // Salad Slicer Libs
 using SaladSlicer.CodeGeneration;
-using SaladSlicer.Gh.Parameters.CodeGeneration;
 using SaladSlicer.Gh.Utils;
 using SaladSlicer.Enumerations;
 
@@ -69,7 +66,6 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
             //Create a value list
             if (_valueList1Added == false)
             {
-                
                 _expire = HelperMethods.CreateValueList(this, 0, typeof(ProgramTypes));
                 _valueList1Added = true;
             }
@@ -78,7 +74,6 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
                 _expire = HelperMethods.CreateValueList(this, 1, typeof(InterpolationTypes));
                 _valueList2Added = true;
             }
-
 
             // Expire solution of this component
             if (_expire == true)
@@ -99,8 +94,10 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
             if (!DA.GetData(2, ref hotend)) return;
             if (!DA.GetData(3, ref bed)) return;
 
-            // Create the code line
+            // Declare the output variables
             ProgramSettings programSetting = new ProgramSettings();
+            
+            // Create the program settings
             try
             {
                 programSetting = new ProgramSettings(programType, interpolation, hotend, bed);
@@ -117,7 +114,6 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
             // Assign the output parameters
             DA.SetData(0, programSetting);
         }
-
 
         /// <summary>
         /// Gets the exposure of this object in the Graphical User Interface.

@@ -5,6 +5,7 @@
 
 // System Libs
 using System;
+using System.ComponentModel;
 // Grasshopper Libs
 using Grasshopper.Kernel;
 // Salad Slicer Libs
@@ -58,8 +59,22 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
             // Access the input parameters individually. 
             if (!DA.GetData(0, ref feedRate)) return;
 
-            // Create the code line
-            FeedRate programObject = new FeedRate(feedRate);
+            // Create the feedrate object
+            FeedRate programObject = new FeedRate();
+
+            // Create the feedrate object
+            try
+            {
+                programObject = new FeedRate(feedRate);
+            }
+            catch (WarningException w)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, w.Message);
+            }
+            catch (Exception e)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Error, e.Message);
+            }
 
             // Assign the output parameters
             DA.SetData(0, programObject);

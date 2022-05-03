@@ -5,7 +5,9 @@
 
 // System Libs
 using System;
+using System.ComponentModel;
 using System.Collections.Generic;
+// Rhino Libs
 using Rhino.Geometry;
 // Grasshopper Libs
 using Grasshopper.Kernel;
@@ -68,8 +70,25 @@ namespace SaladSlicer.Gh.Components.Slicers
             if (!DA.GetData(0, ref slicer)) return;
             if (!DA.GetData(1, ref plane)) return;
 
-            // Output
-            List<List<double>> dist = slicer.GetDistanceToPreviousLayer(plane, out List<List<double>> dx, out List<List<double>> dy, out List<List<double>> dz);
+            // Declare the output variables
+            List<List<double>> dist = new List<List<double>>();
+            List<List<double>> dx = new List<List<double>>();
+            List<List<double>> dy = new List<List<double>>();
+            List<List<double>> dz = new List<List<double>>();
+
+            // Calculate distances
+            try
+            {
+                dist = slicer.GetDistanceToPreviousLayer(plane, out dx, out dy, out dz);
+            }
+            catch (WarningException w)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, w.Message);
+            }
+            catch (Exception e)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Error, e.Message);
+            }
 
             // Assign the output parameters
             DA.SetDataTree(0, HelperMethods.ListInListToDataTree(dist));

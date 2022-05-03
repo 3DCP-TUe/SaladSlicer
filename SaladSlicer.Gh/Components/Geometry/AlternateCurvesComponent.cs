@@ -5,6 +5,7 @@
 
 // System Libs
 using System;
+using System.ComponentModel;
 using System.Collections.Generic;
 // Grasshopper Libs
 using Grasshopper.Kernel;
@@ -62,9 +63,23 @@ namespace SaladSlicer.Gh.Components.Geometry
             // Access the input parameters individually. 
             if (!DA.GetDataList(0, curves)) return;
 
-            // Create the code line
-            List<Curve> curvesCopy = curves.ConvertAll(curve => curve.DuplicateCurve());
-            curvesCopy = Curves.AlternateCurves(curvesCopy);
+            // Declare the output variables
+            List<Curve> curvesCopy = new List<Curve>();
+
+            // Create the curves
+            try
+            {
+                curvesCopy = curves.ConvertAll(curve => curve.DuplicateCurve());
+                curvesCopy = Curves.AlternateCurves(curvesCopy);
+            }
+            catch (WarningException w)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, w.Message);
+            }
+            catch (Exception e)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Error, e.Message);
+            }
 
             // Assign the output parameters
             DA.SetDataList(0, curvesCopy);

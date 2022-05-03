@@ -5,11 +5,10 @@
 
 // System Libs
 using System;
+using System.ComponentModel;
 using System.Collections.Generic;
 // Grasshopper Libs
 using Grasshopper.Kernel;
-using Grasshopper.Kernel.Types;
-using Grasshopper.Kernel.Data;
 // Salad Slicer Libs
 using SaladSlicer.Slicers;
 using SaladSlicer.Gh.Parameters.Slicers;
@@ -63,8 +62,25 @@ namespace SaladSlicer.Gh.Components.Slicers
             // Access the input parameters individually. 
             if (!DA.GetData(0, ref slicer)) return;
 
+            // Declare the output variables
+            List<List<double>> dist = new List<List<double>>();
+
+            // Calculate distances
+            try
+            {
+                dist = slicer.GetDistancesAlongContours();
+            }
+            catch (WarningException w)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, w.Message);
+            }
+            catch (Exception e)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Error, e.Message);
+            }
+
             // Assign the output parameters
-            DA.SetDataTree(0, HelperMethods.ListInListToDataTree(slicer.GetDistancesAlongContours()));
+            DA.SetDataTree(0, HelperMethods.ListInListToDataTree(dist));
         }
 
 
