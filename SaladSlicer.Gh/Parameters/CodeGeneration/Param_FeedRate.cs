@@ -17,7 +17,7 @@ namespace SaladSlicer.Gh.Parameters.CodeGeneration
     /// <summary>
     /// Represents the Param_FeedRate class
     /// </summary>
-    public class Param_FeedRate : GH_PersistentParam<GH_FeedRate>
+    public class Param_FeedRate : GH_PersistentGeometryParam<GH_FeedRate>
     {
         /// <summary>
         /// Initializes a new instance of the Param_FeedRate class

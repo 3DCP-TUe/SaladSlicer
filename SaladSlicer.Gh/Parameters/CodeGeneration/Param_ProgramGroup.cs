@@ -17,7 +17,7 @@ namespace SaladSlicer.Gh.Parameters.CodeGeneration
     /// <summary>
     /// Represents the Param_ProgramGroup class
     /// </summary>
-    public class Param_ProgramGroup : GH_PersistentParam<GH_ProgramGroup>
+    public class Param_ProgramGroup : GH_PersistentGeometryParam<GH_ProgramGroup>
     {
         /// <summary>
         /// Initializes a new instance of the Param_ProgramGroup class

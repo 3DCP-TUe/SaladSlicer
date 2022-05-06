@@ -5,6 +5,8 @@
 
 // System Libs
 using System.Collections.Generic;
+// Rhino Libs
+using Rhino.Geometry;
 // Grasshopper Libs
 using Grasshopper.Kernel.Types;
 // Salad Slicer Libs
@@ -16,7 +18,7 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
     /// <summary>
     /// Represents the GH_ProgramGroup class.
     /// </summary>
-    public class GH_ProgramGroup : GH_Goo<ProgramGroup>
+    public class GH_ProgramGroup : GH_GeometricGoo<ProgramGroup>
     {
         #region (de)serialisation
         //TODO
@@ -54,6 +56,15 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
             {
                 return new GH_ProgramGroup(this.Value.Duplicate());
             }
+        }
+
+        /// <summary>
+        /// Returns a complete duplicate of this Goo insance.
+        /// </summary>
+        /// <returns> A duplicate of the Program Group Goo instance. </returns>
+        public override IGH_GeometricGoo DuplicateGeometry()
+        {
+            return this.Duplicate() as IGH_GeometricGoo;
         }
         #endregion
 
@@ -220,6 +231,63 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
         public override string TypeName
         {
             get { return "Program Group"; }
+        }
+        #endregion
+
+        #region transformation methods
+        /// <summary>
+        /// Transforms the object or a deformable representation of the object.
+        /// </summary>
+        /// <param name="xform"> Transformation matrix. </param>
+        /// <returns> Transformed geometry. </returns>
+        public override IGH_GeometricGoo Transform(Transform xform)
+        {
+            if (Value == null)
+            {
+                return null;
+            }
+
+            else if (Value.IsValid == false)
+            {
+                return null;
+            }
+
+            else
+            {
+                ProgramGroup group = Value.Duplicate();
+                group.Transform(xform);
+                return new GH_ProgramGroup(group);
+            }
+        }
+
+        /// <summary>
+        /// Morph the object or a deformable representation of the object.
+        /// </summary>
+        /// <param name="xmorph"> Spatial deform. </param>
+        /// <returns> Deformed geometry. </returns>
+        public override IGH_GeometricGoo Morph(SpaceMorph xmorph)
+        {
+            return null;
+        }
+        #endregion
+
+        #region preview data
+        /// <summary>
+        /// Compute an aligned boundingbox.
+        /// </summary>
+        /// <param name="xform"> Transformation to apply to geometry for BoundingBox computation. </param>
+        /// <returns> The world aligned boundingbox of the transformed geometry. </returns>
+        public override BoundingBox GetBoundingBox(Transform xform)
+        {
+            return BoundingBox.Empty;
+        }
+
+        /// <summary>
+        /// Gets the boundingbox for this geometry.
+        /// </summary>
+        public override BoundingBox Boundingbox
+        {
+            get { return this.GetBoundingBox(new Transform()); }
         }
         #endregion
     }
