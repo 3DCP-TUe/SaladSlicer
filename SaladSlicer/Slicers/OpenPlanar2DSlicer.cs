@@ -87,12 +87,7 @@ namespace SaladSlicer.Slicers
             _path = slicer.Path.ConvertAll(curve => curve.DuplicateCurve());
             _contours = slicer.Contours.ConvertAll(curve => curve.DuplicateCurve());
             _addedVariables = slicer.AddedVariables.ToDictionary(entry => entry.Key.Clone() as string, entry => entry.Value.ConvertAll(list => list.ConvertAll(item => item)));
-            _framesByLayer = new List<List<Plane>>();
-
-            for (int i = 0; i < slicer.FramesByLayer.Count; i++)
-            {
-                _framesByLayer.Add(new List<Plane>(slicer.FramesByLayer[i]));
-            }
+            _framesByLayer = slicer.FramesByLayer.ConvertAll(list => new List<Plane>(list));
         }
 
         /// <summary>

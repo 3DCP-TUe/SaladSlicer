@@ -35,8 +35,6 @@ namespace SaladSlicer.Slicers
         private readonly Dictionary<string, List<List<double>>> _addedVariables = new Dictionary<string, List<List<double>>>() { };
         private readonly List<List<Plane>> _framesInContours = new List<List<Plane>>() { };
         private readonly List<List<Plane>> _framesInTransitions = new List<List<Plane>>() { };
-        private readonly List<List<List<double>>> _addedVariable = new List<List<List<double>>>(0);
-        private readonly List<string> _prefix = new List<string>();
         #endregion
 
         #region (de)serialisation
@@ -71,15 +69,12 @@ namespace SaladSlicer.Slicers
         {
             _contours = slicer.Contours.ConvertAll(curve => curve.DuplicateCurve());
             _transitions = slicer.Transitions.ConvertAll(curve => curve.DuplicateCurve());
+            _path = slicer.Path.ConvertAll(curve => curve.DuplicateCurve());
             _distance = slicer.Distance;
             _addedVariables = slicer.AddedVariables.ToDictionary(entry => entry.Key.Clone() as string, entry => entry.Value.ConvertAll(list => list.ConvertAll(item => item)));
-
-            _framesByLayer = new List<List<Plane>>();
-
-            for (int i = 0; i < slicer.FramesByLayer.Count; i++)
-            {
-                _framesByLayer.Add(new List<Plane>(slicer.FramesByLayer[i]));
-            }
+            _framesByLayer = slicer.FramesByLayer.ConvertAll(list => new List<Plane>(list));
+            _framesInTransitions = slicer._framesInTransitions.ConvertAll(list => new List<Plane>(list));
+            _framesInContours = slicer._framesInContours.ConvertAll(list => new List<Plane>(list));
         }
 
         /// <summary>
@@ -532,6 +527,14 @@ namespace SaladSlicer.Slicers
         public List<Curve> Transitions
         {
             get { return _transitions; }
+        }
+
+        /// <summary>
+        /// Gets the path as a list with curves. 
+        /// </summary>
+        public List<Curve> Path
+        {
+            get { return _path; }
         }
 
         /// <summary>

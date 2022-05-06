@@ -6,7 +6,7 @@
 namespace SaladSlicer.Enumerations
 {
     /// <summary>
-    /// Defines the transition type between two layers.
+    /// Defines the transition type between two open layers.
     /// </summary>
     public enum OpenTransition : int
     {
@@ -20,6 +20,10 @@ namespace SaladSlicer.Enumerations
         /// </summary>
         Bezier = 1,
     }
+
+    /// <summary>
+    /// Defines the transition type between two closed layers.
+    /// </summary>
     public enum ClosedTransition : int
     {
         /// <summary>
@@ -37,6 +41,10 @@ namespace SaladSlicer.Enumerations
         /// </summary>
         Interpolated = 2,
     }
+
+    /// <summary>
+    /// Defines the program types.
+    /// </summary>
     public enum ProgramTypes : int
     {
         /// <summary>
@@ -50,29 +58,19 @@ namespace SaladSlicer.Enumerations
         Marlin = 1,
     }
 
+    /// <summary>
+    /// Defines the interpolation types.
+    /// </summary>
     public enum InterpolationTypes : int
     {
         /// <summary>
-        /// BSPLINE interpolation (G-Code)
+        /// Spline interpolation (BSPLINE G642)
         /// </summary>
-        G642 = 0,
+        Spline = 0,
 
         /// <summary>
-        /// Linear interpolation
+        /// Linear interpolation (G1)
         /// </summary>
-        G1 = 1,
-    }
-
-    public enum AddVariableMethod : int
-    {
-        /// <summary>
-        /// Generates the variable value as a factor of the global displacement
-        /// </summary>
-        ByDisplacement = 0,
-
-        /// <summary>
-        /// Generates the variable value based as a factor of the distance the previous layer
-        /// </summary>
-        ByLayerdistance = 1,
+        Linear = 1,
     }
 }
