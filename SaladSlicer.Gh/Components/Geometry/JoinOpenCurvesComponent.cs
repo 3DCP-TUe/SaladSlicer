@@ -32,9 +32,9 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// Public constructor without any arguments.
         /// </summary>
         public JoinOpenCurvesComponent()
-          : base("Join Open Curves", // Component name
+          : base("Join Open Contours", // Component name
               "JOC", // Component nickname
-              "Joins a list of open curves between end and start points. Connection type 'Linear' connects the curves with the shortest path and 'Bezier' interpolates between the curves smoothly.", // Description
+              "Joins a list of open contours between end and start points. Connection type 'Linear' connects the contours with the shortest path and 'Bezier' interpolates between the contours smoothly.", // Description
               "Salad Slicer", // Category
               "Geometry") // Subcategory
         {
@@ -45,8 +45,8 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
-            pManager.AddCurveParameter("Curves", "C", "List of curves", GH_ParamAccess.list);
-            pManager.AddIntegerParameter("Connection type", "T", "Sets the type of connection [0 = Linear,1 = Bezier]", GH_ParamAccess.item, 0);
+            pManager.AddCurveParameter("Contours", "C", "List of contours", GH_ParamAccess.list);
+            pManager.AddIntegerParameter("Transition type", "T", "Sets the type of transitions [0 = Linear, 1 = Bezier]", GH_ParamAccess.item, 0);
         }
 
         /// <summary>
@@ -54,9 +54,9 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
-            pManager.AddCurveParameter("Joined Curve", "JC", "Joined curve.", GH_ParamAccess.item);
-            pManager.AddCurveParameter("Trimmed Curves", "TC", "List of curves between connections.", GH_ParamAccess.list);
-            pManager.AddCurveParameter("Connections", "C", "List of connections between input curves.", GH_ParamAccess.list);
+            pManager.AddCurveParameter("Path", "P", "Path.", GH_ParamAccess.item);
+            pManager.AddCurveParameter("Contours", "C", "List of trimmed contours.", GH_ParamAccess.list);
+            pManager.AddCurveParameter("Transitions", "T", "List of transitions between contours.", GH_ParamAccess.list);
         }
 
         /// <summary>
