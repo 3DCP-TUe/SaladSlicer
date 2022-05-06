@@ -10,6 +10,7 @@ using System.ComponentModel;
 using Grasshopper.Kernel;
 // Salad Slicer Libs
 using SaladSlicer.CodeGeneration;
+using SaladSlicer.Gh.Parameters.CodeGeneration;
 
 namespace SaladSlicer.Gh.Components.CodeGeneration
 {
@@ -41,7 +42,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
-            pManager.AddGenericParameter("Program Object", "PO", "Temperature settings as a Program Object.", GH_ParamAccess.item);
+            pManager.AddParameter(new Param_SetTemperature(), "Program Object", "PO", "Temperature settings as a Program Object.", GH_ParamAccess.item);
         }
         /// <summary>
         /// This is the method that actually does the work.

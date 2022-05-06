@@ -12,6 +12,7 @@ using Grasshopper.Kernel;
 using SaladSlicer.CodeGeneration;
 using SaladSlicer.Gh.Utils;
 using SaladSlicer.Enumerations;
+using SaladSlicer.Gh.Parameters.CodeGeneration;
 
 namespace SaladSlicer.Gh.Components.CodeGeneration
 {
@@ -54,7 +55,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
-            pManager.AddGenericParameter("Settings Object", "SO", "Feedrate as a Program Object.", GH_ParamAccess.item);
+            pManager.AddParameter(new Param_PrinterSettings(), "Program Object", "PO", "Printer Settings as a Program Object.", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -95,12 +96,12 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
             if (!DA.GetData(3, ref bed)) return;
 
             // Declare the output variables
-            SaladSlicer.CodeGeneration.PrinterSettings programSetting = new SaladSlicer.CodeGeneration.PrinterSettings();
+            PrinterSettings programSetting = new PrinterSettings();
             
             // Create the program settings
             try
             {
-                programSetting = new SaladSlicer.CodeGeneration.PrinterSettings(programType, interpolation, hotend, bed);
+                programSetting = new PrinterSettings(programType, interpolation, hotend, bed);
             }
             catch (WarningException warning)
             {
