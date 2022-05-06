@@ -5,28 +5,29 @@
 
 // System Libs
 using System;
+using System.ComponentModel;
 // Grasshopper Libs
 using Grasshopper.Kernel;
 // Salad Slicer Libs
-using SaladSlicer.Slicers;
-using SaladSlicer.Gh.Parameters.Slicers;
+using SaladSlicer.CodeGeneration;
+using SaladSlicer.Gh.Parameters.CodeGeneration;
 
 namespace SaladSlicer.Gh.Components.CodeGeneration
 {
     /// <summary>
-    /// Represent a component that deconstruct an Open Planar 3D Slicer object.
+    /// Represent a component that generates a custom Code Line.
     /// </summary>
-    public class DeconstructOpenPlanar3DSlicerComponent : GH_Component
+    public class SetFeedRateComponent : GH_Component
     {
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public DeconstructOpenPlanar3DSlicerComponent()
-          : base("Deconstruct Open Planar 3D Slicer", // Component name
-              "DCP3D", // Component nickname
-              "Deconstructs a Open Planar 3D Slicer", // Description
+        public SetFeedRateComponent()
+          : base("Set Feedrate", // Component name
+              "F", // Component nickname
+              "Defines a feedrate. This feedrate will be overwritten when a new feedrate is defined", // Description
               "Salad Slicer", // Category
-              "Deconstruct") // Subcategory
+              "Code Generation") // Subcategory
         {
         }
 
@@ -35,7 +36,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
-            pManager.AddParameter(new Param_OpenPlanar3DSlicer(), "Open Planar 3D", "OP3D", "Open Planar 3D Slicer.", GH_ParamAccess.item);
+            pManager.AddNumberParameter("Feedrate", "F", "Feedrate.", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -43,10 +44,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
-            pManager.AddMeshParameter("Mesh", "M", "Mesh as a Mesh.", GH_ParamAccess.item);
-            pManager.AddNumberParameter("Distance", "D", "Distance between frames as a Number.", GH_ParamAccess.item);
-            pManager.AddBooleanParameter("Reverse", "R", "Reverse path direction.", GH_ParamAccess.item);
-            pManager.AddNumberParameter("Heights", "H", "Absolute layer heights a list with Numbers.", GH_ParamAccess.list);
+            pManager.AddParameter(new Param_SetFeedRate(),"Program Object", "PO", "Feedrate as a Program Object.", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -56,16 +54,30 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             // Declare variable of input parameters
-            OpenPlanar3DSlicer slicer = new OpenPlanar3DSlicer();
-            
+            double feedRate = new double();
+
             // Access the input parameters individually. 
-            if (!DA.GetData(0, ref slicer)) return;
+            if (!DA.GetData(0, ref feedRate)) return;
+
+            // Create the feedrate object
+            SetFeedRate programObject = new SetFeedRate();
+
+            // Create the feedrate object
+            try
+            {
+                programObject = new SetFeedRate(feedRate);
+            }
+            catch (WarningException w)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, w.Message);
+            }
+            catch (Exception e)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Error, e.Message);
+            }
 
             // Assign the output parameters
-            DA.SetData(0, slicer.Mesh);
-            DA.SetData(1, slicer.Distance);
-            DA.SetData(2, slicer.Reverse);
-            DA.SetDataList(3, slicer.Heights);
+            DA.SetData(0, programObject);
         }
 
         /// <summary>
@@ -89,7 +101,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.DeconstructOpenPlanarMeshSlicer_Icon; }
+            get { return Properties.Resources.SetFeedRate_Icon; }
         }
 
         /// <summary>
@@ -98,7 +110,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("3BB35E2C-0EFD-488D-BE0E-C567C2A1ED99"); }
+            get { return new Guid("D07E167C-5294-4FB9-AE80-71526A415C8B"); }
         }
-    } 
+    }
 }

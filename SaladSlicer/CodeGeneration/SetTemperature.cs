@@ -47,12 +47,21 @@ namespace SaladSlicer.CodeGeneration
         }
 
         /// <summary>
-        /// Returns an exact duplicate of this SetTemperature object
+        /// Returns an exact duplicate of this Set Temperature object.
         /// </summary>
-        /// <returns> The exact duplicate of this Absolute Coordinate instance as an IProgram. </returns>
-        public IProgram DuplicateProgramObject()
+        /// <returns> The exact duplicate of this Set Temperature instance </returns>
+        public SetTemperature Duplicate()
         {
             return new SetTemperature(this);
+        }
+
+        /// <summary>
+        /// Returns an exact duplicate of this Set Temperature object
+        /// </summary>
+        /// <returns> The exact duplicate of this Set Temperature instance as an IProgram. </returns>
+        public IProgram DuplicateProgramObject()
+        {
+            return this.Duplicate();
         }
         #endregion
 
@@ -86,7 +95,7 @@ namespace SaladSlicer.CodeGeneration
             programGenerator.Program.Add("; TEMPERATURE SETTINGS");
             programGenerator.Program.Add("; ----------------------------------------------------------------------");
             
-            if (programGenerator.ProgramSettings.ProgramType == 1)
+            if (programGenerator.PrinterSettings.ProgramType == 1)
             {
                 programGenerator.Program.Add(" ");
                 if (_hotEndTemperature != 0 || _bedTemperature != 0)

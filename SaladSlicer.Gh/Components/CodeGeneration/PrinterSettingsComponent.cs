@@ -12,13 +12,14 @@ using Grasshopper.Kernel;
 using SaladSlicer.CodeGeneration;
 using SaladSlicer.Gh.Utils;
 using SaladSlicer.Enumerations;
+using SaladSlicer.Gh.Parameters.CodeGeneration;
 
 namespace SaladSlicer.Gh.Components.CodeGeneration
 {
     /// <summary>
-    /// Represent a component that generates a custom Code Line.
+    /// Represent a component that generates the printer settings.
     /// </summary>
-    public class ProgramSettingsComponent : GH_Component
+    public class PrinterSettingsComponent : GH_Component
     {
         #region fields
         private bool _expire = false;
@@ -29,8 +30,8 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public ProgramSettingsComponent()
-          : base("Program Settings", // Component name
+        public PrinterSettingsComponent()
+          : base("Printer Settings", // Component name
               "S", // Component nickname
               "Defines or redefines the settings for the program", // Description
               "Salad Slicer", // Category
@@ -54,7 +55,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
-            pManager.AddGenericParameter("Settings Object", "SO", "Feedrate as a Program Object.", GH_ParamAccess.item);
+            pManager.AddParameter(new Param_PrinterSettings(), "Program Object", "PO", "Printer Settings as a Program Object.", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -95,12 +96,12 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
             if (!DA.GetData(3, ref bed)) return;
 
             // Declare the output variables
-            ProgramSettings programSetting = new ProgramSettings();
+            PrinterSettings programSetting = new PrinterSettings();
             
-            // Create the program settings
+            // Create the printer settings
             try
             {
-                programSetting = new ProgramSettings(programType, interpolation, hotend, bed);
+                programSetting = new PrinterSettings(programType, interpolation, hotend, bed);
             }
             catch (WarningException warning)
             {

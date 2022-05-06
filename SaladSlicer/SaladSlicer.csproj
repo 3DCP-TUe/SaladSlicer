@@ -46,13 +46,13 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CodeGeneration\ProgramSettings.cs" />
+    <Compile Include="CodeGeneration\PrinterSettings.cs" />
     <Compile Include="CodeGeneration\SetTemperature.cs" />
     <Compile Include="CodeGeneration\ProgramGroup.cs" />
     <Compile Include="Geometry\Meshes.cs" />
     <Compile Include="Geometry\Frames.cs" />
     <Compile Include="Geometry\Curves.cs" />
-    <Compile Include="CodeGeneration\FeedRate.cs" />
+    <Compile Include="CodeGeneration\SetFeedRate.cs" />
     <Compile Include="CodeGeneration\AbsoluteCoordinate.cs" />
     <Compile Include="Interfaces\IAddVariable.cs" />
     <Compile Include="Interfaces\IGeometry.cs" />
@@ -63,12 +63,12 @@
     <Compile Include="Enumerations\Enumerations.cs" />
     <Compile Include="Geometry\Seams\Transitions.cs" />
     <Compile Include="Geometry\Seams\Locations.cs" />
-    <Compile Include="Slicers\OpenPlanar3DSlicer.cs" />
+    <Compile Include="Slicers\OpenPlanarMeshSlicer.cs" />
     <Compile Include="Slicers\CurvesTransitionsSlicer.cs" />
     <Compile Include="Slicers\OpenPlanar2DSlicer.cs" />
     <Compile Include="Slicers\CurveSlicer.cs" />
     <Compile Include="Slicers\ClosedPlanar2DSlicer.cs" />
-    <Compile Include="Slicers\ClosedPlanar3DSlicer.cs" />
+    <Compile Include="Slicers\ClosedPlanarMeshSlicer.cs" />
     <Compile Include="Utils\HelperMethods.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

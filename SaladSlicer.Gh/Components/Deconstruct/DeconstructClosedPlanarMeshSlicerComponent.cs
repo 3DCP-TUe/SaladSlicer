@@ -1,7 +1,7 @@
 ﻿// This file is part of SaladSlicer. SaladSlicer is licensed 
 // under the terms of GNU General Public License as published by the 
 // Free Software Foundation. For more information and the LICENSE file, 
-// see <https://github.com/3DCP-TUe/SaladSlicer>.
+// see <https://github.com/MeshCP-TUe/SaladSlicer>.
 
 // System Libs
 using System;
@@ -14,17 +14,17 @@ using SaladSlicer.Gh.Parameters.Slicers;
 namespace SaladSlicer.Gh.Components.CodeGeneration
 {
     /// <summary>
-    /// Represent a component that deconstruct a Closed Planar 3D Slicer object.
+    /// Represent a component that deconstruct a Closed Planar Mesh Slicer object.
     /// </summary>
-    public class DeconstructClosedPlanar3DSlicerComponent : GH_Component
+    public class DeconstructClosedPlanarMeshSlicerComponent : GH_Component
     {
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public DeconstructClosedPlanar3DSlicerComponent()
-          : base("Deconstruct Closed Planar 3D Slicer", // Component name
-              "DCP3D", // Component nickname
-              "Deconstructs a Closed Planar 3D Slicer", // Description
+        public DeconstructClosedPlanarMeshSlicerComponent()
+          : base("Deconstruct Closed Planar Mesh Slicer", // Component name
+              "DCPM", // Component nickname
+              "Deconstructs a Closed Planar Mesh Slicer", // Description
               "Salad Slicer", // Category
               "Deconstruct") // Subcategory
         {
@@ -35,7 +35,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
-            pManager.AddParameter(new Param_ClosedPlanar3DSlicer(), "Closed Planar 3D", "CP3D", "Closed Planar 3D Slicer.", GH_ParamAccess.item);
+            pManager.AddParameter(new Param_ClosedPlanarMeshSlicer(), "Closed Planar Mesh", "CPM", "Closed Planar Mesh Slicer.", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             // Declare variable of input parameters
-            ClosedPlanar3DSlicer slicer = new ClosedPlanar3DSlicer();
+            ClosedPlanarMeshSlicer slicer = new ClosedPlanarMeshSlicer();
             
             // Access the input parameters individually. 
             if (!DA.GetData(0, ref slicer)) return;

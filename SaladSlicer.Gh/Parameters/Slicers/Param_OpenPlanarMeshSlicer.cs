@@ -1,7 +1,7 @@
 ﻿// This file is part of SaladSlicer. SaladSlicer is licensed 
 // under the terms of GNU General Public License as published by the 
 // Free Software Foundation. For more information and the LICENSE file, 
-// see <https://github.com/3DCP-TUe/SaladSlicer>.
+// see <https://github.com/MeshCP-TUe/SaladSlicer>.
 
 // System Libs
 using System;
@@ -9,23 +9,25 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 // Grasshopper Libs
 using Grasshopper.Kernel;
+// Rhino Libs
+using Rhino.Geometry;
 // Salad Slicer Libs
-using SaladSlicer.Gh.Goos.CodeGeneration;
+using SaladSlicer.Gh.Goos.Slicers;
 
-namespace SaladSlicer.Gh.Parameters.CodeGeneration
+namespace SaladSlicer.Gh.Parameters.Slicers
 {
     /// <summary>
-    /// Represents the Param_FeedRate class
+    /// Represents the Param_OpenPlanarMeshSlicer class
     /// </summary>
-    public class Param_FeedRate : GH_PersistentGeometryParam<GH_FeedRate>
+    public class Param_OpenPlanarMeshSlicer : GH_PersistentGeometryParam<GH_OpenPlanarMeshSlicer>, IGH_PreviewObject
     {
         /// <summary>
-        /// Initializes a new instance of the Param_FeedRate class
+        /// Initializes a new instance of the Param_Object class
         /// </summary>
-        public Param_FeedRate()
-          : base(new GH_InstanceDescription("Feed Rate", // Parameter name
-              "FR", // Component nickname
-              "Defines a Feed Rate.", // Description
+        public Param_OpenPlanarMeshSlicer()
+          : base(new GH_InstanceDescription("Open Planar Mesh Slicer", // Parameter name
+              "OPM", // Component nickname
+              "Defines an Open Planar Mesh Slicer object.", // Description
               "Salad Slicer", // Category
               "Parameters")) // Subcategory)
         { 
@@ -37,7 +39,7 @@ namespace SaladSlicer.Gh.Parameters.CodeGeneration
         /// </summary>
         public override GH_Exposure Exposure
         {
-            get { return GH_Exposure.primary; }
+            get { return GH_Exposure.secondary; }
         }
 
         /// <summary>
@@ -46,7 +48,7 @@ namespace SaladSlicer.Gh.Parameters.CodeGeneration
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.Param_SetFeedRate_Icon; }
+            get { return Properties.Resources.Param_OpenPlanarMeshSlicer_Icon; }
         }
 
         /// <summary>
@@ -55,7 +57,7 @@ namespace SaladSlicer.Gh.Parameters.CodeGeneration
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("5D839DEF-81D8-4EDD-94F1-05943B580795"); }
+            get { return new Guid("A7B32F57-F6F3-472D-9887-0A8F432E36C3"); }
         }
         #endregion
 
@@ -66,7 +68,7 @@ namespace SaladSlicer.Gh.Parameters.CodeGeneration
         /// </summary>
         /// <param name="values"> Empty list. </param>
         /// <returns> Canceled result. </returns>
-        protected override GH_GetterResult Prompt_Plural(ref List<GH_FeedRate> values)
+        protected override GH_GetterResult Prompt_Plural(ref List<GH_OpenPlanarMeshSlicer> values)
         {
             return GH_GetterResult.cancel;
         }
@@ -77,7 +79,7 @@ namespace SaladSlicer.Gh.Parameters.CodeGeneration
         /// </summary>
         /// <param name="value"> Null item.  </param>
         /// <returns> Canceled result. </returns>
-        protected override GH_GetterResult Prompt_Singular(ref GH_FeedRate value)
+        protected override GH_GetterResult Prompt_Singular(ref GH_OpenPlanarMeshSlicer value)
         {
             return GH_GetterResult.cancel;
         }
@@ -112,6 +114,54 @@ namespace SaladSlicer.Gh.Parameters.CodeGeneration
             };
 
             return item;
+        }
+        #endregion
+
+        #region preview methods
+        /// <summary>
+        /// Implement this function to draw all shaded meshes. 
+        /// If the viewport does not support shading, this function will not be called.
+        /// </summary>
+        /// <param name="args"> Drawing arguments. </param>
+        public void DrawViewportMeshes(IGH_PreviewArgs args)
+        {
+            Preview_DrawMeshes(args);
+        }
+
+        /// <summary>
+        /// Implement this function to draw all wire and point previews.
+        /// </summary>
+        /// <param name="args"> Drawing arguments. </param>
+        public void DrawViewportWires(IGH_PreviewArgs args)
+        {
+            Preview_DrawWires(args);
+        }
+
+        private bool m_hidden = false;
+
+        /// <summary>
+        /// Gets or sets the hidden flag for this component. Does not affect Hidden flags on parameters associated with this component.
+        /// </summary>
+        public bool Hidden
+        {
+            get { return m_hidden; }
+            set { m_hidden = value; }
+        }
+
+        /// <summary>
+        /// Gets the clipping box for this data. The clipping box is typically the same as the boundingbox.
+        /// </summary>
+        public BoundingBox ClippingBox
+        {
+            get { return Preview_ComputeClippingBox(); }
+        }
+
+        /// <summary>
+        /// If a single parameter is PreviewCapable, so is the component. Override this property if you need special Preview flags.
+        /// </summary>
+        public bool IsPreviewCapable
+        {
+            get { return true; }
         }
         #endregion
     }

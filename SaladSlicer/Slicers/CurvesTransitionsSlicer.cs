@@ -69,11 +69,17 @@ namespace SaladSlicer.Slicers
         /// <param name="slicer"> The Curve Slicer instance to duplicate. </param>
         public CurvesTransitionsSlicer(CurvesTransitionsSlicer slicer)
         {
-            _contours = slicer.Contours;
-            _transitions = slicer.Transitions;
+            _contours = slicer.Contours.ConvertAll(curve => curve.DuplicateCurve());
+            _transitions = slicer.Transitions.ConvertAll(curve => curve.DuplicateCurve());
             _distance = slicer.Distance;
-            _framesByLayer = slicer.FramesByLayer;
             _addedVariables = slicer.AddedVariables.ToDictionary(entry => entry.Key.Clone() as string, entry => entry.Value.ConvertAll(list => list.ConvertAll(item => item)));
+
+            _framesByLayer = new List<List<Plane>>();
+
+            for (int i = 0; i < slicer.FramesByLayer.Count; i++)
+            {
+                _framesByLayer.Add(new List<Plane>(slicer.FramesByLayer[i]));
+            }
         }
 
         /// <summary>

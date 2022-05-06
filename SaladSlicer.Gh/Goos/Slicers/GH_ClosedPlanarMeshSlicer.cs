@@ -1,22 +1,23 @@
 ﻿// This file is part of SaladSlicer. SaladSlicer is licensed 
 // under the terms of GNU General Public License as published by the 
 // Free Software Foundation. For more information and the LICENSE file, 
-// see <https://github.com/3DCP-TUe/SaladSlicer>.
+// see <https://github.com/MeshCP-TUe/SaladSlicer>.
 
-// Grasshopper Libs
-using Grasshopper.Kernel.Types;
 // Rhino Libs
 using Rhino.Geometry;
+// Grasshopper Libs
+using Grasshopper.Kernel;
+using Grasshopper.Kernel.Types;
 // Salad Slicer Libs
-using SaladSlicer.CodeGeneration;
+using SaladSlicer.Slicers;
 using SaladSlicer.Interfaces;
 
-namespace SaladSlicer.Gh.Goos.CodeGeneration
+namespace SaladSlicer.Gh.Goos.Slicers
 {
     /// <summary>
-    /// Represents the GH_FeedRate class.
+    /// Represents the GH_ClosedPlanarMeshSlicer class.
     /// </summary>
-    public class GH_FeedRate : GH_GeometricGoo<FeedRate>
+    public class GH_ClosedPlanarMeshSlicer : GH_GeometricGoo<ClosedPlanarMeshSlicer>, IGH_PreviewData
     {
         #region (de)serialisation
         //TODO
@@ -24,42 +25,42 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
 
         #region constructors
         /// <summary>
-        /// Initializes an empty instance of the GH_FeedRate class.
+        /// Initializes an empty instance of the GH_ClosedPlanarMeshSlicer class.
         /// </summary>
-        public GH_FeedRate()
+        public GH_ClosedPlanarMeshSlicer()
         {
             this.Value = null;
         }
 
         /// <summary>
-        /// Initializes a new Feed Rate Goo instance from a Feed Rate instance.
+        /// Initializes a new Oject Goo instance from a ClosedPlanarMeshSlicer instance.
         /// </summary>
-        /// <param name="feedRate"> Feed Rate Value to store inside this Goo instance. </param>
-        public GH_FeedRate(FeedRate feedRate)
+        /// <param name="closedPlanarMeshSlicer"> ClosedPlanarMeshSlicer Value to store inside this Goo instance. </param>
+        public GH_ClosedPlanarMeshSlicer(ClosedPlanarMeshSlicer closedPlanarMeshSlicer)
         {
-            this.Value = feedRate;
+            this.Value = closedPlanarMeshSlicer;
         }
 
         /// <summary>
         /// Returns a complete duplicate of this Goo instance.
         /// </summary>
-        /// <returns> A duplicate of the Feed Rate Goo. </returns>
+        /// <returns> A duplicate of the Closed Planar Mesh Slicer Goo. </returns>
         public override IGH_Goo Duplicate()
         {
             if (this.Value == null)
             {
-                return new GH_FeedRate();
+                return new GH_ClosedPlanarMeshSlicer();
             }
             else
             {
-                return new GH_FeedRate(this.Value.Duplicate());
+                return new GH_ClosedPlanarMeshSlicer(this.Value.Duplicate());
             }
         }
 
         /// <summary>
         /// Returns a complete duplicate of this Goo insance.
         /// </summary>
-        /// <returns> A duplicate of the Feed Rate Goo instance. </returns>
+        /// <returns> A duplicate of the Closed Planar Mesh Slicer Goo instance. </returns>
         public override IGH_GeometricGoo DuplicateGeometry()
         {
             return this.Duplicate() as IGH_GeometricGoo;
@@ -75,11 +76,11 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
         {
             if (this.Value == null)
             {
-                return "Null Feed Rate";
+                return "Null Closed Planar Mesh Slicer";
             }
             else
             {
-                return this.Value.ToString();
+                return Value.ToString();
             }
         }
 
@@ -98,45 +99,52 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
                 return false;
             }
 
-            // Cast to Feed Rate
-            if (typeof(Q).IsAssignableFrom(typeof(FeedRate)))
+            // Cast to ISlicer
+            if (typeof(Q).IsAssignableFrom(typeof(ISlicer)))
             {
                 target = (Q)(object)this.Value;
                 return true;
             }
 
-            // Cast to Feed Rate Goo
-            if (typeof(Q).IsAssignableFrom(typeof(GH_FeedRate)))
+            // Cast to ISlicer Goo
+            if (typeof(Q).IsAssignableFrom(typeof(GH_SlicerObject)))
             {
-                target = (Q)(object)new GH_FeedRate(this.Value);
+                target = (Q)(object)new GH_SlicerObject(this.Value);
                 return true;
             }
 
-            // Cast to IProgram
-            if (typeof(Q).IsAssignableFrom(typeof(IProgram)))
+            // Cast to ClosedPlanarMeshSlicer
+            if (typeof(Q).IsAssignableFrom(typeof(ClosedPlanarMeshSlicer)))
             {
                 target = (Q)(object)this.Value;
                 return true;
             }
 
-            // Cast to IProgram Goo
-            if (typeof(Q).IsAssignableFrom(typeof(GH_ProgramObject)))
+            // Cast to ClosedPlanarMeshSlicer Goo
+            if (typeof(Q).IsAssignableFrom(typeof(GH_ClosedPlanarMeshSlicer)))
             {
-                target = (Q)(object)new GH_ProgramObject(this.Value);
+                target = (Q)(object)new GH_ClosedPlanarMeshSlicer(this.Value);
                 return true;
             }
 
-            // Cast to double
-            if (typeof(Q).IsAssignableFrom(typeof(double)))
+            // Cast to Curve
+            if (typeof(Q).IsAssignableFrom(typeof(Curve)))
             {
-                target = (Q)(object)this.Value.Feedrate;
+                target = (Q)(object)this.Value.GetPath();
                 return true;
             }
 
-            // Cast to Number Goo
-            if (typeof(Q).IsAssignableFrom(typeof(GH_Number)))
+            // Cast to Curve Goo
+            if (typeof(Q).IsAssignableFrom(typeof(GH_Curve)))
             {
-                target = (Q)(object)new GH_Number(this.Value.Feedrate);
+                target = (Q)(object)new GH_Curve(this.Value.GetPath());
+                return true;
+            }
+
+            // Cast to Bounding Box
+            if (typeof(Q).IsAssignableFrom(typeof(BoundingBox)))
+            {
+                target = (Q)(object)this.Value.GetBoundingBox(true);
                 return true;
             }
 
@@ -158,26 +166,41 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
                 return false; 
             }
 
-            // Cast from Feed Rate
-            if (typeof(FeedRate).IsAssignableFrom(source.GetType()))
+            // Cast from ClosedPlanarMeshSlicer
+            if (typeof(ClosedPlanarMeshSlicer).IsAssignableFrom(source.GetType()))
             {
-                this.Value = source as FeedRate;
+                this.Value = source as ClosedPlanarMeshSlicer;
                 return true;
             }
 
-            // Cast from double
-            if (typeof(double).IsAssignableFrom(source.GetType()))
+            // Cast from ClosedPlanarMeshSlicer Goo
+            if (typeof(GH_ClosedPlanarMeshSlicer).IsAssignableFrom(source.GetType()))
             {
-                this.Value = new FeedRate((double)source);
+                GH_ClosedPlanarMeshSlicer goo = source as GH_ClosedPlanarMeshSlicer;
+                this.Value = goo.Value;
                 return true;
             }
 
-            // Cast from Number Goo
-            if (typeof(GH_Number).IsAssignableFrom(source.GetType()))
+            // Cast from ISlicer
+            if (typeof(ISlicer).IsAssignableFrom(source.GetType()))
             {
-                GH_Number goo = source as GH_Number;
-                this.Value = new FeedRate(goo.Value);
-                return true;
+                if (source is ClosedPlanarMeshSlicer slicer)
+                {
+                    this.Value = slicer;
+                    return true;
+                }
+            }
+
+            // Cast from ISlicer Goo 
+            if (typeof(GH_SlicerObject).IsAssignableFrom(source.GetType()))
+            {
+                GH_SlicerObject goo = source as GH_SlicerObject;
+
+                if (goo.Value is ClosedPlanarMeshSlicer slicer)
+                {
+                    this.Value = slicer;
+                    return true;
+                }
             }
 
             // Invalid cast
@@ -206,9 +229,9 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
         {
             get
             {
-                if (this.Value == null) { return "No internal Feed Rate instance"; }
+                if (this.Value == null) { return "No internal Closed Planar Mesh Slicer instance"; }
                 if (this.Value.IsValid) { return string.Empty; }
-                return "Invalid Feed Rate instance: Did you define a Text?";
+                return "Invalid Closed Planar Mesh Slicer instance.";
             }
         }
 
@@ -217,7 +240,7 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
         /// </summary>
         public override string TypeDescription
         {
-            get { return "Defines a Feed Rate."; }
+            get { return "Defines a Closed Planar Mesh Slicer."; }
         }
 
         /// <summary>
@@ -225,7 +248,7 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
         /// </summary>
         public override string TypeName
         {
-            get { return "Feed Rate"; }
+            get { return "Closed Planar Mesh Slicer"; }
         }
         #endregion
 
@@ -249,7 +272,9 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
 
             else
             {
-                return new GH_FeedRate(Value);
+                ClosedPlanarMeshSlicer slicer = Value.Duplicate();
+                slicer.Transform(xform);
+                return new GH_ClosedPlanarMeshSlicer(slicer);
             }
         }
 
@@ -272,7 +297,18 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
         /// <returns> The world aligned boundingbox of the transformed geometry. </returns>
         public override BoundingBox GetBoundingBox(Transform xform)
         {
-            return BoundingBox.Empty;
+            if (this.Value == null)
+            {
+                return BoundingBox.Empty;
+            }
+            else if (this.Value.GetPath() == null)
+            {
+                return BoundingBox.Empty;
+            }
+            else
+            {
+                return this.Value.GetPath().GetBoundingBox(true);
+            }
         }
 
         /// <summary>
@@ -281,6 +317,41 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
         public override BoundingBox Boundingbox
         {
             get { return this.GetBoundingBox(new Transform()); }
+        }
+
+        /// <summary>
+        /// Gets the clipping box for this data.
+        /// </summary>
+        public BoundingBox ClippingBox
+        {
+            get { return this.GetBoundingBox(new Transform()); }
+        }
+
+        /// <summary>
+        /// Implement this function to draw all shaded meshes. 
+        /// If the viewport does not support shading, this function will not be called.
+        /// </summary>
+        /// <param name="args"> Drawing arguments. </param>
+        public void DrawViewportMeshes(GH_PreviewMeshArgs args)
+        {
+            
+        }
+
+        /// <summary>
+        /// Implement this function to draw all wire and point previews.
+        /// </summary>
+        /// <param name="args"> Drawing arguments. </param>
+        public void DrawViewportWires(GH_PreviewWireArgs args)
+        {
+            if (this.Value.GetPath() != null)
+            {
+                args.Pipeline.DrawCurve(this.Value.GetPath(), args.Color, args.Thickness);
+            }
+
+            if (this.Value.PointAtStart != null)
+            {
+                args.Pipeline.DrawPoint(this.Value.PointAtStart, args.Color);
+            }
         }
         #endregion
     }

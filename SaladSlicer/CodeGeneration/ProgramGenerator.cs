@@ -24,7 +24,7 @@ namespace SaladSlicer.CodeGeneration
     {
         #region fields
         private readonly List<string> _program = new List<string>();
-        private ProgramSettings _programSettings = new ProgramSettings();
+        private PrinterSettings _printerSettings = new PrinterSettings();
         #endregion
 
         #region constructors
@@ -88,7 +88,7 @@ namespace SaladSlicer.CodeGeneration
             //   }
 
             // Set program settings
-            if (_objects[0].GetType() != typeof(ProgramSettings))
+            if (_objects[0].GetType() != typeof(PrinterSettings))
             {
                 _program.Add("; ----------------------------------------------------------------------");
                 _program.Add("; SETTINGS");
@@ -98,8 +98,8 @@ namespace SaladSlicer.CodeGeneration
                 _program.Add("; Defaults settings are used");
                 _program.Add(" ");
 
-                ProgramSettings programSettings = new ProgramSettings();
-                programSettings.ToProgram(this);
+                PrinterSettings printerSettings = new PrinterSettings();
+                printerSettings.ToProgram(this);
             }
 
             // G-code of different objects
@@ -109,14 +109,14 @@ namespace SaladSlicer.CodeGeneration
             }
             
             // Footer (ending)
-            if (_programSettings.ProgramType == 0){
+            if (_printerSettings.ProgramType == 0){
                 _program.Add(" ");
                 _program.Add("M30");
                 _program.Add(" ");
                 _program.Add(" ");
                 _program.Add(" ");
             }
-            else if (_programSettings.ProgramType == 1)
+            else if (_printerSettings.ProgramType == 1)
             {
                 _program.Add(" ");
                 _program.Add("G91; Relative coordinates ");
@@ -124,19 +124,19 @@ namespace SaladSlicer.CodeGeneration
                 _program.Add("G90; Absolute coordinates ");
                 _program.Add("G28; Move home ");
 
-                if (_programSettings.HotEndTemperature != 0 || _programSettings.BedTemperature != 0)
+                if (_printerSettings.HotEndTemperature != 0 || _printerSettings.BedTemperature != 0)
                 {
-                    if (_programSettings.HotEndTemperature >= 0)
+                    if (_printerSettings.HotEndTemperature >= 0)
                     {
-                        _programSettings.HotEndTemperature = 0;
-                        _program.Add($"M109 R{_programSettings.HotEndTemperature:0.#}; Set and wait for hotend temperature to 0");
+                        _printerSettings.HotEndTemperature = 0;
+                        _program.Add($"M109 R{_printerSettings.HotEndTemperature:0.#}; Set and wait for hotend temperature to 0");
                         _program.Add("M105; Report temperature");
                     }
 
-                    if (_programSettings.BedTemperature >= 0)
+                    if (_printerSettings.BedTemperature >= 0)
                     {
-                        _programSettings.BedTemperature = 0;
-                        _program.Add($"M190 R{_programSettings.BedTemperature:0.#}; Set and wait for bed temperature to 0");
+                        _printerSettings.BedTemperature = 0;
+                        _program.Add($"M190 R{_printerSettings.BedTemperature:0.#}; Set and wait for bed temperature to 0");
                         _program.Add("M105; Report temperature");
                     }
                 }
@@ -248,12 +248,12 @@ namespace SaladSlicer.CodeGeneration
         }
 
         /// <summary>
-        /// Gets or sets the program settings.
+        /// Gets or sets the printer settings.
         /// </summary>
-        public ProgramSettings ProgramSettings
+        public PrinterSettings PrinterSettings
         {
-            get { return _programSettings; }
-            set { _programSettings = value; }
+            get { return _printerSettings; }
+            set { _printerSettings = value; }
         }
         #endregion 
     }

@@ -13,10 +13,10 @@ using SaladSlicer.Interfaces;
 namespace SaladSlicer.CodeGeneration
 {
     /// <summary>
-    /// Represents the Program Settings
+    /// Represents the Printer Settings
     /// </summary>
     [Serializable()]
-    public class ProgramSettings: IProgram
+    public class PrinterSettings: IProgram
     {
         #region fields
         private int _programType = 0;
@@ -29,14 +29,16 @@ namespace SaladSlicer.CodeGeneration
         /// <summary>
         /// Creates a default temperature setting with zeros
         /// </summary>
-        public ProgramSettings(){}
-
-        public ProgramSettings(ProgramSettings programSettings)
+        public PrinterSettings()
         {
-            _programType = programSettings._programType;
-            _interpolation = programSettings._interpolation;
-            _hotEndTemperature = programSettings.HotEndTemperature;
-            _bedTemperature = programSettings.BedTemperature;
+        }
+
+        public PrinterSettings(PrinterSettings printerSettings)
+        {
+            _programType = printerSettings.ProgramType;
+            _interpolation = printerSettings.Interpolation;
+            _hotEndTemperature = printerSettings.HotEndTemperature;
+            _bedTemperature = printerSettings.BedTemperature;
         }
 
         /// <summary>
@@ -44,7 +46,7 @@ namespace SaladSlicer.CodeGeneration
         /// </summary>
         /// <param name="hotEndTemperature">The hot end temperature to be set</param>
         /// <param name="bedTemperature">The bed temperature to be set</param>
-        public ProgramSettings(int programType, int interpolation, double hotEndTemperature, double bedTemperature)
+        public PrinterSettings(int programType, int interpolation, double hotEndTemperature, double bedTemperature)
         {
             _programType = programType;
             _interpolation = interpolation;
@@ -53,21 +55,21 @@ namespace SaladSlicer.CodeGeneration
         }
 
         /// <summary>
-        /// Returns an exact duplicate of this Program Settings object.
+        /// Returns an exact duplicate of this Printer Settings object.
         /// </summary>
-        /// <returns> The exact duplicate of this Program Settings instance </returns>
-        public ProgramSettings Duplicate()
+        /// <returns> The exact duplicate of this Printer Settings instance </returns>
+        public PrinterSettings Duplicate()
         {
-            return new ProgramSettings(this);
+            return new PrinterSettings(this);
         }
 
         /// <summary>
-        /// Returns an exact duplicate of this Program Settings object as an IProgram.
+        /// Returns an exact duplicate of this Printer Settings object as an IProgram.
         /// </summary>
-        /// <returns> The exact duplicate of this Program Settings instance as an IProgram. </returns>
+        /// <returns> The exact duplicate of this Printer Settings instance as an IProgram. </returns>
         public IProgram DuplicateProgramObject()
         {
-            return new ProgramSettings(this);
+            return new PrinterSettings(this);
         }
         #endregion
 
@@ -78,7 +80,7 @@ namespace SaladSlicer.CodeGeneration
         /// <returns> A string that represents the current object. </returns>
         public override string ToString()
         {
-            return ($"Program settings");
+            return ($"Printer settings");
         }
 
         /// <summary>
@@ -87,7 +89,7 @@ namespace SaladSlicer.CodeGeneration
         /// <returns>The string</returns>
         public string ToSingleString()
         {
-            throw new Exception("Program Settings cannot be represented by a single string");
+            throw new Exception("The printer settings cannot be represented by a single string");
         }
 
         /// <summary>
@@ -96,12 +98,12 @@ namespace SaladSlicer.CodeGeneration
         /// <param name="programGenerator"> The program generator. </param>
         public void ToProgram(ProgramGenerator programGenerator)
         {
-            // Overwrite program settings
-            programGenerator.ProgramSettings = this.Duplicate();
+            // Overwrite printer settings
+            programGenerator.PrinterSettings = this.Duplicate();
 
             // Code header
             programGenerator.Program.Add("; ----------------------------------------------------------------------");
-            programGenerator.Program.Add("; PROGRAM SETTINGS");
+            programGenerator.Program.Add("; PRINTER SETTINGS");
             programGenerator.Program.Add("; ----------------------------------------------------------------------");
             
             // Program Type
@@ -155,13 +157,13 @@ namespace SaladSlicer.CodeGeneration
                 if (_hotEndTemperature >= 0)
                 {
                     programGenerator.Program.Add($"M104 S{_hotEndTemperature:0.#}; Set hotend temperature");
-                    programGenerator.ProgramSettings.HotEndTemperature = _hotEndTemperature;
+                    programGenerator.PrinterSettings.HotEndTemperature = _hotEndTemperature;
                 }
                 
                 if (_bedTemperature >= 0) 
                 { 
                     programGenerator.Program.Add($"M140 S{_bedTemperature:0.#}; Set bed temperature");
-                    programGenerator.ProgramSettings.BedTemperature = _bedTemperature;
+                    programGenerator.PrinterSettings.BedTemperature = _bedTemperature;
                 }
                 
                 programGenerator.Program.Add("M105; Report temperature");

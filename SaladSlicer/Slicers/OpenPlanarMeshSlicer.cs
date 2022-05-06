@@ -1,7 +1,7 @@
 ﻿// This file is part of SaladSlicer. SaladSlicer is licensed 
 // under the terms of GNU General Public License as published by the 
 // Free Software Foundation. For more information and the LICENSE file, 
-// see <https://github.com/3DCP-TUe/SaladSlicer>.
+// see <https://github.com/MeshCP-TUe/SaladSlicer>.
 
 // System Libs
 using System;
@@ -21,10 +21,10 @@ using SaladSlicer.Utils;
 namespace SaladSlicer.Slicers
 {
     /// <summary>
-    /// Represents the Closed Planar 3D Slicer class.
+    /// Represents the Open Planar Mesh Slicer class.
     /// </summary>
     [Serializable()]
-    public class ClosedPlanar3DSlicer : IProgram, ISlicer, IGeometry, IAddVariable
+    public class OpenPlanarMeshSlicer : IProgram, ISlicer, IGeometry, IAddVariable
     {
         #region fields
         private Mesh _mesh ;
@@ -33,10 +33,6 @@ namespace SaladSlicer.Slicers
         private List<Curve> _contours = new List<Curve>();
         private List<double> _heights = new List<double>();
         private readonly List<List<Plane>> _framesByLayer = new List<List<Plane>>() { };
-        private readonly List<List<Plane>> _framesInContours = new List<List<Plane>>() { };
-        private readonly List<List<Plane>> _framesInTransitions = new List<List<Plane>>() { };
-        private double _seamLocation;
-        private double _seamLength;
         private bool _reverse;
         private readonly Dictionary<string, List<List<double>>> _addedVariables = new Dictionary<string, List<List<double>>>() { };
         #endregion
@@ -47,62 +43,52 @@ namespace SaladSlicer.Slicers
 
         #region constructors
         /// <summary>
-        /// Initializes an empty instance of the Closed Planar 3D Slicer class.
+        /// Initializes an empty instance of the Open Planar Mesh Slicer class.
         /// </summary>
-        public ClosedPlanar3DSlicer()
+        public OpenPlanarMeshSlicer()
         {
 
         }
 
         /// <summary>
-        /// Initializes a new instance of the Closed Planar 3D Slicer class from a list with absolute layer heights. 
+        /// Initializes a new instance of the Open Planar Mesh Slicer class from a list with absolute layer heights. 
         /// </summary>
         /// <param name="mesh"> The base mesh. </param>
-        /// <param name="parameter"> The parameter of the starting point. </param>
-        /// <param name="length"> The length of the seam between two layers. </param>
         /// <param name="distance"> The desired distance between two frames. </param>
         /// <param name="reverse"> Indicates if the path direction will be reversed. </param>
         /// <param name="heights"> A list with absolute layer heights. </param>
-        public ClosedPlanar3DSlicer(Mesh mesh, double parameter, double length, double distance, bool reverse, IList<double> heights)
+        public OpenPlanarMeshSlicer(Mesh mesh, double distance, bool reverse, IList<double> heights)
         {
             _mesh = mesh;
             _heights = heights as List<double>;
-            _seamLocation = parameter;
-            _seamLength = length;
             _distance = distance;
             _reverse = reverse;
         }
 
         /// <summary>
-        /// Initializes a new instance of the Closed Planar 3D Slicer class from a given number of layers and layer thickness.
+        /// Initializes a new instance of the Open Planar Mesh Slicer class from a given number of layers and layer thickness.
         /// </summary>
         /// <param name="mesh"> The base mesh. </param>
-        /// <param name="parameter"> The parameter of the starting point. </param>
-        /// <param name="length"> The length of the seam between two layers. </param>
         /// <param name="distance"> The desired distance between two frames. </param>
         /// <param name="height"> The layer height. </param>
         /// <param name="reverse"> Indicates if the path direction will be reversed. </param>
         /// <param name="layers"> The number of layers. </param>
-        public ClosedPlanar3DSlicer(Mesh mesh, double parameter, double length, double distance, double height, bool reverse, int layers)
+        public OpenPlanarMeshSlicer(Mesh mesh, double distance, double height, bool reverse, int layers)
         {
             _mesh = mesh;
             _heights.AddRange(Enumerable.Repeat(height, layers).ToList());
-            _seamLocation = parameter;
-            _seamLength = length;
             _distance = distance;
             _reverse = reverse;
         }
 
         /// <summary>
-        /// Initializes a new instance of the Closed Planar 3D Slicer class by duplicating an existing Closed Planar 3D Slicer instance. 
+        /// Initializes a new instance of the Open Planar Mesh Slicer class by duplicating an existing Open Planar Mesh Slicer instance. 
         /// </summary>
-        /// <param name="slicer"> The Closed Planar 3D Slicer instance to duplicate. </param>
-        public ClosedPlanar3DSlicer(ClosedPlanar3DSlicer slicer)
+        /// <param name="slicer"> The Open Planar Mesh Slicer instance to duplicate. </param>
+        public OpenPlanarMeshSlicer(OpenPlanarMeshSlicer slicer)
         {
             _mesh = slicer.Mesh.DuplicateMesh();
             _heights = new List<double>(slicer.Heights);
-            _seamLocation = slicer.SeamLocation;
-            _seamLength = slicer.SeamLength;
             _distance = slicer.Distance;
             _path = slicer.Path.ConvertAll(curve => curve.DuplicateCurve());
             _contours = slicer.Contours.ConvertAll(curve => curve.DuplicateCurve());
@@ -117,45 +103,45 @@ namespace SaladSlicer.Slicers
         }
 
         /// <summary>
-        /// Returns an exact duplicate of this Closed Planar 3D Slicer instance.
+        /// Returns an exact duplicate of this Open Planar Mesh Slicer instance.
         /// </summary>
-        /// <returns> The exact duplicate of this Closed Planar 3D Slicer instance. </returns>
-        public ClosedPlanar3DSlicer Duplicate()
+        /// <returns> The exact duplicate of this Open Planar Mesh Slicer instance. </returns>
+        public OpenPlanarMeshSlicer Duplicate()
         {
-            return new ClosedPlanar3DSlicer(this);
+            return new OpenPlanarMeshSlicer(this);
         }
 
         /// <summary>
-        /// Returns an exact duplicate of this Closed Planar 3D Slicer instance as an IProgram.
+        /// Returns an exact duplicate of this Open Planar Mesh Slicer instance as an IProgram.
         /// </summary>
-        /// <returns> The exact duplicate of this Closed Planar 3D Slicer instance as an IProgram. </returns>
+        /// <returns> The exact duplicate of this Open Planar Mesh Slicer instance as an IProgram. </returns>
         public IProgram DuplicateProgramObject()
         {
             return Duplicate();
         }
 
         /// <summary>
-        /// Returns an exact duplicate of this Closed Planar 3D Slicer instance as an ISlicer.
+        /// Returns an exact duplicate of this Open Planar Mesh Slicer instance as an ISlicer.
         /// </summary>
-        /// <returns> The exact duplicate of this Closed Planar 3D Slicer instance as an ISlicer. </returns>
+        /// <returns> The exact duplicate of this Open Planar Mesh Slicer instance as an ISlicer. </returns>
         public ISlicer DuplicateSlicerObject()
         {
             return Duplicate();
         }
 
         /// <summary>
-        /// Returns an exact duplicate of this Closed Planar 3D Slicer instance as an IGeometry.
+        /// Returns an exact duplicate of this Open Planar Mesh Slicer instance as an IGeometry.
         /// </summary>
-        /// <returns> The exact duplicate of this Closed Planar 3D Slicer instance as an IGeometry. </returns>
+        /// <returns> The exact duplicate of this Open Planar Mesh Slicer instance as an IGeometry. </returns>
         public IGeometry DuplicateGeometryObject()
         {
             return Duplicate();
         }
 
         /// <summary>
-        /// Returns an exact duplicate of this Closed Planar 3D Slicer instance as an IAddVariable
+        /// Returns an exact duplicate of this Open Planar Mesh Slicer instance as an IAddVariable
         /// </summary>
-        /// <returns> The exact duplicate of this Closed Planar 3D Slicer instance as an IAddVariable. </returns>
+        /// <returns> The exact duplicate of this Open Planar Mesh Slicer instance as an IAddVariable. </returns>
         public IAddVariable DuplicateAddVariableObject()
         {
             return Duplicate();
@@ -169,7 +155,7 @@ namespace SaladSlicer.Slicers
         /// <returns> A string that represents the current object. </returns>
         public override string ToString()
         {
-            return "Closed 3D Planar Object";
+            return "Open Planar Mesh Sicer Object";
         }
 
         /// <summary>
@@ -249,11 +235,9 @@ namespace SaladSlicer.Slicers
                 }
             }
 
-            // Set seam location
+            // Align curves
             _contours = Curves.AlignCurves(_contours);
-            _contours[0] = Locations.SeamAtLength(_contours[0], _seamLocation, true);
-            //_contours[0] = Geometry.Seams.Locations.SeamAtLength(_contours[0], _contours[0].GetLength() - 0.5 * _seamLength, false); //TODO: to discuss... 
-            _contours = Locations.AlignSeamsByClosestPoint(_contours);
+            _contours = Curves.AlternateCurves(_contours);
 
             // Reverse the contours
             if (_reverse == true)
@@ -270,11 +254,8 @@ namespace SaladSlicer.Slicers
         /// </summary>
         private void CreatePath()
         {
-            List<Curve> trimmed = Transitions.TrimCurveFromEnds(_contours, _seamLength);
-            List<Curve> transitions = Transitions.InterpolatedTransitions(_contours, _seamLength, 0.25 * _distance);
-
             _path.Clear();
-            _path = Curves.WeaveCurves(trimmed, transitions);
+            _path = Curves.WeaveCurves(_contours, Transitions.LinearTransitions(_contours));
         }
 
         /// <summary>
@@ -283,17 +264,15 @@ namespace SaladSlicer.Slicers
         private void CreateFrames()
         {
             _framesByLayer.Clear();
-            
+            _contours = Curves.AlternateCurves(_contours);
+
             for (int i = 0; i < _contours.Count; i++)
             {
                 _framesByLayer.Add(new List<Plane>() { });
-                _framesInContours.Add(new List<Plane>() { });
-                _framesInTransitions.Add(new List<Plane>() { });
             }
 
             for (int i = 0; i < _contours.Count; i++)
             {
-                // Contours
                 int n = (int)(_path[i * 2].GetLength() / _distance);
                 n = Math.Max(2, n);
                 double[] t = _path[i * 2].DivideByCount(n, true);
@@ -316,38 +295,15 @@ namespace SaladSlicer.Slicers
 
                     Plane plane = new Plane(point, x, y);
                     _framesByLayer[i].Add(plane);
-                    _framesInContours[i].Add(plane);
-                }
-
-                // Transitions
-                if (i < _contours.Count - 1)
-                {
-                    n = (int)(_path[i * 2 + 1].GetLength() / _distance);
-                    n = Math.Max(2, n);
-                    t = _path[i * 2 + 1].DivideByCount(n, false);
-
-                    for (int j = 0; j != t.Length; j++)
-                    {
-                        Point3d point = _path[i * 2 + 1].PointAt(t[j]);
-
-                        MeshPoint meshPoint = _mesh.ClosestMeshPoint(point, 100.0);
-                        Vector3d meshNormal = _mesh.NormalAt(meshPoint);
-
-                        Vector3d x = _path[i * 2 + 1].TangentAt(t[j]);
-                        Vector3d y = Vector3d.CrossProduct(x, new Vector3d(0, 0, 1));
-
-                        double angle1 = Vector3d.VectorAngle(y, meshNormal);
-                        double angle2 = Vector3d.VectorAngle(y, -meshNormal);
-
-                        if (angle1 < angle2) { y = meshNormal; }
-                        else { y = -meshNormal; }
-
-                        Plane plane = new Plane(point, x, y);
-                        _framesByLayer[i].Add(plane);
-                        _framesInTransitions[i].Add(plane);
-                    }
                 }
             }
+
+            for (int i = 1; i < _framesByLayer.Count; i += 2)
+            {
+                _framesByLayer[i].Reverse();
+            }
+
+            _contours = Curves.AlternateCurves(_contours);
         }
 
         /// <summary>
@@ -357,16 +313,55 @@ namespace SaladSlicer.Slicers
         public void ToProgram(ProgramGenerator programGenerator)
         {
             // Header
-            programGenerator.AddSlicerHeader("3D CLOSED PLANAR OBJECT", _contours.Count, GetLength());
+            programGenerator.AddSlicerHeader("Mesh OPEN PLANAR OBJECT", _contours.Count, GetLength());
 
-            // Add coordinates
+            // Get coordinates
             List<List<string>> coordinates = ProgramGenerator.GetCoordinateCodeLines(this);
 
-            for (int i = 0; i < coordinates.Count; i++)
+            // Sinumerik
+            if (programGenerator.PrinterSettings.ProgramType == 0)
             {
-                programGenerator.Program.Add(" ");
-                programGenerator.Program.Add($"; LAYER {i + 1:0}");
-                programGenerator.Program.AddRange(coordinates[i]);
+                for (int i = 0; i < coordinates.Count; i++)
+                {
+                    programGenerator.Program.Add(" ");
+                    programGenerator.Program.Add($"; LAYER {i + 1:0}");
+
+                    // Add TANGOF for all layers but the first
+                    if (i != 0)
+                    {
+                        programGenerator.Program.Add("TANGOF(C)");
+                    }
+
+                    // Move 1 point with the TANGOF
+                    programGenerator.Program.Add(coordinates[i][0]);
+
+                    // Turn TANGON again
+                    if (i % 2 == 0)
+                    {
+                        programGenerator.Program.Add("TANGON(C, 0)");
+                    }
+                    else
+                    {
+                        programGenerator.Program.Add("TANGON(C, 180)");
+                    }
+
+                    programGenerator.Program.Add("BSPLINE");
+                    programGenerator.Program.Add("G642");
+
+                    // Add the rest of the coordinates
+                    programGenerator.Program.AddRange(coordinates[i].GetRange(1, coordinates[i].Count - 1));
+                }
+            }
+
+            // Marlin
+            else if (programGenerator.PrinterSettings.ProgramType == 1)
+            {
+                for (int i = 0; i < coordinates.Count; i++)
+                {
+                    programGenerator.Program.Add(" ");
+                    programGenerator.Program.Add($"; LAYER {i + 1:0}, {_framesByLayer[i].Count} Points");
+                    programGenerator.Program.AddRange(coordinates[i]);
+                }
             }
 
             // End
@@ -406,14 +401,13 @@ namespace SaladSlicer.Slicers
         }
 
         /// <summary>
-        /// Returns the AbsoluteCoordinate object as a string
+        /// Returns the Open Planar Mesh Slicer object as a string
         /// </summary>
         /// <returns>The string</returns>
         public string ToSingleString()
         {
             throw new Exception("A Slicer Object cannot be represented by a single string");
         }
-
 
         /// <summary>
         /// Returns the path.
@@ -430,7 +424,19 @@ namespace SaladSlicer.Slicers
         /// <returns> The interpolated path. </returns>
         public Curve GetInterpolatedPath()
         {
-            return Curve.CreateInterpolatedCurve(GetPoints(), 3, CurveKnotStyle.Chord);
+            List<Curve> curves = new List<Curve>() { };
+            List<List<Point3d>> points = GetPointsByLayer();
+
+            for (int i = 0; i < points.Count; i++)
+            {
+                curves.Add(Curve.CreateInterpolatedCurve(points[i], 3, CurveKnotStyle.Chord));
+            }
+
+            curves = Curves.WeaveCurves(curves, Transitions.LinearTransitions(curves));
+
+            Curve result = Curve.JoinCurves(curves)[0];
+
+            return result;
         }
 
         /// <summary>
@@ -449,7 +455,7 @@ namespace SaladSlicer.Slicers
         public List<List<double>> GetDistancesAlongContours()
         {
             List<List<double>> distances = new List<List<double>>();
-            
+
             for (int i = 0; i < _framesByLayer.Count; i++)
             {
                 List<double> distancesTemp = new List<double>();
@@ -471,7 +477,7 @@ namespace SaladSlicer.Slicers
 
                 distances.Add(distancesTemp);
             }
-            
+
             return distances;
         }
 
@@ -485,26 +491,24 @@ namespace SaladSlicer.Slicers
         /// <returns> List with distaces. </returns>
         public List<List<double>> GetDistanceToPreviousLayer(Plane plane, out List<List<double>> dx, out List<List<double>> dy, out List<List<double>> dz)
         {
-
             List<List<double>> distances = new List<List<double>>();
 
             dx = new List<List<double>>();
             dy = new List<List<double>>();
             dz = new List<List<double>>();
 
-            for (int i = 0; i < _framesInContours.Count; i++)
+            for (int i = 0; i < _framesByLayer.Count; i++)
             {
                 List<double> temp = new List<double>();
                 List<double> tempx = new List<double>();
                 List<double> tempy = new List<double>();
                 List<double> tempz = new List<double>();
 
-                //Contours
                 if (i == 0)
                 {
-                    for (int j = 0; j < _framesInContours[i].Count; j++)
+                    for (int j = 0; j < _framesByLayer[i].Count; j++)
                     {
-                        Point3d point = _framesInContours[i][j].Origin;
+                        Point3d point = _framesByLayer[i][j].Origin;
                         Point3d closestPoint = plane.ClosestPoint(point);
 
                         temp.Add(point.DistanceTo(closestPoint));
@@ -515,12 +519,11 @@ namespace SaladSlicer.Slicers
                 }
                 else
                 {
-                    for (int j = 0; j < _framesInContours[i].Count; j++)
+                    for (int j = 0; j < _framesByLayer[i].Count; j++)
                     {
-                        Point3d point = _framesInContours[i][j].Origin;
+                        Point3d point = _framesByLayer[i][j].Origin;
                         _contours[i - 1].ClosestPoint(point, out double parameter);
-
-                        Point3d closestPoint = _contours[i - 1].PointAt(parameter);
+                        Point3d closestPoint = _contours[i - 1].PointAt(parameter); //TODO: This goes wrong at transitions!
 
                         temp.Add(point.DistanceTo(closestPoint));
                         tempx.Add(Math.Abs(point.X - closestPoint.X));
@@ -529,41 +532,12 @@ namespace SaladSlicer.Slicers
                     }
                 }
 
-                //Transitions: linearly interpolate between last distance on this contour and first on the next contour
-                if (i < _framesInContours.Count - 1)
-                {
-                    //Last distance on current contour
-                    double firstDistance = temp[temp.Count - 1];
-                    double firstDistanceX = tempx[tempx.Count - 1];
-                    double firstDistanceY = tempy[tempy.Count - 1];
-                    double firstDistanceZ = tempz[tempz.Count - 1];
-
-                    //Calculate closest point for first frame in next contour
-                    Point3d tempPoint = _framesInContours[i + 1][0].Origin;
-                    _contours[i].ClosestPoint(tempPoint, out double tempParameter);
-                    Point3d tempClosestPoint = _contours[i].PointAt(tempParameter);
-
-                    double secondDistance = tempPoint.DistanceTo(tempClosestPoint);
-                    double secondDistanceX = Math.Abs(tempPoint.X - tempClosestPoint.X);
-                    double secondDistanceY = Math.Abs(tempPoint.Y - tempClosestPoint.Y);
-                    double secondDistanceZ = Math.Abs(tempPoint.Z - tempClosestPoint.Z);
-
-                    //Linearly interpolate
-                    for (int j = 0; j < _framesInTransitions[i].Count; j++)
-                    {
-                        temp.Add(firstDistance + (j + 1) * (secondDistance - firstDistance) / (_framesInTransitions[i].Count + 1));
-                        tempx.Add(firstDistanceX + (j + 1) * (secondDistanceX - firstDistanceX) / (_framesInTransitions[i].Count + 1));
-                        tempy.Add(firstDistanceY + (j + 1) * (secondDistanceY - firstDistanceY) / (_framesInTransitions[i].Count + 1));
-                        tempz.Add(firstDistanceZ + (j + 1) * (secondDistanceZ - firstDistanceZ) / (_framesInTransitions[i].Count + 1));
-                    }
-                }
-
                 distances.Add(temp);
                 dx.Add(tempx);
                 dy.Add(tempy);
                 dz.Add(tempz);
-
             }
+
             return distances;
         }
 
@@ -574,7 +548,7 @@ namespace SaladSlicer.Slicers
         {
             List<List<Vector3d>> result = new List<List<Vector3d>>();
 
-            Curve path = GetInterpolatedPath(); 
+            Curve path = GetInterpolatedPath();
 
             for (int i = 0; i < _framesByLayer.Count; i++)
             {
@@ -602,7 +576,6 @@ namespace SaladSlicer.Slicers
             {
                 length += _path[i].GetLength();
             }
-
             return length;
         }
 
@@ -702,9 +675,6 @@ namespace SaladSlicer.Slicers
                 if (_heights == null) { return false; }
                 if (_framesByLayer == null) { return false; }
                 if (_distance <= 0.0) { return false; }
-                if (_seamLength <= 0.0) { return false; }
-                if (_seamLocation < 0.0) { return false; }
-                if (_seamLocation > 1.0) { return false; }
                 if (_contours.Count == 0) { return false; }
                 if (_heights.Count == 0) { return false; }
                 if (_framesByLayer.Count == 0) { return false; }
@@ -728,24 +698,6 @@ namespace SaladSlicer.Slicers
         {
             get { return _distance; }
             set { _distance = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the location of the seam based on the normalized length of the first contour. 
-        /// </summary>
-        public double SeamLocation
-        {
-            get { return _seamLocation; }
-            set { _seamLocation = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the length of the seam between two layers. 
-        /// </summary>
-        public double SeamLength
-        {
-            get { return _seamLength; }
-            set { _seamLength = value; }
         }
 
         /// <summary>
