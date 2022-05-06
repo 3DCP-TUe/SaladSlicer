@@ -17,7 +17,7 @@ using SaladSlicer.Gh.Parameters.CodeGeneration;
 namespace SaladSlicer.Gh.Components.CodeGeneration
 {
     /// <summary>
-    /// Represent a component that generates a custom Code Line.
+    /// Represent a component that generates the printer settings.
     /// </summary>
     public class PrinterSettingsComponent : GH_Component
     {
@@ -31,7 +31,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// Public constructor without any arguments.
         /// </summary>
         public PrinterSettingsComponent()
-          : base("Program Settings", // Component name
+          : base("Printer Settings", // Component name
               "S", // Component nickname
               "Defines or redefines the settings for the program", // Description
               "Salad Slicer", // Category
@@ -98,7 +98,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
             // Declare the output variables
             PrinterSettings programSetting = new PrinterSettings();
             
-            // Create the program settings
+            // Create the printer settings
             try
             {
                 programSetting = new PrinterSettings(programType, interpolation, hotend, bed);
