@@ -18,7 +18,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
     /// <summary>
     /// Represent a component that generates a custom Code Line.
     /// </summary>
-    public class ProgramSettingsComponent : GH_Component
+    public class PrinterSettingsComponent : GH_Component
     {
         #region fields
         private bool _expire = false;
@@ -29,7 +29,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public ProgramSettingsComponent()
+        public PrinterSettingsComponent()
           : base("Program Settings", // Component name
               "S", // Component nickname
               "Defines or redefines the settings for the program", // Description
@@ -95,12 +95,12 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
             if (!DA.GetData(3, ref bed)) return;
 
             // Declare the output variables
-            ProgramSettings programSetting = new ProgramSettings();
+            SaladSlicer.CodeGeneration.PrinterSettings programSetting = new SaladSlicer.CodeGeneration.PrinterSettings();
             
             // Create the program settings
             try
             {
-                programSetting = new ProgramSettings(programType, interpolation, hotend, bed);
+                programSetting = new SaladSlicer.CodeGeneration.PrinterSettings(programType, interpolation, hotend, bed);
             }
             catch (WarningException warning)
             {

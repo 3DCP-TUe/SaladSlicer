@@ -83,7 +83,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         public override GH_Exposure Exposure
         {
-            get { return GH_Exposure.hidden; }
+            get { return GH_Exposure.primary; }
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.ExampleIcon; }
+            get { return null; }
         }
 
         /// <summary>

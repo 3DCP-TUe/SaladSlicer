@@ -60,11 +60,11 @@
   <ItemGroup>
     <Compile Include="Components\CodeGeneration\AbsoluteCoordinateComponent.cs" />
     <Compile Include="Components\CodeGeneration\CodeLineComponent.cs" />
-    <Compile Include="Components\CodeGeneration\FeedRateComponent.cs" />
+    <Compile Include="Components\CodeGeneration\SetFeedRateComponent.cs" />
     <Compile Include="Components\CodeGeneration\GroupProgramObjectsComponent.cs" />
     <Compile Include="Components\CodeGeneration\MergeProgramObjectsComponent.cs" />
     <Compile Include="Components\CodeGeneration\ProgramGeneratorComponent.cs" />
-    <Compile Include="Components\CodeGeneration\ProgramSettingsComponent.cs" />
+    <Compile Include="Components\CodeGeneration\PrinterSettingsComponent.cs" />
     <Compile Include="Components\CodeGeneration\SetTemperatureComponent.cs" />
     <Compile Include="Components\CodeGeneration\UnGroupProgramObjectsComponent.cs" />
     <Compile Include="Components\Deconstruct\DeconstructClosedPlanar2DSlicerComponent.cs" />
@@ -91,7 +91,7 @@
     <Compile Include="Components\Slicers\ClosedPlanar3DSlicerComponent.cs" />
     <Compile Include="Components\Slicers\CurveSlicerComponent.cs" />
     <Compile Include="Components\Slicers\CurvesTransitionsSlicerComponent.cs" />
-    <Compile Include="Components\Slicers\GetContours.cs" />
+    <Compile Include="Components\Slicers\GetContoursComponent.cs" />
     <Compile Include="Components\Slicers\GetCurvaturesComponents.cs" />
     <Compile Include="Components\Slicers\GetDistancesAlongContoursComponent.cs" />
     <Compile Include="Components\Slicers\GetDistanceToPreviousLayerComponent .cs" />
@@ -120,7 +120,7 @@
     <Compile Include="Goos\Slicers\GH_SlicerObject.cs" />
     <Compile Include="Parameters\CodeGeneration\Param_AbsoluteCoordinate.cs" />
     <Compile Include="Parameters\CodeGeneration\Param_CodeLine.cs" />
-    <Compile Include="Parameters\CodeGeneration\Param_FeedRate.cs" />
+    <Compile Include="Parameters\CodeGeneration\Param_SetFeedRate.cs" />
     <Compile Include="Parameters\CodeGeneration\Param_ProgramGroup.cs" />
     <Compile Include="Parameters\CodeGeneration\Param_ProgramObject.cs" />
     <Compile Include="Parameters\Slicers\Param_ClosedPlanar2DSlicer.cs" />

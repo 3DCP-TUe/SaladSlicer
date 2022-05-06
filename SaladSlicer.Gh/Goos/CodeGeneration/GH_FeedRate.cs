@@ -16,7 +16,7 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
     /// <summary>
     /// Represents the GH_FeedRate class.
     /// </summary>
-    public class GH_FeedRate : GH_GeometricGoo<FeedRate>
+    public class GH_FeedRate : GH_GeometricGoo<SetFeedRate>
     {
         #region (de)serialisation
         //TODO
@@ -35,7 +35,7 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
         /// Initializes a new Feed Rate Goo instance from a Feed Rate instance.
         /// </summary>
         /// <param name="feedRate"> Feed Rate Value to store inside this Goo instance. </param>
-        public GH_FeedRate(FeedRate feedRate)
+        public GH_FeedRate(SetFeedRate feedRate)
         {
             this.Value = feedRate;
         }
@@ -99,7 +99,7 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
             }
 
             // Cast to Feed Rate
-            if (typeof(Q).IsAssignableFrom(typeof(FeedRate)))
+            if (typeof(Q).IsAssignableFrom(typeof(SetFeedRate)))
             {
                 target = (Q)(object)this.Value;
                 return true;
@@ -159,16 +159,16 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
             }
 
             // Cast from Feed Rate
-            if (typeof(FeedRate).IsAssignableFrom(source.GetType()))
+            if (typeof(SetFeedRate).IsAssignableFrom(source.GetType()))
             {
-                this.Value = source as FeedRate;
+                this.Value = source as SetFeedRate;
                 return true;
             }
 
             // Cast from double
             if (typeof(double).IsAssignableFrom(source.GetType()))
             {
-                this.Value = new FeedRate((double)source);
+                this.Value = new SetFeedRate((double)source);
                 return true;
             }
 
@@ -176,7 +176,7 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
             if (typeof(GH_Number).IsAssignableFrom(source.GetType()))
             {
                 GH_Number goo = source as GH_Number;
-                this.Value = new FeedRate(goo.Value);
+                this.Value = new SetFeedRate(goo.Value);
                 return true;
             }
 

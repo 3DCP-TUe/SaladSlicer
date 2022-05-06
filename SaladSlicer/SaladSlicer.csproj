@@ -46,13 +46,13 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CodeGeneration\ProgramSettings.cs" />
+    <Compile Include="CodeGeneration\PrinterSettings.cs" />
     <Compile Include="CodeGeneration\SetTemperature.cs" />
     <Compile Include="CodeGeneration\ProgramGroup.cs" />
     <Compile Include="Geometry\Meshes.cs" />
     <Compile Include="Geometry\Frames.cs" />
     <Compile Include="Geometry\Curves.cs" />
-    <Compile Include="CodeGeneration\FeedRate.cs" />
+    <Compile Include="CodeGeneration\SetFeedRate.cs" />
     <Compile Include="CodeGeneration\AbsoluteCoordinate.cs" />
     <Compile Include="Interfaces\IAddVariable.cs" />
     <Compile Include="Interfaces\IGeometry.cs" />

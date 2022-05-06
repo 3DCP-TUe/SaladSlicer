@@ -17,12 +17,12 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
     /// <summary>
     /// Represent a component that generates a custom Code Line.
     /// </summary>
-    public class FeedRateComponent : GH_Component
+    public class SetFeedRateComponent : GH_Component
     {
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public FeedRateComponent()
+        public SetFeedRateComponent()
           : base("Set Feedrate", // Component name
               "F", // Component nickname
               "Defines a feedrate. This feedrate will be overwritten when a new feedrate is defined", // Description
@@ -44,7 +44,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
-            pManager.AddParameter(new Param_FeedRate(),"Program Object", "PO", "Feedrate as a Program Object.", GH_ParamAccess.item);
+            pManager.AddParameter(new Param_SetFeedRate(),"Program Object", "PO", "Feedrate as a Program Object.", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -60,12 +60,12 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
             if (!DA.GetData(0, ref feedRate)) return;
 
             // Create the feedrate object
-            FeedRate programObject = new FeedRate();
+            SetFeedRate programObject = new SetFeedRate();
 
             // Create the feedrate object
             try
             {
-                programObject = new FeedRate(feedRate);
+                programObject = new SetFeedRate(feedRate);
             }
             catch (WarningException w)
             {

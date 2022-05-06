@@ -16,7 +16,7 @@ namespace SaladSlicer.CodeGeneration
     /// Represents the Feed Rate.
     /// </summary>
     [Serializable()]
-    public class FeedRate : IProgram
+    public class SetFeedRate : IProgram
     {
         #region fields
         private double _feedRate;
@@ -30,7 +30,7 @@ namespace SaladSlicer.CodeGeneration
         /// <summary>
         /// Initializes an empty instance of the FeedRate class.
         /// </summary>         
-        public FeedRate()
+        public SetFeedRate()
         {
             _feedRate = double.NaN;
         }
@@ -39,7 +39,7 @@ namespace SaladSlicer.CodeGeneration
         /// Initializes a new instance of the FeedRate class.
         /// </summary>
         /// <param name="feedRate">Double representing the velocity of movement.</param>
-        public FeedRate(double feedRate)
+        public SetFeedRate(double feedRate)
         {
             _feedRate = feedRate;
         }
@@ -48,7 +48,7 @@ namespace SaladSlicer.CodeGeneration
         /// Initializes a new instance of the Feed Rate class by duplicating an existing Feed Rate instance. 
         /// </summary>
         /// <param name="feedRate"> The Feed Rate instance to duplicate. </param>
-        public FeedRate(FeedRate feedRate)
+        public SetFeedRate(SetFeedRate feedRate)
         {
             _feedRate = feedRate.Feedrate;
         }
@@ -57,9 +57,9 @@ namespace SaladSlicer.CodeGeneration
         /// Returns an exact duplicate of this Feed Rate instance.
         /// </summary>
         /// <returns> The exact duplicate of this Feed Rate instance. </returns>
-        public FeedRate Duplicate()
+        public SetFeedRate Duplicate()
         {
-            return new FeedRate(this);
+            return new SetFeedRate(this);
         }
 
         /// <summary>

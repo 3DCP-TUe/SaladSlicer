@@ -86,7 +86,7 @@ namespace SaladSlicer.CodeGeneration
             programGenerator.Program.Add("; TEMPERATURE SETTINGS");
             programGenerator.Program.Add("; ----------------------------------------------------------------------");
             
-            if (programGenerator.ProgramSettings.ProgramType == 1)
+            if (programGenerator.PrinterSettings.ProgramType == 1)
             {
                 programGenerator.Program.Add(" ");
                 if (_hotEndTemperature != 0 || _bedTemperature != 0)
