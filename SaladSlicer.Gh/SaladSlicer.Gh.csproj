@@ -109,7 +109,7 @@
     <Compile Include="Goos\CodeGeneration\GH_AbsoluteCoordinate.cs" />
     <Compile Include="Goos\CodeGeneration\GH_PrinterSettings.cs" />
     <Compile Include="Goos\CodeGeneration\GH_CodeLine.cs" />
-    <Compile Include="Goos\CodeGeneration\GH_FeedRate.cs" />
+    <Compile Include="Goos\CodeGeneration\GH_SetFeedRate.cs" />
     <Compile Include="Goos\CodeGeneration\GH_ProgramGroup.cs" />
     <Compile Include="Goos\CodeGeneration\GH_ProgramObject.cs" />
     <Compile Include="Goos\Slicers\GH_ClosedPlanar2DSlicer.cs" />

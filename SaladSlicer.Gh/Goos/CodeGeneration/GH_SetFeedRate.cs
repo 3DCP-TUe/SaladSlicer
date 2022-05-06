@@ -14,9 +14,9 @@ using SaladSlicer.Interfaces;
 namespace SaladSlicer.Gh.Goos.CodeGeneration
 {
     /// <summary>
-    /// Represents the GH_FeedRate class.
+    /// Represents the GH_SetFeedRate class.
     /// </summary>
-    public class GH_FeedRate : GH_GeometricGoo<SetFeedRate>
+    public class GH_SetFeedRate : GH_GeometricGoo<SetFeedRate>
     {
         #region (de)serialisation
         //TODO
@@ -24,20 +24,20 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
 
         #region constructors
         /// <summary>
-        /// Initializes an empty instance of the GH_FeedRate class.
+        /// Initializes an empty instance of the GH_SetFeedRate class.
         /// </summary>
-        public GH_FeedRate()
+        public GH_SetFeedRate()
         {
             this.Value = null;
         }
 
         /// <summary>
-        /// Initializes a new Feed Rate Goo instance from a Feed Rate instance.
+        /// Initializes a new Feed Rate Goo instance from a Set Feed Rate instance.
         /// </summary>
-        /// <param name="feedRate"> Feed Rate Value to store inside this Goo instance. </param>
-        public GH_FeedRate(SetFeedRate feedRate)
+        /// <param name="setFeedRate"> Set Feed Rate Value to store inside this Goo instance. </param>
+        public GH_SetFeedRate(SetFeedRate setFeedRate)
         {
-            this.Value = feedRate;
+            this.Value = setFeedRate;
         }
 
         /// <summary>
@@ -48,11 +48,11 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
         {
             if (this.Value == null)
             {
-                return new GH_FeedRate();
+                return new GH_SetFeedRate();
             }
             else
             {
-                return new GH_FeedRate(this.Value.Duplicate());
+                return new GH_SetFeedRate(this.Value.Duplicate());
             }
         }
 
@@ -75,7 +75,7 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
         {
             if (this.Value == null)
             {
-                return "Null Feed Rate";
+                return "Null Set Feed Rate";
             }
             else
             {
@@ -98,17 +98,17 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
                 return false;
             }
 
-            // Cast to Feed Rate
+            // Cast to Set Feed Rate
             if (typeof(Q).IsAssignableFrom(typeof(SetFeedRate)))
             {
                 target = (Q)(object)this.Value;
                 return true;
             }
 
-            // Cast to Feed Rate Goo
-            if (typeof(Q).IsAssignableFrom(typeof(GH_FeedRate)))
+            // Cast to Set Feed Rate Goo
+            if (typeof(Q).IsAssignableFrom(typeof(GH_SetFeedRate)))
             {
-                target = (Q)(object)new GH_FeedRate(this.Value);
+                target = (Q)(object)new GH_SetFeedRate(this.Value);
                 return true;
             }
 
@@ -158,7 +158,7 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
                 return false; 
             }
 
-            // Cast from Feed Rate
+            // Cast from Set Feed Rate
             if (typeof(SetFeedRate).IsAssignableFrom(source.GetType()))
             {
                 this.Value = source as SetFeedRate;
@@ -206,9 +206,9 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
         {
             get
             {
-                if (this.Value == null) { return "No internal Feed Rate instance"; }
+                if (this.Value == null) { return "No internal Set Feed Rate instance"; }
                 if (this.Value.IsValid) { return string.Empty; }
-                return "Invalid Feed Rate instance: Did you define a Text?";
+                return "Invalid Set Feed Rate instance: Did you define a Text?";
             }
         }
 
@@ -217,7 +217,7 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
         /// </summary>
         public override string TypeDescription
         {
-            get { return "Defines a Feed Rate."; }
+            get { return "Defines a Set Feed Rate."; }
         }
 
         /// <summary>
@@ -225,7 +225,7 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
         /// </summary>
         public override string TypeName
         {
-            get { return "Feed Rate"; }
+            get { return "Set Feed Rate"; }
         }
         #endregion
 
@@ -249,7 +249,7 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
 
             else
             {
-                return new GH_FeedRate(Value);
+                return new GH_SetFeedRate(Value);
             }
         }
 

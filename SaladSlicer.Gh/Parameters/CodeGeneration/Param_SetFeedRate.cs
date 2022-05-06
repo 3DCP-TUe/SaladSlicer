@@ -17,7 +17,7 @@ namespace SaladSlicer.Gh.Parameters.CodeGeneration
     /// <summary>
     /// Represents the Param_FeedRate class
     /// </summary>
-    public class Param_SetFeedRate : GH_PersistentGeometryParam<GH_FeedRate>
+    public class Param_SetFeedRate : GH_PersistentGeometryParam<GH_SetFeedRate>
     {
         /// <summary>
         /// Initializes a new instance of the Param_FeedRate class
@@ -66,7 +66,7 @@ namespace SaladSlicer.Gh.Parameters.CodeGeneration
         /// </summary>
         /// <param name="values"> Empty list. </param>
         /// <returns> Canceled result. </returns>
-        protected override GH_GetterResult Prompt_Plural(ref List<GH_FeedRate> values)
+        protected override GH_GetterResult Prompt_Plural(ref List<GH_SetFeedRate> values)
         {
             return GH_GetterResult.cancel;
         }
@@ -77,7 +77,7 @@ namespace SaladSlicer.Gh.Parameters.CodeGeneration
         /// </summary>
         /// <param name="value"> Null item.  </param>
         /// <returns> Canceled result. </returns>
-        protected override GH_GetterResult Prompt_Singular(ref GH_FeedRate value)
+        protected override GH_GetterResult Prompt_Singular(ref GH_SetFeedRate value)
         {
             return GH_GetterResult.cancel;
         }
