@@ -583,6 +583,16 @@ namespace SaladSlicer.Gh.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Param_PrinterSettings_Icon {
+            get {
+                object obj = ResourceManager.GetObject("Param_PrinterSettings_Icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Param_ProgramGroup_Icon {
             get {
                 object obj = ResourceManager.GetObject("Param_ProgramGroup_Icon", resourceCulture);
@@ -606,6 +616,16 @@ namespace SaladSlicer.Gh.Properties {
         internal static System.Drawing.Bitmap Param_SetFeedRate_Icon {
             get {
                 object obj = ResourceManager.GetObject("Param_SetFeedRate_Icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Param_SetTemperature_Icon {
+            get {
+                object obj = ResourceManager.GetObject("Param_SetTemperature_Icon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -716,6 +736,16 @@ namespace SaladSlicer.Gh.Properties {
         internal static System.Drawing.Bitmap SetFeedRate_Icon {
             get {
                 object obj = ResourceManager.GetObject("SetFeedRate_Icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SetTemperature_Icon {
+            get {
+                object obj = ResourceManager.GetObject("SetTemperature_Icon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

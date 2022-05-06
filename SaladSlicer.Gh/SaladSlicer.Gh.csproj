@@ -363,6 +363,15 @@
   <ItemGroup>
     <None Include="Resources\DeconstructClosedPlanarMeshSlicer_Icon.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Param_SetTemperature_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Param_PrinterSettings_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SetTemperature_Icon.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
