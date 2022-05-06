@@ -17,7 +17,7 @@ namespace SaladSlicer.Gh.Parameters.CodeGeneration
     /// <summary>
     /// Represents the Param_CodeLine class
     /// </summary>
-    public class Param_CodeLine : GH_PersistentParam<GH_CodeLine>
+    public class Param_CodeLine : GH_PersistentGeometryParam<GH_CodeLine>
     {
         /// <summary>
         /// Initializes a new instance of the Param_CodeLine class

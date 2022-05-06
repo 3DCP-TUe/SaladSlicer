@@ -17,7 +17,7 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
     /// <summary>
     /// Represents the GH_AbsoluteCoordinate class.
     /// </summary>
-    public class GH_AbsoluteCoordinate : GH_GeometricGoo<AbsoluteCoordinate>, IGH_PreviewData, IGH_Goo
+    public class GH_AbsoluteCoordinate : GH_GeometricGoo<AbsoluteCoordinate>, IGH_PreviewData
     {
         #region (de)serialisation
         //TODO
@@ -60,7 +60,7 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
         /// <summary>
         /// Returns a complete duplicate of this Goo insance.
         /// </summary>
-        /// <returns> A duplicate of the Closed Planar 2D Slicer Goo instance. </returns>
+        /// <returns> A duplicate of the Absolute Coordinate Goo instance. </returns>
         public override IGH_GeometricGoo DuplicateGeometry()
         {
             return this.Duplicate() as IGH_GeometricGoo;

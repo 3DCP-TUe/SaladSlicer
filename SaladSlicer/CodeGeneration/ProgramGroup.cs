@@ -8,6 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Security.Permissions;
+// Rhino Libs
+using Rhino.Geometry;
 // Salad Libs
 using SaladSlicer.Interfaces;
 
@@ -17,7 +19,7 @@ namespace SaladSlicer.CodeGeneration
     /// Represents a Group of Program Objects.
     /// </summary>
     [Serializable()]
-    public class ProgramGroup : IProgram
+    public class ProgramGroup : IProgram, IGeometry
     {
         #region fields
         private IList<IProgram> _objects;
@@ -69,6 +71,15 @@ namespace SaladSlicer.CodeGeneration
         }
 
         /// <summary>
+        /// Returns an exact duplicate of this Program Group instance as an IGeometry.
+        /// </summary>
+        /// <returns> The exact duplicate of this Program Group instance as an IGeometry. </returns>
+        public IGeometry DuplicateGeometryObject()
+        {
+            return this.Duplicate();
+        }
+
+        /// <summary>
         /// Returns an exact duplicate of this Program Group instance as an IProgram
         /// </summary>
         /// <returns> The exact duplicate of this Program Group instance as an IProgram. </returns>
@@ -107,6 +118,45 @@ namespace SaladSlicer.CodeGeneration
             {
                 _objects[i].ToProgram(programGenerator);
             }
+        }
+
+        /// <summary>
+        /// Returns the Bounding Box of the object.
+        /// </summary>
+        /// <returns> The Bounding Box. </returns>
+        /// <param name="accurate"> If true, a physically accurate bounding box will be computed. If not, a bounding box estimate will be computed. </param>
+
+        public BoundingBox GetBoundingBox(bool accurate)
+        {
+            BoundingBox result = new BoundingBox();
+
+            for (int i = 0; i < _objects.Count; i++)
+            {
+                if (_objects[i] is IGeometry geometry)
+                {
+                    result.Union(geometry.GetBoundingBox(accurate));
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Transforms the geometry.
+        /// </summary>
+        /// <param name="xform"> Transformation to apply to geometry. </param>
+        /// <returns> True on success, false on failure. </returns>
+        public bool Transform(Transform xform)
+        {
+            for (int i = 0; i < _objects.Count; i++)
+            {
+                if (_objects[i] is IGeometry geometry)
+                {
+                    geometry.Transform(xform);
+                }
+            }
+
+            return true;
         }
         #endregion
 
