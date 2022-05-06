@@ -68,7 +68,6 @@ namespace SaladSlicer.Gh.Components.Geometry
             //Create a value list
             if (_valueListAdded == false)
             {
-                PointF location = new PointF(this.Params.Input[0].Attributes.InputGrip.X - 120, this.Params.Input[0].Attributes.InputGrip.Y - 11);
                 _expire = HelperMethods.CreateValueList(this, 1, typeof(OpenTransition));
                 _valueListAdded = true;
             }
@@ -76,7 +75,6 @@ namespace SaladSlicer.Gh.Components.Geometry
             // Expire solution of this component
             if (_expire == true)
             {
-                _valueListAdded = true;
                 _expire = false;
                 this.ExpireSolution(true);
             }
