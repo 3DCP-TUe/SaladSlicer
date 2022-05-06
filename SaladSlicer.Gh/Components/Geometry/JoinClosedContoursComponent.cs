@@ -57,7 +57,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         {
             pManager.AddCurveParameter("Path", "P", "Path.", GH_ParamAccess.item);
             pManager.AddCurveParameter("Contours", "C", "List of trimmed contours.", GH_ParamAccess.list);
-            pManager.AddCurveParameter("Transistions", "T", "List of transitions between contours.", GH_ParamAccess.list);
+            pManager.AddCurveParameter("Transitions", "T", "List of transitions between contours.", GH_ParamAccess.list);
         }
 
         /// <summary>
