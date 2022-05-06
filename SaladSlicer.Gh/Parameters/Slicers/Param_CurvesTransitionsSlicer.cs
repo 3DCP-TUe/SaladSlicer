@@ -48,7 +48,7 @@ namespace SaladSlicer.Gh.Parameters.Slicers
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return null; }
+            get { return Properties.Resources.Param_CurvesTransitionsSlicer_Icon; }
         }
 
         /// <summary>

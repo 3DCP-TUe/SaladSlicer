@@ -339,6 +339,30 @@
   <ItemGroup>
     <None Include="Resources\GetCurvatures_Icon.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DeconstructCurvesTransitionsSlicer_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Param_CurvesTransitionsSlicer_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\OpenPlanarMeshSlicer_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DeconstructOpenPlanarMeshSlicer_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Param_OpenPlanarMeshSlicer_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ClosedPlanarMeshSlicer_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Param_ClosedPlanarMeshSlicer_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DeconstructClosedPlanarMeshSlicer_Icon.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
