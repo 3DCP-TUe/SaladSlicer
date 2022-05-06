@@ -86,7 +86,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.endFrames_Icon; }
+            get { return Properties.Resources.GetEndFrames_Icon; }
         }
 
         /// <summary>

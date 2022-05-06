@@ -35,7 +35,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
-            pManager.AddParameter(new Param_CurvesTransitionsSlicer(), "Curve Transitions Slicer", "CTS", "Curve Transitions Slicer.", GH_ParamAccess.item);
+            pManager.AddParameter(new Param_ContoursTransitionsSlicer(), "Curve Transitions Slicer", "CTS", "Curve Transitions Slicer.", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             // Declare variable of input parameters
-            CurvesTransitionsSlicer slicer = new CurvesTransitionsSlicer();
+            ContoursTransitionsSlicer slicer = new ContoursTransitionsSlicer();
             
             // Access the input parameters individually. 
             if (!DA.GetData(0, ref slicer)) return;
@@ -87,7 +87,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.DeconstructCurvesTransitionsSlicer_Icon; }
+            get { return Properties.Resources.DecontstructCurvesTransitionsSlicer_Icon; }
         }
 
         /// <summary>

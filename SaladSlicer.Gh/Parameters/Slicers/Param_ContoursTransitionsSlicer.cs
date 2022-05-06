@@ -19,12 +19,12 @@ namespace SaladSlicer.Gh.Parameters.Slicers
     /// <summary>
     /// Represents the Param_CurvesTransitionsSlicer class
     /// </summary>
-    public class Param_CurvesTransitionsSlicer : GH_PersistentGeometryParam<GH_CurvesTransitionsSlicer>, IGH_PreviewObject
+    public class Param_ContoursTransitionsSlicer : GH_PersistentGeometryParam<GH_ContoursTransitionsSlicer>, IGH_PreviewObject
     {
         /// <summary>
         /// Initializes a new instance of the Param_Object class
         /// </summary>
-        public Param_CurvesTransitionsSlicer()
+        public Param_ContoursTransitionsSlicer()
           : base(new GH_InstanceDescription("Curves Transitions Slicer", // Parameter name
               "CTS", // Component nickname
               "Defines a Curves Transitions Slicer object.", // Description
@@ -68,7 +68,7 @@ namespace SaladSlicer.Gh.Parameters.Slicers
         /// </summary>
         /// <param name="values"> Empty list. </param>
         /// <returns> Canceled result. </returns>
-        protected override GH_GetterResult Prompt_Plural(ref List<GH_CurvesTransitionsSlicer> values)
+        protected override GH_GetterResult Prompt_Plural(ref List<GH_ContoursTransitionsSlicer> values)
         {
             return GH_GetterResult.cancel;
         }
@@ -79,7 +79,7 @@ namespace SaladSlicer.Gh.Parameters.Slicers
         /// </summary>
         /// <param name="value"> Null item.  </param>
         /// <returns> Canceled result. </returns>
-        protected override GH_GetterResult Prompt_Singular(ref GH_CurvesTransitionsSlicer value)
+        protected override GH_GetterResult Prompt_Singular(ref GH_ContoursTransitionsSlicer value)
         {
             return GH_GetterResult.cancel;
         }

@@ -24,7 +24,7 @@ namespace SaladSlicer.Slicers
     /// Represents the Planar 2D Slicer class.
     /// </summary>
     [Serializable()]
-    public class CurvesTransitionsSlicer : IProgram, ISlicer, IGeometry, IAddVariable
+    public class ContoursTransitionsSlicer : IProgram, ISlicer, IGeometry, IAddVariable
     {
         #region fields
         private readonly List<Curve> _contours = new List<Curve>();
@@ -45,7 +45,7 @@ namespace SaladSlicer.Slicers
         /// <summary>
         /// Initializes an empty instance of the Curve Slicer class.
         /// </summary>
-        public CurvesTransitionsSlicer()
+        public ContoursTransitionsSlicer()
         {
         }
 
@@ -54,7 +54,7 @@ namespace SaladSlicer.Slicers
         /// </summary>
         /// <param name="curve"> The curve. </param>
         /// <param name="distance"> The desired distance between two frames. </param>
-        public CurvesTransitionsSlicer(IList<Curve> curve, IList<Curve> transitions, double distance)
+        public ContoursTransitionsSlicer(IList<Curve> curve, IList<Curve> transitions, double distance)
         {
             _contours = curve as List<Curve>;
             _transitions = transitions as List<Curve>;
@@ -65,7 +65,7 @@ namespace SaladSlicer.Slicers
         /// Initializes a new instance of the Curve Slocer class by duplicating an existing Curve Slicer instance. 
         /// </summary>
         /// <param name="slicer"> The Curve Slicer instance to duplicate. </param>
-        public CurvesTransitionsSlicer(CurvesTransitionsSlicer slicer)
+        public ContoursTransitionsSlicer(ContoursTransitionsSlicer slicer)
         {
             _contours = slicer.Contours.ConvertAll(curve => curve.DuplicateCurve());
             _transitions = slicer.Transitions.ConvertAll(curve => curve.DuplicateCurve());
@@ -81,9 +81,9 @@ namespace SaladSlicer.Slicers
         /// Returns an exact duplicate of this  Curves Transitions Slicer instance.
         /// </summary>
         /// <returns> The exact duplicate of this Curves Transitions Slicer instance. </returns>
-        public CurvesTransitionsSlicer Duplicate()
+        public ContoursTransitionsSlicer Duplicate()
         {
-            return new CurvesTransitionsSlicer(this);
+            return new ContoursTransitionsSlicer(this);
         }
 
         /// <summary>

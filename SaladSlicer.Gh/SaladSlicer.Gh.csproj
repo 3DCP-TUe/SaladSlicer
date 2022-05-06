@@ -79,8 +79,8 @@
     <Compile Include="Components\Geometry\AlternateCurvesComponent.cs" />
     <Compile Include="Components\Geometry\CurveFramesByCurvatureComponent.cs" />
     <Compile Include="Components\Geometry\CurveFramesByDistanceComponent.cs" />
-    <Compile Include="Components\Geometry\JoinClosedCurvesComponent.cs" />
-    <Compile Include="Components\Geometry\JoinOpenCurvesComponent.cs" />
+    <Compile Include="Components\Geometry\JoinClosedContoursComponent.cs" />
+    <Compile Include="Components\Geometry\JoinOpenContoursComponent.cs" />
     <Compile Include="Components\Geometry\SeamAtClosestPlaneIntersectionComponent.cs" />
     <Compile Include="Components\Geometry\SeamAtClosestPointComponent.cs" />
     <Compile Include="Components\Geometry\SeamAtLengthComponent.cs" />
@@ -90,15 +90,15 @@
     <Compile Include="Components\Slicers\OpenPlanarMeshSlicerComponent.cs" />
     <Compile Include="Components\Slicers\ClosedPlanarMeshSlicerComponent.cs" />
     <Compile Include="Components\Slicers\CurveSlicerComponent.cs" />
-    <Compile Include="Components\Slicers\CurvesTransitionsSlicerComponent.cs" />
+    <Compile Include="Components\Slicers\ContoursTransitionsSlicerComponent.cs" />
     <Compile Include="Components\Slicers\GetContoursComponent.cs" />
     <Compile Include="Components\Slicers\GetCurvaturesComponents.cs" />
     <Compile Include="Components\Slicers\GetDistancesAlongContoursComponent.cs" />
-    <Compile Include="Components\Slicers\GetDistanceToPreviousLayerComponent .cs" />
+    <Compile Include="Components\Slicers\GetDistanceToPreviousContoursComponent .cs" />
     <Compile Include="Components\Slicers\GetEndFramesComponent.cs" />
     <Compile Include="Components\Slicers\GetFramesComponent.cs" />
     <Compile Include="Components\Slicers\GetInterpolatedPathComponent.cs" />
-    <Compile Include="Components\Slicers\GetLinerazedPathComponent.cs" />
+    <Compile Include="Components\Slicers\GetLinearizedPathComponent.cs" />
     <Compile Include="Components\Slicers\GetPathComponent.cs" />
     <Compile Include="Components\Slicers\OpenPlanar2DSlicerComponent.cs" />
     <Compile Include="Components\Utilities\ConvertVelocityMmminMmsComponent.cs" />
@@ -114,7 +114,7 @@
     <Compile Include="Goos\CodeGeneration\GH_ProgramGroup.cs" />
     <Compile Include="Goos\CodeGeneration\GH_ProgramObject.cs" />
     <Compile Include="Goos\Slicers\GH_ClosedPlanar2DSlicer.cs" />
-    <Compile Include="Goos\Slicers\GH_CurvesTransitionsSlicer.cs" />
+    <Compile Include="Goos\Slicers\GH_ContoursTransitionsSlicer.cs" />
     <Compile Include="Goos\Slicers\GH_OpenPlanarMeshSlicer.cs" />
     <Compile Include="Goos\Slicers\GH_ClosedPlanarMeshSlicer.cs" />
     <Compile Include="Goos\Slicers\GH_CurveSlicer.cs" />
@@ -128,7 +128,7 @@
     <Compile Include="Parameters\CodeGeneration\Param_ProgramGroup.cs" />
     <Compile Include="Parameters\CodeGeneration\Param_ProgramObject.cs" />
     <Compile Include="Parameters\Slicers\Param_ClosedPlanar2DSlicer.cs" />
-    <Compile Include="Parameters\Slicers\Param_CurvesTransitionsSlicer.cs" />
+    <Compile Include="Parameters\Slicers\Param_ContoursTransitionsSlicer.cs" />
     <Compile Include="Parameters\Slicers\Param_OpenPlanarMeshSlicer.cs" />
     <Compile Include="Parameters\Slicers\Param_ClosedPlanarMeshSlicer.cs" />
     <Compile Include="Parameters\Slicers\Param_CurveSlicer.cs" />

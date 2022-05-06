@@ -22,12 +22,12 @@ namespace SaladSlicer.Gh.Components.Slicers
     /// <summary>
     /// Represent a component that creates the contours.
     /// </summary>
-    public class GetDistanceToPreviousLayerComponent : GH_Component
+    public class GetDistanceToPreviousContoursComponent : GH_Component
     {
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public GetDistanceToPreviousLayerComponent()
+        public GetDistanceToPreviousContoursComponent()
           : base("Get Distances To Previous Contours", // Component name
               "DPC", // Component nickname
               "Gets the distance of every frame to previous contour.", // Description
@@ -118,7 +118,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.GetDistancesBetweenContours_Icon; }
+            get { return Properties.Resources.GetDistancesToPreviousContorus_Icon; }
         }
 
         /// <summary>

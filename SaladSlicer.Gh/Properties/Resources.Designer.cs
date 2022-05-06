@@ -63,16 +63,6 @@ namespace SaladSlicer.Gh.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap _2_5D {
-            get {
-                object obj = ResourceManager.GetObject("_2_5D", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap AbsoluteCoordinate_Icon {
             get {
                 object obj = ResourceManager.GetObject("AbsoluteCoordinate_Icon", resourceCulture);
@@ -103,9 +93,9 @@ namespace SaladSlicer.Gh.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap AlignSeamsCurve_Icon {
+        internal static System.Drawing.Bitmap AlignSeamsAlongCurve_Icon {
             get {
-                object obj = ResourceManager.GetObject("AlignSeamsCurve_Icon", resourceCulture);
+                object obj = ResourceManager.GetObject("AlignSeamsAlongCurve_Icon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -133,16 +123,6 @@ namespace SaladSlicer.Gh.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap ClosedPlanar3DSlicer_Icon {
-            get {
-                object obj = ResourceManager.GetObject("ClosedPlanar3DSlicer_Icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap ClosedPlanarMeshSlicer_Icon {
             get {
                 object obj = ResourceManager.GetObject("ClosedPlanarMeshSlicer_Icon", resourceCulture);
@@ -153,29 +133,19 @@ namespace SaladSlicer.Gh.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap CodeGenerator_Icon {
-            get {
-                object obj = ResourceManager.GetObject("CodeGenerator_Icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap CodeGeneratorIcon {
-            get {
-                object obj = ResourceManager.GetObject("CodeGeneratorIcon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap CodeLine_Icon {
             get {
                 object obj = ResourceManager.GetObject("CodeLine_Icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ContoursTransitionsSlicer_Icon {
+            get {
+                object obj = ResourceManager.GetObject("ContoursTransitionsSlicer_Icon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -233,29 +203,9 @@ namespace SaladSlicer.Gh.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap CurvesTransitionsSlicer_Icon {
-            get {
-                object obj = ResourceManager.GetObject("CurvesTransitionsSlicer_Icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap DeconstructClosedPlanar2DSlicer_Icon {
             get {
                 object obj = ResourceManager.GetObject("DeconstructClosedPlanar2DSlicer_Icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap DeconstructClosedPlanar3DSlicer_Icon {
-            get {
-                object obj = ResourceManager.GetObject("DeconstructClosedPlanar3DSlicer_Icon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -283,16 +233,6 @@ namespace SaladSlicer.Gh.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap DeconstructCurvesTransitionsSlicer_Icon {
-            get {
-                object obj = ResourceManager.GetObject("DeconstructCurvesTransitionsSlicer_Icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap DeconstructOpenPlanar2DSlicer_Icon {
             get {
                 object obj = ResourceManager.GetObject("DeconstructOpenPlanar2DSlicer_Icon", resourceCulture);
@@ -303,9 +243,9 @@ namespace SaladSlicer.Gh.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap DeconstructOpenPlanarMeshSlicer_Icon {
+        internal static System.Drawing.Bitmap DecontstructCurvesTransitionsSlicer_Icon {
             get {
-                object obj = ResourceManager.GetObject("DeconstructOpenPlanarMeshSlicer_Icon", resourceCulture);
+                object obj = ResourceManager.GetObject("DecontstructCurvesTransitionsSlicer_Icon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -313,19 +253,9 @@ namespace SaladSlicer.Gh.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap DeconstructProgramObject_Icon {
+        internal static System.Drawing.Bitmap DecontstructOpenPlanarMeshSlicer_Icon {
             get {
-                object obj = ResourceManager.GetObject("DeconstructProgramObject_Icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap endFrames_Icon {
-            get {
-                object obj = ResourceManager.GetObject("endFrames_Icon", resourceCulture);
+                object obj = ResourceManager.GetObject("DecontstructOpenPlanarMeshSlicer_Icon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -336,16 +266,6 @@ namespace SaladSlicer.Gh.Properties {
         internal static System.Drawing.Bitmap ExampleIcon {
             get {
                 object obj = ResourceManager.GetObject("ExampleIcon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Frames_Icon {
-            get {
-                object obj = ResourceManager.GetObject("Frames_Icon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -383,9 +303,29 @@ namespace SaladSlicer.Gh.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap GetDistancesBetweenContours_Icon {
+        internal static System.Drawing.Bitmap GetDistancesToPreviousContorus_Icon {
             get {
-                object obj = ResourceManager.GetObject("GetDistancesBetweenContours_Icon", resourceCulture);
+                object obj = ResourceManager.GetObject("GetDistancesToPreviousContorus_Icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap GetEndFrames_Icon {
+            get {
+                object obj = ResourceManager.GetObject("GetEndFrames_Icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap GetFrames_Icon {
+            get {
+                object obj = ResourceManager.GetObject("GetFrames_Icon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -443,9 +383,9 @@ namespace SaladSlicer.Gh.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap JoinClosedCurves_Icon {
+        internal static System.Drawing.Bitmap JoinClosedContours_Icon {
             get {
-                object obj = ResourceManager.GetObject("JoinClosedCurves_Icon", resourceCulture);
+                object obj = ResourceManager.GetObject("JoinClosedContours_Icon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -453,9 +393,9 @@ namespace SaladSlicer.Gh.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap JoinOpenCurves_Icon {
+        internal static System.Drawing.Bitmap JoinOpenContours_Icon {
             get {
-                object obj = ResourceManager.GetObject("JoinOpenCurves_Icon", resourceCulture);
+                object obj = ResourceManager.GetObject("JoinOpenContours_Icon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -506,16 +446,6 @@ namespace SaladSlicer.Gh.Properties {
         internal static System.Drawing.Bitmap Param_ClosedPlanar2DSlicer_Icon {
             get {
                 object obj = ResourceManager.GetObject("Param_ClosedPlanar2DSlicer_Icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Param_ClosedPlanar3DSlicer_Icon {
-            get {
-                object obj = ResourceManager.GetObject("Param_ClosedPlanar3DSlicer_Icon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -656,6 +586,16 @@ namespace SaladSlicer.Gh.Properties {
         internal static System.Drawing.Bitmap PlaneVisualizer_Icon {
             get {
                 object obj = ResourceManager.GetObject("PlaneVisualizer_Icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ProgramGenerator_Icon {
+            get {
+                object obj = ResourceManager.GetObject("ProgramGenerator_Icon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

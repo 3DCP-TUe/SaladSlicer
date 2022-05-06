@@ -21,7 +21,7 @@ namespace SaladSlicer.Gh.Components.Geometry
     /// <summary>
     /// Represents the component that joins curves using linear interpolation. 
     /// </summary>
-    public class JoinOpenCurvesComponent : GH_Component
+    public class JoinOpenContoursComponent : GH_Component
     {
         #region fields
         private bool _expire = false;
@@ -31,7 +31,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public JoinOpenCurvesComponent()
+        public JoinOpenContoursComponent()
           : base("Join Open Contours", // Component name
               "JOC", // Component nickname
               "Joins a list of open contours between end and start points. Connection type 'Linear' connects the contours with the shortest path and 'Bezier' interpolates between the contours smoothly.", // Description
@@ -142,7 +142,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.JoinOpenCurves_Icon; }
+            get { return Properties.Resources.JoinOpenContours_Icon; }
         }
 
         /// <summary>

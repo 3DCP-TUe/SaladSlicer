@@ -20,15 +20,15 @@ namespace SaladSlicer.Gh.Components.Slicers
     /// <summary>
     /// Represent a component that creates a program object as a sliced curve.
     /// </summary>
-    public class CurvesTransitionsSlicerComponent : GH_Component
+    public class ContoursTransitionsSlicerComponent : GH_Component
     {
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public CurvesTransitionsSlicerComponent()
-          : base("Curves Transitions Slicer", // Component name
+        public ContoursTransitionsSlicerComponent()
+          : base("Contours Transitions Slicer", // Component name
               "CTS", // Component nickname
-              "Slices a list of curves and transitions to a Slicer Object. This component is intented to be used together with the Join Closed Curves and the Join Open Curves components.", // Description
+              "Slices a list of contours and transitions to a Slicer Object. This component is intented to be used together with the Join Closed Contours and the Join Open Contours components.", // Description
               "Salad Slicer", // Category
               "Slicers") // Subcategory
         {
@@ -49,7 +49,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
-            pManager.AddParameter(new Param_CurvesTransitionsSlicer(), "Slicer Object", "SO", "Sliced curves and transitions as a program object.", GH_ParamAccess.item);
+            pManager.AddParameter(new Param_ContoursTransitionsSlicer(), "Slicer Object", "SO", "Sliced contours and transitions as a program object.", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -73,13 +73,13 @@ namespace SaladSlicer.Gh.Components.Slicers
             if (contours.Count - 1 != transitions.Count) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "The number of defined transitions does not match with the number of contours."); }
 
             // Declare the output variables
-            CurvesTransitionsSlicer slicer = new CurvesTransitionsSlicer();
+            ContoursTransitionsSlicer slicer = new ContoursTransitionsSlicer();
             slicer.Slice();
 
             // Create the slicer object
             try
             {
-                slicer = new CurvesTransitionsSlicer(contours, transitions, distance);
+                slicer = new ContoursTransitionsSlicer(contours, transitions, distance);
                 slicer.Slice();
             }
             catch (WarningException warning)
@@ -116,7 +116,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.CurvesTransitionsSlicer_Icon; }
+            get { return Properties.Resources.ContoursTransitionsSlicer_Icon; }
         }
 
         /// <summary>

@@ -127,7 +127,7 @@
   <data name="AlignCurves_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\AlignCurves_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="AlignSeamsCurve_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="AlignSeamsAlongCurve_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\AlignSeamsCurve_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="AlternateCurves_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -136,20 +136,14 @@
   <data name="ClosedPlanar2DSlicer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ClosedPlanar2DSlicer_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ClosedPlanar3DSlicer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ClosedPlanar3DSlicer_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="ClosedPlanarMeshSlicer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ClosedPlanarMeshSlicer_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="CodeGeneratorIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\CodeGeneratorIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="CodeGenerator_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\CodeGenerator_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="CodeLine_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\CodeLine_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ContoursTransitionsSlicer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CurvesTransitionsSlicer_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ConvertVelocityMmminMms_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ConvertVelocityMmminMms_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -166,14 +160,8 @@
   <data name="CurveSlicer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\CurveSlicer_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="CurvesTransitionsSlicer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\CurvesTransitionsSlicer_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="DeconstructClosedPlanar2DSlicer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DeconstructClosedPlanar2DSlicer_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="DeconstructClosedPlanar3DSlicer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\DeconstructClosedPlanar3DSlicer_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="DeconstructClosedPlanarMeshSlicer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DeconstructClosedPlanarMeshSlicer_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -181,26 +169,17 @@
   <data name="DeconstructCurveSlicer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DeconstructCurveSlicer_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="DeconstructCurvesTransitionsSlicer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\DeconstructCurvesTransitionsSlicer_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="DeconstructOpenPlanar2DSlicer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DeconstructOpenPlanar2DSlicer_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="DeconstructOpenPlanarMeshSlicer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="DecontstructCurvesTransitionsSlicer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DeconstructCurvesTransitionsSlicer_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DecontstructOpenPlanarMeshSlicer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DeconstructOpenPlanarMeshSlicer_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="DeconstructProgramObject_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\DeconstructProgramObject_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="endFrames_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\endFrames_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ExampleIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ExampleIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Frames_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Frames_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="GetContours_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\GetContours_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -211,8 +190,14 @@
   <data name="GetDistancesAlongContours_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\GetDistancesAlongContours_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="GetDistancesBetweenContours_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="GetDistancesToPreviousContorus_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\GetDistancesBetweenContours_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GetEndFrames_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\endFrames_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GetFrames_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Frames_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="GetInterpolatedPath_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\GetInterpolatedPath_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -229,10 +214,10 @@
   <data name="Info_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Info_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="JoinClosedCurves_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="JoinClosedContours_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\JoinClosedCurves_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="JoinOpenCurves_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="JoinOpenContours_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\JoinOpenCurves_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="MergeProgramObject_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -252,9 +237,6 @@
   </data>
   <data name="Param_ClosedPlanar2DSlicer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Param_ClosedPlanar2DSlicer_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Param_ClosedPlanar3DSlicer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Param_ClosedPlanar3DSlicer_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Param_ClosedPlanarMeshSlicer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Param_ClosedPlanarMeshSlicer_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -295,6 +277,9 @@
   <data name="PlaneVisualizer_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\PlaneVisualizer_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="ProgramGenerator_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CodeGenerator_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="ProgramSettings_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ProgramSettings_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -327,8 +312,5 @@
   </data>
   <data name="UnGroupProgramObjects_Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\UnGroupProgramObjects_Icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="_2_5D" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\2.5D.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

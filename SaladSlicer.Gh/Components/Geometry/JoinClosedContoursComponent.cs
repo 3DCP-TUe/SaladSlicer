@@ -21,7 +21,7 @@ namespace SaladSlicer.Gh.Components.Geometry
     /// <summary>
     /// Represents the component that joins open curves. 
     /// </summary>
-    public class JoinClosedCurvesComponent : GH_Component
+    public class JoinClosedContoursComponent : GH_Component
     {
         #region fields
         private bool _expire = false;
@@ -31,7 +31,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public JoinClosedCurvesComponent()
+        public JoinClosedContoursComponent()
           : base("Join Closed Contours", // Component name
               "JCC", // Component nickname
               "Joins a list of closed contours between end and start points. Connection type 'Linear' connects the curves with the shortest path, 'Bezier' interpolates between the curves smoothly and 'Interpolate' moves linearly in Z-direction while using the interpolated X- and Y-coordinates of the two contours.", // Description
@@ -159,7 +159,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.JoinClosedCurves_Icon; }
+            get { return Properties.Resources.JoinClosedContours_Icon; }
         }
 
         /// <summary>

@@ -17,7 +17,7 @@ namespace SaladSlicer.Gh.Goos.Slicers
     /// <summary>
     /// Represents the GH_CurvesTransitionsSlicer class.
     /// </summary>
-    public class GH_CurvesTransitionsSlicer : GH_GeometricGoo<CurvesTransitionsSlicer>, IGH_PreviewData
+    public class GH_ContoursTransitionsSlicer : GH_GeometricGoo<ContoursTransitionsSlicer>, IGH_PreviewData
     {
         #region (de)serialisation
         //TODO
@@ -27,7 +27,7 @@ namespace SaladSlicer.Gh.Goos.Slicers
         /// <summary>
         /// Initializes an empty instance of the GH_CurvesTransitionsSlicer class.
         /// </summary>
-        public GH_CurvesTransitionsSlicer()
+        public GH_ContoursTransitionsSlicer()
         {
             this.Value = null;
         }
@@ -36,7 +36,7 @@ namespace SaladSlicer.Gh.Goos.Slicers
         /// Initializes a new Oject Goo instance from a CurvesTransitionsSlicer instance.
         /// </summary>
         /// <param name="curvesTransitionsSlicer"> CurvesTransitionsSlicer Value to store inside this Goo instance. </param>
-        public GH_CurvesTransitionsSlicer(CurvesTransitionsSlicer curvesTransitionsSlicer)
+        public GH_ContoursTransitionsSlicer(ContoursTransitionsSlicer curvesTransitionsSlicer)
         {
             this.Value = curvesTransitionsSlicer;
         }
@@ -49,11 +49,11 @@ namespace SaladSlicer.Gh.Goos.Slicers
         {
             if (this.Value == null)
             {
-                return new GH_CurvesTransitionsSlicer();
+                return new GH_ContoursTransitionsSlicer();
             }
             else
             {
-                return new GH_CurvesTransitionsSlicer(this.Value.Duplicate());
+                return new GH_ContoursTransitionsSlicer(this.Value.Duplicate());
             }
         }
 
@@ -114,16 +114,16 @@ namespace SaladSlicer.Gh.Goos.Slicers
             }
 
             // Cast to CurvesTransitionsSlicer
-            if (typeof(Q).IsAssignableFrom(typeof(CurvesTransitionsSlicer)))
+            if (typeof(Q).IsAssignableFrom(typeof(ContoursTransitionsSlicer)))
             {
                 target = (Q)(object)this.Value;
                 return true;
             }
 
             // Cast to CurvesTransitionsSlicer Goo
-            if (typeof(Q).IsAssignableFrom(typeof(GH_CurvesTransitionsSlicer)))
+            if (typeof(Q).IsAssignableFrom(typeof(GH_ContoursTransitionsSlicer)))
             {
-                target = (Q)(object)new GH_CurvesTransitionsSlicer(this.Value);
+                target = (Q)(object)new GH_ContoursTransitionsSlicer(this.Value);
                 return true;
             }
 
@@ -167,16 +167,16 @@ namespace SaladSlicer.Gh.Goos.Slicers
             }
 
             // Cast from CurvesTransitionsSlicer
-            if (typeof(CurvesTransitionsSlicer).IsAssignableFrom(source.GetType()))
+            if (typeof(ContoursTransitionsSlicer).IsAssignableFrom(source.GetType()))
             {
-                this.Value = source as CurvesTransitionsSlicer;
+                this.Value = source as ContoursTransitionsSlicer;
                 return true;
             }
 
             // Cast from CurvesTransitions Goo
-            if (typeof(GH_CurvesTransitionsSlicer).IsAssignableFrom(source.GetType()))
+            if (typeof(GH_ContoursTransitionsSlicer).IsAssignableFrom(source.GetType()))
             {
-                GH_CurvesTransitionsSlicer goo = source as GH_CurvesTransitionsSlicer;
+                GH_ContoursTransitionsSlicer goo = source as GH_ContoursTransitionsSlicer;
                 this.Value = goo.Value;
                 return true;
             }
@@ -184,7 +184,7 @@ namespace SaladSlicer.Gh.Goos.Slicers
             // Cast from ISlicer
             if (typeof(ISlicer).IsAssignableFrom(source.GetType()))
             {
-                if (source is CurvesTransitionsSlicer slicer)
+                if (source is ContoursTransitionsSlicer slicer)
                 {
                     this.Value = slicer;
                     return true;
@@ -196,7 +196,7 @@ namespace SaladSlicer.Gh.Goos.Slicers
             {
                 GH_SlicerObject goo = source as GH_SlicerObject;
 
-                if (goo.Value is CurvesTransitionsSlicer slicer)
+                if (goo.Value is ContoursTransitionsSlicer slicer)
                 {
                     this.Value = slicer;
                     return true;
@@ -272,9 +272,9 @@ namespace SaladSlicer.Gh.Goos.Slicers
 
             else
             {
-                CurvesTransitionsSlicer slicer = Value.Duplicate();
+                ContoursTransitionsSlicer slicer = Value.Duplicate();
                 slicer.Transform(xform);
-                return new GH_CurvesTransitionsSlicer(slicer);
+                return new GH_ContoursTransitionsSlicer(slicer);
             }
         }
 
