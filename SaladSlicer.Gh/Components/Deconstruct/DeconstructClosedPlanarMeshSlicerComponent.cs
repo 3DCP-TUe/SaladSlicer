@@ -22,7 +22,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// Public constructor without any arguments.
         /// </summary>
         public DeconstructClosedPlanarMeshSlicerComponent()
-          : base("Deconstruct a Closed Planar Mesh Slicer", // Component name
+          : base("Deconstruct Closed Planar Mesh Slicer", // Component name
               "DCPM", // Component nickname
               "Deconstructs a Closed Planar Mesh Slicer", // Description
               "Salad Slicer", // Category
