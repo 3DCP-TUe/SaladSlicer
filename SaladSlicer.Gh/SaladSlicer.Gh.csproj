@@ -68,8 +68,8 @@
     <Compile Include="Components\CodeGeneration\SetTemperatureComponent.cs" />
     <Compile Include="Components\CodeGeneration\UnGroupProgramObjectsComponent.cs" />
     <Compile Include="Components\Deconstruct\DeconstructClosedPlanar2DSlicerComponent.cs" />
-    <Compile Include="Components\Deconstruct\DeconstructOpenPlanar3DSlicerComponent.cs" />
-    <Compile Include="Components\Deconstruct\DeconstructClosedPlanar3DSlicerComponent.cs" />
+    <Compile Include="Components\Deconstruct\DeconstructOpenPlanarMeshSlicerComponent.cs" />
+    <Compile Include="Components\Deconstruct\DeconstructClosedPlanarMeshSlicerComponent.cs" />
     <Compile Include="Components\Deconstruct\DeconstructCurvesTransitionsSlicerComponent.cs" />
     <Compile Include="Components\Deconstruct\DeconstructCurveSlicerComponent.cs" />
     <Compile Include="Components\Deconstruct\DeconstructOpenPlanar2DSlicerComponent.cs" />
@@ -87,8 +87,8 @@
     <Compile Include="Components\Geometry\SeamAtParamComponent.cs" />
     <Compile Include="Components\Slicers\AddVariableComponent.cs" />
     <Compile Include="Components\Slicers\ClosedPlanar2DSlicerComponent.cs" />
-    <Compile Include="Components\Slicers\OpenPlanar3DSlicerComponent.cs" />
-    <Compile Include="Components\Slicers\ClosedPlanar3DSlicerComponent.cs" />
+    <Compile Include="Components\Slicers\OpenPlanarMeshSlicerComponent.cs" />
+    <Compile Include="Components\Slicers\ClosedPlanarMeshSlicerComponent.cs" />
     <Compile Include="Components\Slicers\CurveSlicerComponent.cs" />
     <Compile Include="Components\Slicers\CurvesTransitionsSlicerComponent.cs" />
     <Compile Include="Components\Slicers\GetContoursComponent.cs" />
@@ -115,8 +115,8 @@
     <Compile Include="Goos\CodeGeneration\GH_ProgramObject.cs" />
     <Compile Include="Goos\Slicers\GH_ClosedPlanar2DSlicer.cs" />
     <Compile Include="Goos\Slicers\GH_CurvesTransitionsSlicer.cs" />
-    <Compile Include="Goos\Slicers\GH_OpenPlanar3DSlicer.cs" />
-    <Compile Include="Goos\Slicers\GH_ClosedPlanar3DSlicer.cs" />
+    <Compile Include="Goos\Slicers\GH_OpenPlanarMeshSlicer.cs" />
+    <Compile Include="Goos\Slicers\GH_ClosedPlanarMeshSlicer.cs" />
     <Compile Include="Goos\Slicers\GH_CurveSlicer.cs" />
     <Compile Include="Goos\Slicers\GH_OpenPlanar2DSlicer.cs" />
     <Compile Include="Goos\Slicers\GH_SlicerObject.cs" />
@@ -129,8 +129,8 @@
     <Compile Include="Parameters\CodeGeneration\Param_ProgramObject.cs" />
     <Compile Include="Parameters\Slicers\Param_ClosedPlanar2DSlicer.cs" />
     <Compile Include="Parameters\Slicers\Param_CurvesTransitionsSlicer.cs" />
-    <Compile Include="Parameters\Slicers\Param_OpenPlanar3DSlicer.cs" />
-    <Compile Include="Parameters\Slicers\Param_ClosedPlanar3DSlicer.cs" />
+    <Compile Include="Parameters\Slicers\Param_OpenPlanarMeshSlicer.cs" />
+    <Compile Include="Parameters\Slicers\Param_ClosedPlanarMeshSlicer.cs" />
     <Compile Include="Parameters\Slicers\Param_CurveSlicer.cs" />
     <Compile Include="Parameters\Slicers\Param_OpenPlanar2DSlicer.cs" />
     <Compile Include="Parameters\Slicers\Param_SlicerObject.cs" />

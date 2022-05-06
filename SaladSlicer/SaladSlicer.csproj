@@ -63,12 +63,12 @@
     <Compile Include="Enumerations\Enumerations.cs" />
     <Compile Include="Geometry\Seams\Transitions.cs" />
     <Compile Include="Geometry\Seams\Locations.cs" />
-    <Compile Include="Slicers\OpenPlanar3DSlicer.cs" />
+    <Compile Include="Slicers\OpenPlanarMeshSlicer.cs" />
     <Compile Include="Slicers\CurvesTransitionsSlicer.cs" />
     <Compile Include="Slicers\OpenPlanar2DSlicer.cs" />
     <Compile Include="Slicers\CurveSlicer.cs" />
     <Compile Include="Slicers\ClosedPlanar2DSlicer.cs" />
-    <Compile Include="Slicers\ClosedPlanar3DSlicer.cs" />
+    <Compile Include="Slicers\ClosedPlanarMeshSlicer.cs" />
     <Compile Include="Utils\HelperMethods.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

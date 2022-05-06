@@ -1,7 +1,7 @@
 ﻿// This file is part of SaladSlicer. SaladSlicer is licensed 
 // under the terms of GNU General Public License as published by the 
 // Free Software Foundation. For more information and the LICENSE file, 
-// see <https://github.com/3DCP-TUe/SaladSlicer>.
+// see <https://github.com/MeshCP-TUe/SaladSlicer>.
 
 // Rhino Libs
 using Rhino.Geometry;
@@ -17,9 +17,9 @@ using SaladSlicer.Interfaces;
 namespace SaladSlicer.Gh.Goos.Slicers
 {
     /// <summary>
-    /// Represents the GH_OpenPlanar3DSlicer class.
+    /// Represents the GH_ClosedPlanarMeshSlicer class.
     /// </summary>
-    public class GH_OpenPlanar3DSlicer : GH_GeometricGoo<OpenPlanar3DSlicer>, IGH_PreviewData
+    public class GH_ClosedPlanarMeshSlicer : GH_GeometricGoo<ClosedPlanarMeshSlicer>, IGH_PreviewData
     {
         #region (de)serialisation
         //TODO
@@ -27,42 +27,42 @@ namespace SaladSlicer.Gh.Goos.Slicers
 
         #region constructors
         /// <summary>
-        /// Initializes an empty instance of the GH_OpenPlanar3DSlicer class.
+        /// Initializes an empty instance of the GH_ClosedPlanarMeshSlicer class.
         /// </summary>
-        public GH_OpenPlanar3DSlicer()
+        public GH_ClosedPlanarMeshSlicer()
         {
             this.Value = null;
         }
 
         /// <summary>
-        /// Initializes a new Oject Goo instance from a OpenPlanar3DSlicer instance.
+        /// Initializes a new Oject Goo instance from a ClosedPlanarMeshSlicer instance.
         /// </summary>
-        /// <param name="openPlanar3DSlicer"> OpenPlanar3DSlicer Value to store inside this Goo instance. </param>
-        public GH_OpenPlanar3DSlicer(OpenPlanar3DSlicer openPlanar3DSlicer)
+        /// <param name="closedPlanarMeshSlicer"> ClosedPlanarMeshSlicer Value to store inside this Goo instance. </param>
+        public GH_ClosedPlanarMeshSlicer(ClosedPlanarMeshSlicer closedPlanarMeshSlicer)
         {
-            this.Value = openPlanar3DSlicer;
+            this.Value = closedPlanarMeshSlicer;
         }
 
         /// <summary>
         /// Returns a complete duplicate of this Goo instance.
         /// </summary>
-        /// <returns> A duplicate of the Open Planar 3D Slicer Goo. </returns>
+        /// <returns> A duplicate of the Closed Planar Mesh Slicer Goo. </returns>
         public override IGH_Goo Duplicate()
         {
             if (this.Value == null)
             {
-                return new GH_OpenPlanar3DSlicer();
+                return new GH_ClosedPlanarMeshSlicer();
             }
             else
             {
-                return new GH_OpenPlanar3DSlicer(this.Value.Duplicate());
+                return new GH_ClosedPlanarMeshSlicer(this.Value.Duplicate());
             }
         }
 
         /// <summary>
         /// Returns a complete duplicate of this Goo insance.
         /// </summary>
-        /// <returns> A duplicate of the Open Planar 3D Slicer Goo instance. </returns>
+        /// <returns> A duplicate of the Closed Planar Mesh Slicer Goo instance. </returns>
         public override IGH_GeometricGoo DuplicateGeometry()
         {
             return this.Duplicate() as IGH_GeometricGoo;
@@ -78,7 +78,7 @@ namespace SaladSlicer.Gh.Goos.Slicers
         {
             if (this.Value == null)
             {
-                return "Null Open Planar 3D Slicer";
+                return "Null Closed Planar Mesh Slicer";
             }
             else
             {
@@ -115,17 +115,17 @@ namespace SaladSlicer.Gh.Goos.Slicers
                 return true;
             }
 
-            // Cast to OpenPlanar3DSlicer
-            if (typeof(Q).IsAssignableFrom(typeof(OpenPlanar3DSlicer)))
+            // Cast to ClosedPlanarMeshSlicer
+            if (typeof(Q).IsAssignableFrom(typeof(ClosedPlanarMeshSlicer)))
             {
                 target = (Q)(object)this.Value;
                 return true;
             }
 
-            // Cast to OpenPlanar3DSlicer Goo
-            if (typeof(Q).IsAssignableFrom(typeof(GH_OpenPlanar3DSlicer)))
+            // Cast to ClosedPlanarMeshSlicer Goo
+            if (typeof(Q).IsAssignableFrom(typeof(GH_ClosedPlanarMeshSlicer)))
             {
-                target = (Q)(object)new GH_OpenPlanar3DSlicer(this.Value);
+                target = (Q)(object)new GH_ClosedPlanarMeshSlicer(this.Value);
                 return true;
             }
 
@@ -168,17 +168,17 @@ namespace SaladSlicer.Gh.Goos.Slicers
                 return false; 
             }
 
-            // Cast from OpenPlanar3DSlicer
-            if (typeof(OpenPlanar3DSlicer).IsAssignableFrom(source.GetType()))
+            // Cast from ClosedPlanarMeshSlicer
+            if (typeof(ClosedPlanarMeshSlicer).IsAssignableFrom(source.GetType()))
             {
-                this.Value = source as OpenPlanar3DSlicer;
+                this.Value = source as ClosedPlanarMeshSlicer;
                 return true;
             }
 
-            // Cast from OpenPlanar3DSlicer Goo
-            if (typeof(GH_OpenPlanar3DSlicer).IsAssignableFrom(source.GetType()))
+            // Cast from ClosedPlanarMeshSlicer Goo
+            if (typeof(GH_ClosedPlanarMeshSlicer).IsAssignableFrom(source.GetType()))
             {
-                GH_OpenPlanar3DSlicer goo = source as GH_OpenPlanar3DSlicer;
+                GH_ClosedPlanarMeshSlicer goo = source as GH_ClosedPlanarMeshSlicer;
                 this.Value = goo.Value;
                 return true;
             }
@@ -186,7 +186,7 @@ namespace SaladSlicer.Gh.Goos.Slicers
             // Cast from ISlicer
             if (typeof(ISlicer).IsAssignableFrom(source.GetType()))
             {
-                if (source is OpenPlanar3DSlicer slicer)
+                if (source is ClosedPlanarMeshSlicer slicer)
                 {
                     this.Value = slicer;
                     return true;
@@ -198,7 +198,7 @@ namespace SaladSlicer.Gh.Goos.Slicers
             {
                 GH_SlicerObject goo = source as GH_SlicerObject;
 
-                if (goo.Value is OpenPlanar3DSlicer slicer)
+                if (goo.Value is ClosedPlanarMeshSlicer slicer)
                 {
                     this.Value = slicer;
                     return true;
@@ -231,9 +231,9 @@ namespace SaladSlicer.Gh.Goos.Slicers
         {
             get
             {
-                if (this.Value == null) { return "No internal Open Planar 3D Slicer instance"; }
+                if (this.Value == null) { return "No internal Closed Planar Mesh Slicer instance"; }
                 if (this.Value.IsValid) { return string.Empty; }
-                return "Invalid Open Planar 3D Slicer instance.";
+                return "Invalid Closed Planar Mesh Slicer instance.";
             }
         }
 
@@ -242,7 +242,7 @@ namespace SaladSlicer.Gh.Goos.Slicers
         /// </summary>
         public override string TypeDescription
         {
-            get { return "Defines an Open Planar 3D Slicer."; }
+            get { return "Defines a Closed Planar Mesh Slicer."; }
         }
 
         /// <summary>
@@ -250,7 +250,7 @@ namespace SaladSlicer.Gh.Goos.Slicers
         /// </summary>
         public override string TypeName
         {
-            get { return "Open Planar 3D Slicer"; }
+            get { return "Closed Planar Mesh Slicer"; }
         }
         #endregion
 
@@ -274,9 +274,9 @@ namespace SaladSlicer.Gh.Goos.Slicers
 
             else
             {
-                OpenPlanar3DSlicer slicer = Value.Duplicate();
+                ClosedPlanarMeshSlicer slicer = Value.Duplicate();
                 slicer.Transform(xform);
-                return new GH_OpenPlanar3DSlicer(slicer);
+                return new GH_ClosedPlanarMeshSlicer(slicer);
             }
         }
 

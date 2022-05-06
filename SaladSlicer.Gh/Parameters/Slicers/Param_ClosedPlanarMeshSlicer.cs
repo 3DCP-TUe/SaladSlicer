@@ -1,7 +1,7 @@
 ﻿// This file is part of SaladSlicer. SaladSlicer is licensed 
 // under the terms of GNU General Public License as published by the 
 // Free Software Foundation. For more information and the LICENSE file, 
-// see <https://github.com/3DCP-TUe/SaladSlicer>.
+// see <https://github.com/MeshCP-TUe/SaladSlicer>.
 
 // System Libs
 using System;
@@ -17,17 +17,17 @@ using SaladSlicer.Gh.Goos.Slicers;
 namespace SaladSlicer.Gh.Parameters.Slicers
 {
     /// <summary>
-    /// Represents the Param_ClosedPlanar3DSlicer class
+    /// Represents the Param_ClosedPlanarMeshSlicer class
     /// </summary>
-    public class Param_ClosedPlanar3DSlicer : GH_PersistentGeometryParam<GH_ClosedPlanar3DSlicer>, IGH_PreviewObject
+    public class Param_ClosedPlanarMeshSlicer : GH_PersistentGeometryParam<GH_ClosedPlanarMeshSlicer>, IGH_PreviewObject
     {
         /// <summary>
         /// Initializes a new instance of the Param_Object class
         /// </summary>
-        public Param_ClosedPlanar3DSlicer()
-          : base(new GH_InstanceDescription("Closed Planar 3D Slicer", // Parameter name
-              "CP3D", // Component nickname
-              "Defines a Closed Planar 3D Slicer object.", // Description
+        public Param_ClosedPlanarMeshSlicer()
+          : base(new GH_InstanceDescription("Closed Planar Mesh Slicer", // Parameter name
+              "CPM", // Component nickname
+              "Defines a Closed Planar Mesh Slicer object.", // Description
               "Salad Slicer", // Category
               "Parameters")) // Subcategory)
         { 
@@ -68,7 +68,7 @@ namespace SaladSlicer.Gh.Parameters.Slicers
         /// </summary>
         /// <param name="values"> Empty list. </param>
         /// <returns> Canceled result. </returns>
-        protected override GH_GetterResult Prompt_Plural(ref List<GH_ClosedPlanar3DSlicer> values)
+        protected override GH_GetterResult Prompt_Plural(ref List<GH_ClosedPlanarMeshSlicer> values)
         {
             return GH_GetterResult.cancel;
         }
@@ -79,7 +79,7 @@ namespace SaladSlicer.Gh.Parameters.Slicers
         /// </summary>
         /// <param name="value"> Null item.  </param>
         /// <returns> Canceled result. </returns>
-        protected override GH_GetterResult Prompt_Singular(ref GH_ClosedPlanar3DSlicer value)
+        protected override GH_GetterResult Prompt_Singular(ref GH_ClosedPlanarMeshSlicer value)
         {
             return GH_GetterResult.cancel;
         }

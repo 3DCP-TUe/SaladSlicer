@@ -1,7 +1,7 @@
 ﻿// This file is part of SaladSlicer. SaladSlicer is licensed 
 // under the terms of GNU General Public License as published by the 
 // Free Software Foundation. For more information and the LICENSE file, 
-// see <https://github.com/3DCP-TUe/SaladSlicer>.
+// see <https://github.com/MeshCP-TUe/SaladSlicer>.
 
 // System Libs
 using System;
@@ -18,17 +18,17 @@ using SaladSlicer.Gh.Parameters.Slicers;
 namespace SaladSlicer.Gh.Components.Slicers
 {
     /// <summary>
-    /// Represent a component that creates a 3D slicer object.
+    /// Represent a component that creates a Mesh slicer object.
     /// </summary>
-    public class ClosedPlanar3DSlicerComponent : GH_Component
+    public class ClosedPlanarMeshSlicerComponent : GH_Component
     {
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public ClosedPlanar3DSlicerComponent()
-          : base("Closed Planar 3D Slicer", // Component name
-              "CP3D", // Component nickname
-              "Defines a slicer object for a closed planar 3D object.", // Description
+        public ClosedPlanarMeshSlicerComponent()
+          : base("Closed Planar Mesh Slicer", // Component name
+              "CPM", // Component nickname
+              "Defines a slicer object for a closed planar mesh object.", // Description
               "Salad Slicer", // Category
               "Slicers") // Subcategory
         {
@@ -52,7 +52,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
-            pManager.AddParameter(new Param_ClosedPlanar3DSlicer(), "Slicer Object", "SO", "3D Slicer object.", GH_ParamAccess.item);
+            pManager.AddParameter(new Param_ClosedPlanarMeshSlicer(), "Slicer Object", "SO", "Mesh Slicer object.", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -83,12 +83,12 @@ namespace SaladSlicer.Gh.Components.Slicers
             if (distance <= 0.0) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "The distance between two frames cannot be smaller than or equal to zero."); }
 
             // Declare the output variables
-            ClosedPlanar3DSlicer slicer = new ClosedPlanar3DSlicer();
+            ClosedPlanarMeshSlicer slicer = new ClosedPlanarMeshSlicer();
 
             // Create the slicer object
             try
             {
-                slicer = new ClosedPlanar3DSlicer(mesh, seamLocation, seamLength, distance, reverse, heights);
+                slicer = new ClosedPlanarMeshSlicer(mesh, seamLocation, seamLength, distance, reverse, heights);
                 slicer.Slice();
             }
             catch (WarningException warning)
