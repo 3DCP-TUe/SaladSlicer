@@ -9,9 +9,7 @@ using Rhino.Geometry;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
 // Salad Slicer Libs
-using SaladSlicer.CodeGeneration;
 using SaladSlicer.Slicers;
-using SaladSlicer.Gh.Goos.CodeGeneration;
 using SaladSlicer.Interfaces;
 
 namespace SaladSlicer.Gh.Goos.Slicers
