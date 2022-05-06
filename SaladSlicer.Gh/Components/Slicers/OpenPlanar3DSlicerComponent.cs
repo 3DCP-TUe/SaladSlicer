@@ -117,7 +117,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return null; }
+            get { return Properties.Resources.OpenPlanarMeshSlicer_Icon; }
         }
 
         /// <summary>

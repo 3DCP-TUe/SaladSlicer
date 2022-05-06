@@ -89,7 +89,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return null; }
+            get { return Properties.Resources.DeconstructOpenPlanarMeshSlicer_Icon; }
         }
 
         /// <summary>
