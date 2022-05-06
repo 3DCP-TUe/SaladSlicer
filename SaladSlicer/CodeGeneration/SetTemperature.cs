@@ -47,12 +47,21 @@ namespace SaladSlicer.CodeGeneration
         }
 
         /// <summary>
-        /// Returns an exact duplicate of this SetTemperature object
+        /// Returns an exact duplicate of this Set Temperature object.
         /// </summary>
-        /// <returns> The exact duplicate of this Absolute Coordinate instance as an IProgram. </returns>
-        public IProgram DuplicateProgramObject()
+        /// <returns> The exact duplicate of this Set Temperature instance </returns>
+        public SetTemperature Duplicate()
         {
             return new SetTemperature(this);
+        }
+
+        /// <summary>
+        /// Returns an exact duplicate of this Set Temperature object
+        /// </summary>
+        /// <returns> The exact duplicate of this Set Temperature instance as an IProgram. </returns>
+        public IProgram DuplicateProgramObject()
+        {
+            return this.Duplicate();
         }
         #endregion
 

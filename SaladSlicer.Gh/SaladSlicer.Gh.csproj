@@ -109,6 +109,7 @@
     <Compile Include="Goos\CodeGeneration\GH_AbsoluteCoordinate.cs" />
     <Compile Include="Goos\CodeGeneration\GH_PrinterSettings.cs" />
     <Compile Include="Goos\CodeGeneration\GH_CodeLine.cs" />
+    <Compile Include="Goos\CodeGeneration\GH_SetTemperature.cs" />
     <Compile Include="Goos\CodeGeneration\GH_SetFeedRate.cs" />
     <Compile Include="Goos\CodeGeneration\GH_ProgramGroup.cs" />
     <Compile Include="Goos\CodeGeneration\GH_ProgramObject.cs" />
@@ -122,6 +123,7 @@
     <Compile Include="Parameters\CodeGeneration\Param_AbsoluteCoordinate.cs" />
     <Compile Include="Parameters\CodeGeneration\Param_PrinterSettings.cs" />
     <Compile Include="Parameters\CodeGeneration\Param_CodeLine.cs" />
+    <Compile Include="Parameters\CodeGeneration\Param_SetTemperature.cs" />
     <Compile Include="Parameters\CodeGeneration\Param_SetFeedRate.cs" />
     <Compile Include="Parameters\CodeGeneration\Param_ProgramGroup.cs" />
     <Compile Include="Parameters\CodeGeneration\Param_ProgramObject.cs" />
