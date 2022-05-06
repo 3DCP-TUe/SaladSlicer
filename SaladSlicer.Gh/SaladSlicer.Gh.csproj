@@ -107,6 +107,7 @@
     <Compile Include="Components\Utilities\PlaneVisualizerComponent.cs" />
     <Compile Include="Components\Utilities\TransposeSurfaceComponent.cs" />
     <Compile Include="Goos\CodeGeneration\GH_AbsoluteCoordinate.cs" />
+    <Compile Include="Goos\CodeGeneration\GH_PrinterSettings.cs" />
     <Compile Include="Goos\CodeGeneration\GH_CodeLine.cs" />
     <Compile Include="Goos\CodeGeneration\GH_FeedRate.cs" />
     <Compile Include="Goos\CodeGeneration\GH_ProgramGroup.cs" />
@@ -119,6 +120,7 @@
     <Compile Include="Goos\Slicers\GH_OpenPlanar2DSlicer.cs" />
     <Compile Include="Goos\Slicers\GH_SlicerObject.cs" />
     <Compile Include="Parameters\CodeGeneration\Param_AbsoluteCoordinate.cs" />
+    <Compile Include="Parameters\CodeGeneration\Param_PrinterSettings.cs" />
     <Compile Include="Parameters\CodeGeneration\Param_CodeLine.cs" />
     <Compile Include="Parameters\CodeGeneration\Param_SetFeedRate.cs" />
     <Compile Include="Parameters\CodeGeneration\Param_ProgramGroup.cs" />
