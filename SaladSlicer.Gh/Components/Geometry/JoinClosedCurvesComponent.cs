@@ -19,7 +19,7 @@ using SaladSlicer.Enumerations;
 namespace SaladSlicer.Gh.Components.Geometry
 {
     /// <summary>
-    /// Represents the component that joins curves using linear interpolation. 
+    /// Represents the component that joins open curves. 
     /// </summary>
     public class JoinClosedCurvesComponent : GH_Component
     {
@@ -46,7 +46,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
             pManager.AddCurveParameter("Curves", "C", "List of curves", GH_ParamAccess.list);
-            pManager.AddIntegerParameter("Transition type", "T", "Sets the type of connection [0 = Linear, 1 = Bezier, 3 = Interpolated]", GH_ParamAccess.item);
+            pManager.AddIntegerParameter("Transition type", "T", "Sets the type of connection [0 = Linear, 1 = Bezier, 3 = Interpolated]", GH_ParamAccess.item, 0);
             pManager.AddNumberParameter("Changelength", "L", "Sets the length over which to connect to the next layer", GH_ParamAccess.item, 100);
         }
 
