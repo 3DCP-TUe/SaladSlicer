@@ -113,7 +113,7 @@ namespace SaladSlicer.CodeGeneration
                 programGenerator.Program.Add("G500; Zero frame");
                 programGenerator.Program.Add("SPCON; Position-controlled spindle ON");
                 programGenerator.Program.Add("G90; Absolute coordinates ");
-                programGenerator.Program.Add("G1 C90 F10000; Moves the C-axis to the zero position");
+                programGenerator.Program.Add("G1 C90 F10000; Moves the C-axis tangent to y direction");
             }
             else if(_programType == 1)
             {
@@ -124,8 +124,8 @@ namespace SaladSlicer.CodeGeneration
                 //ogramGenerator.Program.Add("M204 P500.00 R1000.00 T500.00; Setup Print/ Retract / Travel acceleration");
                 //ogramGenerator.Program.Add("M205 X8.00 Y8.00 Z0.40 E5.00; Setup Jerk");
                 programGenerator.Program.Add("M82; Absolute extrusion mode");
-                programGenerator.Program.Add("G90; Absolute coordinates ");
                 programGenerator.Program.Add("G28; Move home");
+                programGenerator.Program.Add("G92 E2; Set current extruder position as 0");
             }
             else
             {
@@ -142,7 +142,6 @@ namespace SaladSlicer.CodeGeneration
             }
             else if (_interpolation == 1)
             {
-                programGenerator.Program.Add("G1; Linear movements ");
             }
             else
             {
@@ -152,7 +151,8 @@ namespace SaladSlicer.CodeGeneration
             // HotEndTemperature && BedTemperature
             if (_hotEndTemperature >= 0 || _bedTemperature >= 0)
             {
-                programGenerator.Program.Add("Z10; Move off printbed");
+                programGenerator.Program.Add("G91; Relative coordinates");
+                programGenerator.Program.Add("G1 Z10; Move off printbed");
                 
                 if (_hotEndTemperature >= 0)
                 {
@@ -177,7 +177,8 @@ namespace SaladSlicer.CodeGeneration
                     programGenerator.Program.Add($"M190 S{_bedTemperature:0.#}; Wait for bed temperature "); 
                 }
                 
-                programGenerator.Program.Add("Z-10; Move back to original position");
+                programGenerator.Program.Add("G1 Z-10; Move back to original position");
+                programGenerator.Program.Add("G90; Absolute coordinates");
             }
 
             programGenerator.Program.Add(" ");

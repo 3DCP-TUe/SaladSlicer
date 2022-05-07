@@ -294,7 +294,7 @@ namespace SaladSlicer.Slicers
             else 
             {
                 // Add coordinates
-                List<List<string>> coordinates = ProgramGenerator.GetCoordinateCodeLines(this);
+                List<List<string>> coordinates = ProgramGenerator.GetCoordinateCodeLines(this, programGenerator.PrinterSettings);
 
                 for (int i = 0; i < coordinates.Count; i++)
                 {

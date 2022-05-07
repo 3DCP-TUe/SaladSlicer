@@ -95,23 +95,23 @@ namespace SaladSlicer.CodeGeneration
             {
                 _program.Add(" ");
                 _program.Add("G91; Relative coordinates ");
-                _program.Add("Z10 E-2; Move off object and retract extrusion material ");
+                _program.Add("G1 Z10 E-2; Move off object and retract extrusion material ");
                 _program.Add("G90; Absolute coordinates ");
-                _program.Add("G28; Move home ");
+                _program.Add("G1 X0 Y0; Move home ");
 
                 if (_printerSettings.HotEndTemperature != 0 || _printerSettings.BedTemperature != 0)
                 {
                     if (_printerSettings.HotEndTemperature >= 0)
                     {
                         _printerSettings.HotEndTemperature = 0;
-                        _program.Add($"M109 R{_printerSettings.HotEndTemperature:0.#}; Set and wait for hotend temperature to 0");
+                        _program.Add($"M104 S{_printerSettings.HotEndTemperature:0.#}; Set hotend temperature to 0");
                         _program.Add("M105; Report temperature");
                     }
 
                     if (_printerSettings.BedTemperature >= 0)
                     {
                         _printerSettings.BedTemperature = 0;
-                        _program.Add($"M190 R{_printerSettings.BedTemperature:0.#}; Set and wait for bed temperature to 0");
+                        _program.Add($"M140 R{_printerSettings.BedTemperature:0.#}; Set bed temperature to 0");
                         _program.Add("M105; Report temperature");
                     }
                 }
@@ -167,22 +167,49 @@ namespace SaladSlicer.CodeGeneration
         /// </summary>
         /// <param name="addVariable"> The added variable object to get the coorindate code lines from. </param>
         /// <returns> The nested list code lines. </returns>
-        public static List<List<string>> GetCoordinateCodeLines(IAddVariable addVariable)
+        public static List<List<string>> GetCoordinateCodeLines(IAddVariable addVariable, PrinterSettings printerSettings)
         {
             List<List<string>> result = new List<List<string>>();
             List<List<Plane>> frames = addVariable.FramesByLayer;
 
-            // Coordinates
-            for (int i = 0; i < frames.Count; i++)
+            // Linear movements
+            if (printerSettings.Interpolation == 1)
             {
-                List<string> temp = new List<string>() { };
-
-                for (int j = 0; j < frames[i].Count; j++)
+                for (int i = 0; i < frames.Count; i++)
                 {
-                    temp.Add($"X{frames[i][j].OriginX:0.###} Y{frames[i][j].OriginY:0.###} Z{frames[i][j].OriginZ:0.###}");
+                    List<string> temp = new List<string>() { };
+                    for (int j = 0; j < frames[i].Count; j++)
+                    {
+                        temp.Add("G1 ");
+                    }
+                    result.Add(temp);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < frames.Count; i++)
+                {
+                    List<string> temp = new List<string>() { };
+                    for (int j = 0; j < frames[i].Count; j++)
+                    {
+                        temp.Add("");
+                    }
+                    result.Add(temp);
+                }
+            }
+
+            // Coordinates
+            for (int i = 0; i < result.Count; i++)
+            {
+                //List<string> temp = new List<string>() { };
+
+                for (int j = 0; j < result[i].Count; j++)
+                {
+                    result[i][j] = result[i][j] + $"X{frames[i][j].OriginX:0.###} Y{frames[i][j].OriginY:0.###} Z{frames[i][j].OriginZ:0.###}";
+                    //temp.Add($"X{frames[i][j].OriginX:0.###} Y{frames[i][j].OriginY:0.###} Z{frames[i][j].OriginZ:0.###}");
                 }
 
-                result.Add(temp);
+                //result.Add(temp);
             }
 
             // Added variables

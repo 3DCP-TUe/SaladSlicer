@@ -311,7 +311,7 @@ namespace SaladSlicer.Slicers
             programGenerator.AddSlicerHeader("Mesh OPEN PLANAR OBJECT", _contours.Count, GetLength());
 
             // Get coordinates
-            List<List<string>> coordinates = ProgramGenerator.GetCoordinateCodeLines(this);
+            List<List<string>> coordinates = ProgramGenerator.GetCoordinateCodeLines(this,programGenerator.PrinterSettings);
 
             // Sinumerik
             if (programGenerator.PrinterSettings.ProgramType == 0)

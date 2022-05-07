@@ -190,7 +190,7 @@ namespace SaladSlicer.Slicers
             programGenerator.AddSlicerHeader("CUSTOM SLICER OBJECT", GetLength());
 
             // Add coordinates
-            List<List<string>> coordinates = ProgramGenerator.GetCoordinateCodeLines(this);
+            List<List<string>> coordinates = ProgramGenerator.GetCoordinateCodeLines(this,programGenerator.PrinterSettings);
 
             for (int i = 0; i < coordinates.Count; i++)
             {
