@@ -45,7 +45,7 @@ namespace SaladSlicer.Enumerations
     /// <summary>
     /// Defines the program types.
     /// </summary>
-    public enum ProgramTypes : int
+    public enum ProgramType : int
     {
         /// <summary>
         /// Generates a Sinumerik NC program (G-Code)
@@ -61,7 +61,7 @@ namespace SaladSlicer.Enumerations
     /// <summary>
     /// Defines the interpolation types.
     /// </summary>
-    public enum InterpolationTypes : int
+    public enum InterpolationType : int
     {
         /// <summary>
         /// Spline interpolation (BSPLINE G642)
@@ -73,4 +73,6 @@ namespace SaladSlicer.Enumerations
         /// </summary>
         Linear = 1,
     }
+
+
 }

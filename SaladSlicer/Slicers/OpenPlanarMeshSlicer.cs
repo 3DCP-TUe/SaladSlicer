@@ -315,7 +315,7 @@ namespace SaladSlicer.Slicers
             List<List<string>> coordinates = ProgramGenerator.GetCoordinateCodeLines(this,programGenerator.PrinterSettings);
 
             // Sinumerik
-            if (programGenerator.PrinterSettings.ProgramType == ProgramTypes.Sinumerik)
+            if (programGenerator.PrinterSettings.ProgramType == ProgramType.Sinumerik)
             {
                 for (int i = 0; i < coordinates.Count; i++)
                 {
@@ -350,7 +350,7 @@ namespace SaladSlicer.Slicers
             }
 
             // Marlin
-            else if (programGenerator.PrinterSettings.ProgramType == ProgramTypes.Marlin)
+            else if (programGenerator.PrinterSettings.ProgramType == ProgramType.Marlin)
             {
                 for (int i = 0; i < coordinates.Count; i++)
                 {

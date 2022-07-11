@@ -67,12 +67,12 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
             //Create a value list
             if (_valueList1Added == false)
             {
-                _expire = HelperMethods.CreateValueList(this, 0, typeof(ProgramTypes));
+                _expire = HelperMethods.CreateValueList(this, 0, typeof(ProgramType));
                 _valueList1Added = true;
             }
             if (_valueList2Added == false)
             {
-                _expire = HelperMethods.CreateValueList(this, 1, typeof(InterpolationTypes));
+                _expire = HelperMethods.CreateValueList(this, 1, typeof(InterpolationType));
                 _valueList2Added = true;
             }
 
@@ -101,7 +101,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
             // Create the printer settings
             try
             {
-                programSetting = new PrinterSettings((ProgramTypes)programType, (InterpolationTypes)interpolation, hotend, bed);
+                programSetting = new PrinterSettings((ProgramType)programType, (InterpolationType)interpolation, hotend, bed);
             }
             catch (WarningException warning)
             {

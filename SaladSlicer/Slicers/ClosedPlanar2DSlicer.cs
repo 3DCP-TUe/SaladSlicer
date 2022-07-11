@@ -266,7 +266,7 @@ namespace SaladSlicer.Slicers
 
             // Create a loop for objects with an constant height increase per layer
             
-            if (ConstantHeightIncrease() && programGenerator.PrinterSettings.ProgramType == ProgramTypes.Sinumerik && _addedVariables.Count == 0)
+            if (ConstantHeightIncrease() && programGenerator.PrinterSettings.ProgramType == ProgramType.Sinumerik && _addedVariables.Count == 0)
             {
                 double layerHeight = _heights[1] - _heights[0];
 

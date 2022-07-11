@@ -112,14 +112,14 @@ namespace SaladSlicer.CodeGeneration
             }
             
             // Footer (ending)
-            if (_printerSettings.ProgramType == ProgramTypes.Sinumerik){
+            if (_printerSettings.ProgramType == ProgramType.Sinumerik){
                 _program.Add(" ");
                 _program.Add("M30");
                 _program.Add(" ");
                 _program.Add(" ");
                 _program.Add(" ");
             }
-            else if (_printerSettings.ProgramType == ProgramTypes.Marlin)
+            else if (_printerSettings.ProgramType == ProgramType.Marlin)
             {
                 _program.Add(" ");
                 _program.Add("G91; Relative coordinates ");
@@ -201,7 +201,7 @@ namespace SaladSlicer.CodeGeneration
             List<List<Plane>> frames = addVariable.FramesByLayer;
 
             // Linear movements
-            if (printerSettings.InterpolationType == InterpolationTypes.Linear)
+            if (printerSettings.InterpolationType == InterpolationType.Linear)
             {
                 for (int i = 0; i < frames.Count; i++)
                 {

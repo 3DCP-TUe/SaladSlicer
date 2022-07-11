@@ -122,7 +122,7 @@ namespace SaladSlicer.CodeGeneration
             programGenerator.Program.Add("; TEMPERATURE SETTINGS");
             programGenerator.Program.Add("; ----------------------------------------------------------------------");
             
-            if (programGenerator.PrinterSettings.ProgramType == ProgramTypes.Marlin)
+            if (programGenerator.PrinterSettings.ProgramType == ProgramType.Marlin)
             {
                 programGenerator.Program.Add(" ");
                 if (_hotEndTemperature != 0 || _bedTemperature != 0)
