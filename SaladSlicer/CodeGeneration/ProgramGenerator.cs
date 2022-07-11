@@ -11,8 +11,9 @@ using System.Security.Permissions;
 //Rhino Libs
 using Rhino.Geometry;
 // Salad Slicer Libs
-using SaladSlicer.Utils;
+using SaladSlicer.Enumerations;
 using SaladSlicer.Interfaces;
+using SaladSlicer.Utils;
 
 namespace SaladSlicer.CodeGeneration
 {
@@ -111,14 +112,14 @@ namespace SaladSlicer.CodeGeneration
             }
             
             // Footer (ending)
-            if (_printerSettings.ProgramType == 0){
+            if (_printerSettings.ProgramType == ProgramTypes.Sinumerik){
                 _program.Add(" ");
                 _program.Add("M30");
                 _program.Add(" ");
                 _program.Add(" ");
                 _program.Add(" ");
             }
-            else if (_printerSettings.ProgramType == 1)
+            else if (_printerSettings.ProgramType == ProgramTypes.Marlin)
             {
                 _program.Add(" ");
                 _program.Add("G91; Relative coordinates ");
@@ -200,7 +201,7 @@ namespace SaladSlicer.CodeGeneration
             List<List<Plane>> frames = addVariable.FramesByLayer;
 
             // Linear movements
-            if (printerSettings.Interpolation == 1)
+            if (printerSettings.InterpolationType == InterpolationTypes.Linear)
             {
                 for (int i = 0; i < frames.Count; i++)
                 {

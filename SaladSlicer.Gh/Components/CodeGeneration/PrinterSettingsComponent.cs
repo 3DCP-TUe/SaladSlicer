@@ -101,7 +101,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
             // Create the printer settings
             try
             {
-                programSetting = new PrinterSettings(programType, interpolation, hotend, bed);
+                programSetting = new PrinterSettings((ProgramTypes)programType, (InterpolationTypes)interpolation, hotend, bed);
             }
             catch (WarningException warning)
             {

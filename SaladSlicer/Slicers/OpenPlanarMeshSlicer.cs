@@ -17,6 +17,7 @@ using SaladSlicer.Geometry;
 using SaladSlicer.Geometry.Seams;
 using SaladSlicer.Interfaces;
 using SaladSlicer.Utils;
+using SaladSlicer.Enumerations;
 
 namespace SaladSlicer.Slicers
 {
@@ -314,7 +315,7 @@ namespace SaladSlicer.Slicers
             List<List<string>> coordinates = ProgramGenerator.GetCoordinateCodeLines(this,programGenerator.PrinterSettings);
 
             // Sinumerik
-            if (programGenerator.PrinterSettings.ProgramType == 0)
+            if (programGenerator.PrinterSettings.ProgramType == ProgramTypes.Sinumerik)
             {
                 for (int i = 0; i < coordinates.Count; i++)
                 {
@@ -349,7 +350,7 @@ namespace SaladSlicer.Slicers
             }
 
             // Marlin
-            else if (programGenerator.PrinterSettings.ProgramType == 1)
+            else if (programGenerator.PrinterSettings.ProgramType == ProgramTypes.Marlin)
             {
                 for (int i = 0; i < coordinates.Count; i++)
                 {

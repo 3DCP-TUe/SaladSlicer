@@ -10,6 +10,7 @@ using System.Security.Permissions;
 // Salad Libs
 using SaladSlicer.Interfaces;
 using SaladSlicer.Utils;
+using SaladSlicer.Enumerations;
 
 namespace SaladSlicer.CodeGeneration
 {
@@ -121,7 +122,7 @@ namespace SaladSlicer.CodeGeneration
             programGenerator.Program.Add("; TEMPERATURE SETTINGS");
             programGenerator.Program.Add("; ----------------------------------------------------------------------");
             
-            if (programGenerator.PrinterSettings.ProgramType == 1)
+            if (programGenerator.PrinterSettings.ProgramType == ProgramTypes.Marlin)
             {
                 programGenerator.Program.Add(" ");
                 if (_hotEndTemperature != 0 || _bedTemperature != 0)

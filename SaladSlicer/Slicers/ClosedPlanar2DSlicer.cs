@@ -11,13 +11,13 @@ using System.Runtime.Serialization;
 using System.Security.Permissions;
 // Rhino Libs
 using Rhino.Geometry;
-using Rhino.Geometry.Intersect;
 // Slicer Salad Libs
 using SaladSlicer.CodeGeneration;
 using SaladSlicer.Geometry;
 using SaladSlicer.Geometry.Seams;
 using SaladSlicer.Interfaces;
 using SaladSlicer.Utils;
+using SaladSlicer.Enumerations;
 
 namespace SaladSlicer.Slicers
 {
@@ -266,7 +266,7 @@ namespace SaladSlicer.Slicers
 
             // Create a loop for objects with an constant height increase per layer
             
-            if (ConstantHeightIncrease() && programGenerator.PrinterSettings.ProgramType == 0 && _addedVariables.Count == 0)
+            if (ConstantHeightIncrease() && programGenerator.PrinterSettings.ProgramType == ProgramTypes.Sinumerik && _addedVariables.Count == 0)
             {
                 double layerHeight = _heights[1] - _heights[0];
 

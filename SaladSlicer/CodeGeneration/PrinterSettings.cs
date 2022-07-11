@@ -9,6 +9,7 @@ using System.Runtime.Serialization;
 using System.Security.Permissions;
 // Salad Libs
 using SaladSlicer.Interfaces;
+using SaladSlicer.Enumerations;
 using SaladSlicer.Utils;
 
 namespace SaladSlicer.CodeGeneration
@@ -20,8 +21,8 @@ namespace SaladSlicer.CodeGeneration
     public class PrinterSettings : IProgram
     {
         #region fields
-        private int _programType = 0;
-        private int _interpolation = 0;
+        private ProgramTypes _programType = ProgramTypes.Sinumerik;
+        private InterpolationTypes _interpolationType = InterpolationTypes.Spline;
         private double _hotEndTemperature = -1;
         private double _bedTemperature = -1;
         #endregion
@@ -35,8 +36,8 @@ namespace SaladSlicer.CodeGeneration
         protected PrinterSettings(SerializationInfo info, StreamingContext context)
         {
             // string version = (int)info.GetValue("Version", typeof(string)); // <-- use this if the (de)serialization changes
-            _programType = (int)info.GetValue("Program type", typeof(int));
-            _interpolation = (int)info.GetValue("Interpolation", typeof(int));
+            _programType = (ProgramTypes)info.GetValue("Program type", typeof(ProgramTypes));
+            _interpolationType = (InterpolationTypes)info.GetValue("Interpolation type", typeof(InterpolationTypes));
             _hotEndTemperature = (double)info.GetValue("Hot end temperature", typeof(double));
             _bedTemperature = (double)info.GetValue("Bed temperature", typeof(double));
         }
@@ -50,8 +51,8 @@ namespace SaladSlicer.CodeGeneration
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue("Version", HelperMethods.GetVersionNumber(), typeof(string));
-            info.AddValue("Program type", _programType, typeof(int));
-            info.AddValue("Interpolation", _interpolation, typeof(int));
+            info.AddValue("Program type", _programType, typeof(ProgramTypes));
+            info.AddValue("Interpolation type", _interpolationType, typeof(InterpolationTypes));
             info.AddValue("Hot end temperature", _hotEndTemperature, typeof(double));
             info.AddValue("Bed temperature", _bedTemperature, typeof(double));
         }
@@ -65,25 +66,31 @@ namespace SaladSlicer.CodeGeneration
         {
         }
 
-        public PrinterSettings(PrinterSettings printerSettings)
+        /// <summary>
+        /// Initializes a new instance of the Printer Settings class.
+        /// </summary>
+        /// <param name="programType"> The program type. </param>
+        /// <param name="interpolationType"> The interpolation type. </param>
+        /// <param name="hotEndTemperature"> The hot end temperature to be set. </param>
+        /// <param name="bedTemperature"> The bed temperature to be set. </param>
+        public PrinterSettings(ProgramTypes programType, InterpolationTypes interpolationType, double hotEndTemperature, double bedTemperature)
         {
-            _programType = printerSettings.ProgramType;
-            _interpolation = printerSettings.Interpolation;
-            _hotEndTemperature = printerSettings.HotEndTemperature;
-            _bedTemperature = printerSettings.BedTemperature;
+            _programType = programType;
+            _interpolationType = interpolationType;
+            _hotEndTemperature = hotEndTemperature;
+            _bedTemperature = bedTemperature;    
         }
 
         /// <summary>
-        /// Creates temperature settings
+        /// Initializes a new instance of the Printer Settings class by duplicating an existing Printer Settings instance. 
         /// </summary>
-        /// <param name="hotEndTemperature">The hot end temperature to be set</param>
-        /// <param name="bedTemperature">The bed temperature to be set</param>
-        public PrinterSettings(int programType, int interpolation, double hotEndTemperature, double bedTemperature)
+        /// <param name="printerSettings"> The Printer Settings instance to duplicate. </param>
+        public PrinterSettings(PrinterSettings printerSettings)
         {
-            _programType = programType;
-            _interpolation = interpolation;
-            _hotEndTemperature = hotEndTemperature;
-            _bedTemperature = bedTemperature;    
+            _programType = printerSettings.ProgramType;
+            _interpolationType = printerSettings.InterpolationType;
+            _hotEndTemperature = printerSettings.HotEndTemperature;
+            _bedTemperature = printerSettings.BedTemperature;
         }
 
         /// <summary>
@@ -112,7 +119,7 @@ namespace SaladSlicer.CodeGeneration
         /// <returns> A string that represents the current object. </returns>
         public override string ToString()
         {
-            return ($"Printer settings");
+            return ("Printer settings");
         }
 
         /// <summary>
@@ -139,7 +146,7 @@ namespace SaladSlicer.CodeGeneration
             programGenerator.Program.Add("; ----------------------------------------------------------------------");
             
             // Program Type
-            if (_programType == 0)
+            if (_programType == ProgramTypes.Sinumerik)
             {
                 programGenerator.Program.Add("; G-Code flavor: Sinumerik");
                 programGenerator.Program.Add("G500; Zero frame");
@@ -147,7 +154,7 @@ namespace SaladSlicer.CodeGeneration
                 programGenerator.Program.Add("G90; Absolute coordinates ");
                 programGenerator.Program.Add("G1 C90 F10000; Moves the C-axis tangent to y direction");
             }
-            else if(_programType == 1)
+            else if(_programType == ProgramTypes.Marlin)
             {
                 programGenerator.Program.Add("; G-Code flavor: Marlin");
                 programGenerator.Program.Add("M106; Turn on fans");
@@ -165,14 +172,14 @@ namespace SaladSlicer.CodeGeneration
             }
 
             // Interpolations
-            if (_interpolation == 0)
+            if (_interpolationType == InterpolationTypes.Spline)
             {
                 programGenerator.Program.Add("BSPLINE; Bspline interpolation");
                 programGenerator.Program.Add("G642; Continuous-path mode with smoothing within the defined tolerances");
                 programGenerator.Program.Add("TANG(C, X, Y, 1)");
                 programGenerator.Program.Add("TANGON(C, 0)");
             }
-            else if (_interpolation == 1)
+            else if (_interpolationType == InterpolationTypes.Linear)
             {
             }
             else
@@ -216,7 +223,7 @@ namespace SaladSlicer.CodeGeneration
             programGenerator.Program.Add(" ");
 
             //Checks 
-            if (_programType == 1 &&_interpolation == 0)
+            if (_programType == ProgramTypes.Marlin && _interpolationType == InterpolationTypes.Spline)
             {
                 throw new Exception("The Marlin G-Code flavor does not implement G642 interpolation");
             }
@@ -240,7 +247,7 @@ namespace SaladSlicer.CodeGeneration
         /// <summary>
         /// Gets or sets the program type.
         /// </summary>
-        public int ProgramType
+        public ProgramTypes ProgramType
         {
             get { return _programType; }
             set { _programType = value; }
@@ -249,10 +256,10 @@ namespace SaladSlicer.CodeGeneration
         /// <summary>
         /// Gets or sets the interpolation type
         /// </summary>
-        public int Interpolation
+        public InterpolationTypes InterpolationType
         {
-            get { return _interpolation; }
-            set { _interpolation = value; }
+            get { return _interpolationType; }
+            set { _interpolationType = value; }
         }
 
         /// <summary>
