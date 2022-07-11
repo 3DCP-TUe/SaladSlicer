@@ -74,5 +74,25 @@ namespace SaladSlicer.Enumerations
         Linear = 1,
     }
 
+    /// <summary>
+    /// Defines the path type
+    /// </summary>
+    public enum PathType : int
+    {
+        /// <summary>
+        /// Original path
+        /// </summary>
+        Original = 0,
+
+        /// <summary>
+        /// Spline interpolated path
+        /// </summary>
+        Spline = 1,
+
+        /// <summary>
+        /// Linear interpolated path
+        /// </summary>
+        Linear = 2,
+    }
 
 }

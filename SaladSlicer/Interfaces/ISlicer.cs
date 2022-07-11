@@ -7,7 +7,9 @@
 using System.Collections.Generic;
 // Rhino Libs
 using Rhino.Geometry;
+// Salad Libs
 using SaladSlicer.CodeGeneration;
+using SaladSlicer.Enumerations;
 
 namespace SaladSlicer.Interfaces
 {
@@ -32,10 +34,17 @@ namespace SaladSlicer.Interfaces
         void ToProgram(ProgramGenerator programGenerator);
 
         /// <summary>
-        /// Returns the path.
+        /// Returns the original path.
         /// </summary>
         /// <returns> The path. </returns>
         Curve GetPath();
+
+        /// <summary>
+        /// Returns the path.
+        /// </summary>
+        /// <param name="type"> The path type. </param>
+        /// <returns> The path. </returns>
+        Curve GetPath(PathType type);
 
         /// <summary>
         /// Returns the interpolated path.

@@ -9,23 +9,17 @@ using System;
 using Grasshopper.Kernel;
 // Salad Slicer Libs
 using SaladSlicer.Slicers;
-using SaladSlicer.Interfaces;
-using SaladSlicer.Enumerations;
 using SaladSlicer.Gh.Parameters.Slicers;
-using SaladSlicer.Gh.Utils;
+using SaladSlicer.Interfaces;
 
-namespace SaladSlicer.Gh.Components.Slicers
+namespace SaladSlicer.Gh.Obsolete.v0
 {
     /// <summary>
     /// Represent a component that creates the path.
     /// </summary>
+    [Obsolete("This component is OBSOLETE and will be removed in the future.", false)]
     public class GetPathComponent : GH_Component
     {
-        #region fields
-        private bool _expire = false;
-        private bool _valueListAdded = false;
-        #endregion
-
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
@@ -44,7 +38,6 @@ namespace SaladSlicer.Gh.Components.Slicers
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
             pManager.AddParameter(new Param_SlicerObject(), "Slicer Object", "SO", "Slicer object.", GH_ParamAccess.item);
-            pManager.AddIntegerParameter("Path Type", "T", "Sets the type of path [0 = Original, 1 = Spline interpolated, 3 = Linear interpolated]", GH_ParamAccess.item, 0);
         }
 
         /// <summary>
@@ -52,7 +45,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
-            pManager.AddCurveParameter("Path", "P", "Path as a Curve.", GH_ParamAccess.item);
+            pManager.AddCurveParameter("Path", "P", "Linearized path as a Curve.", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -61,30 +54,14 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// <param name="DA">The DA object can be used to retrieve data from input parameters and to store data in output parameters.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
-            //Create a value list
-            if (_valueListAdded == false)
-            {
-                _expire = HelperMethods.CreateValueList(this, 1, typeof(PathType));
-                _valueListAdded = true;
-            }
-
-            // Expire solution of this component
-            if (_expire == true)
-            {
-                _expire = false;
-                this.ExpireSolution(true);
-            }
-
             // Declare variable of input parameters
             ISlicer slicer = new ClosedPlanar2DSlicer();
-            int type = 0;
 
             // Access the input parameters individually. 
             if (!DA.GetData(0, ref slicer)) return;
-            if (!DA.GetData(1, ref type)) return;
 
             // Assign the output parameters
-            DA.SetData(0, slicer.GetPath((PathType)type));
+            DA.SetData(0, slicer.GetPath());
         }
 
         /// <summary>
@@ -92,7 +69,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         public override GH_Exposure Exposure
         {
-            get { return GH_Exposure.tertiary; }
+            get { return GH_Exposure.hidden; }
         }
 
         /// <summary>
@@ -100,7 +77,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         public override bool Obsolete
         {
-            get { return false; }
+            get { return true; }
         }
 
         /// <summary>
@@ -117,7 +94,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("C4C3B4B6-AED7-4613-B1E4-94C32C2931B4"); }
+            get { return new Guid("68FD2AA1-8A7B-4593-8E49-7E2ADF1AC29C"); }
         }
     }
 }

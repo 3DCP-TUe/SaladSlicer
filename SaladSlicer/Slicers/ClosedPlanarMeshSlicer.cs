@@ -17,6 +17,7 @@ using SaladSlicer.Geometry;
 using SaladSlicer.Geometry.Seams;
 using SaladSlicer.Interfaces;
 using SaladSlicer.Utils;
+using SaladSlicer.Enumerations;
 
 namespace SaladSlicer.Slicers
 {
@@ -411,9 +412,33 @@ namespace SaladSlicer.Slicers
             throw new Exception("A Slicer Object cannot be represented by a single string");
         }
 
-
         /// <summary>
         /// Returns the path.
+        /// </summary>
+        /// <param name="type"> The path type. </param>
+        /// <returns> The path. </returns>
+        public Curve GetPath(PathType type)
+        {
+            if (type == PathType.Original)
+            {
+                return GetPath();
+            }
+            else if (type == PathType.Spline)
+            {
+                return GetInterpolatedPath();
+            }
+            else if (type == PathType.Linear)
+            {
+                return GetLinearizedPath();
+            }
+            else
+            {
+                throw new Exception("Incorrect path type.");
+            }
+        }
+
+        /// <summary>
+        /// Returns the original path.
         /// </summary>
         /// <returns> The path. </returns>
         public Curve GetPath()

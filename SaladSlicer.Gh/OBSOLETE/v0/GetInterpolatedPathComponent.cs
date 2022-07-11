@@ -12,11 +12,12 @@ using SaladSlicer.Slicers;
 using SaladSlicer.Interfaces;
 using SaladSlicer.Gh.Parameters.Slicers;
 
-namespace SaladSlicer.Gh.Components.Slicers
+namespace SaladSlicer.Gh.Obsolete.v0
 {
     /// <summary>
     /// Represent a component that creates the interpolated path.
     /// </summary>
+    [Obsolete("This component is OBSOLETE and will be removed in the future.", false)]
     public class GetInterpolatedPathComponent : GH_Component
     {
         /// <summary>
@@ -68,7 +69,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         public override GH_Exposure Exposure
         {
-            get { return GH_Exposure.tertiary; }
+            get { return GH_Exposure.hidden; }
         }
 
         /// <summary>
@@ -76,7 +77,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         public override bool Obsolete
         {
-            get { return false; }
+            get { return true; }
         }
 
         /// <summary>
