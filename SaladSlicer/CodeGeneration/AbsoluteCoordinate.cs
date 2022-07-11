@@ -12,6 +12,7 @@ using System.Security.Permissions;
 using Rhino.Geometry;
 // Salad Libs
 using SaladSlicer.Interfaces;
+using SaladSlicer.Utils;
 
 namespace SaladSlicer.CodeGeneration
 {
@@ -26,7 +27,28 @@ namespace SaladSlicer.CodeGeneration
         #endregion
 
         #region (de)serialisation
-        //TODO
+        /// <summary>
+        /// Protected constructor needed for deserialization of the object.  
+        /// </summary>
+        /// <param name="info"> The SerializationInfo to extract the data from. </param>
+        /// <param name="context"> The context of this deserialization. </param>
+        protected AbsoluteCoordinate(SerializationInfo info, StreamingContext context)
+        {
+            // string version = (int)info.GetValue("Version", typeof(string)); // <-- use this if the (de)serialization changes
+            _plane = (Plane)info.GetValue("Plane", typeof(Plane));
+        }
+
+        /// <summary>
+        /// Populates a SerializationInfo with the data needed to serialize the object.
+        /// </summary>
+        /// <param name="info"> The SerializationInfo to populate with data. </param>
+        /// <param name="context"> The destination for this serialization. </param>
+        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue("Version", HelperMethods.GetVersionNumber(), typeof(string));
+            info.AddValue("Plane", _plane , typeof(Plane));
+        }
         #endregion
 
         #region constructors

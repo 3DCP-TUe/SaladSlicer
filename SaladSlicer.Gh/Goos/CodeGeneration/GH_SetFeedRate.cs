@@ -5,11 +5,13 @@
 
 // Grasshopper Libs
 using Grasshopper.Kernel.Types;
+using GH_IO.Serialization;
 // Rhino Libs
 using Rhino.Geometry;
 // Salad Slicer Libs
 using SaladSlicer.CodeGeneration;
 using SaladSlicer.Interfaces;
+using SaladSlicer.Utils;
 
 namespace SaladSlicer.Gh.Goos.CodeGeneration
 {
@@ -19,7 +21,45 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
     public class GH_SetFeedRate : GH_GeometricGoo<SetFeedRate>
     {
         #region (de)serialisation
-        //TODO
+        /// <summary>
+        /// IO key for (de)serialisation of the value inside this Goo.
+        /// </summary>
+        private const string IoKey = "Set Feed Rate";
+
+        /// <summary>
+        /// This method is called whenever the instance is required to serialize itself.
+        /// </summary>
+        /// <param name="writer"> Writer object to serialize with. </param>
+        /// <returns> True on success, false on failure. </returns>
+        public override bool Write(GH_IWriter writer)
+        {
+            if (Value != null)
+            {
+                byte[] array = HelperMethods.ObjectToByteArray(Value);
+                writer.SetByteArray(IoKey, array);
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// This method is called whenever the instance is required to deserialize itself.
+        /// </summary>
+        /// <param name="reader"> Reader object to deserialize from. </param>
+        /// <returns> True on success, false on failure. </returns>
+        public override bool Read(GH_IReader reader)
+        {
+            if (!reader.ItemExists(IoKey))
+            {
+                Value = null;
+                return true;
+            }
+
+            byte[] array = reader.GetByteArray(IoKey);
+            Value = (SetFeedRate)HelperMethods.ByteArrayToObject(array);
+
+            return true;
+        }
         #endregion
 
         #region constructors

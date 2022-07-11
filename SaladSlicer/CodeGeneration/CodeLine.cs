@@ -9,6 +9,7 @@ using System.Runtime.Serialization;
 using System.Security.Permissions;
 // Salad Libs
 using SaladSlicer.Interfaces;
+using SaladSlicer.Utils;
 
 namespace SaladSlicer.CodeGeneration
 {
@@ -30,6 +31,7 @@ namespace SaladSlicer.CodeGeneration
         /// <param name="context"> The context of this deserialization. </param>
         protected CodeLine(SerializationInfo info, StreamingContext context)
         {
+            // string version = (int)info.GetValue("Version", typeof(string)); // <-- use this if the (de)serialization changes
             _code = (string)info.GetValue("Code", typeof(string));
         }
 
@@ -41,6 +43,7 @@ namespace SaladSlicer.CodeGeneration
         [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
+            info.AddValue("Version", HelperMethods.GetVersionNumber(), typeof(string));
             info.AddValue("Code", _code, typeof(string));
         }
         #endregion
