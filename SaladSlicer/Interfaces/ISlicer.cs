@@ -59,6 +59,13 @@ namespace SaladSlicer.Interfaces
         Curve GetLinearizedPath();
 
         /// <summary>
+        /// Returns distance of every frame along the path.
+        /// </summary>
+        /// <param name="type"> The path type. </param>
+        /// <returns> List with distances. </returns>
+        List<double> GetDistancesAlongPath(PathType type);
+
+        /// <summary>
         /// Returns distance of every frame along the curve.
         /// </summary>
         /// <returns> List with distances. </returns>

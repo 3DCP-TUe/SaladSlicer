@@ -256,6 +256,35 @@ namespace SaladSlicer.Slicers
         }
 
         /// <summary>
+        /// Returns distance of every frame along the path.
+        /// </summary>
+        /// <param name="type"> The path type. </param>
+        /// <returns> List with distances. </returns>
+        public List<double> GetDistancesAlongPath(PathType type)
+        {
+            if (type == PathType.Linear)
+            {
+                List<double> distances = new List<double>() { };
+                distances.Add(0.0);
+                double distance = 0.0;
+
+                List<Plane> frames = this.Frames;
+
+                for (int i = 1; i < frames.Count; i++)
+                {
+                    distance += frames[i].Origin.DistanceTo(frames[i - 1].Origin);
+                    distances.Add(distance);
+                }
+
+                return distances;
+            }
+            else
+            {
+                return Geometry.Frames.GetDistancesAlongCurve(GetPath(type), Frames);
+            }
+        }
+
+        /// <summary>
         /// Returns distance of every frame along the curve.
         /// </summary>
         /// <returns> List with distances. </returns>
@@ -265,19 +294,13 @@ namespace SaladSlicer.Slicers
             double distance = 0;
             
             List<double> distancesTemp = new List<double>();
+            distancesTemp.Add(0.0);
             
-            for (int j = 0; j < _frames.Count; j++)
+            for (int j = 1; j < _frames.Count; j++)
             {
-                if (j == 0)
-                {
-                    distancesTemp.Add(distance);
-                }
-                else
-                {
-                    Point3d point = _frames[j].Origin;
-                    distance += point.DistanceTo(_frames[j - 1].Origin);
-                    distancesTemp.Add(distance);
-                }
+                Point3d point = _frames[j].Origin;
+                distance += point.DistanceTo(_frames[j - 1].Origin);
+                distancesTemp.Add(distance);
             }
             
             distances.Add(distancesTemp);

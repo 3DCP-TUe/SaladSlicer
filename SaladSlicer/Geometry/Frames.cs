@@ -305,6 +305,27 @@ namespace SaladSlicer.Geometry
 
             return items.ToList();
         }
+
+        /// <summary>
+        /// Gets the distance of a frame along a curve. 
+        /// </summary>
+        /// <param name="curve"> The curve. </param>
+        /// <param name="frames"> The frames. </param>
+        /// <returns> Returns the list with disntances. </returns>
+        public static List<double> GetDistancesAlongCurve(Curve curve, List<Plane> frames)
+        {
+            List<double> result = new List<double>() { };
+            double start = curve.Domain.T0;
+            result.Add(0.0);
+
+            for (int i = 1; i < frames.Count; i++)
+            {
+                curve.ClosestPoint(frames[i].Origin, out double t);
+                result.Add(curve.GetLength(new Interval(start, t)));
+            }
+
+            return result;
+        }
         #endregion
     }
 }
