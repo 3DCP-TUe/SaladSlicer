@@ -92,7 +92,6 @@ namespace SaladSlicer.Gh.Components.Geometry
 
             // Check input values
             if (curves[0].GetLength() < changeLength) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "The length of the layer change exceeds the length of the base contour."); }
-            if (Curves.NumberClosed(curves) != curves.Count) { AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "One or more contours are not closed"); }
             if (type != 0 && type != 1 && type != 2)
             {
                 AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Comment type value <" + type + "> is invalid. " +
@@ -107,21 +106,8 @@ namespace SaladSlicer.Gh.Components.Geometry
             // Create the curves
             try
             {
-                if (type == 0)
-                {
-                    curvesCopy = Transitions.TrimCurveFromEnds(curves, changeLength);
-                    (joinedCurve, transitions) = Transitions.JoinLinear(curvesCopy);
-                }
-                else if (type == 1)
-                {
-                    curvesCopy = Transitions.TrimCurveFromEnds(curves, changeLength);
-                    (joinedCurve, transitions) = Transitions.JoinBezier(curvesCopy);
-                }
-                else if (type == 2)
-                {
-                    curvesCopy = Transitions.TrimCurveFromEnds(curves, changeLength);
-                    (joinedCurve, transitions) = Transitions.JoinInterpolated(curves, changeLength);
-                }
+                curvesCopy = Transitions.TrimCurveFromEnds(curves, changeLength);
+                (joinedCurve, transitions) = Transitions.JoinClosedCurves(curves, (ClosedTransition)type, changeLength);
             }
             catch (WarningException w)
             {

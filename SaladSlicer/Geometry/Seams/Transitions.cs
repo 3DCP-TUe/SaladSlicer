@@ -5,9 +5,12 @@
 
 // System Libs
 using System;
+using System.ComponentModel;
 using System.Collections.Generic;
 // Rhino Libs
 using Rhino.Geometry;
+// Salad Libs
+using SaladSlicer.Enumerations;
 
 namespace SaladSlicer.Geometry.Seams
 {
@@ -17,6 +20,63 @@ namespace SaladSlicer.Geometry.Seams
     public static class Transitions
     {
         #region methods
+        /// <summary>
+        /// Joins start and end points of a list of curves. 
+        /// </summary>
+        /// <param name="curves"> Contours. </param>
+        /// <param name="type"> Transition type. </param>
+        /// <returns> Returns the joined curve and the list with transition curves. </returns>
+        public static (Curve, List<Curve>) JoinOpenCurves(List<Curve> curves, OpenTransition type)
+        {
+            if (type == OpenTransition.Linear)
+            {
+                return JoinLinear(curves);
+            }
+            else if (type == OpenTransition.Bezier)
+            {
+                return JoinBezier(curves);
+            }
+            else
+            {
+                throw new Exception("Invalid open transition type.");
+            }
+        }
+
+        /// <summary>
+        /// Joins start and end points of a list of curves. 
+        /// </summary>
+        /// <param name="curves"> Contours. </param>
+        /// <param name="type"> Transition type. </param>
+        /// <param name="changeLength"> Length of the transtion. </param>
+        /// <returns> Returns the joined curve and the list with transition curves. </returns>
+        public static (Curve, List<Curve>) JoinClosedCurves(List<Curve> curves, ClosedTransition type, double changeLength)
+        {
+            if (Curves.NumberClosed(curves) != curves.Count)
+            {
+                throw new WarningException("One or more curves are not closed.");
+            }
+
+            if (type == ClosedTransition.Linear)
+            {
+                List<Curve> curvesCopy = TrimCurveFromEnds(curves, changeLength);
+                return JoinLinear(curvesCopy);
+            }
+            else if (type == ClosedTransition.Bezier)
+            {
+                List<Curve> curvesCopy = TrimCurveFromEnds(curves, changeLength);
+                return JoinBezier(curvesCopy);
+            }
+            else if (type == ClosedTransition.Interpolated)
+            {
+                List<Curve> curvesCopy = TrimCurveFromEnds(curves, changeLength);
+                return JoinInterpolated(curves, changeLength);
+            }
+            else
+            {
+                throw new Exception("Invalid closed transition type.");
+            }
+        }
+
         /// <summary>
         /// Joins start and end points of a list of curves linearly and returns a curve
         /// </summary>

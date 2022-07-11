@@ -96,15 +96,7 @@ namespace SaladSlicer.Gh.Components.Geometry
             try
             {
                 curvesCopy = curves.ConvertAll(curve => curve.DuplicateCurve());
-
-                if (type == 0)
-                {
-                    (joinedCurve, transitions) = Transitions.JoinLinear(curves);
-                }
-                else if (type == 1)
-                {
-                    (joinedCurve, transitions) = Transitions.JoinBezier(curves);
-                }
+                (joinedCurve, transitions) = Transitions.JoinOpenCurves(curves, (OpenTransition)type);
             }
             catch (WarningException w)
             {
