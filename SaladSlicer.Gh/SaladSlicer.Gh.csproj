@@ -73,6 +73,8 @@
     <Compile Include="Components\Deconstruct\DeconstructCurvesTransitionsSlicerComponent.cs" />
     <Compile Include="Components\Deconstruct\DeconstructCurveSlicerComponent.cs" />
     <Compile Include="Components\Deconstruct\DeconstructOpenPlanar2DSlicerComponent.cs" />
+    <Compile Include="Components\Geometry - part 1\TweenCurvesWithSamplingComponent.cs" />
+    <Compile Include="Components\Geometry - part 1\TweenCurvesWithMatchingComponent.cs" />
     <Compile Include="Components\Geometry\AlignCurvesComponent.cs" />
     <Compile Include="Components\Geometry\AlignSeamsAlongCurveComponentcs.cs" />
     <Compile Include="Components\Geometry\AlignSeamsByClosestPointComponent.cs" />
@@ -374,6 +376,7 @@
   <ItemGroup>
     <None Include="Resources\SetTemperature_Icon.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
