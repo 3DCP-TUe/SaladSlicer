@@ -503,8 +503,7 @@ namespace SaladSlicer.Slicers
 
             for (int i = 0; i < _framesByLayer.Count; i++)
             {
-                List<double> distancesTemp = new List<double>();
-                distancesTemp.Add(0.0);
+                List<double> distancesTemp = new List<double>() { 0.0 };
                 double distance = 0;
 
                 for (int j = 1; j < _framesByLayer[i].Count; j++)

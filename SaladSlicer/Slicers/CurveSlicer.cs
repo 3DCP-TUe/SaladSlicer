@@ -292,9 +292,8 @@ namespace SaladSlicer.Slicers
         {
             List<List<double>> distances = new List<List<double>>();
             double distance = 0;
-            
-            List<double> distancesTemp = new List<double>();
-            distancesTemp.Add(0.0);
+
+            List<double> distancesTemp = new List<double>() { 0.0 };
             
             for (int j = 1; j < _frames.Count; j++)
             {
