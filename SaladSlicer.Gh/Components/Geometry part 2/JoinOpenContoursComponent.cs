@@ -5,33 +5,38 @@
 
 // System Libs
 using System;
+using System.Drawing;
 using System.ComponentModel;
 using System.Collections.Generic;
-using System.Linq;
 // Grasshopper Libs
 using Grasshopper.Kernel;
 // Rhino Libs
 using Rhino.Geometry;
+using SaladSlicer.Geometry.Seams;
+using SaladSlicer.Enumerations;
+using SaladSlicer.Gh.Utils;
 
 namespace SaladSlicer.Gh.Components.Geometry
 {
     /// <summary>
-    /// Represents the component that tweens curves.
+    /// Represents the component that joins curves using linear interpolation. 
     /// </summary>
-    public class TweenCurvesWithMatchingComponent : GH_Component
+    public class JoinOpenContoursComponent : GH_Component
     {
         #region fields
+        private bool _expire = false;
+        private bool _valueListAdded = false; 
         #endregion
 
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public TweenCurvesWithMatchingComponent()
-          : base("Tween Curves With Matching", // Component name
-              "TCWM", // Component nickname
-              "Creates curves between two open or closed input curves. Make the structure of input curves compatible if needed. Refits the input curves to have the same structure. The resulting curves are usually more complex than input unless input curves are compatible and no refit is needed.", // Description
+        public JoinOpenContoursComponent()
+          : base("Join Open Contours", // Component name
+              "JOC", // Component nickname
+              "Joins a list of open contours between end and start points. Connection type 'Linear' connects the contours with the shortest path and 'Bezier' interpolates between the contours smoothly.", // Description
               "Salad Slicer", // Category
-              "Geometry part 1") // Subcategory
+              "Geometry part 2") // Subcategory
         {
         }
 
@@ -40,10 +45,8 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
-            pManager.AddCurveParameter("Curve 1", "C1", "The first, or starting, curve.", GH_ParamAccess.item);
-            pManager.AddCurveParameter("Curve 2", "C2", "The second, or ending, curve.", GH_ParamAccess.item);
-            pManager.AddIntegerParameter("Number of curves", "N", "Number of tween curves to create.", GH_ParamAccess.item, 10);
-            pManager.AddNumberParameter("Tolerance", "T", "The tolerance", GH_ParamAccess.item, 0.001);
+            pManager.AddCurveParameter("Contours", "C", "List of contours", GH_ParamAccess.list);
+            pManager.AddIntegerParameter("Transition type", "T", "Sets the type of transitions [0 = Linear, 1 = Bezier]", GH_ParamAccess.item, 0);
         }
 
         /// <summary>
@@ -51,7 +54,9 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
-            pManager.AddCurveParameter("Curves", "C", "Curves as a list with Curves.", GH_ParamAccess.list);
+            pManager.AddCurveParameter("Path", "P", "Path.", GH_ParamAccess.item);
+            pManager.AddCurveParameter("Contours", "C", "List of trimmed contours.", GH_ParamAccess.list);
+            pManager.AddCurveParameter("Transitions", "T", "List of transitions between contours.", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -60,27 +65,38 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// <param name="DA">The DA object can be used to retrieve data from input parameters and to store data in output parameters.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
+            //Create a value list
+            if (_valueListAdded == false)
+            {
+                _expire = HelperMethods.CreateValueList(this, 1, typeof(OpenTransition));
+                _valueListAdded = true;
+            }
+
+            // Expire solution of this component
+            if (_expire == true)
+            {
+                _expire = false;
+                this.ExpireSolution(true);
+            }
+
             // Declare variable of input parameters
-            Curve curve1 = null;
-            Curve curve2 = null;
-            int count = 0;
-            double tolerance = 0.001;
+            List<Curve> curves = new List<Curve>();
+            int type = new int();
 
             // Access the input parameters individually. 
-            if (!DA.GetData(0, ref curve1)) return;
-            if (!DA.GetData(1, ref curve2)) return;
-            if (!DA.GetData(2, ref count)) return;
-            if (!DA.GetData(3, ref tolerance)) return;
+            if (!DA.GetDataList(0, curves)) return;
+            if (!DA.GetData(1, ref type)) return;
 
             // Declare the output variables
-            List<Curve> result = new List<Curve>();
+            List<Curve> transitions = new List<Curve>();
+            List<Curve> curvesCopy = new List<Curve>();
+            Curve joinedCurve = Line.Unset.ToNurbsCurve();
 
-            // Create the new curves
+            // Create the curves         
             try
             {
-                result.Add(curve1);
-                result.AddRange(Curve.CreateTweenCurvesWithMatching(curve1, curve2, count, tolerance).ToList());
-                result.Add(curve2);
+                curvesCopy = curves.ConvertAll(curve => curve.DuplicateCurve());
+                (joinedCurve, transitions) = Transitions.JoinOpenCurves(curves, (OpenTransition)type);
             }
             catch (WarningException w)
             {
@@ -92,15 +108,17 @@ namespace SaladSlicer.Gh.Components.Geometry
             }
 
             // Assign the output parameters
-            DA.SetDataList(0, result);
+            DA.SetData(0, joinedCurve);
+            DA.SetDataList(1, curvesCopy);
+            DA.SetDataList(2, transitions);
         }
-
+        
         /// <summary>
         /// Gets the exposure of this object in the Graphical User Interface.
         /// </summary>
         public override GH_Exposure Exposure
         {
-            get { return GH_Exposure.primary; }
+            get { return GH_Exposure.tertiary; }
         }
 
         /// <summary>
@@ -116,7 +134,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return null; }
+            get { return Properties.Resources.JoinOpenContours_Icon; }
         }
 
         /// <summary>
@@ -125,7 +143,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("23CADF17-5263-4B84-85F9-5E10649418A7"); }
+            get { return new Guid("E8F8F706-2DEE-497C-8CAD-44FADD8445AE"); }
         }
 
     }

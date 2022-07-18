@@ -6,19 +6,20 @@
 // System Libs
 using System;
 using System.ComponentModel;
+using System.Collections.Generic;
 // Grasshopper Libs
 using Grasshopper.Kernel;
 // Rhino Libs
 using Rhino.Geometry;
-// Salad Slicer Libs
-using SaladSlicer.Geometry.Seams;
+// Using Salad Slicer Libs
+using SaladSlicer.Geometry;
 
 namespace SaladSlicer.Gh.Components.Geometry
 {
     /// <summary>
-    /// Represents the component that set a seam based on the parameter.
+    /// Represents the component that aligns the curves.
     /// </summary>
-    public class SeamAtParamComponent : GH_Component
+    public class AlignCurvesComponent : GH_Component
     {
         #region fields
         #endregion
@@ -26,12 +27,12 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public SeamAtParamComponent()
-          : base("Seam at Parameter", // Component name
-              "SP", // Component nickname
-              "Redefines the startpoint of a closed curve based on a parameter between 0 and 1.", // Description
+        public AlignCurvesComponent()
+          : base("Align Curves", // Component name
+              "AC", // Component nickname
+              "Aligns a set of curves by checking the start and end points and reversing if necessary.", // Description
               "Salad Slicer", // Category
-              "Geometry") // Subcategory
+              "Geometry part 2") // Subcategory
         {
         }
 
@@ -40,8 +41,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
-            pManager.AddCurveParameter("Curve", "C", "Curve", GH_ParamAccess.item);
-            pManager.AddNumberParameter("Parameter", "t", "A parameter that redefines the startpoint of the curve.",  GH_ParamAccess.item, 0.0);
+            pManager.AddCurveParameter("Curves", "C", "Curves as a list with Curves", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
-            pManager.AddCurveParameter("Curve", "C", "Curve.", GH_ParamAccess.item);
+            pManager.AddCurveParameter("Curves", "C", "Curves as a list with Curves.", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -59,20 +59,18 @@ namespace SaladSlicer.Gh.Components.Geometry
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             // Declare variable of input parameters
-            Curve curve = null;
-            double param = 0.0;
+            List<Curve> curves = new List<Curve>();
 
             // Access the input parameters individually. 
-            if (!DA.GetData(0, ref curve)) return;
-            if (!DA.GetData(1, ref param)) return;
+            if (!DA.GetDataList(0, curves)) return;
 
             // Declare the output variables
-            Curve result = curve;
+            List<Curve> result = new List<Curve>();
 
-            // Create the new curve
+            // Create the new curves
             try
             {
-                result = Locations.SeamAtParam(curve, param);
+                result = Curves.AlignCurves(curves);
             }
             catch (WarningException w)
             {
@@ -82,9 +80,9 @@ namespace SaladSlicer.Gh.Components.Geometry
             {
                 AddRuntimeMessage(GH_RuntimeMessageLevel.Error, e.Message);
             }
-            
+
             // Assign the output parameters
-            DA.SetData(0, result);
+            DA.SetDataList(0, result);
         }
 
         /// <summary>
@@ -92,7 +90,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         public override GH_Exposure Exposure
         {
-            get { return GH_Exposure.primary; }
+            get { return GH_Exposure.quarternary; }
         }
 
         /// <summary>
@@ -108,7 +106,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.SeamAtParameter_Icon; }
+            get { return Properties.Resources.AlignCurves_Icon; }
         }
 
         /// <summary>
@@ -117,7 +115,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("F791CB38-CA24-4C92-9343-648CF6AE1203"); }
+            get { return new Guid("5466193D-47FB-4C21-8755-94D8736F3730"); }
         }
 
     }

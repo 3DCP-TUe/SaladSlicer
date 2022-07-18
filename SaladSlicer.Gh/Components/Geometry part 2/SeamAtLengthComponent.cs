@@ -16,9 +16,9 @@ using SaladSlicer.Geometry.Seams;
 namespace SaladSlicer.Gh.Components.Geometry
 {
     /// <summary>
-    /// Represents the component that set a seam at the closest plane intersection.
+    /// Represents the component that set a closed curve seam based on the length.
     /// </summary>
-    public class SeamAtClosestPlaneIntersection : GH_Component
+    public class SeamAtLengthComponent : GH_Component
     {
         #region fields
         #endregion
@@ -26,12 +26,12 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public SeamAtClosestPlaneIntersection()
-          : base("Seam at Closest Plane Intersection", // Component name
-              "SCPI", // Component nickname
-              "Redefines the startpoint of a closed curve based on the plane intersection closest to the plane origin.", // Description
+        public SeamAtLengthComponent()
+          : base("Seam at Length", // Component name
+              "SL", // Component nickname
+              "Redefines the startpoint of a closed curve based on the distance along the curve.", // Description
               "Salad Slicer", // Category
-              "Geometry") // Subcategory
+              "Geometry part 2") // Subcategory
         {
         }
 
@@ -40,8 +40,9 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
-            pManager.AddCurveParameter("Curve", "C", "Curve.", GH_ParamAccess.item);
-            pManager.AddPlaneParameter("Plane", "P", "Plane.",  GH_ParamAccess.item);
+            pManager.AddCurveParameter("Curve", "C", "Curve", GH_ParamAccess.item);
+            pManager.AddNumberParameter("Length", "L", "The length factor along the curve between the old startpoint and new startpoint of the curve.", GH_ParamAccess.item, 0);
+            pManager.AddBooleanParameter("Normalize", "N", "Indicating whether or not the length factor is normalized (0 - 1).", GH_ParamAccess.item, true);
         }
 
         /// <summary>
@@ -60,19 +61,21 @@ namespace SaladSlicer.Gh.Components.Geometry
         {
             // Declare variable of input parameters
             Curve curve = null;
-            Plane plane = Plane.WorldXY;
+            double length = 0.0;
+            bool normalize = true;
 
             // Access the input parameters individually. 
             if (!DA.GetData(0, ref curve)) return;
-            if (!DA.GetData(1, ref plane)) return;
+            if (!DA.GetData(1, ref length)) return;
+            if (!DA.GetData(2, ref normalize)) return;
 
-            // Declare the output variable
+            // Declare the output variables
             Curve result = curve;
 
             // Create the new curve
             try
             {
-                result = Locations.SeamAtClosestPlaneIntersection(curve, plane);
+                result = Locations.SeamAtLength(curve, length, normalize);
             }
             catch (WarningException w)
             {
@@ -82,7 +85,7 @@ namespace SaladSlicer.Gh.Components.Geometry
             {
                 AddRuntimeMessage(GH_RuntimeMessageLevel.Error, e.Message);
             }
-            
+
             // Assign the output parameters
             DA.SetData(0, result);
         }
@@ -108,7 +111,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.SeamaAtPlane_Icon; }
+            get { return Properties.Resources.SeamAtLength_Icon; }
         }
 
         /// <summary>
@@ -117,7 +120,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("0A6F67B0-0BEB-49B8-BCDD-027C667CC4C1"); }
+            get { return new Guid("D2D5D1AE-B933-4C87-ABA8-057C2E9C4E1F"); }
         }
 
     }

@@ -5,33 +5,27 @@
 
 // System Libs
 using System;
-using System.ComponentModel;
 // Grasshopper Libs
 using Grasshopper.Kernel;
 // Rhino Libs
 using Rhino.Geometry;
-// Salad Slicer Libs
-using SaladSlicer.Geometry.Seams;
 
 namespace SaladSlicer.Gh.Components.Geometry
 {
     /// <summary>
-    /// Represents the component that set a closed curve seam based on the length.
+    /// Represents the component that transposes a surface (swap U and V). 
     /// </summary>
-    public class SeamAtLengthComponent : GH_Component
+    public class TransposeSurfaceComponent : GH_Component
     {
-        #region fields
-        #endregion
-
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public SeamAtLengthComponent()
-          : base("Seam at Length", // Component name
-              "SL", // Component nickname
-              "Redefines the startpoint of a closed curve based on the distance along the curve.", // Description
+        public TransposeSurfaceComponent()
+          : base("Transpose Surface", // Component name
+              "TS", // Component nickname
+              "Transpose a surface (swap U and V).", // Description
               "Salad Slicer", // Category
-              "Geometry") // Subcategory
+              "Geometry part 1") // Subcategory
         {
         }
 
@@ -40,9 +34,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
-            pManager.AddCurveParameter("Curve", "C", "Curve", GH_ParamAccess.item);
-            pManager.AddNumberParameter("Length", "L", "The length factor along the curve between the old startpoint and new startpoint of the curve.", GH_ParamAccess.item, 0);
-            pManager.AddBooleanParameter("Normalize", "N", "Indicating whether or not the length factor is normalized (0 - 1).", GH_ParamAccess.item, true);
+            pManager.AddSurfaceParameter("Surface", "S", "Surface as a Surface.", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -50,7 +42,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
-            pManager.AddCurveParameter("Curve", "C", "Curve.", GH_ParamAccess.item);
+            pManager.AddSurfaceParameter("Surface", "S", "Surface as a Surface", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -60,34 +52,16 @@ namespace SaladSlicer.Gh.Components.Geometry
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             // Declare variable of input parameters
-            Curve curve = null;
-            double length = 0.0;
-            bool normalize = true;
+            Surface surface = Surface.CreateExtrusion(new Line(0.0, 0.0, 0.0, 0.0, 0.0, 1.0).ToNurbsCurve(), new Vector3d(1.0, 0.0, 0.0));
 
             // Access the input parameters individually. 
-            if (!DA.GetData(0, ref curve)) return;
-            if (!DA.GetData(1, ref length)) return;
-            if (!DA.GetData(2, ref normalize)) return;
+            if (!DA.GetData(0, ref surface)) return;
 
-            // Declare the output variables
-            Curve result = curve;
-
-            // Create the new curve
-            try
-            {
-                result = Locations.SeamAtLength(curve, length, normalize);
-            }
-            catch (WarningException w)
-            {
-                AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, w.Message);
-            }
-            catch (Exception e)
-            {
-                AddRuntimeMessage(GH_RuntimeMessageLevel.Error, e.Message);
-            }
+            // Transpose the surface
+            Surface surface2 = surface.Transpose();
 
             // Assign the output parameters
-            DA.SetData(0, result);
+            DA.SetData(0, surface2);
         }
 
         /// <summary>
@@ -95,7 +69,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         public override GH_Exposure Exposure
         {
-            get { return GH_Exposure.primary; }
+            get { return GH_Exposure.secondary; }
         }
 
         /// <summary>
@@ -111,7 +85,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.SeamAtLength_Icon; }
+            get { return Properties.Resources.TransposeSurface_Icon; }
         }
 
         /// <summary>
@@ -120,8 +94,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("D2D5D1AE-B933-4C87-ABA8-057C2E9C4E1F"); }
+            get { return new Guid("F1BDDB61-EBBE-4D93-B5A7-E91FBB5D87D6"); }
         }
-
     }
 }

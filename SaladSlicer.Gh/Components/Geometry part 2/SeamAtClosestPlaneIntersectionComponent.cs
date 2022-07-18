@@ -16,9 +16,9 @@ using SaladSlicer.Geometry.Seams;
 namespace SaladSlicer.Gh.Components.Geometry
 {
     /// <summary>
-    /// Represents the component that set a seam based on closest points.
+    /// Represents the component that set a seam at the closest plane intersection.
     /// </summary>
-    public class SeamAtClosestPointComponent : GH_Component
+    public class SeamAtClosestPlaneIntersection : GH_Component
     {
         #region fields
         #endregion
@@ -26,12 +26,12 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public SeamAtClosestPointComponent()
-          : base("Seam at Closest Point", // Component name
-              "SCP", // Component nickname
-              "Set the start point of a curve as the closest point to the given test point.", // Description
+        public SeamAtClosestPlaneIntersection()
+          : base("Seam at Closest Plane Intersection", // Component name
+              "SCPI", // Component nickname
+              "Redefines the startpoint of a closed curve based on the plane intersection closest to the plane origin.", // Description
               "Salad Slicer", // Category
-              "Geometry") // Subcategory
+              "Geometry part 2") // Subcategory
         {
         }
 
@@ -40,8 +40,8 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
-            pManager.AddCurveParameter("Curve", "C", "Curve", GH_ParamAccess.item);
-            pManager.AddPointParameter("Point", "P", "The test point as a Point", GH_ParamAccess.item);
+            pManager.AddCurveParameter("Curve", "C", "Curve.", GH_ParamAccess.item);
+            pManager.AddPlaneParameter("Plane", "P", "Plane.",  GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
-            pManager.AddCurveParameter("Curve", "C", "Curve", GH_ParamAccess.item);
+            pManager.AddCurveParameter("Curve", "C", "Curve.", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -60,19 +60,19 @@ namespace SaladSlicer.Gh.Components.Geometry
         {
             // Declare variable of input parameters
             Curve curve = null;
-            Point3d point = new Point3d();
+            Plane plane = Plane.WorldXY;
 
             // Access the input parameters individually. 
             if (!DA.GetData(0, ref curve)) return;
-            if (!DA.GetData(1, ref point)) return;
+            if (!DA.GetData(1, ref plane)) return;
 
-            // Delcare the output variable
+            // Declare the output variable
             Curve result = curve;
 
             // Create the new curve
             try
             {
-                result = Locations.SeamAtClosestPoint(curve, point);
+                result = Locations.SeamAtClosestPlaneIntersection(curve, plane);
             }
             catch (WarningException w)
             {
@@ -82,7 +82,7 @@ namespace SaladSlicer.Gh.Components.Geometry
             {
                 AddRuntimeMessage(GH_RuntimeMessageLevel.Error, e.Message);
             }
-
+            
             // Assign the output parameters
             DA.SetData(0, result);
         }
@@ -108,7 +108,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.SeamAtClosestPoint_Icon; }
+            get { return Properties.Resources.SeamaAtPlane_Icon; }
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("3ACD95F0-DD6F-4878-BAE9-79B0F57254E8"); }
+            get { return new Guid("0A6F67B0-0BEB-49B8-BCDD-027C667CC4C1"); }
         }
 
     }

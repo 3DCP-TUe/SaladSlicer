@@ -5,27 +5,34 @@
 
 // System Libs
 using System;
+using System.ComponentModel;
+using System.Collections.Generic;
 // Grasshopper Libs
 using Grasshopper.Kernel;
 // Rhino Libs
 using Rhino.Geometry;
+// Using Salad Slicer Libs
+using SaladSlicer.Geometry.Seams;
 
-namespace SaladSlicer.Gh.Components.Utilities
+namespace SaladSlicer.Gh.Components.Geometry
 {
     /// <summary>
-    /// Represents the component that transposes a surface (swap U and V). 
+    /// Represents the component that set a seam based on the closest points.
     /// </summary>
-    public class TransposeSurfaceComponent : GH_Component
+    public class AlignSeamsByClosestPointComponent : GH_Component
     {
+        #region fields
+        #endregion
+
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public TransposeSurfaceComponent()
-          : base("Transpose Surface", // Component name
-              "TS", // Component nickname
-              "Transpose a surface (swap U and V).", // Description
+        public AlignSeamsByClosestPointComponent()
+          : base("Align Seams by Closest Point", // Component name
+              "ASCP", // Component nickname
+              "Set the start points of set with closed curves as the closest point to the start point of the curve before.", // Description
               "Salad Slicer", // Category
-              "Utilities") // Subcategory
+              "Geometry part 2") // Subcategory
         {
         }
 
@@ -34,7 +41,7 @@ namespace SaladSlicer.Gh.Components.Utilities
         /// </summary>
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
-            pManager.AddSurfaceParameter("Surface", "S", "Surface as a Surface.", GH_ParamAccess.item);
+            pManager.AddCurveParameter("Curves", "C", "Closed curves as a list with Curves", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -42,7 +49,7 @@ namespace SaladSlicer.Gh.Components.Utilities
         /// </summary>
         protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
-            pManager.AddSurfaceParameter("Surface", "S", "Surface as a Surface", GH_ParamAccess.item);
+            pManager.AddCurveParameter("Curves", "C", "Closed curves as a list with Curves.", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -52,16 +59,30 @@ namespace SaladSlicer.Gh.Components.Utilities
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             // Declare variable of input parameters
-            Surface surface = Surface.CreateExtrusion(new Line(0.0, 0.0, 0.0, 0.0, 0.0, 1.0).ToNurbsCurve(), new Vector3d(1.0, 0.0, 0.0));
+            List<Curve> curves = new List<Curve>();
 
             // Access the input parameters individually. 
-            if (!DA.GetData(0, ref surface)) return;
+            if (!DA.GetDataList(0, curves)) return;
 
-            // Transpose the surface
-            Surface surface2 = surface.Transpose();
+            // Declare the output variables
+            List<Curve> result = new List<Curve>();
+
+            // Create the new curves
+            try
+            {
+                result = Locations.AlignSeamsByClosestPoint(curves);
+            }
+            catch (WarningException w)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, w.Message);
+            }
+            catch (Exception e)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Error, e.Message);
+            }
 
             // Assign the output parameters
-            DA.SetData(0, surface2);
+            DA.SetDataList(0, result);
         }
 
         /// <summary>
@@ -69,7 +90,7 @@ namespace SaladSlicer.Gh.Components.Utilities
         /// </summary>
         public override GH_Exposure Exposure
         {
-            get { return GH_Exposure.primary; }
+            get { return GH_Exposure.secondary; }
         }
 
         /// <summary>
@@ -85,7 +106,7 @@ namespace SaladSlicer.Gh.Components.Utilities
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.TransposeSurface_Icon; }
+            get { return Properties.Resources.SeamsAtClosestPoint_Icon; }
         }
 
         /// <summary>
@@ -94,7 +115,7 @@ namespace SaladSlicer.Gh.Components.Utilities
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("F1BDDB61-EBBE-4D93-B5A7-E91FBB5D87D6"); }
+            get { return new Guid("98A21F29-D2D2-430E-B1E5-86D4846D1CC3"); }
         }
     }
 }

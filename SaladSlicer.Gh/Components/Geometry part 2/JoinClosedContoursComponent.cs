@@ -5,38 +5,38 @@
 
 // System Libs
 using System;
-using System.Drawing;
 using System.ComponentModel;
 using System.Collections.Generic;
 // Grasshopper Libs
 using Grasshopper.Kernel;
 // Rhino Libs
 using Rhino.Geometry;
+using SaladSlicer.Geometry;
 using SaladSlicer.Geometry.Seams;
-using SaladSlicer.Enumerations;
 using SaladSlicer.Gh.Utils;
+using SaladSlicer.Enumerations;
 
 namespace SaladSlicer.Gh.Components.Geometry
 {
     /// <summary>
-    /// Represents the component that joins curves using linear interpolation. 
+    /// Represents the component that joins open curves. 
     /// </summary>
-    public class JoinOpenContoursComponent : GH_Component
+    public class JoinClosedContoursComponent : GH_Component
     {
         #region fields
         private bool _expire = false;
-        private bool _valueListAdded = false; 
+        private bool _valueListAdded = false;
         #endregion
 
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public JoinOpenContoursComponent()
-          : base("Join Open Contours", // Component name
-              "JOC", // Component nickname
-              "Joins a list of open contours between end and start points. Connection type 'Linear' connects the contours with the shortest path and 'Bezier' interpolates between the contours smoothly.", // Description
+        public JoinClosedContoursComponent()
+          : base("Join Closed Contours", // Component name
+              "JCC", // Component nickname
+              "Joins a list of closed contours between end and start points. Connection type 'Linear' connects the curves with the shortest path, 'Bezier' interpolates between the curves smoothly and 'Interpolate' moves linearly in Z-direction while using the interpolated X- and Y-coordinates of the two contours.", // Description
               "Salad Slicer", // Category
-              "Geometry") // Subcategory
+              "Geometry part 2") // Subcategory
         {
         }
 
@@ -46,7 +46,8 @@ namespace SaladSlicer.Gh.Components.Geometry
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
             pManager.AddCurveParameter("Contours", "C", "List of contours", GH_ParamAccess.list);
-            pManager.AddIntegerParameter("Transition type", "T", "Sets the type of transitions [0 = Linear, 1 = Bezier]", GH_ParamAccess.item, 0);
+            pManager.AddIntegerParameter("Transition type", "T", "Sets the type of transition [0 = Linear, 1 = Bezier, 3 = Interpolated]", GH_ParamAccess.item, 0);
+            pManager.AddNumberParameter("Changelength", "L", "Sets the length over which to connect to the next layer", GH_ParamAccess.item, 100);
         }
 
         /// <summary>
@@ -68,10 +69,10 @@ namespace SaladSlicer.Gh.Components.Geometry
             //Create a value list
             if (_valueListAdded == false)
             {
-                _expire = HelperMethods.CreateValueList(this, 1, typeof(OpenTransition));
+                _expire = HelperMethods.CreateValueList(this, 1, typeof(ClosedTransition));
                 _valueListAdded = true;
             }
-
+            
             // Expire solution of this component
             if (_expire == true)
             {
@@ -82,21 +83,31 @@ namespace SaladSlicer.Gh.Components.Geometry
             // Declare variable of input parameters
             List<Curve> curves = new List<Curve>();
             int type = new int();
+            double changeLength = new double();
 
             // Access the input parameters individually. 
             if (!DA.GetDataList(0, curves)) return;
             if (!DA.GetData(1, ref type)) return;
+            if (!DA.GetData(2, ref changeLength)) return;
+
+            // Check input values
+            if (curves[0].GetLength() < changeLength) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "The length of the layer change exceeds the length of the base contour."); }
+            if (type != 0 && type != 1 && type != 2)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "Comment type value <" + type + "> is invalid. " +
+                    "It can only be set to 0, 1 and 2. Use 0 for linear, 1 for bezier and 2 for interpolated connections.");
+            }
 
             // Declare the output variables
             List<Curve> transitions = new List<Curve>();
             List<Curve> curvesCopy = new List<Curve>();
             Curve joinedCurve = Line.Unset.ToNurbsCurve();
 
-            // Create the curves         
+            // Create the curves
             try
             {
-                curvesCopy = curves.ConvertAll(curve => curve.DuplicateCurve());
-                (joinedCurve, transitions) = Transitions.JoinOpenCurves(curves, (OpenTransition)type);
+                curvesCopy = Transitions.TrimCurveFromEnds(curves, changeLength);
+                (joinedCurve, transitions) = Transitions.JoinClosedCurves(curves, (ClosedTransition)type, changeLength);
             }
             catch (WarningException w)
             {
@@ -112,7 +123,7 @@ namespace SaladSlicer.Gh.Components.Geometry
             DA.SetDataList(1, curvesCopy);
             DA.SetDataList(2, transitions);
         }
-        
+
         /// <summary>
         /// Gets the exposure of this object in the Graphical User Interface.
         /// </summary>
@@ -134,7 +145,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.JoinOpenContours_Icon; }
+            get { return Properties.Resources.JoinClosedContours_Icon; }
         }
 
         /// <summary>
@@ -143,7 +154,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("E8F8F706-2DEE-497C-8CAD-44FADD8445AE"); }
+            get { return new Guid("0B51A54D-2D15-4879-AD49-005FCF834F30"); }
         }
 
     }

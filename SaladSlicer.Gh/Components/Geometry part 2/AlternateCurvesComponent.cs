@@ -11,15 +11,14 @@ using System.Collections.Generic;
 using Grasshopper.Kernel;
 // Rhino Libs
 using Rhino.Geometry;
-// Using Salad Slicer Libs
-using SaladSlicer.Geometry.Seams;
+using SaladSlicer.Geometry;
 
 namespace SaladSlicer.Gh.Components.Geometry
 {
     /// <summary>
-    /// Represents the component that set a seam along a guiding curve.
+    /// Represents the component that joins curves using linear interpolation. 
     /// </summary>
-    public class AlignSeamsAlongCurveComponent : GH_Component
+    public class AlternateCurvesComponent : GH_Component
     {
         #region fields
         #endregion
@@ -27,12 +26,12 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public AlignSeamsAlongCurveComponent()
-          : base("Align Seams Along Curve", // Component name
-              "ASAC", // Component nickname
-              "Set the start points of set with closed curves as the closest point to a guiding curve.", // Description
+        public AlternateCurvesComponent()
+          : base("Alternate Curves", // Component name
+              "AC", // Component nickname
+              "Reverses the direction of every other curve in a list, starting with the second curve.", // Description
               "Salad Slicer", // Category
-              "Geometry") // Subcategory
+              "Geometry part 2") // Subcategory
         {
         }
 
@@ -41,8 +40,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
-            pManager.AddCurveParameter("Curves", "C", "Closed curves as a list with Curves", GH_ParamAccess.list);
-            pManager.AddCurveParameter("Guide", "G", "Guiding curve as a Curve", GH_ParamAccess.item);
+            pManager.AddCurveParameter("Curves", "C", "Curves to alternate", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -50,7 +48,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
-            pManager.AddCurveParameter("Curves", "C", "Closed curves as a list with Curves.", GH_ParamAccess.list);
+            pManager.AddCurveParameter("Curves", "C", "Alternated curves", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -61,19 +59,18 @@ namespace SaladSlicer.Gh.Components.Geometry
         {
             // Declare variable of input parameters
             List<Curve> curves = new List<Curve>();
-            Curve guide = null;
 
             // Access the input parameters individually. 
             if (!DA.GetDataList(0, curves)) return;
-            if (!DA.GetData(1, ref guide)) return;
 
             // Declare the output variables
-            List<Curve> result = new List<Curve>();
+            List<Curve> curvesCopy = new List<Curve>();
 
-            // Create the new curves
+            // Create the curves
             try
             {
-                result = Locations.AlignSeamsAlongCurve(curves, guide);
+                curvesCopy = curves.ConvertAll(curve => curve.DuplicateCurve());
+                curvesCopy = Curves.AlternateCurves(curvesCopy);
             }
             catch (WarningException w)
             {
@@ -85,7 +82,7 @@ namespace SaladSlicer.Gh.Components.Geometry
             }
 
             // Assign the output parameters
-            DA.SetDataList(0, result);
+            DA.SetDataList(0, curvesCopy);
         }
 
         /// <summary>
@@ -93,7 +90,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         public override GH_Exposure Exposure
         {
-            get { return GH_Exposure.secondary; }
+            get { return GH_Exposure.quarternary; }
         }
 
         /// <summary>
@@ -109,7 +106,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.AlignSeamsAlongCurve_Icon; }
+            get { return Properties.Resources.AlternateCurves_Icon; }
         }
 
         /// <summary>
@@ -118,7 +115,8 @@ namespace SaladSlicer.Gh.Components.Geometry
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("AE351ACB-0DA4-4F48-BC9B-91BB44114B7C"); }
+            get { return new Guid("1DCEE820-E981-49F7-8E99-2D9BA7B695A9"); }
         }
+
     }
 }
