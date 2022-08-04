@@ -41,8 +41,8 @@ namespace SaladSlicer.Gh.Components.Utilities
         /// </summary>
         protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
-            pManager.AddNumberParameter("First item", "F", "Item at the first index.",  GH_ParamAccess.item);
-            pManager.AddNumberParameter("Last item", "L", "Item at the last index.", GH_ParamAccess.item);
+            pManager.AddGenericParameter("First item", "F", "Item at the first index.",  GH_ParamAccess.item);
+            pManager.AddGenericParameter("Last item", "L", "Item at the last index.", GH_ParamAccess.item);
         }
 
         /// <summary>
