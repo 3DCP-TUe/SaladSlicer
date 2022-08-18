@@ -54,6 +54,7 @@
     <Compile Include="Geometry\Curves.cs" />
     <Compile Include="CodeGeneration\SetFeedRate.cs" />
     <Compile Include="CodeGeneration\AbsoluteCoordinate.cs" />
+    <Compile Include="Geometry\Surfaces.cs" />
     <Compile Include="Interfaces\IAddVariable.cs" />
     <Compile Include="Interfaces\IGeometry.cs" />
     <Compile Include="Interfaces\ISlicer.cs" />

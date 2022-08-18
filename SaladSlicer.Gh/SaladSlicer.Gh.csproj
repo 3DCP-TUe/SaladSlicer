@@ -73,6 +73,7 @@
     <Compile Include="Components\Deconstruct\DeconstructCurvesTransitionsSlicerComponent.cs" />
     <Compile Include="Components\Deconstruct\DeconstructCurveSlicerComponent.cs" />
     <Compile Include="Components\Deconstruct\DeconstructOpenPlanar2DSlicerComponent.cs" />
+    <Compile Include="Components\Geometry part 1\SurfaceContourMappingComponent.cs" />
     <Compile Include="Components\Geometry part 1\TweenCurvesWithSamplingComponent.cs" />
     <Compile Include="Components\Geometry part 1\TweenCurvesWithMatchingComponent.cs" />
     <Compile Include="Components\Geometry part 2\AlignCurvesComponent.cs" />
