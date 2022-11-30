@@ -241,7 +241,7 @@ namespace SaladSlicer.CodeGeneration
             }
 
             // Added variables
-            foreach (KeyValuePair<string, List<List<double>>> entry in addVariable.AddedVariables)
+            foreach (KeyValuePair<string, List<List<string>>> entry in addVariable.AddedVariables)
             {
                 for (int i = 0; i < result.Count; i++)
                 {

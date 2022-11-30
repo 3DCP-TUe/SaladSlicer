@@ -35,7 +35,7 @@ namespace SaladSlicer.Slicers
         private List<double> _heights = new List<double>();
         private readonly List<List<Plane>> _framesByLayer = new List<List<Plane>>() { };
         private bool _reverse;
-        private readonly Dictionary<string, List<List<double>>> _addedVariables = new Dictionary<string, List<List<double>>>() { };
+        private readonly Dictionary<string, List<List<string>>> _addedVariables = new Dictionary<string, List<List<string>>>() { };
         #endregion
 
         #region (de)serialisation
@@ -369,7 +369,7 @@ namespace SaladSlicer.Slicers
         /// </summary>
         /// <param name="prefix">Prefix to use for the variable.</param>
         /// <param name="values">List of values to be added.</param>
-        public void AddVariable(string prefix, List<List<double>> values)
+        public void AddVariable(string prefix, List<List<string>> values)
         {
             _addedVariables.Add(prefix, HelperMethods.MatchAddedVariable(this, values));
         }
@@ -378,9 +378,9 @@ namespace SaladSlicer.Slicers
         /// Adds an additional variable to the program, besides X, Y and Z.
         /// </summary>
         /// <param name="addedVariables"> The added variable(s) stored in a dictionary. </param>
-        public void AddVariable(Dictionary<string, List<List<double>>> addedVariables)
+        public void AddVariable(Dictionary<string, List<List<string>>> addedVariables)
         {
-            foreach (KeyValuePair<string, List<List<double>>> entry in addedVariables)
+            foreach (KeyValuePair<string, List<List<string>>> entry in addedVariables)
             {
                 _addedVariables.Add(entry.Key, entry.Value);
             }
@@ -839,7 +839,7 @@ namespace SaladSlicer.Slicers
         /// <summary>
         /// Gets the dictionary with variables that have been added to the object.
         /// </summary>
-        public Dictionary<string, List<List<double>>> AddedVariables
+        public Dictionary<string, List<List<string>>> AddedVariables
         {
             get { return _addedVariables; }
         }

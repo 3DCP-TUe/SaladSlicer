@@ -25,15 +25,15 @@ namespace SaladSlicer.Interfaces
 
         #region methods
         /// <summary>
-        /// Adds an additional variable to the program, besides X, Y and Z.
+        /// Adds an additional variable to the program, besides X, Y and Z coordinates.
         /// </summary>
-        void AddVariable(string prefix, List<List<double>> values);
+        void AddVariable(string prefix, List<List<string>> values);
 
         /// <summary>
         /// Adds an additional variable to the program, besides X, Y and Z.
         /// </summary>
         /// <param name="addedVariables"> The added variable(s) stored in a dictionary. </param>
-        void AddVariable(Dictionary<string, List<List<double>>> addedVariables);
+        void AddVariable(Dictionary<string, List<List<string>>> addedVariables);
 
         /// <summary>
         /// Removes the specific prefix from the added variables.
@@ -47,7 +47,7 @@ namespace SaladSlicer.Interfaces
         /// <summary>
         /// Gets the dictionary with variables that have been added to the object.
         /// </summary>
-        Dictionary<string, List<List<double>>> AddedVariables { get; }
+        Dictionary<string, List<List<string>>> AddedVariables { get; }
 
         /// <summary>
         /// Gets the frames of the object by layer.

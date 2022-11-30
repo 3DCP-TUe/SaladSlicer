@@ -97,7 +97,7 @@ namespace SaladSlicer.Utils
         /// <param name="addVariable"> The AddVariable interface to check. </param>
         /// <param name="data"> The data to match with the AddVariable structure. </param>
         /// <returns> Matched data list. </returns>
-        public static List<List<double>> MatchAddedVariable(IAddVariable addVariable, List<List<double>> data)
+        public static List<List<string>> MatchAddedVariable(IAddVariable addVariable, List<List<string>> data)
         {
             // Data is already matching
             if (CheckAddedVariable(addVariable, data))
@@ -117,13 +117,13 @@ namespace SaladSlicer.Utils
 
                 if (framesCounter == data[0].Count)
                 {
-                    List<List<double>> result1 = new List<List<double>>() { };
+                    List<List<string>> result1 = new List<List<string>>() { };
 
                     int counter = 0;
 
                     for (int i = 0; i < addVariable.FramesByLayer.Count; i++)
                     {
-                        List<double> temp = new List<double>() { };
+                        List<string> temp = new List<string>() { };
 
                         for (int j = 0; j < addVariable.FramesByLayer[i].Count; j++)
                         {
@@ -139,12 +139,12 @@ namespace SaladSlicer.Utils
             }
 
             // Otherwise: asynchronisch data mathcing
-            List<List<double>> result2 = new List<List<double>>() { };
+            List<List<string>> result2 = new List<List<string>>() { };
 
             for (int i = 0; i < addVariable.FramesByLayer.Count; i++)
             {
-                List<double> temp = new List<double>() { };
-                List<double> sub;
+                List<string> temp = new List<string>() { };
+                List<string> sub;
 
                 if (i < data.Count)
                 {
@@ -179,7 +179,7 @@ namespace SaladSlicer.Utils
         /// <param name="addVariable"> The Added Variable interface to check. </param>
         /// <param name="data"> The data to check with the AddVariable structure. </param>
         /// <returns> Indicates whether the data structure matches or not. </returns>
-        public static bool CheckAddedVariable(IAddVariable addVariable, List<List<double>> data)
+        public static bool CheckAddedVariable(IAddVariable addVariable, List<List<string>> data)
         {
             // Check the number of layers
             if (addVariable.FramesByLayer.Count != data.Count)
