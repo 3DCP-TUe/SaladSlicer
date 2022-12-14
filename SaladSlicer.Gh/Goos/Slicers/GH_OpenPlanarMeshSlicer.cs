@@ -1,6 +1,6 @@
 ﻿// This file is part of SaladSlicer. SaladSlicer is licensed 
-// under the terms of GNU General Public License as published by the 
-// Free Software Foundation. For more information and the LICENSE file, 
+// under the terms of GNU Lesser General Public License as published 
+// by the Free Software Foundation. For more information and the 
 // see <https://github.com/MeshCP-TUe/SaladSlicer>.
 
 // Rhino Libs
