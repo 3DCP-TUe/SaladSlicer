@@ -64,6 +64,7 @@
     <Compile Include="Enumerations\Enumerations.cs" />
     <Compile Include="Geometry\Seams\Transitions.cs" />
     <Compile Include="Geometry\Seams\Locations.cs" />
+    <Compile Include="Nozzles\Nozzles.cs" />
     <Compile Include="Slicers\OpenPlanarMeshSlicer.cs" />
     <Compile Include="Slicers\ContoursTransitionsSlicer.cs" />
     <Compile Include="Slicers\OpenPlanar2DSlicer.cs" />

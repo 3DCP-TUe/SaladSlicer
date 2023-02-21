@@ -88,6 +88,8 @@
     <Compile Include="Components\Geometry part 2\SeamAtClosestPointComponent.cs" />
     <Compile Include="Components\Geometry part 2\SeamAtLengthComponent.cs" />
     <Compile Include="Components\Geometry part 2\SeamAtParamComponent.cs" />
+    <Compile Include="Components\Nozzles\RoundNozzleComponent.cs" />
+    <Compile Include="Components\Nozzles\RectangularNozzleComponent.cs" />
     <Compile Include="Components\Slicers\AddVariableComponent.cs" />
     <Compile Include="Components\Slicers\ClosedPlanar2DSlicerComponent.cs" />
     <Compile Include="Components\Slicers\GetDistancesAlongPathComponent.cs" />
