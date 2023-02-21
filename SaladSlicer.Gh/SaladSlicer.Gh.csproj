@@ -93,7 +93,6 @@
     <Compile Include="Components\Slicers\AddVariableComponent.cs" />
     <Compile Include="Components\Slicers\ClosedPlanar2DSlicerComponent.cs" />
     <Compile Include="Components\Slicers\GetDistancesAlongPathComponent.cs" />
-    <Compile Include="Components\Utilities\FirstAndLastItemFromListComponent.cs" />
     <Compile Include="Components\Utilities\FilePathComponent.cs" />
     <Compile Include="OBSOLETE\v0\GetPathComponent.cs" />
     <Compile Include="Components\Slicers\OpenPlanarMeshSlicerComponent.cs" />
