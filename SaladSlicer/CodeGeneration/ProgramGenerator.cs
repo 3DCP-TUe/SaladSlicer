@@ -26,6 +26,9 @@ namespace SaladSlicer.CodeGeneration
         #region fields
         private readonly List<string> _program = new List<string>();
         private PrinterSettings _printerSettings = new PrinterSettings();
+        private readonly List<Point3d> _points = new List<Point3d>();
+        private readonly List<InterpolationType> _interpolationTypes = new List<InterpolationType>();
+        private InterpolationType _interpolationType = InterpolationType.Spline;
         #endregion
 
         #region (de)serialization
@@ -77,9 +80,9 @@ namespace SaladSlicer.CodeGeneration
         /// <summary>
         /// Returns the G-code program as list with code lines.
         /// </summary>
-        /// <param name="_objects"> The objects to gerenator the program for. </param>
+        /// <param name="objects"> The objects to gerenator the program for. </param>
         /// <returns> The program as a list with code lines. </returns>
-        public List<string> CreateProgram(IList<IProgram> _objects)
+        public List<string> CreateProgram(IList<IProgram> objects)
         {
             _program.Clear();
             
@@ -91,7 +94,7 @@ namespace SaladSlicer.CodeGeneration
             _program.Add(" ");
 
             // Set program settings
-            if (_objects[0].GetType() != typeof(PrinterSettings))
+            if (objects[0].GetType() != typeof(PrinterSettings))
             {
                 _program.Add("; ----------------------------------------------------------------------");
                 _program.Add("; SETTINGS");
@@ -106,9 +109,9 @@ namespace SaladSlicer.CodeGeneration
             }
 
             // G-code of different objects
-            for (int i = 0; i < _objects.Count; i++)
+            for (int i = 0; i < objects.Count; i++)
             {
-                _objects[i].ToProgram(this);
+                objects[i].ToProgram(this);
             }
             
             // Footer (ending)
@@ -149,6 +152,103 @@ namespace SaladSlicer.CodeGeneration
             }
 
             return _program;
+        }
+
+        /// <summary>
+        /// Returns the path of the program.
+        /// </summary>
+        /// <param name="objects"> The objects to gerenator the path for. </param>
+        /// <returns> The path as a curve. </returns>
+        public Curve CreatePath(IList<IProgram> objects)
+        {
+            _points.Clear();
+            _interpolationTypes.Clear();
+
+            for (int i = 0; i < objects.Count; i++)
+            {
+                objects[i].ToPath(this);
+            }
+
+            if (_points.Count != _interpolationTypes.Count)
+            {
+                throw new Exception("Lits not equal");
+            }
+
+            if (_points.Count < 2)
+            {
+                return null;
+            }
+            else
+            {
+                List<Curve> curves = new List<Curve>();
+
+                if (_printerSettings.ProgramType == ProgramType.Marlin)
+                {
+                    return new Polyline(_points).ToNurbsCurve();
+                }
+
+                else
+                {
+                    _interpolationTypes[0] = _interpolationTypes[1];
+
+                    InterpolationType currentType = _interpolationTypes[0];
+                    List<Point3d> points = new List<Point3d>();
+
+                    for (int i = 0; i < _points.Count; i++)
+                    {
+                        if (_interpolationTypes[i] == currentType)
+                        {
+                            points.Add(_points[i]);
+                        }
+                        else
+                        {
+                            if (currentType == InterpolationType.Linear)
+                            {
+                                curves.Add(new Polyline(points).ToNurbsCurve());
+                            }
+                            else if (currentType == InterpolationType.Spline)
+                            {
+                                if (points.Count > 2)
+                                {
+                                    curves.Add(Curve.CreateInterpolatedCurve(points, 3, CurveKnotStyle.Chord));
+                                }
+                                else
+                                {
+                                    curves.Add(new Polyline(points).ToNurbsCurve());
+                                }
+                            }
+
+                            currentType = _interpolationTypes[i];
+                            points.Clear();
+
+                            points.Add(_points[i - 1]);
+                            points.Add(_points[i]);
+                        }
+                    }
+
+                    if (points.Count > 1)
+                    {
+                        if (currentType == InterpolationType.Linear)
+                        {
+                            curves.Add(new Polyline(points).ToNurbsCurve());
+                        }
+                        else if (currentType == InterpolationType.Spline)
+                        {
+                            if (points.Count > 2)
+                            {
+                                curves.Add(Curve.CreateInterpolatedCurve(points, 3, CurveKnotStyle.Chord));
+                            }
+                            else
+                            {
+                                curves.Add(new Polyline(points).ToNurbsCurve());
+                            }
+                        }
+                    }
+
+                    return Curve.JoinCurves(curves)[0];
+                }
+            }
+
         }
 
         /// <summary>
@@ -229,15 +329,10 @@ namespace SaladSlicer.CodeGeneration
             // Coordinates
             for (int i = 0; i < result.Count; i++)
             {
-                //List<string> temp = new List<string>() { };
-
                 for (int j = 0; j < result[i].Count; j++)
                 {
                     result[i][j] = result[i][j] + $"X{frames[i][j].OriginX:0.###} Y{frames[i][j].OriginY:0.###} Z{frames[i][j].OriginZ:0.###}";
-                    //temp.Add($"X{frames[i][j].OriginX:0.###} Y{frames[i][j].OriginY:0.###} Z{frames[i][j].OriginZ:0.###}");
                 }
-
-                //result.Add(temp);
             }
 
             // Added variables
@@ -284,6 +379,40 @@ namespace SaladSlicer.CodeGeneration
         {
             get { return _printerSettings; }
             set { _printerSettings = value; }
+        }
+
+        /// <summary>
+        /// Gets the list with points.
+        /// </summary>
+        /// <remarks>
+        /// This list is used to collect all the points inside the ToPath method to construct the program path.
+        /// </remarks>
+        public List<Point3d> Points
+        {
+            get { return _points; }
+        }
+
+        /// <summary>
+        /// Gets the list with interpolation types.
+        /// </summary>
+        /// <remarks>
+        /// This list is used to collect all the interpolation types inside the ToPath method to construct the program path.
+        /// </remarks>
+        public List<InterpolationType> InterpolationTypes
+        {
+            get { return _interpolationTypes; }
+        }
+
+        /// <summary>
+        /// Gets or sets the current interpolation type of the program. 
+        /// </summary>
+        /// <remarks>
+        /// This property is used by the ToPath method to keep track of the current interpolation type. 
+        /// </remarks>
+        public InterpolationType InterpolationType
+        {
+            get { return _interpolationType; }
+            set { _interpolationType = value; }
         }
         #endregion 
     }

@@ -228,6 +228,15 @@ namespace SaladSlicer.CodeGeneration
                 throw new Exception("The Marlin G-Code flavor does not implement G642 interpolation");
             }
         }
+
+        /// <summary>
+        /// Collects the data of this object to the program generator to generate the path.
+        /// </summary>
+        /// <param name="programGenerator"> The program generator. </param>
+        public void ToPath(ProgramGenerator programGenerator)
+        {
+            programGenerator.InterpolationType = _interpolationType;
+        }
         #endregion
 
         #region properties

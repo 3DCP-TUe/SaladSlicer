@@ -150,7 +150,7 @@ namespace SaladSlicer.Slicers
             programGenerator.AddSlicerHeader("CURVE SLICER OBJECT", GetLength());
 
             // Add coordinates
-            List<List<string>> coordinates = ProgramGenerator.GetCoordinateCodeLines(this,programGenerator.PrinterSettings);
+            List<List<string>> coordinates = ProgramGenerator.GetCoordinateCodeLines(this, programGenerator.PrinterSettings);
 
             for (int i = 0; i < coordinates.Count; i++)
             {
@@ -161,6 +161,18 @@ namespace SaladSlicer.Slicers
             programGenerator.AddFooter();
         }
 
+        /// <summary>
+        /// Collects the data of this object to the program generator to generate the path.
+        /// </summary>
+        /// <param name="programGenerator"> The program generator. </param>
+        public void ToPath(ProgramGenerator programGenerator)
+        {
+            for (int i = 0; i < _frames.Count; i++)
+            {
+                programGenerator.Points.Add(_frames[i].Origin);
+                programGenerator.InterpolationTypes.Add(programGenerator.InterpolationType);
+            }
+        }
 
         /// <summary>
         /// Adds an additional variable to the program, besides X, Y and Z.

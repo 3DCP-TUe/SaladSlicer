@@ -128,6 +128,23 @@ namespace SaladSlicer.CodeGeneration
         {
             programGenerator.Program.Add(_code);
         }
+
+        /// <summary>
+        /// Collects the data of this object to the program generator to generate the path.
+        /// </summary>
+        /// <param name="programGenerator"> The program generator. </param>
+        public void ToPath(ProgramGenerator programGenerator)
+        {
+            if (_code.Contains("G1"))
+            {
+                programGenerator.InterpolationType = Enumerations.InterpolationType.Linear;
+            }
+
+            if (_code.Contains("BSPLINE"))
+            {
+                programGenerator.InterpolationType = Enumerations.InterpolationType.Spline;
+            }
+        }
         #endregion
 
         #region properties

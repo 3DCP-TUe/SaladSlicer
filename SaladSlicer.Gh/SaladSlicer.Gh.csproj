@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="Components\CodeGeneration\AbsoluteCoordinateComponent.cs" />
     <Compile Include="Components\CodeGeneration\CodeLineComponent.cs" />
+    <Compile Include="OBSOLETE\v0\ProgramGeneratorComponent_OBSOLETE.cs" />
     <Compile Include="Components\CodeGeneration\SetFeedRateComponent.cs" />
     <Compile Include="Components\CodeGeneration\GroupProgramObjectsComponent.cs" />
     <Compile Include="Components\CodeGeneration\MergeProgramObjectsComponent.cs" />
@@ -94,7 +95,7 @@
     <Compile Include="Components\Slicers\ClosedPlanar2DSlicerComponent.cs" />
     <Compile Include="Components\Slicers\GetDistancesAlongPathComponent.cs" />
     <Compile Include="Components\Utilities\FilePathComponent.cs" />
-    <Compile Include="OBSOLETE\v0\GetPathComponent.cs" />
+    <Compile Include="OBSOLETE\v0\GetPathComponent_OBSOLETE.cs" />
     <Compile Include="Components\Slicers\OpenPlanarMeshSlicerComponent.cs" />
     <Compile Include="Components\Slicers\ClosedPlanarMeshSlicerComponent.cs" />
     <Compile Include="Components\Slicers\CurveSlicerComponent.cs" />
@@ -105,8 +106,8 @@
     <Compile Include="Components\Slicers\GetDistanceToPreviousContoursComponent .cs" />
     <Compile Include="Components\Slicers\GetEndFramesComponent.cs" />
     <Compile Include="Components\Slicers\GetFramesComponent.cs" />
-    <Compile Include="OBSOLETE\v0\GetInterpolatedPathComponent.cs" />
-    <Compile Include="OBSOLETE\v0\GetLinearizedPathComponent.cs" />
+    <Compile Include="OBSOLETE\v0\GetInterpolatedPathComponent_OBSOLETE.cs" />
+    <Compile Include="OBSOLETE\v0\GetLinearizedPathComponent_OBSOLETE.cs" />
     <Compile Include="Components\Slicers\GetPathComponent.cs" />
     <Compile Include="Components\Slicers\OpenPlanar2DSlicerComponent.cs" />
     <Compile Include="Components\Utilities\ConvertVelocityMmminMmsComponent.cs" />

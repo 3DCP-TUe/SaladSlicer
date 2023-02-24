@@ -135,6 +135,16 @@ namespace SaladSlicer.CodeGeneration
         }
 
         /// <summary>
+        /// Collects the data of this object to the program generator to generate the path.
+        /// </summary>
+        /// <param name="programGenerator"> The program generator. </param>
+        public void ToPath(ProgramGenerator programGenerator)
+        {
+            programGenerator.Points.Add(_plane.Origin);
+            programGenerator.InterpolationTypes.Add(programGenerator.InterpolationType);
+        }
+
+        /// <summary>
         /// Returns the Bounding Box of the object.
         /// </summary>
         /// <returns> The Bounding Box. </returns>

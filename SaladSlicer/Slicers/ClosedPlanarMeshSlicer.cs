@@ -358,7 +358,7 @@ namespace SaladSlicer.Slicers
             programGenerator.AddSlicerHeader("Mesh CLOSED PLANAR OBJECT", _contours.Count, GetLength());
 
             // Add coordinates
-            List<List<string>> coordinates = ProgramGenerator.GetCoordinateCodeLines(this,programGenerator.PrinterSettings);
+            List<List<string>> coordinates = ProgramGenerator.GetCoordinateCodeLines(this, programGenerator.PrinterSettings);
 
             for (int i = 0; i < coordinates.Count; i++)
             {
@@ -369,6 +369,22 @@ namespace SaladSlicer.Slicers
 
             // End
             programGenerator.AddFooter();
+        }
+
+        /// <summary>
+        /// Collects the data of this object to the program generator to generate the path.
+        /// </summary>
+        /// <param name="programGenerator"> The program generator. </param>
+        public void ToPath(ProgramGenerator programGenerator)
+        {
+            for (int i = 0; i < _framesByLayer.Count; i++)
+            {
+                for (int j = 0; j < _framesByLayer[i].Count; j++)
+                {
+                    programGenerator.Points.Add(_framesByLayer[i][j].Origin);
+                    programGenerator.InterpolationTypes.Add(programGenerator.InterpolationType);
+                }
+            }
         }
 
         /// <summary>

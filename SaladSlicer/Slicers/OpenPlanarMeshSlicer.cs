@@ -312,7 +312,7 @@ namespace SaladSlicer.Slicers
             programGenerator.AddSlicerHeader("Mesh OPEN PLANAR OBJECT", _contours.Count, GetLength());
 
             // Get coordinates
-            List<List<string>> coordinates = ProgramGenerator.GetCoordinateCodeLines(this,programGenerator.PrinterSettings);
+            List<List<string>> coordinates = ProgramGenerator.GetCoordinateCodeLines(this, programGenerator.PrinterSettings);
 
             // Sinumerik
             if (programGenerator.PrinterSettings.ProgramType == ProgramType.Sinumerik)
@@ -325,6 +325,7 @@ namespace SaladSlicer.Slicers
                     // Add TANGOF for all layers but the first
                     if (i != 0)
                     {
+                        programGenerator.Program.Add("G1");
                         programGenerator.Program.Add("TANGOF(C)");
                     }
 
@@ -362,6 +363,41 @@ namespace SaladSlicer.Slicers
 
             // End
             programGenerator.AddFooter();
+        }
+
+        /// <summary>
+        /// Collects the data of this object to the program generator to generate the path.
+        /// </summary>
+        /// <param name="programGenerator"> The program generator. </param>
+        public void ToPath(ProgramGenerator programGenerator)
+        {
+            for (int i = 0; i < _framesByLayer.Count; i++)
+            {
+                for (int j = 0; j < _framesByLayer[i].Count; j++)
+                {
+                    if (j == 0)
+                    {
+                        if (i == 0)
+                        {
+                            programGenerator.Points.Add(_framesByLayer[i][j].Origin);
+                            programGenerator.InterpolationTypes.Add(programGenerator.InterpolationType);
+                        }
+                        else
+                        {
+                            programGenerator.Points.Add(_framesByLayer[i][j].Origin);
+                            programGenerator.InterpolationTypes.Add(InterpolationType.Linear);
+                        }
+                    }
+
+                    else
+                    {
+                        programGenerator.Points.Add(_framesByLayer[i][j].Origin);
+                        programGenerator.InterpolationTypes.Add(InterpolationType.Spline);
+                    }
+                }
+            }
+
+            programGenerator.InterpolationType = InterpolationType.Spline;
         }
 
         /// <summary>

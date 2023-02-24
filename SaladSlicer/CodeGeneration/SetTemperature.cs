@@ -145,6 +145,15 @@ namespace SaladSlicer.CodeGeneration
                 programGenerator.Program.Add("No temperature settings available for this program type ");
             }
         }
+
+        /// <summary>
+        /// Collects the data of this object to the program generator to generate the path.
+        /// </summary>
+        /// <param name="programGenerator"> The program generator. </param>
+        public void ToPath(ProgramGenerator programGenerator)
+        {
+
+        }
         #endregion
 
         #region properties

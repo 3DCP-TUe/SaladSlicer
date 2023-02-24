@@ -29,6 +29,12 @@ namespace SaladSlicer.Interfaces
         void ToProgram(ProgramGenerator programGenerator);
 
         /// <summary>
+        /// Collects the data of this object to the program generator to generate the path.
+        /// </summary>
+        /// <param name="programGenerator"> The program generator. </param>
+        void ToPath(ProgramGenerator programGenerator);
+
+        /// <summary>
         /// Returns the Program Object as a single CodeLine.
         /// </summary>
         string ToSingleString();

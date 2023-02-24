@@ -9,32 +9,28 @@ using System.ComponentModel;
 using System.IO;
 using System.Collections.Generic;
 using System.Windows.Forms;
-// Rhino Libs
-using Rhino.Geometry;
 // Grasshopper Libs
 using Grasshopper.Kernel;
-using GH_IO.Serialization;
 // Salad Slicer Libs
 using SaladSlicer.CodeGeneration;
 using SaladSlicer.Interfaces;
 
-namespace SaladSlicer.Gh.Components.CodeGeneration
+namespace SaladSlicer.Gh.Obsolete.v0
 {
     /// <summary>
     /// Represent a component that creates the program.
     /// </summary>
-    public class ProgramGeneratorComponent : GH_Component
+    [Obsolete("This component is OBSOLETE and will be removed in the future.", false)]
+    public class ProgramGeneratorComponent_OBSOLETE : GH_Component
     {
         #region fields
         private List<string> _program = new List<string>();
-        private Curve _path = null;
-        private bool _previewPath = true;
         #endregion
 
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public ProgramGeneratorComponent()
+        public ProgramGeneratorComponent_OBSOLETE()
           : base("Program Generator", // Component name
               "PG", // Component nickname
               "Program Generator.", // Description
@@ -91,20 +87,6 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
                 AddRuntimeMessage(GH_RuntimeMessageLevel.Error, error.Message);
             }
 
-            // Create the
-            if (_previewPath == true)
-            {
-                try
-                {
-                    _path = programGenerator.CreatePath(objects);
-                }
-                catch (Exception error)
-                {
-                    // Only for debugging
-                    AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, error.Message);
-                }
-            }
-
             // Assign the output parameters
             DA.SetDataList(0, _program);
         }
@@ -114,7 +96,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         public override GH_Exposure Exposure
         {
-            get { return GH_Exposure.septenary; }
+            get { return GH_Exposure.hidden; }
         }
 
         /// <summary>
@@ -122,7 +104,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         public override bool Obsolete
         {
-            get { return false; }
+            get { return true; }
         }
 
         /// <summary>
@@ -139,10 +121,10 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("E1335F06-C7CB-4589-A88A-A0FDEC6FF76B"); }
+            get { return new Guid("A387F8ED-44EF-4157-983C-41C88042A67F"); }
         }
 
-        #region menu items
+        #region save program to file
         /// <summary>
         /// Adds the additional items to the context menu of the component. 
         /// </summary>
@@ -151,8 +133,6 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         {
             Menu_AppendSeparator(menu);
             Menu_AppendItem(menu, "Save Program to file", MenuItemClickSaveProgramFile);
-            Menu_AppendSeparator(menu);
-            Menu_AppendItem(menu, "Preview Path", MenuItemClickPreviewPath, true, _previewPath);
         }
 
         /// <summary>
@@ -164,43 +144,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         {
             SaveProgram();
         }
-
-        /// <summary>
-        /// Handles the event when the custom menu item "Preview Path" is clicked. 
-        /// </summary>
-        /// <param name="sender"> The object that raises the event. </param>
-        /// <param name="e"> The event data. </param>
-        private void MenuItemClickPreviewPath(object sender, EventArgs e)
-        {
-            RecordUndoEvent("Preview Path");
-            _previewPath = !_previewPath;
-            this.ExpireSolution(true);
-        }
-
-        /// <summary>
-        /// Write all required data for deserialization to an IO archive.
-        /// </summary>
-        /// <param name="writer"> Provides access to a subset of GH_Chunk methods used for writing archives. </param>
-        /// <returns> True on success, false on failure. </returns>
-        public override bool Write(GH_IWriter writer)
-        {
-            writer.SetBoolean("Preview Path", _previewPath);
-            return base.Write(writer);
-        }
-
-        /// <summary>
-        /// Read all required data for deserialization from an IO archive.
-        /// </summary>
-        /// <param name="reader"> Provides access to a subset of GH_Chunk methods used for reading archives. </param>
-        /// <returns> True on success, false on failure. </returns>
-        public override bool Read(GH_IReader reader)
-        {
-            _previewPath = reader.GetBoolean("Preview Path");
-            return base.Read(reader);
-        }
-        #endregion
-
-        #region save program to file
+        
         /// <summary>
         /// Saves the program to a file
         /// </summary>
@@ -228,62 +172,6 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
                         for (int i = 0; i < _program.Count; i++)
                         writer.WriteLine(_program[i]);
                     }
-                }
-            }
-        }
-        #endregion
-
-        #region preview path
-        /// <summary>
-        /// Gets the clipping box for all preview geometry drawn by this component and all associated parameters.
-        /// </summary>
-        public override BoundingBox ClippingBox
-        {
-            get { return GetBoundingBox(); }
-        }
-
-        /// <summary>
-        /// Returns the bounding box for all preview geometry drawn by this component.
-        /// </summary>
-        /// <returns></returns>
-        private BoundingBox GetBoundingBox()
-        {
-            BoundingBox result = new BoundingBox();
-
-            // Get bouding box of all the output parameters
-            for (int i = 0; i < Params.Output.Count; i++)
-            {
-                if (Params.Output[i] is IGH_PreviewObject previewObject)
-                {
-                    result.Union(previewObject.ClippingBox);
-                }
-            }
-
-            // Add bounding box of custom preview
-            if (_previewPath)
-            {
-                if (_path != null)
-                {
-                    result.Union(_path.GetBoundingBox(false));
-                }
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Draw preview wires for this component and all associated parameters.
-        /// </summary>
-        /// <param name="args"> Display data used during preview drawing. </param>
-        public override void DrawViewportWires(IGH_PreviewArgs args)
-        {
-            base.DrawViewportWires(args);
-
-            if (_previewPath == true)
-            {
-                if (_path != null)
-                {
-                    args.Display.DrawCurve(_path, args.WireColour, args.DefaultCurveThickness);
                 }
             }
         }

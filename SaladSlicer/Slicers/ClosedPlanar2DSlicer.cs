@@ -309,6 +309,22 @@ namespace SaladSlicer.Slicers
         }
 
         /// <summary>
+        /// Collects the data of this object to the program generator to generate the path.
+        /// </summary>
+        /// <param name="programGenerator"> The program generator. </param>
+        public void ToPath(ProgramGenerator programGenerator)
+        {
+            for (int i = 0; i < _framesByLayer.Count; i++)
+            {
+                for (int j = 0; j < _framesByLayer[i].Count; j++)
+                {
+                    programGenerator.Points.Add(_framesByLayer[i][j].Origin);
+                    programGenerator.InterpolationTypes.Add(programGenerator.InterpolationType);
+                }
+            }
+        }
+
+        /// <summary>
         /// Adds an additional variable to the program, besides X, Y and Z.
         /// </summary>
         /// <param name="prefix">Prefix to use for the variable.</param>
