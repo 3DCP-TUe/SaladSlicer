@@ -115,7 +115,7 @@ namespace SaladSlicer.Nozzles
         /// <returns> The rectangular nozzle. </returns>
         public static Brep RectangularType1(double boxWidth, double boxDepth, double filletRadius, double length1, double length2, double length3, double length4, double outerDiameter, double innerDiameter, double nozzleWidth, double nozzleHeight, bool divide)
         {
-            if (length1 <= 0 | length2 <= 0 | length3 <= 0 | length4 <= 0)
+            if (length1 <= 0 | length2 <= 0 | length4 <= 0)
             {
                 throw new Exception("The defined lengths must be larger than 0.");
             }
@@ -158,13 +158,23 @@ namespace SaladSlicer.Nozzles
             
             Curve curve1 = new Circle(plane2, innerDiameter / 2).ToNurbsCurve(); // Hose/pipe diameter
             curve1.Rotate(Rhino.RhinoMath.ToRadians(225), Vector3d.ZAxis, new Point3d(0, 0, 0));
-            Curve curve2 = Rectangle3dCenter(plane3, nozzleWidth, innerArea / nozzleWidth).ToNurbsCurve(); // Rectangle: equal area
-            LoftWithLinearCrossSection(curve1, curve2, 50, out List<Curve> scaledCurves);
-            innerCurves.AddRange(scaledCurves);
-            
-            innerCurves.Add(Rectangle3dCenter(plane4, nozzleWidth, nozzleHeight).ToNurbsCurve()); // Rectangle: equal area
-            innerCurves.Add(Rectangle3dCenter(plane5, nozzleWidth, nozzleHeight).ToNurbsCurve()); // Rectangle: equal area
 
+            if (length3 > 0)
+            {
+                Curve curve2 = Rectangle3dCenter(plane3, nozzleWidth, innerArea / nozzleWidth).ToNurbsCurve(); // Rectangle: equal area
+                LoftWithLinearCrossSection(curve1, curve2, 50, out List<Curve> scaledCurves);
+                innerCurves.AddRange(scaledCurves);
+
+                innerCurves.Add(Rectangle3dCenter(plane4, nozzleWidth, nozzleHeight).ToNurbsCurve()); // Rectangle: reduced equal area
+            }
+            else
+            {
+                Curve curve2 = Rectangle3dCenter(plane3, nozzleWidth, nozzleHeight).ToNurbsCurve(); // Rectangle: reduced area
+                LoftWithLinearCrossSection(curve1, curve2, 50, out List<Curve> scaledCurves);
+                innerCurves.AddRange(scaledCurves);
+            }
+
+            innerCurves.Add(Rectangle3dCenter(plane5, nozzleWidth, nozzleHeight).ToNurbsCurve()); // Rectangle: reduced equal are
             // Generate brep
             List<Brep> brepInner = new List<Brep>() { };
             brepInner.AddRange(Brep.CreatePlanarBreps(new List<Curve>() { innerCurves[0] }, _tolerance));
@@ -209,7 +219,7 @@ namespace SaladSlicer.Nozzles
         /// <returns> The rectanglur nozzle. </returns>
         public static Brep RectangularType2(double length1, double length2, double length3, double length4, double outerDiameter, double innerDiameter, double nozzleWidth, double nozzleHeight, double wallThickness, double gap)
         {
-            if (length1 <= 0 | length2 <= 0 | length3 <= 0 | length4 <= 0)
+            if (length1 <= 0 | length2 <= 0 | length4 <= 0)
             {
                 throw new Exception("The defined lengths must be larger than 0.");
             }
@@ -230,12 +240,23 @@ namespace SaladSlicer.Nozzles
 
             Curve curve1a = new Circle(plane2, outerDiameter / 2 + wallThickness).ToNurbsCurve(); // Hose/pipe diameter
             curve1a.Rotate(Rhino.RhinoMath.ToRadians(225), Vector3d.ZAxis, new Point3d(0, 0, 0));
-            Curve curve2a = Rectangle3dCenter(plane3, nozzleWidth + 2 * wallThickness, outerArea / (nozzleWidth + 2 * wallThickness)).ToNurbsCurve(); // Rectangle: equal area
-            LoftWithLinearCrossSection(curve1a, curve2a, 50, out List<Curve> scaledCurves1);
-            outerCurves.AddRange(scaledCurves1);
 
-            outerCurves.Add(Rectangle3dCenter(plane4, nozzleWidth + 2 * wallThickness, nozzleHeight + 2 * wallThickness).ToNurbsCurve()); // Rectangle: equal area
-            outerCurves.Add(Rectangle3dCenter(plane5, nozzleWidth + 2 * wallThickness, nozzleHeight + 2 * wallThickness).ToNurbsCurve()); // Rectangle: equal area
+            if (length3 > 0)
+            {
+                Curve curve2a = Rectangle3dCenter(plane3, nozzleWidth + 2 * wallThickness, outerArea / (nozzleWidth + 2 * wallThickness)).ToNurbsCurve(); // Rectangle: equal area
+                LoftWithLinearCrossSection(curve1a, curve2a, 50, out List<Curve> scaledCurves1);
+                outerCurves.AddRange(scaledCurves1);
+
+                outerCurves.Add(Rectangle3dCenter(plane4, nozzleWidth + 2 * wallThickness, nozzleHeight + 2 * wallThickness).ToNurbsCurve()); // Rectangle: reduced area
+            }
+            else
+            {
+                Curve curve2a = Rectangle3dCenter(plane3, nozzleWidth + 2 * wallThickness, nozzleHeight + 2 * wallThickness).ToNurbsCurve(); // Rectangle: reduced area
+                LoftWithLinearCrossSection(curve1a, curve2a, 50, out List<Curve> scaledCurves1);
+                outerCurves.AddRange(scaledCurves1);
+            }
+
+            outerCurves.Add(Rectangle3dCenter(plane5, nozzleWidth + 2 * wallThickness, nozzleHeight + 2 * wallThickness).ToNurbsCurve()); // Rectangle: reduced area
 
             for (int i = 1; i < outerCurves.Count; i++)
             {
@@ -253,11 +274,22 @@ namespace SaladSlicer.Nozzles
 
             Curve curve1b = new Circle(plane2, innerDiameter / 2).ToNurbsCurve(); // Hose/pipe diameter
             curve1b.Rotate(Rhino.RhinoMath.ToRadians(225), Vector3d.ZAxis, new Point3d(0, 0, 0));
-            Curve curve2b = Rectangle3dCenter(plane3, nozzleWidth, innerArea / nozzleWidth).ToNurbsCurve(); // Rectangle: equal area
-            LoftWithLinearCrossSection(curve1b, curve2b, 50, out List<Curve> scaledCurves2);
-            innerCurves.AddRange(scaledCurves2);
 
-            innerCurves.Add(Rectangle3dCenter(plane4, nozzleWidth, nozzleHeight).ToNurbsCurve()); // Rectangle: equal area
+            if (length3 > 0)
+            {
+                Curve curve2b = Rectangle3dCenter(plane3, nozzleWidth, innerArea / nozzleWidth).ToNurbsCurve(); // Rectangle: equal area
+                LoftWithLinearCrossSection(curve1b, curve2b, 50, out List<Curve> scaledCurves2);
+                innerCurves.AddRange(scaledCurves2);
+
+                innerCurves.Add(Rectangle3dCenter(plane4, nozzleWidth, nozzleHeight).ToNurbsCurve()); // Rectangle: equal area
+            }
+            else
+            {
+                Curve curve2b = Rectangle3dCenter(plane3, nozzleWidth, nozzleHeight).ToNurbsCurve(); // Rectangle: reduced area
+                LoftWithLinearCrossSection(curve1b, curve2b, 50, out List<Curve> scaledCurves2);
+                innerCurves.AddRange(scaledCurves2);
+            }
+
             innerCurves.Add(Rectangle3dCenter(plane5, nozzleWidth, nozzleHeight).ToNurbsCurve()); // Rectangle: equal area
 
             for (int i = 1; i < innerCurves.Count; i++)
