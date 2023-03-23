@@ -39,7 +39,7 @@ namespace SaladSlicer.Gh.Components.Nozzles
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
             pManager.AddNumberParameter("Length 1", "L1", "The length of the connector as a Number.", GH_ParamAccess.item, 24.5);
-            pManager.AddNumberParameter("Length 2", "L2", "The length between the connector and the unredeuced circle as a Number.", GH_ParamAccess.item, 100.0);
+            pManager.AddNumberParameter("Length 2", "L2", "The length between the connector and the unreduced circle as a Number.", GH_ParamAccess.item, 100.0);
             pManager.AddNumberParameter("Length 3", "L3", "The length between the unreduced and reduced circle as a Number.", GH_ParamAccess.item, 25.0);
             pManager.AddNumberParameter("Outer Diameter", "OD", "The outer diameter of the connected pipe as a Number.", GH_ParamAccess.item, 41.0);
             pManager.AddNumberParameter("Inner Diameter", "ID", "The innner diameter of the connected pipe as a Number.", GH_ParamAccess.item, 35.0);

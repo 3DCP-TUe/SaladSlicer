@@ -42,7 +42,7 @@ namespace SaladSlicer.Gh.Components.Nozzles
             pManager.AddNumberParameter("Box Dept", "BD", "The depth of the bounding box as Number.", GH_ParamAccess.item, 50.0);
             pManager.AddNumberParameter("Fillet Radius", "R", "The fillet radius of the bouding box as a Number.", GH_ParamAccess.item, 10.0);
             pManager.AddNumberParameter("Length 1", "L1", "The length of the connector as a Number.", GH_ParamAccess.item, 24.5);
-            pManager.AddNumberParameter("Length 2", "L2", "The length between the connector and the unredeuced rectangle as a Number.", GH_ParamAccess.item, 100.0);
+            pManager.AddNumberParameter("Length 2", "L2", "The length between the connector and the unreduced rectangle as a Number.", GH_ParamAccess.item, 100.0);
             pManager.AddNumberParameter("Length 3", "L3", "The length between the unreduced and reduced rectangle as a Number.", GH_ParamAccess.item, 25.0);
             pManager.AddNumberParameter("Length 4", "L4", "The length of the final reduced cross section.", GH_ParamAccess.item, 25.0);
             pManager.AddNumberParameter("Outer Diameter", "OD", "The outer diameter of the connected pipe as a Number.", GH_ParamAccess.item, 30.0);
