@@ -85,7 +85,7 @@ namespace SaladSlicer.Nozzles
             return result;
         }
 
-        public static Brep Rectangular(double boxWidth, double boxDepth, double filletRadius, double length1, double length2, double length3, double length4, double outerDiameter, double innerDiameter, double nozzleWidth, double nozzleHeight, bool divide)
+        public static Brep RectangularType1(double boxWidth, double boxDepth, double filletRadius, double length1, double length2, double length3, double length4, double outerDiameter, double innerDiameter, double nozzleWidth, double nozzleHeight, bool divide)
         {
             if (length1 <= 0 | length2 <= 0 | length3 <= 0 | length4 <= 0)
             {
@@ -163,6 +163,83 @@ namespace SaladSlicer.Nozzles
             if (divide == true)
             {
                 Brep box = new BoundingBox(0, -boxDepth / 2 - 5, -5, boxWidth / 2 + 5, boxDepth / 2 + 5, plane5.OriginZ + 5).ToBrep();
+                result = Brep.CreateBooleanDifference(result, box, _tolerance)[0];
+            }
+            #endregion
+
+            return result;
+        }
+
+        public static Brep RectangularType2(double length1, double length2, double length3, double length4, double outerDiameter, double innerDiameter, double nozzleWidth, double nozzleHeight, double wallThickness, double gap)
+        {
+            if (length1 <= 0 | length2 <= 0 | length3 <= 0 | length4 <= 0)
+            {
+                throw new Exception("The defined lengths must be larger than 0.");
+            }
+
+            Plane plane1 = new Plane(new Point3d(0, 0, 0), Vector3d.XAxis, Vector3d.YAxis);
+            Plane plane2 = new Plane(new Point3d(0, 0, length1), Vector3d.XAxis, Vector3d.YAxis);
+            Plane plane3 = new Plane(new Point3d(0, 0, length1 + length2), Vector3d.XAxis, Vector3d.YAxis);
+            Plane plane4 = new Plane(new Point3d(0, 0, length1 + length2 + length3), Vector3d.XAxis, Vector3d.YAxis);
+            Plane plane5 = new Plane(new Point3d(0, 0, length1 + length2 + length3 + length4), Vector3d.XAxis, Vector3d.YAxis);
+
+            List<Brep> breps = new List<Brep>() { };
+
+            #region outer shape
+            List<Curve> outerCurves = new List<Curve>() { };
+            double outerArea = 0.25 * (outerDiameter + 2 * wallThickness) * (outerDiameter + 2 * wallThickness) * Math.PI;
+            outerCurves.Add(new Circle(plane1, outerDiameter / 2 + wallThickness).ToNurbsCurve()); // Connector
+            outerCurves[0].Rotate(Rhino.RhinoMath.ToRadians(225), Vector3d.ZAxis, new Point3d(0, 0, 0));
+
+            Curve curve1a = new Circle(plane2, outerDiameter / 2 + wallThickness).ToNurbsCurve(); // Hose/pipe diameter
+            curve1a.Rotate(Rhino.RhinoMath.ToRadians(225), Vector3d.ZAxis, new Point3d(0, 0, 0));
+            Curve curve2a = Rectangle3dCenter(plane3, nozzleWidth + 2 * wallThickness, outerArea / (nozzleWidth + 2 * wallThickness)).ToNurbsCurve(); // Reactangle: equal area
+            LoftWithLinearCrossSection(curve1a, curve2a, 50, out List<Curve> scaledCurves1);
+            outerCurves.AddRange(scaledCurves1);
+
+            outerCurves.Add(Rectangle3dCenter(plane4, nozzleWidth + 2 * wallThickness, nozzleHeight + 2 * wallThickness).ToNurbsCurve()); // Reactangle: equal area
+            outerCurves.Add(Rectangle3dCenter(plane5, nozzleWidth + 2 * wallThickness, nozzleHeight + 2 * wallThickness).ToNurbsCurve()); // Reactangle: equal area
+
+            for (int i = 1; i < outerCurves.Count; i++)
+            {
+                breps.Add(Loft(outerCurves[i - 1], outerCurves[i]));
+            }
+            #endregion
+
+            #region inner shape
+            List<Curve> innerCurves = new List<Curve>() { };
+            double innerArea = 0.25 * innerDiameter * innerDiameter * Math.PI;
+            innerCurves.Add(new Circle(plane1, outerDiameter / 2).ToNurbsCurve()); // Connector
+            innerCurves[0].Rotate(Rhino.RhinoMath.ToRadians(225), Vector3d.ZAxis, new Point3d(0, 0, 0));
+            innerCurves.Add(new Circle(plane2, outerDiameter / 2).ToNurbsCurve()); // Connector
+            innerCurves[1].Rotate(Rhino.RhinoMath.ToRadians(225), Vector3d.ZAxis, new Point3d(0, 0, 0));
+
+            Curve curve1b = new Circle(plane2, innerDiameter / 2).ToNurbsCurve(); // Hose/pipe diameter
+            curve1b.Rotate(Rhino.RhinoMath.ToRadians(225), Vector3d.ZAxis, new Point3d(0, 0, 0));
+            Curve curve2b = Rectangle3dCenter(plane3, nozzleWidth, innerArea / nozzleWidth).ToNurbsCurve(); // Reactangle: equal area
+            LoftWithLinearCrossSection(curve1b, curve2b, 50, out List<Curve> scaledCurves2);
+            innerCurves.AddRange(scaledCurves2);
+
+            innerCurves.Add(Rectangle3dCenter(plane4, nozzleWidth, nozzleHeight).ToNurbsCurve()); // Reactangle: equal area
+            innerCurves.Add(Rectangle3dCenter(plane5, nozzleWidth, nozzleHeight).ToNurbsCurve()); // Reactangle: equal area
+
+            for (int i = 1; i < innerCurves.Count; i++)
+            {
+                breps.Add(Loft(innerCurves[i - 1], innerCurves[i]));
+            }
+            #endregion
+
+            #region caps
+            breps.Add(Brep.CreatePlanarBreps(new List<Curve>() { outerCurves[0], innerCurves[0] }, _tolerance)[0]);
+            breps.Add(Brep.CreatePlanarBreps(new List<Curve>() { outerCurves.Last(), innerCurves.Last() }, _tolerance)[0]);
+            #endregion
+
+            Brep result = Brep.JoinBreps(breps, _tolerance)[0];
+
+            #region gap
+            if (gap > 0)
+            {
+                Brep box = new BoundingBox(-gap / 2, -outerDiameter / 2 - 5, -5, gap / 2, outerDiameter / 2 + 5, length1).ToBrep();
                 result = Brep.CreateBooleanDifference(result, box, _tolerance)[0];
             }
             #endregion
