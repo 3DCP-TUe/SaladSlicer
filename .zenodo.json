@@ -1,5 +1,6 @@
 {
-	"creators": [{
+	"creators": [
+		{
 			"name": "Deetman, Arjen",
 			"affiliation": "Eindhoven University of Technology",
 			"orcid": "0000-0001-6756-5151"
@@ -20,7 +21,8 @@
 
 	"access_right": "open",
 
-	"license": {
+	"license": 
+	{
 		"title": "GNU Lesser General Public License v3.0",
 		"url": "https://www.gnu.org/licenses/lgpl-3.0.html"
 	},
