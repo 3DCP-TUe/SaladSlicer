@@ -21,11 +21,7 @@
 
 	"access_right": "open",
 
-	"license": 
-	{
-		"title": "GNU Lesser General Public License v3.0",
-		"url": "https://www.gnu.org/licenses/lgpl-3.0.html"
-	},
+	"license": "LGPL-3.0+",
 
 	"title": "Salad Slicer: An open-source slicer toolkit for 3D concrete printing",
 
