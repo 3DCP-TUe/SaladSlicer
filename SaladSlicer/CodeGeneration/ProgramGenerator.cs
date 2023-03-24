@@ -171,7 +171,7 @@ namespace SaladSlicer.CodeGeneration
 
             if (_points.Count != _interpolationTypes.Count)
             {
-                throw new Exception("Lits not equal");
+                throw new Exception("Lists are not equal.");
             }
 
             if (_points.Count < 2)
