@@ -1,0 +1,41 @@
+{
+	"creators": [{
+			"name": "Deetman, Arjen",
+			"affiliation": "Eindhoven University of Technology",
+			"orcid": "0000-0001-6756-5151"
+		},
+		{
+			"name": "Bos, Derk",
+			"affiliation": "Eindhoven University of Technology"
+		},
+		{
+			"name": "Ferguson, Matthew",
+			"affiliation": "Eindhoven University of Technology"
+		},
+		{
+			"name": "Versteege, Jelle",
+			"affiliation": "Eindhoven University of Technology"
+		}
+	],
+
+	"access_right": "open",
+
+	"license": {
+		"title": "GNU Lesser General Public License v3.0",
+		"url": "https://www.gnu.org/licenses/lgpl-3.0.html"
+	},
+
+	"title": "Salad Slicer: An open-source slicer toolkit for 3D concrete printing",
+
+	"description": "Salad Slicer is an open-source Rhinoceros Grasshopper slicer toolkit developed for 3D concrete printing.",
+
+	"keywords": [
+		"rhinoceros",
+		"grasshopper",
+		"3d printing",
+		"slicer",
+		"3dcp"
+	],
+
+	"upload_type": "software"
+}
