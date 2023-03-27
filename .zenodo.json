@@ -1,27 +1,27 @@
 {
 	"creators": [
 		{
-			"name": "Deetman, Arjen",
+			"name": " Arjen Deetman",
 			"affiliation": "Eindhoven University of Technology",
 			"orcid": "0000-0001-6756-5151"
 		},
 		{
-			"name": "Bos, Derk",
+			"name": "Derk Bos",
 			"affiliation": "Eindhoven University of Technology"
 		},
 		{
-			"name": "Ferguson, Matthew",
+			"name": "Matthew Ferguson",
 			"affiliation": "Eindhoven University of Technology"
 		},
 		{
-			"name": "Versteege, Jelle",
+			"name": "Jelle Versteege",
 			"affiliation": "Eindhoven University of Technology"
 		}
 	],
 
 	"access_right": "open",
 
-	"license": "LGPL-3.0+",
+	"license": "LGPL-3.0",
 
 	"title": "Salad Slicer: An open-source slicer toolkit for 3D concrete printing",
 
