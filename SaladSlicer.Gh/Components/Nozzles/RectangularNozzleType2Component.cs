@@ -134,7 +134,7 @@ namespace SaladSlicer.Gh.Components.Nozzles
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return null; }
+            get { return Properties.Resources.RectangularNozzle_Icon; }
         }
 
         /// <summary>

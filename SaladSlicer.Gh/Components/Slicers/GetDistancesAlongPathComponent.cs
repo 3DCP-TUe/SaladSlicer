@@ -108,7 +108,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return null; }
+            get { return Properties.Resources.GetDistanceAlongPath_Icon; }
         }
 
         /// <summary>

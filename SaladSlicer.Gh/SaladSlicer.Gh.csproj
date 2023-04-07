@@ -164,6 +164,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -382,7 +383,30 @@
   <ItemGroup>
     <None Include="Resources\SetTemperature_Icon.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\TweenCurvesWithMatching_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TweenCurvesWithSampling_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SurfaceContourMapping_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RectangularNozzle_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RoundNozzle_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FilePath_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GetDistanceAlongPath_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RectangularNozzleType2_Icon.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -82,7 +82,7 @@ namespace SaladSlicer.Gh.Components.Utilities
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return null; }
+            get { return Properties.Resources.FilePath_Icon; }
         }
 
         /// <summary>
