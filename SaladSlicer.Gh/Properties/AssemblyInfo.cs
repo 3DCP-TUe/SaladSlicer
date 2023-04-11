@@ -1,4 +1,9 @@
-﻿// System Libs
+﻿// This file is part of SaladSlicer. SaladSlicer is licensed 
+// under the terms of GNU Lesser General Public License as published 
+// by the Free Software Foundation. For more information and the 
+// LICENSE file, see <https://github.com/3DCP-TUe/SaladSlicer>.
+
+// System Libs
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -6,7 +11,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Salad Slicer")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("An open-source slicer toolkit developed for 3D concrete printing.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("3DCP Research Group at Eindhoven University of Technology")]
 [assembly: AssemblyProduct("Salad Slicer")]
@@ -32,5 +37,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.4.0.0")]
-[assembly: AssemblyFileVersion("0.4.0.0")]
+[assembly: AssemblyVersion("0.4.0")]
+[assembly: AssemblyFileVersion("0.4.0")]
