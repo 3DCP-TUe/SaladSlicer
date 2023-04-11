@@ -44,7 +44,7 @@ Salad Slicer is an open-source project that is developed and initiated by the [3
 We would like to acknowledge the authors of [Robot Components](https://github.com/RobotComponents/RobotComponents) for making their Grasshopper plugin available and open source. The code structure of Salad Slicer is heavily influenced by [Robot Components](https://github.com/RobotComponents/RobotComponents). As an acknowledgment, we have provided [Example Files](https://github.com/3DCP-TUe/SaladSlicer/tree/master/ExampleFiles) wherein we demonstrate how to use Salad Slicer in combination with [Robot Components](https://github.com/RobotComponents/RobotComponents). 
 
 ## Cite Salad Slicer
-Salad Slicer is a free-to-use Grasshopper plugin and does not legally bind you to cite it. However, we have invested time and effort in creating Salad Slicer and would appreciate a citation if used. To cite all versions of Robot Components in publications use:
+Salad Slicer is a free-to-use Grasshopper plugin and does not legally bind you to cite it. However, we have invested time and effort in creating Salad Slicer and would appreciate a citation if used. To cite all versions of Salad Slicer in publications use:
 
 ```
 Arjen Deetman, Derk Bos, Matthew Ferguson, & Jelle Versteege. (2023). Salad Slicer: An open-source slicer toolkit for 3D concrete printing. Zenodo. https://doi.org/10.5281/zenodo.7818240
