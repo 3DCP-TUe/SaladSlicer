@@ -249,8 +249,7 @@ namespace SaladSlicer.Slicers
 
             // Set seam location
             _contours = Curves.AlignCurves(_contours);
-            _contours[0] = Locations.SeamAtLength(_contours[0], _seamLocation, true);
-            //_contours[0] = Geometry.Seams.Locations.SeamAtLength(_contours[0], _contours[0].GetLength() - 0.5 * _seamLength, false); //TODO: to discuss... 
+            _contours[0].SeamAtLength(_seamLocation, true);
             _contours = Locations.AlignSeamsByClosestPoint(_contours);
 
             // Reverse the contours

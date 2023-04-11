@@ -67,12 +67,12 @@ namespace SaladSlicer.Gh.Components.Geometry
             if (!DA.GetData(1, ref plane)) return;
 
             // Declare the output variable
-            Curve result = curve;
+            Curve result = curve.DuplicateCurve();
 
             // Create the new curve
             try
             {
-                result = Locations.SeamAtClosestPlaneIntersection(curve, plane);
+                result.SeamAtClosestPlaneIntersection(plane);
             }
             catch (WarningException w)
             {

@@ -5,6 +5,7 @@
 
 // System Libs
 using System;
+using System.Linq;
 using System.Collections.Generic;
 // Rhino Libs
 using Rhino.Geometry;
@@ -22,13 +23,9 @@ namespace SaladSlicer.Geometry
         /// </summary>
         /// <param name="curve"> The curve. </param>
         /// <returns> The curve with a new domain. </returns>
-        public static Curve ResetDomain(Curve curve)
+        public static void ResetDomain(this Curve curve)
         {
-            Curve result = curve.DuplicateCurve();
-            Interval domain = new Interval(curve.Domain.Min - curve.Domain.Min, curve.Domain.Max - curve.Domain.Min);
-            result.Domain = domain;
-
-            return result;
+            curve.Domain = new Interval(curve.Domain.Min - curve.Domain.Min, curve.Domain.Max - curve.Domain.Min);
         }
 
         /// <summary>
@@ -59,12 +56,7 @@ namespace SaladSlicer.Geometry
         /// <returns> The alternated curves. </returns>
         public static List<Curve> AlternateCurves(IList<Curve> curves)
         {
-            List<Curve> result = new List<Curve>() { };
-
-            for (int i = 0; i < curves.Count; i++)
-            {
-                result.Add(curves[i].DuplicateCurve());
-            }
+            List<Curve> result = curves.ToList().ConvertAll(item => item.DuplicateCurve());
 
             for (int i = 1; i < result.Count; i += 2)
             {
@@ -190,12 +182,7 @@ namespace SaladSlicer.Geometry
         /// <returns> List with aligned curves. </returns>
         public static List<Curve> AlignCurves(IList<Curve> curves)
         {
-            List<Curve> result = new List<Curve>() { };
-
-            for (int i = 0; i < curves.Count; i++) 
-            { 
-                result.Add(curves[i].DuplicateCurve()); 
-            }
+            List<Curve> result = curves.ToList().ConvertAll(item => item.DuplicateCurve());
 
             for (int i = 1; i < result.Count; i++)
             {
@@ -219,18 +206,14 @@ namespace SaladSlicer.Geometry
         /// </remarks>
         /// <param name="curve1"> The curve to align. </param>
         /// <param name="curve2"> The curve to check againts. </param>
-        /// <returns> The aligned curve. </returns>
-        public static Curve AlignCurve(Curve curve1, Curve curve2)
+        public static void AlignCurve(this Curve curve1, Curve curve2)
         {
-            Curve result = curve1.DuplicateCurve();
-
             if (!Curve.DoDirectionsMatch(curve1, curve2))
             {
-                result.Reverse();
-                result.Domain = curve1.Domain;
+                Interval domain = new Interval(curve1.Domain.Min, curve1.Domain.Max);
+                curve1.Reverse();
+                curve1.Domain = domain;
             }
-
-            return result;
         }
 
         /// <summary>
@@ -271,6 +254,7 @@ namespace SaladSlicer.Geometry
         #endregion
 
         #region properties
+
         #endregion
     }
 }

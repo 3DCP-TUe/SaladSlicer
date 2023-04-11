@@ -180,8 +180,10 @@ namespace SaladSlicer.Slicers
         private void CreateContours()
         {
             _contours.Clear();
-            Curve contour = Geometry.Seams.Locations.SeamAtLength(_baseContour, _seamLocation, true);
-            //contour = Geometry.Seams.Locations.SeamAtLength(contour, contour.GetLength() - 0.5 * _seamLength, false); //TODO: to discuss... 
+
+            Curve contour = _baseContour.DuplicateCurve();
+            contour.SeamAtLength(_seamLocation, true);
+
             contour.Domain = new Interval(0, contour.GetLength());
 
             for (int i = 0; i < _heights.Count; i++)

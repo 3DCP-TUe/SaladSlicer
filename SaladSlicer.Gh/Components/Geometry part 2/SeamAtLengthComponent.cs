@@ -70,12 +70,12 @@ namespace SaladSlicer.Gh.Components.Geometry
             if (!DA.GetData(2, ref normalize)) return;
 
             // Declare the output variables
-            Curve result = curve;
+            Curve result = curve.DuplicateCurve();
 
             // Create the new curve
             try
             {
-                result = Locations.SeamAtLength(curve, length, normalize);
+                result.SeamAtLength(length, normalize);
             }
             catch (WarningException w)
             {

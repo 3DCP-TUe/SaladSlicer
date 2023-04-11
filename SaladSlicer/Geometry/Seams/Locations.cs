@@ -5,6 +5,7 @@
 
 // System Libs
 using System;
+using System.Linq;
 using System.Collections.Generic;
 // Rhino Libs
 using Rhino.Geometry;
@@ -25,31 +26,27 @@ namespace SaladSlicer.Geometry.Seams
         /// <param name="param">The parameter of the new point at start.</param>
         /// <param name="reparametrized"> Indicates if the curve domain is normalized [0 - 1]. </param>
         /// <returns> The closed curve with a new point at start location. </returns>
-        public static Curve SeamAtParam(Curve curve, double param, bool reparametrized = false)
+        public static void SeamAtParam(this Curve curve, double param, bool reparametrized = false)
         {
             if (curve.IsClosed == false)
             {
                 throw new Exception("The method Seam at Param requires a closed curve.");
             }
 
-            Curve result = curve.DuplicateCurve();
-
             if (reparametrized == true)
             {
-                result.Domain = new Interval(0, 1);
+                curve.Domain = new Interval(0, 1);
             }
 
-            if (param >= result.Domain.T0 & param <= result.Domain.T1)
+            if (param >= curve.Domain.T0 & param <= curve.Domain.T1)
             {
-                result.ChangeClosedCurveSeam(param);
-                result = Curves.ResetDomain(result);
+                curve.ChangeClosedCurveSeam(param);
+                curve.ResetDomain();
             }
             else 
             {
                 throw new Exception("Parameter is not inside curve domain.");
             }
-
-            return result;
         }
 
         /// <summary>
@@ -59,7 +56,7 @@ namespace SaladSlicer.Geometry.Seams
         /// <param name="length"> The position of the new start point defined by the length. </param>
         /// <param name="normalized"> Indicates if the length factor is normalized [0 - 1] </param>
         /// <returns> The closed curve with a new point at start location. </returns>
-        public static Curve SeamAtLength(Curve curve, double length, bool normalized = false)
+        public static void SeamAtLength(this Curve curve, double length, bool normalized = false)
         {
             if (curve.IsClosed == false)
             {
@@ -82,22 +79,19 @@ namespace SaladSlicer.Geometry.Seams
                 throw new Exception("Normalized length factor cannot be larger than 1."); 
             }
 
-            Curve result = curve.DuplicateCurve();
             double param;
 
             if (normalized == true)
             {
-                result.NormalizedLengthParameter(length, out param);
+                curve.NormalizedLengthParameter(length, out param);
             }
             else
             {
-                result.LengthParameter(length, out param);
+                curve.LengthParameter(length, out param);
             }
 
-            result.ChangeClosedCurveSeam(param);
-            result = Curves.ResetDomain(result);
-
-            return result;
+            curve.ChangeClosedCurveSeam(param);
+            curve.ResetDomain();
         }
 
         /// <summary>
@@ -105,21 +99,16 @@ namespace SaladSlicer.Geometry.Seams
         /// </summary>
         /// <param name="curve"> The closed curve to change the point at start from. </param>
         /// <param name="point"> The test point. </param>
-        /// <returns> The closed curve with a new point at start location. </returns>
-        public static Curve SeamAtClosestPoint(Curve curve, Point3d point)
+        public static void SeamAtClosestPoint(this Curve curve, Point3d point)
         {
             if (curve.IsClosed == false)
             {
                 throw new Exception("The method Seam at Closest Point requires a closed curve.");
             }
 
-            Curve result = curve.DuplicateCurve();
-
-            result.ClosestPoint(point, out double param);
-            result.ChangeClosedCurveSeam(param);
-            result = Curves.ResetDomain(result);
-
-            return result;
+            curve.ClosestPoint(point, out double param);
+            curve.ChangeClosedCurveSeam(param);
+            curve.ResetDomain();
         }
 
         /// <summary>
@@ -128,7 +117,7 @@ namespace SaladSlicer.Geometry.Seams
         /// <param name="curve"> The closed curve to change the point at start from. </param>
         /// <param name="guide"> Guiding curve. </param>
         /// <returns> The closed curve with a new point at start location. </returns>
-        public static Curve SeamClosestToCurve(Curve curve, Curve guide)
+        public static void SeamClosestToCurve(this Curve curve, Curve guide)
         {
             if (curve.IsClosed == false)
             {
@@ -136,9 +125,7 @@ namespace SaladSlicer.Geometry.Seams
             }
 
             curve.ClosestPoints(guide, out Point3d point, out _);
-            Curve result = SeamAtClosestPoint(curve, point);
-
-            return result;
+            curve.SeamAtClosestPoint(point);
         }
 
         /// <summary>
@@ -148,7 +135,7 @@ namespace SaladSlicer.Geometry.Seams
         /// <param name="curve"> The closed curve to change the point at start from. </param>
         /// <param name="plane"> The intersection plane. </param>
         /// <returns> The closed curve with a new point at start location. </returns>
-        public static Curve SeamAtClosestPlaneIntersection(Curve curve, Plane plane)
+        public static void SeamAtClosestPlaneIntersection(this Curve curve, Plane plane)
         {
             CurveIntersections intersections = Intersection.CurvePlane(curve, plane, 0.0);
             
@@ -180,7 +167,7 @@ namespace SaladSlicer.Geometry.Seams
                     }
                 }
 
-                return SeamAtClosestPoint(curve, closestPoint);
+                curve.SeamAtClosestPoint(closestPoint);
             }
         }
         #endregion
@@ -194,8 +181,7 @@ namespace SaladSlicer.Geometry.Seams
         /// <returns> List with closed curves with a new point at start. </returns>
         public static List<Curve> AlignSeamsByClosestPoint(IList<Curve> curves)
         {
-            List<Curve> result = new List<Curve>() { };
-            result.Add(curves[0].DuplicateCurve());
+            List<Curve> result = curves.ToList().ConvertAll(item => item.DuplicateCurve());
 
             Point3d testPoint = curves[0].PointAtStart;
             curves[0].ClosestPoint(testPoint, out double t);
@@ -204,7 +190,7 @@ namespace SaladSlicer.Geometry.Seams
             {
                 testPoint = curves[i - 1].PointAt(t);
                 curves[i].ClosestPoint(testPoint, out t);
-                result.Add(SeamAtParam(curves[i], t));
+                result[i].SeamAtParam(t);
             }
 
             return result;
@@ -219,11 +205,11 @@ namespace SaladSlicer.Geometry.Seams
         /// <returns> List with closed curves with a new point at start. </returns>
         public static List<Curve> AlignSeamsAlongCurve(IList<Curve> curves, Curve guide)
         {
-            List<Curve> result = new List<Curve>() { };
+            List<Curve> result = curves.ToList().ConvertAll(item => item.DuplicateCurve());
 
             for (int i = 0; i < curves.Count; i++)
             {
-                result.Add(SeamClosestToCurve(curves[i], guide));
+                curves[i].SeamClosestToCurve(guide);
             }    
 
             return result;
@@ -239,11 +225,11 @@ namespace SaladSlicer.Geometry.Seams
 
         public static List<Curve> AlignSeamsAlongClosestPlaneIntersection(IList<Curve> curves, Plane plane)
         {
-            List<Curve> result = new List<Curve>() { };
+            List<Curve> result = curves.ToList().ConvertAll(item => item.DuplicateCurve());
 
             for (int i = 0; i < curves.Count; i++)
             {
-                result.Add(SeamAtClosestPlaneIntersection(curves[i], plane));
+                curves[i].SeamAtClosestPlaneIntersection(plane);
             }
 
             return result;

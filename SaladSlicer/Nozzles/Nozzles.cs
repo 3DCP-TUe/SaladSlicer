@@ -456,8 +456,7 @@ namespace SaladSlicer.Nozzles
         /// <returns> The loft betweeon two curves. </returns>
         private static Brep Loft(Curve curve1, Curve curve2)
         {
-            curve2 = Curves.AlignCurve(curve2, curve1);
-            curve1 = Locations.SeamAtClosestPoint(curve1, curve1.PointAtStart);
+            curve2.AlignCurve(curve1);
 
             Brep[] breps = (Brep.CreateFromLoft(new List<Curve>() { curve1, curve2 }, Point3d.Unset, Point3d.Unset, LoftType.Normal, false));
 
