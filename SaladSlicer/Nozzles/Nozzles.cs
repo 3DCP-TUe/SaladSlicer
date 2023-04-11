@@ -12,6 +12,7 @@ using Rhino.Geometry;
 using Rhino.Geometry.Intersect;
 // SaladSlicer
 using SaladSlicer.Geometry;
+using SaladSlicer.Geometry.Seams;
 
 namespace SaladSlicer.Nozzles
 {
@@ -43,6 +44,10 @@ namespace SaladSlicer.Nozzles
             {
                 throw new Exception("The defined lengths must be larger than 0.");
             }
+
+            length1 = Math.Max(0, length1);
+            length2 = Math.Max(0, length2);
+            length3 = Math.Max(0, length3);
 
             Plane plane1 = new Plane(new Point3d(0, 0, 0), Vector3d.XAxis, Vector3d.YAxis);
             Plane plane2 = new Plane(new Point3d(0, 0, length1), Vector3d.XAxis, Vector3d.YAxis);
@@ -89,7 +94,7 @@ namespace SaladSlicer.Nozzles
             #region gap
             if (gap > 0)
             {
-                Brep box = new BoundingBox(-gap / 2, -outerDiameter / 2 - 5, -5, gap / 2, outerDiameter / 2 + 5, length1).ToBrep();
+                Brep box = new BoundingBox(-gap / 2, -outerDiameter / 2 - wallThickness - 5, -5, gap / 2, outerDiameter / 2 + wallThickness + 5, length1).ToBrep();
                 result = Brep.CreateBooleanDifference(result, box, _tolerance)[0];
             }
             #endregion
@@ -120,6 +125,11 @@ namespace SaladSlicer.Nozzles
                 throw new Exception("The defined lengths must be larger than 0.");
             }
 
+            length1 = Math.Max(0, length1);
+            length2 = Math.Max(0, length2);
+            length3 = Math.Max(0, length3);
+            length4 = Math.Max(0, length4);
+
             Plane plane1 = new Plane(new Point3d(0, 0, 0), Vector3d.XAxis, Vector3d.YAxis);
             Plane plane2 = new Plane(new Point3d(0, 0, length1), Vector3d.XAxis, Vector3d.YAxis);
             Plane plane3 = new Plane(new Point3d(0, 0, length1 + length2), Vector3d.XAxis, Vector3d.YAxis);
@@ -143,8 +153,18 @@ namespace SaladSlicer.Nozzles
             // Fillet edges
             if (filletRadius > 0.0)
             {
-                List<double> radius = new List<double>() { filletRadius, filletRadius };
-                outerShape = Brep.CreateFilletEdges(outerShape, new List<int>() { 6, 8 }, radius, radius, BlendType.Fillet, RailType.RollingBall, _tolerance)[0];
+                // Find edge 1
+                Point3d point1 = new Point3d(0, boxDepth / 2, plane5.Origin.Z);
+                int index1 = outerShape.Edges.ToList().FindIndex(item => item.PointAt(item.Domain.Mid) == point1);
+
+                // Find edge 2
+                Point3d point2 = new Point3d(0, -boxDepth / 2, plane5.Origin.Z);
+                int index2 = outerShape.Edges.ToList().FindIndex(item => item.PointAt(item.Domain.Mid) == point2);
+
+                List<double> radii = new List<double>() { filletRadius, filletRadius };
+                List<int> edges = new List<int>() { index1, index2 };
+
+                outerShape = Brep.CreateFilletEdges(outerShape, edges, radii, radii, BlendType.Fillet, RailType.RollingBall, _tolerance)[0];
             }
             #endregion
 
@@ -223,6 +243,11 @@ namespace SaladSlicer.Nozzles
             {
                 throw new Exception("The defined lengths must be larger than 0.");
             }
+
+            length1 = Math.Max(0, length1);
+            length2 = Math.Max(0, length2);
+            length3 = Math.Max(0, length3);
+            length4 = Math.Max(0, length4);
 
             Plane plane1 = new Plane(new Point3d(0, 0, 0), Vector3d.XAxis, Vector3d.YAxis);
             Plane plane2 = new Plane(new Point3d(0, 0, length1), Vector3d.XAxis, Vector3d.YAxis);
@@ -308,7 +333,7 @@ namespace SaladSlicer.Nozzles
             #region gap
             if (gap > 0)
             {
-                Brep box = new BoundingBox(-gap / 2, -outerDiameter / 2 - 5, -5, gap / 2, outerDiameter / 2 + 5, length1).ToBrep();
+                Brep box = new BoundingBox(-gap / 2, -outerDiameter / 2 - wallThickness - 5, -5, gap / 2, outerDiameter / 2 + wallThickness + 5, length1).ToBrep();
                 result = Brep.CreateBooleanDifference(result, box, _tolerance)[0];
             }
             #endregion
@@ -431,6 +456,9 @@ namespace SaladSlicer.Nozzles
         /// <returns> The loft betweeon two curves. </returns>
         private static Brep Loft(Curve curve1, Curve curve2)
         {
+            curve2 = Curves.AlignCurve(curve2, curve1);
+            curve1 = Locations.SeamAtClosestPoint(curve1, curve1.PointAtStart);
+
             Brep[] breps = (Brep.CreateFromLoft(new List<Curve>() { curve1, curve2 }, Point3d.Unset, Point3d.Unset, LoftType.Normal, false));
 
             if (breps.Length == 0)

@@ -35,7 +35,7 @@ namespace SaladSlicer.Geometry
         /// Returns the number of closed curves in a list of curves
         /// </summary>
         /// <param name="curves">The list of curves</param>
-        /// <returns></returns>
+        /// <returns> The number of closed curves. </returns>
         public static double NumberClosed(IList<Curve> curves)
         {
             double numberClosed = 0;
@@ -55,8 +55,8 @@ namespace SaladSlicer.Geometry
         /// <summary>
         /// Reverses every other curve in a list of curves, starting with the second.
         /// </summary>
-        /// <param name="curves">List of curves</param>
-        /// <returns></returns>
+        /// <param name="curves"> List of curves. </param>
+        /// <returns> The alternated curves. </returns>
         public static List<Curve> AlternateCurves(IList<Curve> curves)
         {
             List<Curve> result = new List<Curve>() { };
@@ -75,10 +75,10 @@ namespace SaladSlicer.Geometry
         }
 
         /// <summary>
-        /// Returns a list of starting frames from a list of curves
+        /// Returns a list of starting frames from a list of curves.
         /// </summary>
-        /// <param name="curves">List of curves</param>
-        /// <returns></returns>
+        /// <param name="curves"> List of curves. </param>
+        /// <returns> The list with start frames. </returns>
         public static List<Plane> GetStartFrames(IList<Curve> curves)
         {
             List<Plane> startFrames = new List<Plane>();
@@ -95,10 +95,10 @@ namespace SaladSlicer.Geometry
         }
 
         /// <summary>
-        /// Returns a list of end frames from a list of curves
+        /// Returns a list of end frames from a list of curves.
         /// </summary>
-        /// <param name="curves">List of curves</param>
-        /// <returns></returns>
+        /// <param name="curves"> List of curves. </param>
+        /// <returns> The list with end frames. </returns>
         public static List<Plane> GetEndFrames(IList<Curve> curves)
         {
             List<Plane> endFrames = new List<Plane>();
@@ -117,9 +117,9 @@ namespace SaladSlicer.Geometry
         /// <summary>
         /// Joins a list of curves and a list of transitions and return a single curve
         /// </summary>
-        /// <param name="curves">List of curves</param>
-        /// <param name="transitions">List of transitions</param>
-        /// <returns></returns>
+        /// <param name="curves"> List of curves. </param>
+        /// <param name="transitions"> List of transitions. </param>
+        /// <returns> The joined curve. </returns>
         public static Curve MergeCurves(IList<Curve> curves, IList<Curve> transitions)
         {
             List<Curve> weave = WeaveCurves(curves, transitions);
@@ -159,8 +159,11 @@ namespace SaladSlicer.Geometry
         }
 
         /// <summary>
-        /// Splits (divides) the curve at a specified length. The length must be in the interior of the curve.
+        /// Splits (divides) the curve at a specified length.
         /// </summary>
+        /// <remarks>
+        /// The length must be in the interior of the curve.
+        /// </remarks>
         /// <param name="length"> The specified length. </param>
         /// <returns> The collection with split curves. </returns>
         public static Curve[] SplitAtLength(Curve curve, double length)
@@ -178,8 +181,10 @@ namespace SaladSlicer.Geometry
         }
 
         /// <summary>
-        /// Returns a list with aligned curves. 
+        /// Returns a list with aligned curves.  
+        /// <remarks>
         /// Checks the direction of all curves and aligns (reverses) them if necessary. 
+        /// </remarks>
         /// </summary>
         /// <param name="curves"> List with curves. </param>
         /// <returns> List with aligned curves. </returns>
@@ -207,14 +212,38 @@ namespace SaladSlicer.Geometry
         }
 
         /// <summary>
+        /// Returns a curve that is alinged with another curve.
+        /// </summary>
+        /// <remarks>
+        /// Checks the direction of the curve and reverses them if necessary. 
+        /// </remarks>
+        /// <param name="curve1"> The curve to align. </param>
+        /// <param name="curve2"> The curve to check againts. </param>
+        /// <returns> The aligned curve. </returns>
+        public static Curve AlignCurve(Curve curve1, Curve curve2)
+        {
+            Curve result = curve1.DuplicateCurve();
+
+            if (!Curve.DoDirectionsMatch(curve1, curve2))
+            {
+                result.Reverse();
+                result.Domain = curve1.Domain;
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Returns a curve that is an interpolation between two curves.
+        /// </summary>
+        /// <remarks>
         /// The start point of the interpolated curve is equal to the start point of the first curve.
         /// The end point of the interpolated curve is equal to the end point of the second curve.
-        /// </summary>
+        /// </remarks>
         /// <param name="curve1"> The first curve. </param>
         /// <param name="curve2"> The second curve. </param>
         /// <param name="tolerance"> The tolarance defined as the distance between interpolation points. </param>
-        /// <returns></returns>
+        /// <returns> The interpolated curve. </returns>
         public static Curve InterpolateCurves(Curve curve1, Curve curve2, double tolerance = 1.0)
         {
             List<Point3d> points = new List<Point3d>() { };
