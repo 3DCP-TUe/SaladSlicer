@@ -66,12 +66,12 @@ Salad Slicer
 
 Copyright (c) 2021-2023 [The Salad Slicer contributors](https://github.com/3DCP-TUe/SaladSlicer/graphs/contributors)
 
-Sald Slicer is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License version 3.0 as published by the Free Software Foundation. 
+Sald Slicer is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License version 3.0 as published by the Free Software Foundation. 
 
-Salad Slicer is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+Salad Slicer is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public License along with Salad Slicer; If not, see <http://www.gnu.org/licenses/>.
+You should have received a copy of the GNU General Public License along with Salad Slicer; If not, see <http://www.gnu.org/licenses/>.
 
-@license LGPL-3.0 <https://www.gnu.org/licenses/lgpl-3.0.html>
+@license GPL-3.0 <https://www.gnu.org/licenses/gpl-3.0.html>
 
 Contact us if you want to obtain a copy of the source code with a different license. 
