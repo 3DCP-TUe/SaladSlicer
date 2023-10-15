@@ -9,7 +9,7 @@
   <img src="https://img.shields.io/github/v/release/3DCP-TUe/SaladSlicer?label=latest&include_prereleases">
   <img src="https://img.shields.io/github/downloads/3DCP-TUe/SaladSlicer/total?">
   <img src="https://img.shields.io/github/license/3DCP-TUe/SaladSlicer?">
-  <a href="https://zenodo.org/badge/latestdoi/348778701"><img src="https://zenodo.org/badge/348778701.svg" alt="DOI"></a>
+  <a href="https://zenodo.org/doi/10.5281/zenodo.7818240"><img src="https://zenodo.org/badge/348778701.svg" alt="DOI"></a>
 </p>
 
 ---
