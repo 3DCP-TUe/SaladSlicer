@@ -9,11 +9,12 @@ using System.ComponentModel;
 using System.Collections.Generic;
 // Grasshopper Libs
 using Grasshopper.Kernel;
+using Grasshopper.Kernel.Types;
+using Grasshopper.Kernel.Data;
 // Salad Slicer Libs
-using SaladSlicer.Slicers;
-using SaladSlicer.Gh.Parameters.Slicers;
-using SaladSlicer.Gh.Utils ;
 using SaladSlicer.Interfaces;
+using SaladSlicer.Gh.Parameters.Slicers;
+using SaladSlicer.Gh.Goos.Slicers;
 
 namespace SaladSlicer.Gh.Components.Slicers
 {
@@ -39,7 +40,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
-            pManager.AddParameter(new Param_SlicerObject(), "Slicer Object", "SO", "Slicer object.", GH_ParamAccess.item);
+            pManager.AddParameter(new Param_SlicerObject(), "Slicer Object", "SO", "Slicer object.", GH_ParamAccess.tree);
         }
 
         /// <summary>
@@ -56,33 +57,54 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// <param name="DA">The DA object can be used to retrieve data from input parameters and to store data in output parameters.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
-            // Declare variable of input parameters
-            ISlicer slicer = new ClosedPlanar2DSlicer();
+            // Input variables
+            GH_Structure<GH_SlicerObject> slicers;
 
-            // Access the input parameters individually. 
-            if (!DA.GetData(0, ref slicer)) return;
+            // Catch the input data
+            if (!DA.GetDataTree(0, out slicers)) return;
 
-            // Declare the output variables
-            List<List<double>> dist = new List<List<double>>();
+            // Initialize component output
+            GH_Structure<GH_Number> distances = new GH_Structure<GH_Number>();
 
-            // Calculate distances
-            try
+            // Fill the output tree
+            if (slicers.Branches.Count != 0)
             {
-                dist = slicer.GetDistancesAlongContours();
-            }
-            catch (WarningException w)
-            {
-                AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, w.Message);
-            }
-            catch (Exception e)
-            {
-                AddRuntimeMessage(GH_RuntimeMessageLevel.Error, e.Message);
+                for (int i = 0; i < slicers.Branches.Count; i++)
+                {
+                    for (int j = 0; j < slicers.Branches[i].Count; j++)
+                    {
+                        ISlicer slicer = slicers.Branches[i][j].Value;
+
+                        GH_Path path = new GH_Path(i, j);
+                        path = path.AppendElement(0);
+
+                        List<List<double>> temp = new List<List<double>>() { };
+
+                        try
+                        {
+                            temp = slicer.GetDistancesAlongContours();
+                        }
+                        catch (WarningException w)
+                        {
+                            AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, w.Message);
+                        }
+                        catch (Exception e)
+                        { 
+                            AddRuntimeMessage(GH_RuntimeMessageLevel.Error, e.Message);
+                        }
+
+                        for (int k = 0; k < temp.Count; k++)
+                        {
+                            distances.AppendRange(temp[k].ConvertAll(item => new GH_Number(item)), path);
+                            path = path.Increment(path.Length - 1);
+                        }
+                    }
+                }
             }
 
             // Assign the output parameters
-            DA.SetDataTree(0, HelperMethods.ListInListToDataTree(dist));
+            DA.SetDataTree(0, distances);
         }
-
 
         /// <summary>
         /// Gets the exposure of this object in the Graphical User Interface.

@@ -11,11 +11,12 @@ using System.Collections.Generic;
 using Rhino.Geometry;
 // Grasshopper Libs
 using Grasshopper.Kernel;
+using Grasshopper.Kernel.Types;
+using Grasshopper.Kernel.Data;
 // Salad Slicer Libs
-using SaladSlicer.Slicers;
-using SaladSlicer.Gh.Parameters.Slicers;
-using SaladSlicer.Gh.Utils ;
 using SaladSlicer.Interfaces;
+using SaladSlicer.Gh.Parameters.Slicers;
+using SaladSlicer.Gh.Goos.Slicers;
 
 namespace SaladSlicer.Gh.Components.Slicers
 {
@@ -41,8 +42,8 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
-            pManager.AddParameter(new Param_SlicerObject(), "Slicer Object", "SO", "Slicer object.", GH_ParamAccess.item);
-            pManager.AddPlaneParameter("Plane", "P", "Plane (printbed) to calculate distance to for the frames in the first layer.", GH_ParamAccess.item, Plane.WorldXY);
+            pManager.AddParameter(new Param_SlicerObject(), "Slicer Object", "SO", "Slicer object.", GH_ParamAccess.tree);
+            pManager.AddPlaneParameter("Plane", "P", "Plane (printbed) to calculate distance to for the frames in the first layer.", GH_ParamAccess.tree, Plane.WorldXY);
         }
 
         /// <summary>
@@ -62,39 +63,78 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// <param name="DA">The DA object can be used to retrieve data from input parameters and to store data in output parameters.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
-            // Declare variable of input parameters
-            ISlicer slicer = new ClosedPlanar2DSlicer();
-            Plane plane = new Plane();
+            // Input variables
+            GH_Structure<GH_SlicerObject> slicers;
+            GH_Structure<GH_Plane> planes;
 
-            // Access the input parameters individually. 
-            if (!DA.GetData(0, ref slicer)) return;
-            if (!DA.GetData(1, ref plane)) return;
+            // Catch the input data
+            if (!DA.GetDataTree(0, out slicers)) return;
+            if (!DA.GetDataTree(1, out planes)) return;
 
-            // Declare the output variables
-            List<List<double>> dist = new List<List<double>>();
-            List<List<double>> dx = new List<List<double>>();
-            List<List<double>> dy = new List<List<double>>();
-            List<List<double>> dz = new List<List<double>>();
+            // Initialize component output
+            GH_Structure<GH_Number> dist = new GH_Structure<GH_Number>();
+            GH_Structure<GH_Number> dx = new GH_Structure<GH_Number>();
+            GH_Structure<GH_Number> dy = new GH_Structure<GH_Number>();
+            GH_Structure<GH_Number> dz = new GH_Structure<GH_Number>();
 
-            // Calculate distances
-            try
+            // Fill the output tree
+            int maxBranches = Math.Max(slicers.Branches.Count, planes.Branches.Count);
+
+            for (int i = 0; i < maxBranches; i++)
             {
-                dist = slicer.GetDistanceToPreviousLayer(plane, out dx, out dy, out dz);
-            }
-            catch (WarningException w)
-            {
-                AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, w.Message);
-            }
-            catch (Exception e)
-            {
-                AddRuntimeMessage(GH_RuntimeMessageLevel.Error, e.Message);
+                int iSlicer = Math.Min(i, slicers.Branches.Count - 1);
+                int iPlane = Math.Min(i, planes.Branches.Count - 1);
+
+                List<GH_SlicerObject> slicerBranch = slicers.Branches[iSlicer];
+                List<GH_Plane> planeBranch = planes.Branches[iPlane];
+
+                int maxBranchLength = Math.Max(slicerBranch.Count, planeBranch.Count);
+
+                for (int j = 0; j < maxBranchLength; j++)
+                {
+                    int jSlicer = Math.Min(j, slicerBranch.Count - 1);
+                    int jPlane = Math.Min(j, planeBranch.Count - 1);
+
+                    ISlicer slicer = slicerBranch[jSlicer].Value;
+                    Plane plane = planeBranch[jPlane].Value;
+
+                    GH_Path path = new GH_Path(i, j);
+                    path = path.AppendElement(0);
+
+                    List<List<double>> tempDist = new List<List<double>>() { };
+                    List<List<double>> tempX = new List<List<double>>() { };
+                    List<List<double>> tempY = new List<List<double>>() { };
+                    List<List<double>> tempZ = new List<List<double>>() { };
+
+                    try
+                    {
+                        tempDist = slicer.GetDistanceToPreviousLayer(plane, out tempX, out tempY, out tempZ);
+                    }
+                    catch (WarningException w)
+                    {
+                        AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, w.Message);
+                    }
+                    catch (Exception e)
+                    {
+                        AddRuntimeMessage(GH_RuntimeMessageLevel.Error, e.Message);
+                    }
+
+                    for (int k = 0; k < tempDist.Count; k++)
+                    {
+                        dist.AppendRange(tempDist[k].ConvertAll(item => new GH_Number(item)), path);
+                        dx.AppendRange(tempX[k].ConvertAll(item => new GH_Number(item)), path);
+                        dy.AppendRange(tempY[k].ConvertAll(item => new GH_Number(item)), path);
+                        dz.AppendRange(tempZ[k].ConvertAll(item => new GH_Number(item)), path);
+                        path = path.Increment(path.Length - 1);
+                    }
+                }
             }
 
             // Assign the output parameters
-            DA.SetDataTree(0, HelperMethods.ListInListToDataTree(dist));
-            DA.SetDataTree(1, HelperMethods.ListInListToDataTree(dx));
-            DA.SetDataTree(2, HelperMethods.ListInListToDataTree(dy));
-            DA.SetDataTree(3, HelperMethods.ListInListToDataTree(dz));
+            DA.SetDataTree(0, dist);
+            DA.SetDataTree(1, dx);
+            DA.SetDataTree(2, dy);
+            DA.SetDataTree(3, dz);
         }
 
         /// <summary>

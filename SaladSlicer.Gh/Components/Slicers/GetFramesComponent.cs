@@ -7,11 +7,12 @@
 using System;
 // Grasshopper Libs
 using Grasshopper.Kernel;
+using Grasshopper.Kernel.Types;
+using Grasshopper.Kernel.Data;
 // Salad Slicer Libs
-using SaladSlicer.Slicers;
 using SaladSlicer.Interfaces;
 using SaladSlicer.Gh.Parameters.Slicers;
-using SaladSlicer.Gh.Utils;
+using SaladSlicer.Gh.Goos.Slicers;
 
 namespace SaladSlicer.Gh.Components.Slicers
 {
@@ -37,7 +38,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
-            pManager.AddParameter(new Param_SlicerObject(), "Slicer Object", "SO", "Slicer object.", GH_ParamAccess.item);
+            pManager.AddParameter(new Param_SlicerObject(), "Slicer Object", "SO", "Slicer object.", GH_ParamAccess.tree);
         }
 
         /// <summary>
@@ -54,14 +55,35 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// <param name="DA">The DA object can be used to retrieve data from input parameters and to store data in output parameters.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
-            // Declare variable of input parameters
-            ISlicer slicer = new ClosedPlanar2DSlicer();
+            // Input variables
+            GH_Structure<GH_SlicerObject> slicers;
 
-            // Access the input parameters individually. 
-            if (!DA.GetData(0, ref slicer)) return;
+            // Catch the input data
+            if (!DA.GetDataTree(0, out slicers)) return;
+
+            // Initialize component output
+            GH_Structure<GH_Plane> planes = new GH_Structure<GH_Plane>();
+
+            // Fill the output tree
+            for (int i = 0; i < slicers.Branches.Count; i++)
+            {
+                for (int j = 0; j < slicers.Branches[i].Count; j++)
+                {
+                    ISlicer slicer = slicers.Branches[i][j].Value;
+
+                    GH_Path path = new GH_Path(i, j);
+                    path = path.AppendElement(0);
+
+                    for (int k = 0; k < slicer.FramesByLayer.Count; k++)
+                    {
+                        planes.AppendRange(slicer.FramesByLayer[k].ConvertAll(item => new GH_Plane(item)), path);
+                        path = path.Increment(path.Length - 1);
+                    }
+                }
+            }
 
             // Assign the output parameters
-            DA.SetDataTree(0, HelperMethods.ListInListToDataTree(slicer.FramesByLayer));
+            DA.SetDataTree(0, planes);
         }
 
         /// <summary>
