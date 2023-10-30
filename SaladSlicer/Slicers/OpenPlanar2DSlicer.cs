@@ -412,21 +412,20 @@ namespace SaladSlicer.Slicers
         /// Returns distance of every frame along the path.
         /// </summary>
         /// <param name="type"> The path type. </param>
-        /// <returns> List with distances. </returns>
-        public List<double> GetDistancesAlongPath(PathType type)
+        /// <returns> Array with distances. </returns>
+        public double[] GetDistancesAlongPath(PathType type)
         {
             if (type == PathType.Linear)
             {
-                List<double> distances = new List<double>() { };
-                distances.Add(0.0);
+                double[] distances = new double[Frames.Count];
                 double distance = 0.0;
 
-                List<Plane> frames = this.Frames;
+                distances[0] = distance;
 
-                for (int i = 1; i < frames.Count; i++)
+                for (int i = 1; i < Frames.Count; i++)
                 {
-                    distance += frames[i].Origin.DistanceTo(frames[i - 1].Origin);
-                    distances.Add(distance);
+                    distance += Frames[i].Origin.DistanceTo(Frames[i - 1].Origin);
+                    distances[i] = distance;
                 }
 
                 return distances;

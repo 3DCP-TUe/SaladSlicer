@@ -62,8 +62,8 @@ namespace SaladSlicer.Interfaces
         /// Returns distance of every frame along the path.
         /// </summary>
         /// <param name="type"> The path type. </param>
-        /// <returns> List with distances. </returns>
-        List<double> GetDistancesAlongPath(PathType type);
+        /// <returns> Array with distances. </returns>
+        double[] GetDistancesAlongPath(PathType type);
 
         /// <summary>
         /// Returns distance of every frame along the curve.
@@ -76,8 +76,8 @@ namespace SaladSlicer.Interfaces
         /// </summary>
         /// <param name="plane"> Plane to calculate the closest distance to for the first layer. </param>
         /// <param name="dx"> Distance in x-direction. </param>
-        /// <param name="dy"> Distance in y-direction.</param>
-        /// <param name="dz"> Distance in z-direction.</param>
+        /// <param name="dy"> Distance in y-direction. </param>
+        /// <param name="dz"> Distance in z-direction. </param>
         /// <returns> List with distaces. </returns>
         List<List<double>> GetDistanceToPreviousLayer(Plane plane, out List<List<double>> dx, out List<List<double>> dy, out List<List<double>> dz);
 
