@@ -30,7 +30,7 @@ namespace SaladSlicer.Gh.Parameters.Slicers
               "Defines a Curve Slicer object.", // Description
               "Salad Slicer", // Category
               "Parameters")) // Subcategory)
-        { 
+        {
         }
 
         #region properties

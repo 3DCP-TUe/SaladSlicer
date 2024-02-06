@@ -42,7 +42,7 @@ namespace SaladSlicer.Gh.Components.Utilities
         /// </summary>
         protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
-            pManager.AddNumberParameter("Velocity", "V", "Velocity in mm/s as a number.",  GH_ParamAccess.item);
+            pManager.AddNumberParameter("Velocity", "V", "Velocity in mm/s as a number.", GH_ParamAccess.item);
         }
 
         /// <summary>

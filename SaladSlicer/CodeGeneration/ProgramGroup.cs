@@ -201,8 +201,8 @@ namespace SaladSlicer.CodeGeneration
         public bool IsValid
         {
             get
-            { 
-                if (_objects == null) { return false; } 
+            {
+                if (_objects == null) { return false; }
                 return true;
             }
         }

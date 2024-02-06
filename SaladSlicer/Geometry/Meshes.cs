@@ -23,7 +23,7 @@ namespace SaladSlicer.Geometry
         /// <param name="mesh"> The mesh. </param>
         /// <param name="distance"> The layer distance. </param>
         /// <returns> The list with planar contours. </returns>
-        public static List<List<Curve>> GetPlanarContoursByDistance(Mesh mesh, double distance) 
+        public static List<List<Curve>> GetPlanarContoursByDistance(Mesh mesh, double distance)
         {
             List<List<Curve>> result = new List<List<Curve>>();
 
@@ -47,10 +47,10 @@ namespace SaladSlicer.Geometry
             // Slice
             bool stop = false;
             int counter = 0;
-                
+
             while (stop == false)
             {
-                plane.OriginZ = min + counter * distance;
+                plane.OriginZ = min + (counter * distance);
                 Curve[] curves = Mesh.CreateContourCurves(mesh, plane);
 
                 if (curves.Length != 0)
@@ -66,7 +66,7 @@ namespace SaladSlicer.Geometry
 
             return result;
         }
-        
+
         /// <summary>
         /// Returns a list with contours by slicing a mesh based on given layer heights.
         /// </summary>
@@ -127,7 +127,7 @@ namespace SaladSlicer.Geometry
             for (int i = 0; i < planes.Length; i++)
             {
                 Curve[] curves = Mesh.CreateContourCurves(mesh, planes[i]);
-                
+
                 if (curves.Length != 0)
                 {
                     result.Add(curves.ToList());

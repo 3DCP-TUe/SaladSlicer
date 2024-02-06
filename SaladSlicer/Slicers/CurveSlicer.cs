@@ -7,8 +7,6 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
-using System.Security.Permissions;
 // Rhino Libs
 using Rhino.Geometry;
 // Slicer Salad Libs
@@ -156,7 +154,7 @@ namespace SaladSlicer.Slicers
             {
                 programGenerator.Program.AddRange(coordinates[i]);
             }
-               
+
             // End
             programGenerator.AddFooter();
         }
@@ -305,16 +303,16 @@ namespace SaladSlicer.Slicers
             double distance = 0;
 
             List<double> distancesTemp = new List<double>() { 0.0 };
-            
+
             for (int j = 1; j < _frames.Count; j++)
             {
                 Point3d point = _frames[j].Origin;
                 distance += point.DistanceTo(_frames[j - 1].Origin);
                 distancesTemp.Add(distance);
             }
-            
+
             distances.Add(distancesTemp);
-            
+
             return distances;
         }
 
@@ -348,15 +346,15 @@ namespace SaladSlicer.Slicers
                 tempy.Add(Math.Abs(point.Y - closestPoint.Y));
                 tempz.Add(Math.Abs(point.Z - closestPoint.Z));
             }
-            
+
             distances.Add(temp);
             dx.Add(tempx);
             dy.Add(tempy);
             dz.Add(tempz);
-            
+
             return distances;
         }
-        
+
         /// Returns a list with curvatures of the path at the frame location.
         /// </summary>
         /// <returns> The list with curvatures. </returns>
@@ -390,7 +388,7 @@ namespace SaladSlicer.Slicers
         /// Returns all the points of the path.
         /// </summary>
         /// <returns> The list with points. </returns>
-        public List<Point3d> GetPoints() 
+        public List<Point3d> GetPoints()
         {
             List<Point3d> points = new List<Point3d>();
 
@@ -421,14 +419,14 @@ namespace SaladSlicer.Slicers
         public bool Transform(Transform xform)
         {
             _curve.Transform(xform);
-            
+
             for (int i = 0; i < _frames.Count; i++)
             {
                 Plane frame = _frames[i];
                 frame.Transform(xform);
                 _frames[i] = frame;
             }
-            
+
             return true;
         }
         #endregion
@@ -488,14 +486,14 @@ namespace SaladSlicer.Slicers
         /// </summary>
         public List<List<Plane>> FramesByLayer
         {
-            get 
+            get
             {
                 List<List<Plane>> result = new List<List<Plane>>
                 {
                     new List<Plane>()
                 };
                 result[0].AddRange(_frames);
-                return result; 
+                return result;
             }
         }
 
@@ -534,7 +532,7 @@ namespace SaladSlicer.Slicers
         /// <summary>
         /// Gets the dictionary with variables that have been added to the object.
         /// </summary>
-        public Dictionary<string, List<List<string>>> AddedVariables 
+        public Dictionary<string, List<List<string>>> AddedVariables
         {
             get { return _addedVariables; }
         }

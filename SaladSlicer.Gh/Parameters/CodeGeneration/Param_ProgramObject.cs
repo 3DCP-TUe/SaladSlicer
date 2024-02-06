@@ -30,7 +30,7 @@ namespace SaladSlicer.Gh.Parameters.CodeGeneration
               "Defines a Program Object.", // Description
               "Salad Slicer", // Category
               "Parameters")) // Subcategory)
-        { 
+        {
         }
 
         #region properties

@@ -7,8 +7,6 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
-using System.Security.Permissions;
 // Rhino Libs
 using Rhino.Geometry;
 // Slicer Salad Libs
@@ -28,7 +26,7 @@ namespace SaladSlicer.Slicers
     public class ClosedPlanarMeshSlicer : IProgram, ISlicer, IGeometry, IAddVariable
     {
         #region fields
-        private Mesh _mesh ;
+        private Mesh _mesh;
         private double _distance;
         private List<Curve> _path = new List<Curve>();
         private List<Curve> _contours = new List<Curve>();
@@ -209,10 +207,10 @@ namespace SaladSlicer.Slicers
             {
                 bool stop = false;
                 int i = 0;
-                
+
                 while (stop == false)
                 {
-                    plane.OriginZ = min + i * _heights[0];
+                    plane.OriginZ = min + (i * _heights[0]);
                     Curve[] curves = Mesh.CreateContourCurves(_mesh, plane);
                     curves = Curve.JoinCurves(curves, 1.0);
 
@@ -280,7 +278,7 @@ namespace SaladSlicer.Slicers
         private void CreateFrames()
         {
             _framesByLayer.Clear();
-            
+
             for (int i = 0; i < _contours.Count; i++)
             {
                 _framesByLayer.Add(new List<Plane>() { });
@@ -319,18 +317,18 @@ namespace SaladSlicer.Slicers
                 // Transitions
                 if (i < _contours.Count - 1)
                 {
-                    n = (int)(_path[i * 2 + 1].GetLength() / _distance);
+                    n = (int)(_path[(i * 2) + 1].GetLength() / _distance);
                     n = Math.Max(2, n);
-                    t = _path[i * 2 + 1].DivideByCount(n, false);
+                    t = _path[(i * 2) + 1].DivideByCount(n, false);
 
                     for (int j = 0; j != t.Length; j++)
                     {
-                        Point3d point = _path[i * 2 + 1].PointAt(t[j]);
+                        Point3d point = _path[(i * 2) + 1].PointAt(t[j]);
 
                         MeshPoint meshPoint = _mesh.ClosestMeshPoint(point, 100.0);
                         Vector3d meshNormal = _mesh.NormalAt(meshPoint);
 
-                        Vector3d x = _path[i * 2 + 1].TangentAt(t[j]);
+                        Vector3d x = _path[(i * 2) + 1].TangentAt(t[j]);
                         Vector3d y = Vector3d.CrossProduct(x, new Vector3d(0, 0, 1));
 
                         double angle1 = Vector3d.VectorAngle(y, meshNormal);
@@ -609,10 +607,10 @@ namespace SaladSlicer.Slicers
                     //Linearly interpolate
                     for (int j = 0; j < _framesInTransitions[i].Count; j++)
                     {
-                        temp.Add(firstDistance + (j + 1) * (secondDistance - firstDistance) / (_framesInTransitions[i].Count + 1));
-                        tempx.Add(firstDistanceX + (j + 1) * (secondDistanceX - firstDistanceX) / (_framesInTransitions[i].Count + 1));
-                        tempy.Add(firstDistanceY + (j + 1) * (secondDistanceY - firstDistanceY) / (_framesInTransitions[i].Count + 1));
-                        tempz.Add(firstDistanceZ + (j + 1) * (secondDistanceZ - firstDistanceZ) / (_framesInTransitions[i].Count + 1));
+                        temp.Add(firstDistance + ((j + 1) * (secondDistance - firstDistance) / (_framesInTransitions[i].Count + 1)));
+                        tempx.Add(firstDistanceX + ((j + 1) * (secondDistanceX - firstDistanceX) / (_framesInTransitions[i].Count + 1)));
+                        tempy.Add(firstDistanceY + ((j + 1) * (secondDistanceY - firstDistanceY) / (_framesInTransitions[i].Count + 1)));
+                        tempz.Add(firstDistanceZ + ((j + 1) * (secondDistanceZ - firstDistanceZ) / (_framesInTransitions[i].Count + 1)));
                     }
                 }
 
@@ -632,7 +630,7 @@ namespace SaladSlicer.Slicers
         {
             List<List<Vector3d>> result = new List<List<Vector3d>>();
 
-            Curve path = GetInterpolatedPath(); 
+            Curve path = GetInterpolatedPath();
 
             for (int i = 0; i < _framesByLayer.Count; i++)
             {
@@ -668,7 +666,7 @@ namespace SaladSlicer.Slicers
         /// Returns all the points of the path.
         /// </summary>
         /// <returns> The list with points. </returns>
-        public List<Point3d> GetPoints() 
+        public List<Point3d> GetPoints()
         {
             List<Point3d> points = new List<Point3d>();
             List<Plane> frames = Frames;
@@ -736,12 +734,12 @@ namespace SaladSlicer.Slicers
             {
                 _path[i].Transform(xform);
             }
-            
+
             for (int i = 0; i < _contours.Count; i++)
             {
                 _contours[i].Transform(xform);
             }
-            
+
             return true;
         }
         #endregion

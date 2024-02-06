@@ -65,7 +65,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
             AbsoluteCoordinate absoluteCoordinate = new AbsoluteCoordinate();
 
             // Create the absolute coordinate
-            try 
+            try
             {
                 absoluteCoordinate = new AbsoluteCoordinate(plane);
             }

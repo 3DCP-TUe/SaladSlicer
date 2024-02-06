@@ -30,7 +30,7 @@ namespace SaladSlicer.Gh
 
         public override Guid Id
         {
-            get {return new Guid("D2501031-EEEB-471D-B266-63B0C4565E52"); }
+            get { return new Guid("D2501031-EEEB-471D-B266-63B0C4565E52"); }
         }
 
         public override string AuthorName

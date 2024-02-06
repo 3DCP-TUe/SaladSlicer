@@ -25,12 +25,12 @@ namespace SaladSlicer.Gh.Utils
         /// <param name="inputIndex">Index of the input to connect the list to</param>
         /// <param name="enumType">Enumeration to take values from</param>
         /// <returns></returns>
-        public static bool CreateValueList(GH_Component component,int inputIndex, Type enumType)
+        public static bool CreateValueList(GH_Component component, int inputIndex, Type enumType)
         {
             if (component.Params.Input[inputIndex].SourceCount == 0)
             {
                 var parameter = component.Params.Input[inputIndex];
-                
+
                 // Creates the empty value list
                 GH_ValueList obj = new GH_ValueList();
                 obj.CreateAttributes();
@@ -47,7 +47,7 @@ namespace SaladSlicer.Gh.Utils
                 }
 
                 // Make point where the valuelist should be created on the canvas
-                if (parameter.Attributes.Pivot.X<1 && parameter.Attributes.Pivot.Y < 1)
+                if (parameter.Attributes.Pivot.X < 1 && parameter.Attributes.Pivot.Y < 1)
                 {
                     obj.Attributes.Pivot = new PointF(component.Attributes.Pivot.X + parameter.Attributes.InputGrip.X - 120, component.Attributes.Pivot.Y + parameter.Attributes.InputGrip.Y - 11);
                 }
@@ -69,7 +69,7 @@ namespace SaladSlicer.Gh.Utils
                 obj.ExpireSolution(true);
 
                 // Return that it's created
-                return true; 
+                return true;
             }
             else
             {

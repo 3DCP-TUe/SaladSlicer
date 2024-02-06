@@ -56,7 +56,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         {
             // Declare variable of input parameters
             ContoursTransitionsSlicer slicer = new ContoursTransitionsSlicer();
-            
+
             // Access the input parameters individually. 
             if (!DA.GetData(0, ref slicer)) return;
 
@@ -98,5 +98,5 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         {
             get { return new Guid("7FD659BC-8C49-4ADC-8007-3A04FE2D33A0"); }
         }
-    } 
+    }
 }

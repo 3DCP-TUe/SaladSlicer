@@ -89,7 +89,7 @@ namespace SaladSlicer.Gh.Components.Slicers
                             AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, w.Message);
                         }
                         catch (Exception e)
-                        { 
+                        {
                             AddRuntimeMessage(GH_RuntimeMessageLevel.Error, e.Message);
                         }
 

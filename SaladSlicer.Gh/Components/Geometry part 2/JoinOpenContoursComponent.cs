@@ -5,7 +5,6 @@
 
 // System Libs
 using System;
-using System.Drawing;
 using System.ComponentModel;
 using System.Collections.Generic;
 // Grasshopper Libs
@@ -25,7 +24,7 @@ namespace SaladSlicer.Gh.Components.Geometry
     {
         #region fields
         private bool _expire = false;
-        private bool _valueListAdded = false; 
+        private bool _valueListAdded = false;
         #endregion
 
         /// <summary>
@@ -112,7 +111,7 @@ namespace SaladSlicer.Gh.Components.Geometry
             DA.SetDataList(1, curvesCopy);
             DA.SetDataList(2, transitions);
         }
-        
+
         /// <summary>
         /// Gets the exposure of this object in the Graphical User Interface.
         /// </summary>

@@ -60,7 +60,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             // Declare variable of input parameters
-            Mesh mesh = new Mesh() ;
+            Mesh mesh = new Mesh();
             double distance = 20.0;
             bool reverse = false;
             List<double> heights = new List<double>();

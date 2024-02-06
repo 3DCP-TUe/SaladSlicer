@@ -7,8 +7,6 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
-using System.Security.Permissions;
 // Rhino Libs
 using Rhino.Geometry;
 // Slicer Salad Libs
@@ -174,8 +172,8 @@ namespace SaladSlicer.Slicers
                 // Transitions
                 if (i < _contours.Count - 1)
                 {
-                    _framesByLayer[i].AddRange(Geometry.Frames.GetFramesByDistanceAndSegment(_path[i * 2 + 1], _distance, false, false));
-                    _framesInTransitions[i].AddRange(Geometry.Frames.GetFramesByDistanceAndSegment(_path[i * 2 + 1], _distance, false, false));
+                    _framesByLayer[i].AddRange(Geometry.Frames.GetFramesByDistanceAndSegment(_path[(i * 2) + 1], _distance, false, false));
+                    _framesInTransitions[i].AddRange(Geometry.Frames.GetFramesByDistanceAndSegment(_path[(i * 2) + 1], _distance, false, false));
                 }
             }
         }
@@ -465,10 +463,10 @@ namespace SaladSlicer.Slicers
                     //Linearly interpolate
                     for (int j = 0; j < _framesInTransitions[i].Count; j++)
                     {
-                        temp.Add(firstDistance + (j + 1) * (secondDistance - firstDistance) / (_framesInTransitions[i].Count + 1));
-                        tempx.Add(firstDistanceX + (j + 1) * (secondDistanceX - firstDistanceX) / (_framesInTransitions[i].Count + 1));
-                        tempy.Add(firstDistanceY + (j + 1) * (secondDistanceY - firstDistanceY) / (_framesInTransitions[i].Count + 1));
-                        tempz.Add(firstDistanceZ + (j + 1) * (secondDistanceZ - firstDistanceZ) / (_framesInTransitions[i].Count + 1));
+                        temp.Add(firstDistance + ((j + 1) * (secondDistance - firstDistance) / (_framesInTransitions[i].Count + 1)));
+                        tempx.Add(firstDistanceX + ((j + 1) * (secondDistanceX - firstDistanceX) / (_framesInTransitions[i].Count + 1)));
+                        tempy.Add(firstDistanceY + ((j + 1) * (secondDistanceY - firstDistanceY) / (_framesInTransitions[i].Count + 1)));
+                        tempz.Add(firstDistanceZ + ((j + 1) * (secondDistanceZ - firstDistanceZ) / (_framesInTransitions[i].Count + 1)));
                     }
                 }
 

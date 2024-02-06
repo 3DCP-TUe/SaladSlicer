@@ -44,7 +44,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
-            pManager.AddParameter(new Param_SetFeedRate(),"Program Object", "PO", "Feedrate as a Program Object.", GH_ParamAccess.item);
+            pManager.AddParameter(new Param_SetFeedRate(), "Program Object", "PO", "Feedrate as a Program Object.", GH_ParamAccess.item);
         }
 
         /// <summary>

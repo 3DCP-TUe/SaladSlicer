@@ -65,12 +65,12 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
 
             // Create the code line
             string newCodeLine = "";
-            
+
             for (int i = 0; i < list.Count; i++)
             {
                 string string2 = "";
-                
-                try 
+
+                try
                 {
                     string2 = list[i].ToSingleString();
                 }
@@ -82,10 +82,10 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
                 {
                     AddRuntimeMessage(GH_RuntimeMessageLevel.Error, error.Message);
                 }
-                
+
                 newCodeLine = $"{newCodeLine} {string2}";
             }
-            
+
             CodeLine result = new CodeLine(newCodeLine);
 
             // Assign the output parameters

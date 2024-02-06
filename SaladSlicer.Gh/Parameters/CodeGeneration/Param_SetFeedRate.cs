@@ -28,7 +28,7 @@ namespace SaladSlicer.Gh.Parameters.CodeGeneration
               "Defines a Feed Rate.", // Description
               "Salad Slicer", // Category
               "Parameters")) // Subcategory)
-        { 
+        {
         }
 
         #region properties

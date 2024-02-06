@@ -30,7 +30,7 @@ namespace SaladSlicer.Gh.Parameters.Slicers
               "Defines an Open Planar Mesh Slicer object.", // Description
               "Salad Slicer", // Category
               "Parameters")) // Subcategory)
-        { 
+        {
         }
 
         #region properties

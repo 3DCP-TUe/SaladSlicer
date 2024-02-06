@@ -41,7 +41,7 @@ namespace SaladSlicer.Gh.Components.Geometry
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
             pManager.AddCurveParameter("Curve", "C", "Curve.", GH_ParamAccess.item);
-            pManager.AddPlaneParameter("Plane", "P", "Plane.",  GH_ParamAccess.item);
+            pManager.AddPlaneParameter("Plane", "P", "Plane.", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace SaladSlicer.Gh.Components.Geometry
             {
                 AddRuntimeMessage(GH_RuntimeMessageLevel.Error, e.Message);
             }
-            
+
             // Assign the output parameters
             DA.SetData(0, result);
         }

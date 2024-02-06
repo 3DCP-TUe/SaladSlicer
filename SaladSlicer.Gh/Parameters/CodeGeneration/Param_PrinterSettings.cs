@@ -28,7 +28,7 @@ namespace SaladSlicer.Gh.Parameters.CodeGeneration
               "Defines the Printer Settings.", // Description
               "Salad Slicer", // Category
               "Parameters")) // Subcategory)
-        { 
+        {
         }
 
         #region properties

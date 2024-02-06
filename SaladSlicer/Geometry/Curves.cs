@@ -45,7 +45,7 @@ namespace SaladSlicer.Geometry
                     numberClosed++;
                 }
             }
-            
+
             return numberClosed;
         }
 
@@ -62,7 +62,7 @@ namespace SaladSlicer.Geometry
             {
                 result[i].Reverse();
             }
-            
+
             return result;
         }
 
@@ -74,7 +74,7 @@ namespace SaladSlicer.Geometry
         public static List<Plane> GetStartFrames(IList<Curve> curves)
         {
             List<Plane> startFrames = new List<Plane>();
-            
+
             for (int i = 0; i < curves.Count; i++)
             {
                 Point3d point = curves[i].PointAtStart;
@@ -94,7 +94,7 @@ namespace SaladSlicer.Geometry
         public static List<Plane> GetEndFrames(IList<Curve> curves)
         {
             List<Plane> endFrames = new List<Plane>();
-            
+
             for (int i = 0; i < curves.Count; i++)
             {
                 Point3d point = curves[i].PointAtEnd;
@@ -102,7 +102,7 @@ namespace SaladSlicer.Geometry
                 Vector3d y = Vector3d.CrossProduct(x, new Vector3d(0, 0, 1));
                 endFrames.Add(new Plane(point, x, y));
             }
-            
+
             return endFrames;
         }
 
@@ -244,7 +244,7 @@ namespace SaladSlicer.Geometry
                 Vector3d delta = point2 - point1;
                 double factor = Convert.ToDouble(i) / Convert.ToDouble(n);
 
-                points.Add(point1 + factor * delta);
+                points.Add(point1 + (factor * delta));
             }
 
             Curve result = Curve.CreateInterpolatedCurve(points, 3, CurveKnotStyle.Chord);

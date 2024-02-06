@@ -47,7 +47,7 @@ namespace SaladSlicer.CodeGeneration
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue("Version", HelperMethods.GetVersionNumber(), typeof(string));
-            info.AddValue("Plane", _plane , typeof(Plane));
+            info.AddValue("Plane", _plane, typeof(Plane));
         }
         #endregion
 
@@ -113,7 +113,7 @@ namespace SaladSlicer.CodeGeneration
         /// <returns> A string that represents the current object. </returns>
         public override string ToString()
         {
-            return ($"X{_plane.OriginX:0.###} Y{_plane.OriginY:0.###} Z{_plane.OriginZ:0.###}");
+            return $"X{_plane.OriginX:0.###} Y{_plane.OriginY:0.###} Z{_plane.OriginZ:0.###}";
         }
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace SaladSlicer.CodeGeneration
         /// <returns>The string</returns>
         public string ToSingleString()
         {
-            return ($"X{_plane.OriginX:0.###} Y{_plane.OriginY:0.###} Z{_plane.OriginZ:0.###}");
+            return $"X{_plane.OriginX:0.###} Y{_plane.OriginY:0.###} Z{_plane.OriginZ:0.###}";
         }
 
         /// <summary>
@@ -173,8 +173,8 @@ namespace SaladSlicer.CodeGeneration
         public bool IsValid
         {
             get
-            { 
-                if (_plane == null) { return false; } 
+            {
+                if (_plane == null) { return false; }
                 return true;
             }
         }

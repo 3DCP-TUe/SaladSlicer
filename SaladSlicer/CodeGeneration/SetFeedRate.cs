@@ -110,7 +110,7 @@ namespace SaladSlicer.CodeGeneration
         /// <returns>The string</returns>
         public string ToSingleString()
         {
-            return ($"F{_feedRate:0.###}");
+            return $"F{_feedRate:0.###}";
         }
 
         /// <summary>
@@ -139,8 +139,8 @@ namespace SaladSlicer.CodeGeneration
         public bool IsValid
         {
             get
-            { 
-                if (_feedRate == double.NaN) { return false; } 
+            {
+                if (_feedRate == double.NaN) { return false; }
                 return true;
             }
         }

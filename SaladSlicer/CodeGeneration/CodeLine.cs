@@ -61,7 +61,7 @@ namespace SaladSlicer.CodeGeneration
         /// Initializes a new instance of the Code Line class.
         /// </summary>
         /// <param name="code"> The custom code line. </param>
-        public CodeLine (string code)
+        public CodeLine(string code)
         {
             _code = code;
         }
@@ -154,8 +154,8 @@ namespace SaladSlicer.CodeGeneration
         public bool IsValid
         {
             get
-            { 
-                if (_code == null) { return false; } 
+            {
+                if (_code == null) { return false; }
                 return true;
             }
         }

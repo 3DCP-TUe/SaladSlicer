@@ -73,21 +73,21 @@ namespace SaladSlicer.Gh.Components.Slicers
 
             // Create the code line
             IAddVariable slicerCopy = slicer.DuplicateAddVariableObject();
-            
+
             for (int i = 0; i < tree.PathCount; i++)
             {
                 List<string> valueTemp = new List<string>();
                 GH_Path path = tree.get_Path(i);
                 List<GH_String> branch = (List<GH_String>)tree.get_Branch(path);
-                
-                for (int j =0; j < branch.Count; j++)
+
+                for (int j = 0; j < branch.Count; j++)
                 {
                     valueTemp.Add(branch[j].Value);
                 }
-                
+
                 values.Add(valueTemp);
             }
-            
+
             try
             {
                 slicerCopy.AddVariable(prefix, values);

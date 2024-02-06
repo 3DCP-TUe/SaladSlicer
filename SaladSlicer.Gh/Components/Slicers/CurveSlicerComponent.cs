@@ -67,10 +67,10 @@ namespace SaladSlicer.Gh.Components.Slicers
             // Check input values
             if (distance <= 0.0) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "The distance between two frames cannot be smaller than or equal to zero."); }
             if (contour.GetLength() < distance) { AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "The distance between two frames exceeds the length of the base contour."); }
-       
+
             // Declare the output variables
             CurveSlicer slicer = new CurveSlicer();
-            
+
             // Create the slicer object
             try
             {

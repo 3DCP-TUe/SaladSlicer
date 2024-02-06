@@ -56,7 +56,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         {
             // Declare variable of input parameters
             OpenPlanar2DSlicer slicer = new OpenPlanar2DSlicer();
-            
+
             // Access the input parameters individually. 
             if (!DA.GetData(0, ref slicer)) return;
 
@@ -98,5 +98,5 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         {
             get { return new Guid("A6FFF9C8-9DA6-418B-88A1-AC92D3227D9C"); }
         }
-    } 
+    }
 }

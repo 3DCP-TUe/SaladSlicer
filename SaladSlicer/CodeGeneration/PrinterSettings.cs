@@ -78,7 +78,7 @@ namespace SaladSlicer.CodeGeneration
             _programType = programType;
             _interpolationType = interpolationType;
             _hotEndTemperature = hotEndTemperature;
-            _bedTemperature = bedTemperature;    
+            _bedTemperature = bedTemperature;
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace SaladSlicer.CodeGeneration
         /// <returns> A string that represents the current object. </returns>
         public override string ToString()
         {
-            return ("Printer settings");
+            return "Printer settings";
         }
 
         /// <summary>
@@ -144,7 +144,7 @@ namespace SaladSlicer.CodeGeneration
             programGenerator.Program.Add("; ----------------------------------------------------------------------");
             programGenerator.Program.Add("; PRINTER SETTINGS");
             programGenerator.Program.Add("; ----------------------------------------------------------------------");
-            
+
             // Program Type
             if (_programType == ProgramType.Sinumerik)
             {
@@ -154,7 +154,7 @@ namespace SaladSlicer.CodeGeneration
                 programGenerator.Program.Add("G90; Absolute coordinates ");
                 programGenerator.Program.Add("G1 C90 F10000; Moves the C-axis tangent to y direction");
             }
-            else if(_programType == ProgramType.Marlin)
+            else if (_programType == ProgramType.Marlin)
             {
                 programGenerator.Program.Add("; G-Code flavor: Marlin");
                 programGenerator.Program.Add("M106; Turn on fans");
@@ -186,36 +186,36 @@ namespace SaladSlicer.CodeGeneration
             {
                 throw new Exception("Interpolation type not implemented");
             }
-            
+
             // HotEndTemperature && BedTemperature
             if (_hotEndTemperature >= 0 || _bedTemperature >= 0)
             {
                 programGenerator.Program.Add("G91; Relative coordinates");
                 programGenerator.Program.Add("G1 Z10; Move off printbed");
-                
+
                 if (_hotEndTemperature >= 0)
                 {
                     programGenerator.Program.Add($"M104 S{_hotEndTemperature:0.#}; Set hotend temperature");
                     programGenerator.PrinterSettings.HotEndTemperature = _hotEndTemperature;
                 }
-                
-                if (_bedTemperature >= 0) 
-                { 
+
+                if (_bedTemperature >= 0)
+                {
                     programGenerator.Program.Add($"M140 S{_bedTemperature:0.#}; Set bed temperature");
                     programGenerator.PrinterSettings.BedTemperature = _bedTemperature;
                 }
-                
+
                 programGenerator.Program.Add("M105; Report temperature");
-                
+
                 if (_hotEndTemperature >= 0)
-                { 
+                {
                     programGenerator.Program.Add($"M109 S{_hotEndTemperature:0.#}; Wait for hotend temperature ");
                 }
-                if (_bedTemperature >= 0) 
-                { 
-                    programGenerator.Program.Add($"M190 S{_bedTemperature:0.#}; Wait for bed temperature "); 
+                if (_bedTemperature >= 0)
+                {
+                    programGenerator.Program.Add($"M190 S{_bedTemperature:0.#}; Wait for bed temperature ");
                 }
-                
+
                 programGenerator.Program.Add("G1 Z-10; Move back to original position");
                 programGenerator.Program.Add("G90; Absolute coordinates");
             }

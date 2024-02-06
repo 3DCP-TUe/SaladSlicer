@@ -7,8 +7,6 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
-using System.Security.Permissions;
 // Rhino Libs
 using Rhino.Geometry;
 // Slicer Salad Libs
@@ -28,7 +26,7 @@ namespace SaladSlicer.Slicers
     public class OpenPlanarMeshSlicer : IProgram, ISlicer, IGeometry, IAddVariable
     {
         #region fields
-        private Mesh _mesh ;
+        private Mesh _mesh;
         private double _distance;
         private List<Curve> _path = new List<Curve>();
         private List<Curve> _contours = new List<Curve>();
@@ -193,10 +191,10 @@ namespace SaladSlicer.Slicers
             {
                 bool stop = false;
                 int i = 0;
-                
+
                 while (stop == false)
                 {
-                    plane.OriginZ = min + i * _heights[0];
+                    plane.OriginZ = min + (i * _heights[0]);
                     Curve[] curves = Mesh.CreateContourCurves(_mesh, plane);
                     curves = Curve.JoinCurves(curves, 1.0);
 
@@ -518,7 +516,7 @@ namespace SaladSlicer.Slicers
                 double distance = 0.0;
 
                 distances[0] = distance;
-              
+
                 for (int i = 1; i < Frames.Count; i++)
                 {
                     distance += Frames[i].Origin.DistanceTo(Frames[i - 1].Origin);
@@ -662,7 +660,7 @@ namespace SaladSlicer.Slicers
         /// Returns all the points of the path.
         /// </summary>
         /// <returns> The list with points. </returns>
-        public List<Point3d> GetPoints() 
+        public List<Point3d> GetPoints()
         {
             List<Point3d> points = new List<Point3d>();
             List<Plane> frames = Frames;
@@ -730,12 +728,12 @@ namespace SaladSlicer.Slicers
             {
                 _path[i].Transform(xform);
             }
-            
+
             for (int i = 0; i < _contours.Count; i++)
             {
                 _contours[i].Transform(xform);
             }
-            
+
             return true;
         }
         #endregion

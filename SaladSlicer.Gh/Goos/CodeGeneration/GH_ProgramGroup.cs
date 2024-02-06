@@ -134,8 +134,8 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
         public override bool CastTo<Q>(ref Q target)
         {
             // Check null type
-            if (this.Value == null) 
-            { 
+            if (this.Value == null)
+            {
                 target = default;
                 return false;
             }
@@ -181,9 +181,9 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
         public override bool CastFrom(object source)
         {
             // Check null type
-            if (source == null) 
+            if (source == null)
             {
-                return false; 
+                return false;
             }
 
             // Cast from Program Group
@@ -198,7 +198,7 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
             {
                 GH_GeometryGroup groupGoo = source as GH_GeometryGroup;
                 List<IGH_GeometricGoo> goos = groupGoo.Objects;
-                List<IProgram> programObjects= new List<IProgram>() { };
+                List<IProgram> programObjects = new List<IProgram>() { };
                 bool nonProgram = false;
 
                 for (int i = 0; i < goos.Count; i++)
@@ -213,7 +213,7 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
                     }
                     else
                     {
-                        nonProgram= true;
+                        nonProgram = true;
                         break;
                     }
                 }

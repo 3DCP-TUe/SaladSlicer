@@ -132,8 +132,8 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
         public override bool CastTo<Q>(ref Q target)
         {
             // Check null type
-            if (this.Value == null) 
-            { 
+            if (this.Value == null)
+            {
                 target = default;
                 return false;
             }
@@ -179,9 +179,9 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
         public override bool CastFrom(object source)
         {
             // Check null type
-            if (source == null) 
+            if (source == null)
             {
-                return false; 
+                return false;
             }
 
             // Cast from Code Line

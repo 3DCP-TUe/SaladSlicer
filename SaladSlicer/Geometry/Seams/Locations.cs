@@ -43,7 +43,7 @@ namespace SaladSlicer.Geometry.Seams
                 curve.ChangeClosedCurveSeam(param);
                 curve.ResetDomain();
             }
-            else 
+            else
             {
                 throw new Exception("Parameter is not inside curve domain.");
             }
@@ -62,21 +62,21 @@ namespace SaladSlicer.Geometry.Seams
             {
                 throw new Exception("The method Seam at Length requires a closed curve.");
             }
-            if (normalized == false & length < 0.0) 
-            { 
-                throw new Exception("Length factor cannot be smaller than 0."); 
+            if (normalized == false & length < 0.0)
+            {
+                throw new Exception("Length factor cannot be smaller than 0.");
             }
-            if (normalized == true & length < 0.0) 
-            { 
-                throw new Exception("Normalized length factor cannot be smaller than 0."); 
+            if (normalized == true & length < 0.0)
+            {
+                throw new Exception("Normalized length factor cannot be smaller than 0.");
             }
-            if (normalized == false & length > curve.GetLength()) 
-            { 
-                throw new Exception("Length factor cannot be larger than curve length."); 
+            if (normalized == false & length > curve.GetLength())
+            {
+                throw new Exception("Length factor cannot be larger than curve length.");
             }
-            if (normalized == true & length > 1.0) 
-            { 
-                throw new Exception("Normalized length factor cannot be larger than 1."); 
+            if (normalized == true & length > 1.0)
+            {
+                throw new Exception("Normalized length factor cannot be larger than 1.");
             }
 
             double param;
@@ -138,7 +138,7 @@ namespace SaladSlicer.Geometry.Seams
         public static void SeamAtClosestPlaneIntersection(this Curve curve, Plane plane)
         {
             CurveIntersections intersections = Intersection.CurvePlane(curve, plane, 0.0);
-            
+
             // No intersections
             if (intersections == null)
             {
@@ -210,7 +210,7 @@ namespace SaladSlicer.Geometry.Seams
             for (int i = 0; i < curves.Count; i++)
             {
                 curves[i].SeamClosestToCurve(guide);
-            }    
+            }
 
             return result;
         }

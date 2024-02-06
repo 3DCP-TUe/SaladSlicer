@@ -55,7 +55,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         {
             // Declare variable of input parameters
             CurveSlicer slicer = new CurveSlicer();
-            
+
             // Access the input parameters individually. 
             if (!DA.GetData(0, ref slicer)) return;
 
@@ -96,5 +96,5 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         {
             get { return new Guid("8760635A-5252-4088-9281-FBAB1D42B6A2"); }
         }
-    } 
+    }
 }

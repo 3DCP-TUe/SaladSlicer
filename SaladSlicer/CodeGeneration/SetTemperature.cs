@@ -54,7 +54,9 @@ namespace SaladSlicer.CodeGeneration
         /// <summary>
         /// Creates a default temperature setting with zeros
         /// </summary>
-        public SetTemperature(){}
+        public SetTemperature() 
+        { 
+        }
 
         public SetTemperature(SetTemperature setTemperature)
         {
@@ -70,7 +72,7 @@ namespace SaladSlicer.CodeGeneration
         public SetTemperature(double hotEndTemperature, double bedTemperature)
         {
             _hotEndTemperature = hotEndTemperature;
-            _bedTemperature = bedTemperature;    
+            _bedTemperature = bedTemperature;
         }
 
         /// <summary>
@@ -99,7 +101,7 @@ namespace SaladSlicer.CodeGeneration
         /// <returns> A string that represents the current object. </returns>
         public override string ToString()
         {
-            return ($"Temperature settings");
+            return $"Temperature settings";
         }
 
         /// <summary>
@@ -121,22 +123,22 @@ namespace SaladSlicer.CodeGeneration
             programGenerator.Program.Add("; ----------------------------------------------------------------------");
             programGenerator.Program.Add("; TEMPERATURE SETTINGS");
             programGenerator.Program.Add("; ----------------------------------------------------------------------");
-            
+
             if (programGenerator.PrinterSettings.ProgramType == ProgramType.Marlin)
             {
                 programGenerator.Program.Add(" ");
                 if (_hotEndTemperature != 0 || _bedTemperature != 0)
                 {
                     programGenerator.Program.Add("Z10; Move off printbed");
-                    
+
                     if (_hotEndTemperature != 0) { programGenerator.Program.Add($"M104 S{_hotEndTemperature:0.#}; Set hotend temperature"); }
                     if (_bedTemperature != 0) { programGenerator.Program.Add($"M109 S{_bedTemperature:0.#}; Set bed temperature"); }
-                    
+
                     programGenerator.Program.Add("M105; Report temperature");
-                    
-                    if (_hotEndTemperature != 0){programGenerator.Program.Add($"M109 S{_hotEndTemperature:0.#}; Wait for hotend temperature ");}
-                    if (_bedTemperature != 0){programGenerator.Program.Add($"M190 S{_bedTemperature:0.#}; Wait for bed temperature ");}
-                    
+
+                    if (_hotEndTemperature != 0) { programGenerator.Program.Add($"M109 S{_hotEndTemperature:0.#}; Wait for hotend temperature "); }
+                    if (_bedTemperature != 0) { programGenerator.Program.Add($"M190 S{_bedTemperature:0.#}; Wait for bed temperature "); }
+
                     programGenerator.Program.Add("Z-10; Move back to original position");
                 }
             }

@@ -44,8 +44,8 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
-            pManager.AddIntegerParameter("Program Type", "T", "Set the program type for the program.", GH_ParamAccess.item,0);
-            pManager.AddIntegerParameter("Interpolation Type", "I", "Set the interpolation type for the program.", GH_ParamAccess.item,0);
+            pManager.AddIntegerParameter("Program Type", "T", "Set the program type for the program.", GH_ParamAccess.item, 0);
+            pManager.AddIntegerParameter("Interpolation Type", "I", "Set the interpolation type for the program.", GH_ParamAccess.item, 0);
             pManager.AddNumberParameter("Hot End Temperature", "HT", "Set the temperature of the hot end. Negative values are ignored.", GH_ParamAccess.item, -1);
             pManager.AddNumberParameter("Bed Temperature", "BT", "Set the bed temperature. Negative values are ignored.", GH_ParamAccess.item, -1);
         }
@@ -97,7 +97,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
 
             // Declare the output variables
             PrinterSettings programSetting = new PrinterSettings();
-            
+
             // Create the printer settings
             try
             {
@@ -111,7 +111,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
             {
                 AddRuntimeMessage(GH_RuntimeMessageLevel.Error, error.Message);
             }
-            
+
             // Assign the output parameters
             DA.SetData(0, programSetting);
         }

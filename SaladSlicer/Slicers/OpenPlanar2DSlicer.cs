@@ -7,8 +7,6 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
-using System.Security.Permissions;
 // Rhino Libs
 using Rhino.Geometry;
 // Slicer Salad Libs
@@ -46,7 +44,7 @@ namespace SaladSlicer.Slicers
         /// Initializes an empty instance of the Open Planar 2D Slicer class.
         /// </summary>
         public OpenPlanar2DSlicer()
-        { 
+        {
         }
 
         /// <summary>
@@ -201,7 +199,7 @@ namespace SaladSlicer.Slicers
             {
                 _framesByLayer[i].Reverse();
             }
-            
+
             _contours = Curves.AlternateCurves(_contours);
         }
 
@@ -234,7 +232,7 @@ namespace SaladSlicer.Slicers
 
                     // Move 1 point with the TANGOF
                     programGenerator.Program.Add(coordinates[i][0]);
-                    
+
                     // Turn TANGON again
                     if (i % 2 == 0)
                     {
@@ -244,7 +242,7 @@ namespace SaladSlicer.Slicers
                     {
                         programGenerator.Program.Add("TANGON(C, 180)");
                     }
-                    
+
                     programGenerator.Program.Add("BSPLINE");
                     programGenerator.Program.Add("G642");
 
@@ -443,7 +441,7 @@ namespace SaladSlicer.Slicers
         public List<List<double>> GetDistancesAlongContours()
         {
             List<List<double>> distances = new List<List<double>>();
-            
+
             for (int i = 0; i < _framesByLayer.Count; i++)
             {
                 List<double> distancesTemp = new List<double>();
@@ -566,7 +564,7 @@ namespace SaladSlicer.Slicers
         /// Returns all the points of the path.
         /// </summary>
         /// <returns> The list with points. </returns>
-        public List<Point3d> GetPoints() 
+        public List<Point3d> GetPoints()
         {
             List<Point3d> points = new List<Point3d>();
             List<Plane> frames = Frames;
@@ -629,17 +627,17 @@ namespace SaladSlicer.Slicers
                     _framesByLayer[i][j] = frame;
                 }
             }
-            
+
             for (int i = 0; i < _path.Count; i++)
             {
                 _path[i].Transform(xform);
             }
-            
+
             for (int i = 0; i < _contours.Count; i++)
             {
                 _contours[i].Transform(xform);
             }
-            
+
             return true;
         }
         #endregion

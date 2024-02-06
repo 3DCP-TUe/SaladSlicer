@@ -12,7 +12,6 @@ using Rhino.Geometry;
 using Rhino.Geometry.Intersect;
 // SaladSlicer
 using SaladSlicer.Geometry;
-using SaladSlicer.Geometry.Seams;
 
 namespace SaladSlicer.Nozzles
 {
@@ -59,10 +58,10 @@ namespace SaladSlicer.Nozzles
             #region outer shape
             List<Curve> outerCurves = new List<Curve>() { };
 
-            outerCurves.Add(new Circle(plane1, outerDiameter / 2 + wallThickness).ToNurbsCurve());
-            outerCurves.Add(new Circle(plane2, outerDiameter / 2 + wallThickness).ToNurbsCurve());
-            outerCurves.Add(new Circle(plane3, nozzleDiameter / 2 + wallThickness).ToNurbsCurve());
-            outerCurves.Add(new Circle(plane4, nozzleDiameter / 2 + wallThickness).ToNurbsCurve());
+            outerCurves.Add(new Circle(plane1, (outerDiameter / 2) + wallThickness).ToNurbsCurve());
+            outerCurves.Add(new Circle(plane2, (outerDiameter / 2) + wallThickness).ToNurbsCurve());
+            outerCurves.Add(new Circle(plane3, (nozzleDiameter / 2) + wallThickness).ToNurbsCurve());
+            outerCurves.Add(new Circle(plane4, (nozzleDiameter / 2) + wallThickness).ToNurbsCurve());
 
             for (int i = 1; i < outerCurves.Count; i++)
             {
@@ -94,7 +93,7 @@ namespace SaladSlicer.Nozzles
             #region gap
             if (gap > 0)
             {
-                Brep box = new BoundingBox(-gap / 2, -outerDiameter / 2 - wallThickness - 5, -5, gap / 2, outerDiameter / 2 + wallThickness + 5, length1).ToBrep();
+                Brep box = new BoundingBox(-gap / 2, (-outerDiameter / 2) - wallThickness - 5, -5, gap / 2, (outerDiameter / 2) + wallThickness + 5, length1).ToBrep();
                 result = Brep.CreateBooleanDifference(result, box, _tolerance)[0];
             }
             #endregion
@@ -136,7 +135,7 @@ namespace SaladSlicer.Nozzles
             Plane plane4 = new Plane(new Point3d(0, 0, length1 + length2 + length3), Vector3d.XAxis, Vector3d.YAxis);
             Plane plane5 = new Plane(new Point3d(0, 0, length1 + length2 + length3 + length4), Vector3d.XAxis, Vector3d.YAxis);
 
-            double innerArea = 0.25 * innerDiameter*innerDiameter * Math.PI;
+            double innerArea = 0.25 * innerDiameter * innerDiameter * Math.PI;
 
             #region outer shape
             // Contour curves
@@ -149,7 +148,7 @@ namespace SaladSlicer.Nozzles
             brepOuter.Add(Loft(outerCurve1, outerCurve2));
             brepOuter.Add(Brep.CreatePlanarBreps(new List<Curve>() { outerCurve2 }, _tolerance)[0]);
             Brep outerShape = Brep.JoinBreps(brepOuter, _tolerance)[0];
-            
+
             // Fillet edges
             if (filletRadius > 0.0)
             {
@@ -175,7 +174,7 @@ namespace SaladSlicer.Nozzles
             innerCurves[0].Rotate(Rhino.RhinoMath.ToRadians(225), Vector3d.ZAxis, new Point3d(0, 0, 0));
             innerCurves.Add(new Circle(plane2, outerDiameter / 2).ToNurbsCurve()); // Connector
             innerCurves[1].Rotate(Rhino.RhinoMath.ToRadians(225), Vector3d.ZAxis, new Point3d(0, 0, 0));
-            
+
             Curve curve1 = new Circle(plane2, innerDiameter / 2).ToNurbsCurve(); // Hose/pipe diameter
             curve1.Rotate(Rhino.RhinoMath.ToRadians(225), Vector3d.ZAxis, new Point3d(0, 0, 0));
 
@@ -215,7 +214,7 @@ namespace SaladSlicer.Nozzles
             #region divide
             if (divide == true)
             {
-                Brep box = new BoundingBox(0, -boxDepth / 2 - 5, -5, boxWidth / 2 + 5, boxDepth / 2 + 5, plane5.OriginZ + 5).ToBrep();
+                Brep box = new BoundingBox(0, (-boxDepth / 2) - 5, -5, (boxWidth / 2) + 5, (boxDepth / 2) + 5, plane5.OriginZ + 5).ToBrep();
                 result = Brep.CreateBooleanDifference(result, box, _tolerance)[0];
             }
             #endregion
@@ -259,29 +258,29 @@ namespace SaladSlicer.Nozzles
 
             #region outer shape
             List<Curve> outerCurves = new List<Curve>() { };
-            double outerArea = 0.25 * (outerDiameter + 2 * wallThickness) * (outerDiameter + 2 * wallThickness) * Math.PI;
-            outerCurves.Add(new Circle(plane1, outerDiameter / 2 + wallThickness).ToNurbsCurve()); // Connector
+            double outerArea = 0.25 * (outerDiameter + (2 * wallThickness)) * (outerDiameter + (2 * wallThickness)) * Math.PI;
+            outerCurves.Add(new Circle(plane1, (outerDiameter / 2) + wallThickness).ToNurbsCurve()); // Connector
             outerCurves[0].Rotate(Rhino.RhinoMath.ToRadians(225), Vector3d.ZAxis, new Point3d(0, 0, 0));
 
-            Curve curve1a = new Circle(plane2, outerDiameter / 2 + wallThickness).ToNurbsCurve(); // Hose/pipe diameter
+            Curve curve1a = new Circle(plane2, (outerDiameter / 2) + wallThickness).ToNurbsCurve(); // Hose/pipe diameter
             curve1a.Rotate(Rhino.RhinoMath.ToRadians(225), Vector3d.ZAxis, new Point3d(0, 0, 0));
 
             if (length3 > 0)
             {
-                Curve curve2a = Rectangle3dCenter(plane3, nozzleWidth + 2 * wallThickness, outerArea / (nozzleWidth + 2 * wallThickness)).ToNurbsCurve(); // Rectangle: equal area
+                Curve curve2a = Rectangle3dCenter(plane3, nozzleWidth + (2 * wallThickness), outerArea / (nozzleWidth + (2 * wallThickness))).ToNurbsCurve(); // Rectangle: equal area
                 LoftWithLinearCrossSection(curve1a, curve2a, 50, out List<Curve> scaledCurves1);
                 outerCurves.AddRange(scaledCurves1);
 
-                outerCurves.Add(Rectangle3dCenter(plane4, nozzleWidth + 2 * wallThickness, nozzleHeight + 2 * wallThickness).ToNurbsCurve()); // Rectangle: reduced area
+                outerCurves.Add(Rectangle3dCenter(plane4, nozzleWidth + (2 * wallThickness), nozzleHeight + (2 * wallThickness)).ToNurbsCurve()); // Rectangle: reduced area
             }
             else
             {
-                Curve curve2a = Rectangle3dCenter(plane3, nozzleWidth + 2 * wallThickness, nozzleHeight + 2 * wallThickness).ToNurbsCurve(); // Rectangle: reduced area
+                Curve curve2a = Rectangle3dCenter(plane3, nozzleWidth + (2 * wallThickness), nozzleHeight + (2 * wallThickness)).ToNurbsCurve(); // Rectangle: reduced area
                 LoftWithLinearCrossSection(curve1a, curve2a, 50, out List<Curve> scaledCurves1);
                 outerCurves.AddRange(scaledCurves1);
             }
 
-            outerCurves.Add(Rectangle3dCenter(plane5, nozzleWidth + 2 * wallThickness, nozzleHeight + 2 * wallThickness).ToNurbsCurve()); // Rectangle: reduced area
+            outerCurves.Add(Rectangle3dCenter(plane5, nozzleWidth + (2 * wallThickness), nozzleHeight + (2 * wallThickness)).ToNurbsCurve()); // Rectangle: reduced area
 
             for (int i = 1; i < outerCurves.Count; i++)
             {
@@ -333,7 +332,7 @@ namespace SaladSlicer.Nozzles
             #region gap
             if (gap > 0)
             {
-                Brep box = new BoundingBox(-gap / 2, -outerDiameter / 2 - wallThickness - 5, -5, gap / 2, outerDiameter / 2 + wallThickness + 5, length1).ToBrep();
+                Brep box = new BoundingBox(-gap / 2, (-outerDiameter / 2) - wallThickness - 5, -5, gap / 2, (outerDiameter / 2) + wallThickness + 5, length1).ToBrep();
                 result = Brep.CreateBooleanDifference(result, box, _tolerance)[0];
             }
             #endregion
@@ -417,10 +416,10 @@ namespace SaladSlicer.Nozzles
             factors.Remove(1.0);
 
             List<double> desiredAreas = new List<double>() { };
-            
+
             for (int i = 0; i < factors.Count; i++)
             {
-                desiredAreas.Add(area1 + factors[i] * (area2 - area1));
+                desiredAreas.Add(area1 + (factors[i] * (area2 - area1)));
             }
 
             for (int i = 0; i < curves.Count; i++)
@@ -458,7 +457,7 @@ namespace SaladSlicer.Nozzles
         {
             curve2.AlignCurve(curve1);
 
-            Brep[] breps = (Brep.CreateFromLoft(new List<Curve>() { curve1, curve2 }, Point3d.Unset, Point3d.Unset, LoftType.Normal, false));
+            Brep[] breps = Brep.CreateFromLoft(new List<Curve>() { curve1, curve2 }, Point3d.Unset, Point3d.Unset, LoftType.Normal, false);
 
             if (breps.Length == 0)
             {
@@ -472,7 +471,7 @@ namespace SaladSlicer.Nozzles
             else
             {
                 breps = Brep.JoinBreps(breps, _tolerance);
-                
+
                 if (breps.Length != 1)
                 {
                     throw new Exception("Brep joint operation failed.");

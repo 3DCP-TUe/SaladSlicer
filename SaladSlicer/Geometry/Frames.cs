@@ -70,8 +70,8 @@ namespace SaladSlicer.Geometry
 
             // Correct for looking forward and backward
             List<bool> check = remove.ConvertAll(item => item);
-            
-            for (int i = keep; i < n-keep-1; i++)
+
+            for (int i = keep; i < n - keep - 1; i++)
             {
                 if (check[i] == false)
                 {
@@ -211,11 +211,11 @@ namespace SaladSlicer.Geometry
         /// <returns> The interpolated frame. </returns>
         public static Plane InterpolateFrames(Plane frame1, Plane frame2)
         {
-            Point3d origin = frame1.Origin + 0.5 * (frame2.Origin - frame1.Origin);
-            Vector3d xAxis = frame1.XAxis + 0.5 * (frame2.XAxis - frame1.XAxis);
-            Vector3d yAxis = frame1.YAxis + 0.5 * (frame2.YAxis - frame1.YAxis);
+            Point3d origin = frame1.Origin + (0.5 * (frame2.Origin - frame1.Origin));
+            Vector3d xAxis = frame1.XAxis + (0.5 * (frame2.XAxis - frame1.XAxis));
+            Vector3d yAxis = frame1.YAxis + (0.5 * (frame2.YAxis - frame1.YAxis));
 
-            return new Plane(origin, xAxis, yAxis); 
+            return new Plane(origin, xAxis, yAxis);
         }
 
         /// <summary>
@@ -231,7 +231,7 @@ namespace SaladSlicer.Geometry
         {
             List<int> range = Enumerable.Range(0, count + 2).ToList();
             List<double> factors = range.ConvertAll(item => item == 0 ? 0.0 : Convert.ToDouble(item) / range.Last());
-            
+
             if (addFirst == false)
             {
                 factors.Remove(0.0);
@@ -246,9 +246,9 @@ namespace SaladSlicer.Geometry
 
             for (int i = 0; i < factors.Count; i++)
             {
-                Point3d origin = frame1.Origin + factors[i] * (frame2.Origin - frame1.Origin);
-                Vector3d xAxis = frame1.XAxis + factors[i] * (frame2.XAxis - frame1.XAxis);
-                Vector3d yAxis = frame1.YAxis + factors[i] * (frame2.YAxis - frame1.YAxis);
+                Point3d origin = frame1.Origin + (factors[i] * (frame2.Origin - frame1.Origin));
+                Vector3d xAxis = frame1.XAxis + (factors[i] * (frame2.XAxis - frame1.XAxis));
+                Vector3d yAxis = frame1.YAxis + (factors[i] * (frame2.YAxis - frame1.YAxis));
 
                 result.Add(new Plane(origin, xAxis, yAxis));
             }

@@ -42,7 +42,7 @@ namespace SaladSlicer.Gh.Components.Utilities
         /// </summary>
         protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
-            pManager.AddTextParameter("Info", "I", "Authors and license information.",  GH_ParamAccess.item);
+            pManager.AddTextParameter("Info", "I", "Authors and license information.", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace SaladSlicer.Gh.Components.Utilities
             text += "You should have received a copy of the GNU General Public License along with Salad Slicer; If not, see http://www.gnu.org/licenses/.";
             text += Environment.NewLine;
             text += Environment.NewLine;
-            text += "@license GPL-3.0 https://www.gnu.org/licenses/gpl-3.0.html"; 
+            text += "@license GPL-3.0 https://www.gnu.org/licenses/gpl-3.0.html";
             text += Environment.NewLine;
             text += Environment.NewLine;
             text += "-----------------------------------";

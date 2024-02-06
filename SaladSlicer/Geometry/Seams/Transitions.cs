@@ -234,7 +234,7 @@ namespace SaladSlicer.Geometry.Seams
             {
                 if (i < curves.Count - 1)
                 {
-                    int n = Math.Max(Convert.ToInt32((cuts[i].GetLength() / Convert.ToDouble(precision))), 8);
+                    int n = Math.Max(Convert.ToInt32(cuts[i].GetLength() / Convert.ToDouble(precision)), 8);
                     transitions.Add(Curves.InterpolateCurves(cuts[i], cuts[i + 1], n));
                 }
             }
@@ -269,14 +269,14 @@ namespace SaladSlicer.Geometry.Seams
             Curve[] temp1;
             Curve[] temp2;
 
-            curve.LengthParameter(curve.GetLength() - 0.5 * length, out double param1);
+            curve.LengthParameter(curve.GetLength() - (0.5 * length), out double param1);
             temp1 = curve.Split(param1);
             Curve result = temp1[0];
 
             result.LengthParameter(0.5 * length, out double param2);
             temp2 = result.Split(param2);
             result = temp2[1];
-            
+
             if (curve.IsClosed == true)
             {
                 cut = Curve.JoinCurves(new List<Curve>() { temp1[1], temp2[0] })[0];

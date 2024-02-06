@@ -69,14 +69,14 @@ namespace SaladSlicer.Gh.Obsolete.v0
 
             // Create the program
             _program.Clear();
-            
+
             // Declare the output variables
             ProgramGenerator programGenerator = new ProgramGenerator();
-            
+
             // Create the program
-            try 
+            try
             {
-                _program = programGenerator.CreateProgram(objects); 
+                _program = programGenerator.CreateProgram(objects);
             }
             catch (WarningException warning)
             {
@@ -144,7 +144,7 @@ namespace SaladSlicer.Gh.Obsolete.v0
         {
             SaveProgram();
         }
-        
+
         /// <summary>
         /// Saves the program to a file
         /// </summary>
@@ -170,7 +170,7 @@ namespace SaladSlicer.Gh.Obsolete.v0
                     using (StreamWriter writer = new StreamWriter(saveFileDialog.FileName, false))
                     {
                         for (int i = 0; i < _program.Count; i++)
-                        writer.WriteLine(_program[i]);
+                            writer.WriteLine(_program[i]);
                     }
                 }
             }

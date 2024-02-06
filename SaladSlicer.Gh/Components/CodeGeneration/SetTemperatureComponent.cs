@@ -14,7 +14,7 @@ using SaladSlicer.Gh.Parameters.CodeGeneration;
 
 namespace SaladSlicer.Gh.Components.CodeGeneration
 {
-    public class SetTemperatureComponent :GH_Component
+    public class SetTemperatureComponent : GH_Component
     {
         /// <summary>
         /// Public constructor without any arguments.
@@ -33,7 +33,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
-            pManager.AddNumberParameter("Hotend", "H", "Hotend Temperature, not used if zero.", GH_ParamAccess.item,180);
+            pManager.AddNumberParameter("Hotend", "H", "Hotend Temperature, not used if zero.", GH_ParamAccess.item, 180);
             pManager.AddNumberParameter("Bed", "B", "Bed Temperature, not used if zero.", GH_ParamAccess.item, 50);
         }
 

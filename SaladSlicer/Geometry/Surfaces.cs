@@ -49,8 +49,8 @@ namespace SaladSlicer.Geometry
             double min2 = surfaceCopy.Domain(1).Min;
             double max2 = surfaceCopy.Domain(1).Max;
 
-            double[] range1 = Enumerable.Range(0, count).Select(i => min1 + (max1 - min1) * ((double)i / (count - 1))).ToArray();
-            double[] range2 = Enumerable.Range(0, samples).Select(i => min2 + (max2 - min2) * ((double)i / (samples - 1))).ToArray();
+            double[] range1 = Enumerable.Range(0, count).Select(i => min1 + ((max1 - min1) * ((double)i / (count - 1)))).ToArray();
+            double[] range2 = Enumerable.Range(0, samples).Select(i => min2 + ((max2 - min2) * ((double)i / (samples - 1)))).ToArray();
 
             for (int i = 0; i < range1.Length; i++)
             {

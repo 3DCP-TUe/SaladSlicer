@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using Grasshopper.Kernel;
 // Rhino Libs
 using Rhino.Geometry;
-using SaladSlicer.Geometry;
 using SaladSlicer.Geometry.Seams;
 using SaladSlicer.Gh.Utils;
 using SaladSlicer.Enumerations;
@@ -72,7 +71,7 @@ namespace SaladSlicer.Gh.Components.Geometry
                 _expire = HelperMethods.CreateValueList(this, 1, typeof(ClosedTransition));
                 _valueListAdded = true;
             }
-            
+
             // Expire solution of this component
             if (_expire == true)
             {

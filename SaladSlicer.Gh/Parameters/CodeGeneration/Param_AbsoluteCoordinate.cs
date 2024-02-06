@@ -30,7 +30,7 @@ namespace SaladSlicer.Gh.Parameters.CodeGeneration
               "Defines an Absolute Coordinate.", // Description
               "Salad Slicer", // Category
               "Parameters")) // Subcategory)
-        { 
+        {
         }
 
         #region properties

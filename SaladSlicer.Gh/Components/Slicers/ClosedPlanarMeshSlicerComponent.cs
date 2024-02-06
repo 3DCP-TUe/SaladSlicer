@@ -62,7 +62,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         protected override void SolveInstance(IGH_DataAccess DA)
         {
             // Declare variable of input parameters
-            Mesh mesh = new Mesh() ;
+            Mesh mesh = new Mesh();
             double seamLocation = 0.0;
             double seamLength = 100.0;
             double distance = 20.0;

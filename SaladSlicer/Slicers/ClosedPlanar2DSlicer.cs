@@ -7,8 +7,6 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
-using System.Security.Permissions;
 // Rhino Libs
 using Rhino.Geometry;
 // Slicer Salad Libs
@@ -200,7 +198,7 @@ namespace SaladSlicer.Slicers
         {
             List<Curve> trimmed = Transitions.TrimCurveFromEnds(_contours, _seamLength);
             List<Curve> transitions = Transitions.InterpolatedTransitions(_contours, _seamLength, 0.25 * _distance);
-            
+
             _path.Clear();
             _path = Curves.WeaveCurves(trimmed, transitions);
         }
@@ -228,12 +226,12 @@ namespace SaladSlicer.Slicers
                 // Transitions
                 if (i < _contours.Count - 1)
                 {
-                    _framesByLayer[i].AddRange(Geometry.Frames.GetFramesByDistanceAndSegment(_path[i * 2 + 1], _distance, false, false));
-                    _framesInTransitions[i].AddRange(Geometry.Frames.GetFramesByDistanceAndSegment(_path[i * 2 + 1], _distance, false, false));
+                    _framesByLayer[i].AddRange(Geometry.Frames.GetFramesByDistanceAndSegment(_path[(i * 2) + 1], _distance, false, false));
+                    _framesInTransitions[i].AddRange(Geometry.Frames.GetFramesByDistanceAndSegment(_path[(i * 2) + 1], _distance, false, false));
                 }
             }
         }
-        
+
         /// <summary>
         /// Check if the layer height is constant throughout the object.
         /// </summary>
@@ -267,7 +265,7 @@ namespace SaladSlicer.Slicers
             programGenerator.AddSlicerHeader("2.5D CLOSED PLANAR OBJECT", _contours.Count, GetLength());
 
             // Create a loop for objects with an constant height increase per layer
-            
+
             if (ConstantHeightIncrease() && programGenerator.PrinterSettings.ProgramType == ProgramType.Sinumerik && _addedVariables.Count == 0)
             {
                 double layerHeight = _heights[1] - _heights[0];
@@ -280,7 +278,7 @@ namespace SaladSlicer.Slicers
                 programGenerator.Program.Add(" ");
                 programGenerator.Program.Add("; Start loop");
                 programGenerator.Program.Add("LINE1:");
-                
+
                 for (int i = 0; i < _framesByLayer[0].Count; i++)
                 {
                     Point3d point = _framesByLayer[0][i].Origin;
@@ -293,7 +291,7 @@ namespace SaladSlicer.Slicers
             }
 
             // Create standard code for objects with irregular height increase and/or added variables
-            else 
+            else
             {
                 // Add coordinates
                 List<List<string>> coordinates = ProgramGenerator.GetCoordinateCodeLines(this, programGenerator.PrinterSettings);
@@ -401,7 +399,7 @@ namespace SaladSlicer.Slicers
             return Curve.JoinCurves(_path)[0];
         }
 
-               /// <summary>
+        /// <summary>
         /// Returns the interpolated path.
         /// </summary>
         /// <returns> The interpolated path. </returns>
@@ -485,7 +483,7 @@ namespace SaladSlicer.Slicers
         {
 
             List<List<double>> distances = new List<List<double>>();
-            
+
             dx = new List<List<double>>();
             dy = new List<List<double>>();
             dz = new List<List<double>>();
@@ -504,7 +502,7 @@ namespace SaladSlicer.Slicers
                     {
                         Point3d point = _framesInContours[i][j].Origin;
                         Point3d closestPoint = plane.ClosestPoint(point);
-                        
+
                         temp.Add(point.DistanceTo(closestPoint));
                         tempx.Add(Math.Abs(point.X - closestPoint.X));
                         tempy.Add(Math.Abs(point.Y - closestPoint.Y));
@@ -518,7 +516,7 @@ namespace SaladSlicer.Slicers
                         Point3d point = _framesInContours[i][j].Origin;
                         _contours[i - 1].ClosestPoint(point, out double parameter);
 
-                        Point3d closestPoint = _contours[i - 1].PointAt(parameter); 
+                        Point3d closestPoint = _contours[i - 1].PointAt(parameter);
 
                         temp.Add(point.DistanceTo(closestPoint));
                         tempx.Add(Math.Abs(point.X - closestPoint.X));
@@ -545,14 +543,14 @@ namespace SaladSlicer.Slicers
                     double secondDistanceX = Math.Abs(tempPoint.X - tempClosestPoint.X);
                     double secondDistanceY = Math.Abs(tempPoint.Y - tempClosestPoint.Y);
                     double secondDistanceZ = Math.Abs(tempPoint.Z - tempClosestPoint.Z);
-                     
+
                     //Linearly interpolate
                     for (int j = 0; j < _framesInTransitions[i].Count; j++)
                     {
-                        temp.Add(firstDistance + (j + 1) * (secondDistance - firstDistance) / (_framesInTransitions[i].Count + 1));
-                        tempx.Add(firstDistanceX + (j + 1) * (secondDistanceX - firstDistanceX) / (_framesInTransitions[i].Count + 1));
-                        tempy.Add(firstDistanceY + (j + 1) * (secondDistanceY - firstDistanceY) / (_framesInTransitions[i].Count + 1));
-                        tempz.Add(firstDistanceZ + (j + 1) * (secondDistanceZ - firstDistanceZ) / (_framesInTransitions[i].Count + 1));
+                        temp.Add(firstDistance + ((j + 1) * (secondDistance - firstDistance) / (_framesInTransitions[i].Count + 1)));
+                        tempx.Add(firstDistanceX + ((j + 1) * (secondDistanceX - firstDistanceX) / (_framesInTransitions[i].Count + 1)));
+                        tempy.Add(firstDistanceY + ((j + 1) * (secondDistanceY - firstDistanceY) / (_framesInTransitions[i].Count + 1)));
+                        tempz.Add(firstDistanceZ + ((j + 1) * (secondDistanceZ - firstDistanceZ) / (_framesInTransitions[i].Count + 1)));
                     }
                 }
 
@@ -562,9 +560,9 @@ namespace SaladSlicer.Slicers
                 dz.Add(tempz);
 
             }
-            
+
             return distances;
-        }     
+        }
 
         /// Returns a list with curvatures of the path at the frame location.
         /// </summary>
@@ -572,7 +570,7 @@ namespace SaladSlicer.Slicers
         public List<List<Vector3d>> GetCurvatures()
         {
             List<List<Vector3d>> result = new List<List<Vector3d>>();
-            
+
             Curve path = GetInterpolatedPath();
 
             for (int i = 0; i < _framesByLayer.Count; i++)
@@ -601,7 +599,7 @@ namespace SaladSlicer.Slicers
             {
                 length += _path[i].GetLength();
             }
-            
+
             return length;
         }
 
@@ -609,7 +607,7 @@ namespace SaladSlicer.Slicers
         /// Returns all the points of the path.
         /// </summary>
         /// <returns> The list with points. </returns>
-        public List<Point3d> GetPoints() 
+        public List<Point3d> GetPoints()
         {
             List<Point3d> points = new List<Point3d>();
             List<Plane> frames = Frames;
@@ -672,17 +670,17 @@ namespace SaladSlicer.Slicers
                     _framesByLayer[i][j] = frame;
                 }
             }
-            
+
             for (int i = 0; i < _path.Count; i++)
             {
                 _path[i].Transform(xform);
             }
-            
+
             for (int i = 0; i < _contours.Count; i++)
             {
                 _contours[i].Transform(xform);
             }
-            
+
             return true;
         }
         #endregion
@@ -776,7 +774,7 @@ namespace SaladSlicer.Slicers
         /// </summary>
         public List<Plane> Frames
         {
-            get 
+            get
             {
                 List<Plane> frames = new List<Plane>() { };
 
@@ -784,8 +782,8 @@ namespace SaladSlicer.Slicers
                 {
                     frames.AddRange(_framesByLayer[i]);
                 }
-                
-               return frames; 
+
+                return frames;
             }
         }
 
@@ -810,7 +808,7 @@ namespace SaladSlicer.Slicers
         /// </summary>
         public Plane FrameAtEnd
         {
-            get { return _framesByLayer[_framesByLayer.Count-1][_framesByLayer[_framesByLayer.Count - 1].Count - 1]; }
+            get { return _framesByLayer[_framesByLayer.Count - 1][_framesByLayer[_framesByLayer.Count - 1].Count - 1]; }
         }
 
         /// <summary>
@@ -832,7 +830,7 @@ namespace SaladSlicer.Slicers
         /// <summary>
         /// Gets the dictionary with variables that have been added to the object.
         /// </summary>
-        public Dictionary<string, List<List<string>>> AddedVariables 
+        public Dictionary<string, List<List<string>>> AddedVariables
         {
             get { return _addedVariables; }
         }

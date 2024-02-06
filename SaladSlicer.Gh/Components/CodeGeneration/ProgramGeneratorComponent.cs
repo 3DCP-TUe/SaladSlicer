@@ -73,14 +73,14 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
 
             // Create the program
             _program.Clear();
-            
+
             // Declare the output variables
             ProgramGenerator programGenerator = new ProgramGenerator();
-            
+
             // Create the program
-            try 
+            try
             {
-                _program = programGenerator.CreateProgram(objects); 
+                _program = programGenerator.CreateProgram(objects);
             }
             catch (WarningException warning)
             {
@@ -226,7 +226,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
                     using (StreamWriter writer = new StreamWriter(saveFileDialog.FileName, false))
                     {
                         for (int i = 0; i < _program.Count; i++)
-                        writer.WriteLine(_program[i]);
+                            writer.WriteLine(_program[i]);
                     }
                 }
             }

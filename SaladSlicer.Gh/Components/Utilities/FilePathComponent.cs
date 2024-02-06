@@ -41,7 +41,7 @@ namespace SaladSlicer.Gh.Components.Utilities
         /// </summary>
         protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
-            pManager.AddTextParameter("File Path", "FP", "File path of this Grasshopper file.",  GH_ParamAccess.item);
+            pManager.AddTextParameter("File Path", "FP", "File path of this Grasshopper file.", GH_ParamAccess.item);
         }
 
         /// <summary>
