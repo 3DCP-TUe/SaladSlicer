@@ -47,7 +47,7 @@ We would like to acknowledge the authors of [Robot Components](https://github.co
 Salad Slicer is a free-to-use Grasshopper plugin and does not legally bind you to cite it. However, we have invested time and effort in creating Salad Slicer and would appreciate a citation if used. To cite all versions of Salad Slicer in publications use:
 
 ```
-Arjen Deetman, Derk Bos, Matthew Ferguson, & Jelle Versteege. (2023). Salad Slicer: An open-source slicer toolkit for 3D concrete printing. Zenodo. https://doi.org/10.5281/zenodo.7818240
+Arjen Deetman, Derk Bos, Matthew Ferguson, & Jelle Versteege (2023). Salad Slicer: An open-source slicer toolkit for 3D concrete printing. Zenodo. https://doi.org/10.5281/zenodo.7818240
 ```
 
 Note that there are two reasons for citing the software used. One is giving recognition to the work done by others which we already addressed. The other is giving details on the system used so that experiments can be replicated. For this, you should cite the version of Salad Slicer used. On our [Zenodo page](https://doi.org/10.5281/zenodo.7818240) you can find how to cite specific versions. See [How to cite and describe software](https://software.ac.uk/how-cite-software) for more details and an in depth discussion.
@@ -62,7 +62,7 @@ x.x.0 ---> PATCH version: backwards compatible bug fixes.
 ```
 
 ## License
-Copyright (c) 2021-2023 3D Concrete Printing Research Group at Eindhoven University of Technology
+Copyright (c) 2021-2024 3D Concrete Printing Research Group at Eindhoven University of Technology
 
 Sald Slicer is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License version 3.0 as published by the Free Software Foundation. 
 

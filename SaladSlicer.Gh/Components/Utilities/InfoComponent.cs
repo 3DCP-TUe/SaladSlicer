@@ -62,7 +62,7 @@ namespace SaladSlicer.Gh.Components.Utilities
             text += "-----------------------------------";
             text += Environment.NewLine;
             text += Environment.NewLine;
-            text += "Copyright(c) 2021-2023 3D Concrete Printing Research Group at Eindhoven University of Technology";
+            text += "Copyright(c) 2021-2024 3D Concrete Printing Research Group at Eindhoven University of Technology";
             text += Environment.NewLine;
             text += Environment.NewLine;
             text += "Salad Slicer is free software; you can redistribute it and / or modify it under the terms of the GNU General Public License version 3.0 as published by the Free Software Foundation. Salad Slicer is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.";
