@@ -62,9 +62,9 @@ x.x.0 ---> PATCH version: backwards compatible bug fixes.
 ```
 
 ## License
-Copyright (c) 2021-2024 3D Concrete Printing Research Group at Eindhoven University of Technology
+Copyright (c) 2021-2024 [3D Concrete Printing Research Group at Eindhoven University of Technology](https://www.tue.nl/en/research/research-groups/structural-engineering-and-design/3d-concrete-printing)
 
-Sald Slicer is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License version 3.0 as published by the Free Software Foundation. 
+Salad Slicer is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License version 3.0 as published by the Free Software Foundation. 
 
 Salad Slicer is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
