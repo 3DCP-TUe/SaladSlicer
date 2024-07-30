@@ -61,6 +61,12 @@ x.0.x ---> MINOR version: functionality added in a backwards compatible manner.
 x.x.0 ---> PATCH version: backwards compatible bug fixes.
 ```
 
+## Funding
+
+This software could be developed and maintained with the financial support of the following projects:
+- The project _"Parametric mortar design and control of system parameters"_ funded by [Saint-Gobain Weber Beamix](https://www.nl.weber/).
+- The project _"Additive manufacturing of functional construction materials on-demand"_ (with project number 17895) of the research program _"Materialen NL: Challenges 2018"_ which is financed by the [Dutch Research Council](https://www.nwo.nl/en) (NWO).
+  
 ## License
 Copyright (c) 2021-2024 [3D Concrete Printing Research Group at Eindhoven University of Technology](https://www.tue.nl/en/research/research-groups/structural-engineering-and-design/3d-concrete-printing)
 
