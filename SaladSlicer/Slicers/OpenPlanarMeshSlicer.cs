@@ -258,7 +258,6 @@ namespace SaladSlicer.Slicers
         private void CreateFrames()
         {
             _framesByLayer.Clear();
-            _contours = Curves.AlternateCurves(_contours);
 
             for (int i = 0; i < _contours.Count; i++)
             {
@@ -291,13 +290,6 @@ namespace SaladSlicer.Slicers
                     _framesByLayer[i].Add(plane);
                 }
             }
-
-            for (int i = 1; i < _framesByLayer.Count; i += 2)
-            {
-                _framesByLayer[i].Reverse();
-            }
-
-            _contours = Curves.AlternateCurves(_contours);
         }
 
         /// <summary>
