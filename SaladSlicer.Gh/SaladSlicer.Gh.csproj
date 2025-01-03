@@ -65,6 +65,7 @@
   <ItemGroup>
     <Compile Include="Components\CodeGeneration\AbsoluteCoordinateComponent.cs" />
     <Compile Include="Components\CodeGeneration\CodeLineComponent.cs" />
+    <Compile Include="Components\Geometry part 1\InterpolateCurvesComponent.cs" />
     <Compile Include="Components\Nozzles\RectangularNozzleType2Component.cs" />
     <Compile Include="OBSOLETE\v0\ProgramGeneratorComponent_OBSOLETE.cs" />
     <Compile Include="Components\CodeGeneration\SetFeedRateComponent.cs" />
@@ -412,6 +413,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\RectangularNozzleType2_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\InterpolateCurves_Icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
