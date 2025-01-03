@@ -227,7 +227,7 @@ namespace SaladSlicer.Slicers
                     if (i != 0)
                     {
                         programGenerator.Program.Add("G1");
-                        programGenerator.Program.Add("TANGOF(C)");
+                        programGenerator.Program.Add("TANGOF(C)"); //TODO: Change with tangon/tangoff components
                     }
 
                     // Move 1 point with the TANGOF
@@ -236,11 +236,11 @@ namespace SaladSlicer.Slicers
                     // Turn TANGON again
                     if (i % 2 == 0)
                     {
-                        programGenerator.Program.Add("TANGON(C, 0)");
+                        programGenerator.Program.Add("TANGON(C, 0)"); //TODO: Change with tangon/tangoff components
                     }
                     else
                     {
-                        programGenerator.Program.Add("TANGON(C, 180)");
+                        programGenerator.Program.Add("TANGON(C, 180)"); //TODO: Change with tangon/tangoff components
                     }
 
                     programGenerator.Program.Add("BSPLINE");
