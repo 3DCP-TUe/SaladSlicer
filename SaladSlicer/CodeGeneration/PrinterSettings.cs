@@ -60,10 +60,30 @@ namespace SaladSlicer.CodeGeneration
 
         #region constructors
         /// <summary>
-        /// Creates a default temperature setting with zeros
+        /// Creates a default printer settings instance. 
         /// </summary>
         public PrinterSettings()
         {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the Printer Settings class.
+        /// </summary>
+        /// <param name="programType"> The program type. </param>
+        public PrinterSettings(ProgramType programType)
+        {
+            _programType = programType;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the Printer Settings class.
+        /// </summary>
+        /// <param name="programType"> The program type. </param>
+        /// <param name="interpolationType"> The interpolation type. </param>
+        public PrinterSettings(ProgramType programType, InterpolationType interpolationType)
+        {
+            _programType = programType;
+            _interpolationType = interpolationType;
         }
 
         /// <summary>
@@ -176,17 +196,36 @@ namespace SaladSlicer.CodeGeneration
             {
                 programGenerator.Program.Add("BSPLINE; Bspline interpolation");
                 programGenerator.Program.Add("G642; Continuous-path mode with smoothing within the defined tolerances");
-                programGenerator.Program.Add("TANG(C, X, Y, 1)");
-                programGenerator.Program.Add("TANGON(C, 0)");
+                programGenerator.Program.Add("TANG(C, X, Y, 1)"); //TODO: Change with tangon/tangoff components
+                programGenerator.Program.Add("TANGON(C, 0)"); //TODO: Change with tangon/tangoff components
             }
             else if (_interpolationType == InterpolationType.Linear)
             {
+                programGenerator.Program.Add("G1;");
             }
             else
             {
                 throw new Exception("Interpolation type not implemented");
             }
 
+            // Hot end and bed temperature
+            AddTemperatureProcedures(programGenerator);
+
+            programGenerator.Program.Add(" ");
+
+            //Checks 
+            if (_programType == ProgramType.Marlin && _interpolationType == InterpolationType.Spline)
+            {
+                throw new Exception("The Marlin G-Code flavor does not implement G642 interpolation");
+            }
+        }
+
+        /// <summary>
+        /// Adds the hot end and bed temperature procedures to the program. If set. 
+        /// </summary>
+        /// <param name="programGenerator"> The program generator. </param>
+        private void AddTemperatureProcedures(ProgramGenerator programGenerator)
+        {
             // HotEndTemperature && BedTemperature
             if (_hotEndTemperature >= 0 || _bedTemperature >= 0)
             {
@@ -218,14 +257,6 @@ namespace SaladSlicer.CodeGeneration
 
                 programGenerator.Program.Add("G1 Z-10; Move back to original position");
                 programGenerator.Program.Add("G90; Absolute coordinates");
-            }
-
-            programGenerator.Program.Add(" ");
-
-            //Checks 
-            if (_programType == ProgramType.Marlin && _interpolationType == InterpolationType.Spline)
-            {
-                throw new Exception("The Marlin G-Code flavor does not implement G642 interpolation");
             }
         }
 
