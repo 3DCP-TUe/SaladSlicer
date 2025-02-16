@@ -316,24 +316,31 @@ namespace SaladSlicer.Slicers
                     if (i != 0)
                     {
                         programGenerator.Program.Add("G1");
-                        programGenerator.Program.Add("TANGOF(C)"); //TODO: Change with tangon/tangoff components
+
+                        if (programGenerator.PrinterSettings.IsTangentialControlEnabled)
+                        {
+                            programGenerator.Program.Add("TANGOF(C)");
+                        }
                     }
 
                     // Move 1 point with the TANGOF
                     programGenerator.Program.Add(coordinates[i][0]);
 
                     // Turn TANGON again
-                    if (i % 2 == 0)
+                    if (programGenerator.PrinterSettings.IsTangentialControlEnabled)
                     {
-                        programGenerator.Program.Add("TANGON(C, 0)"); //TODO: Change with tangon/tangoff components
-                    }
-                    else
-                    {
-                        programGenerator.Program.Add("TANGON(C, 180)"); //TODO: Change with tangon/tangoff components
-                    }
+                        if (i % 2 == 0)
+                        {
+                            programGenerator.Program.Add("TANGON(C, 0)");
+                        }
+                        else
+                        {
+                            programGenerator.Program.Add("TANGON(C, 180)");
+                        }
 
-                    programGenerator.Program.Add("BSPLINE");
-                    programGenerator.Program.Add("G642");
+                        programGenerator.Program.Add("BSPLINE");
+                        programGenerator.Program.Add("G642");
+                    }
 
                     // Add the rest of the coordinates
                     programGenerator.Program.AddRange(coordinates[i].GetRange(1, coordinates[i].Count - 1));

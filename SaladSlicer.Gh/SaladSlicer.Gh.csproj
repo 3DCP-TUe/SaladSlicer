@@ -65,6 +65,7 @@
   <ItemGroup>
     <Compile Include="Components\CodeGeneration\AbsoluteCoordinateComponent.cs" />
     <Compile Include="Components\CodeGeneration\CodeLineComponent.cs" />
+    <Compile Include="OBSOLETE\v0\PrinterSettingsComponent_OBSOLETE.cs" />
     <Compile Include="Components\Geometry part 1\InterpolateCurvesComponent.cs" />
     <Compile Include="Components\Nozzles\RectangularNozzleType2Component.cs" />
     <Compile Include="OBSOLETE\v0\ProgramGeneratorComponent_OBSOLETE.cs" />

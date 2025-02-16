@@ -14,11 +14,12 @@ using SaladSlicer.Gh.Utils;
 using SaladSlicer.Enumerations;
 using SaladSlicer.Gh.Parameters.CodeGeneration;
 
-namespace SaladSlicer.Gh.Components.CodeGeneration
+namespace SaladSlicer.Gh.Obsolete.v0
 {
     /// <summary>
     /// Represent a component that generates the printer settings.
     /// </summary>
+    [Obsolete("This component is OBSOLETE and will be removed in the future.", false)]
     public class PrinterSettingsComponent : GH_Component
     {
         #region fields
@@ -46,7 +47,6 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         {
             pManager.AddIntegerParameter("Program Type", "T", "Set the program type for the program.", GH_ParamAccess.item, 0);
             pManager.AddIntegerParameter("Interpolation Type", "I", "Set the interpolation type for the program.", GH_ParamAccess.item, 0);
-            pManager.AddBooleanParameter("Tangential control", "TC", "Enables/disables tangential control.", GH_ParamAccess.item, false);
             pManager.AddNumberParameter("Hot End Temperature", "HT", "Set the temperature of the hot end. Negative values are ignored.", GH_ParamAccess.item, -1);
             pManager.AddNumberParameter("Bed Temperature", "BT", "Set the bed temperature. Negative values are ignored.", GH_ParamAccess.item, -1);
         }
@@ -87,16 +87,14 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
             // Declare variable of input parameters
             int programType = new int();
             int interpolation = new int();
-            bool tangentialControl = false;
             double hotend = new double();
             double bed = new double();
 
             // Access the input parameters individually. 
             if (!DA.GetData(0, ref programType)) return;
             if (!DA.GetData(1, ref interpolation)) return;
-            if (!DA.GetData(2, ref tangentialControl)) return;
-            if (!DA.GetData(3, ref hotend)) return;
-            if (!DA.GetData(4, ref bed)) return;
+            if (!DA.GetData(2, ref hotend)) return;
+            if (!DA.GetData(3, ref bed)) return;
 
             // Declare the output variables
             PrinterSettings programSetting = new PrinterSettings();
@@ -104,7 +102,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
             // Create the printer settings
             try
             {
-                programSetting = new PrinterSettings((ProgramType)programType, (InterpolationType)interpolation, tangentialControl, hotend, bed);
+                programSetting = new PrinterSettings((ProgramType)programType, (InterpolationType)interpolation, hotend, bed);
             }
             catch (WarningException warning)
             {
@@ -124,7 +122,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         public override GH_Exposure Exposure
         {
-            get { return GH_Exposure.primary; }
+            get { return GH_Exposure.hidden; }
         }
 
         /// <summary>
@@ -132,7 +130,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         public override bool Obsolete
         {
-            get { return false; }
+            get { return true; }
         }
 
         /// <summary>
@@ -149,7 +147,7 @@ namespace SaladSlicer.Gh.Components.CodeGeneration
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("9D19B1FA-016F-48DB-88D2-EE782BC27A0F"); }
+            get { return new Guid("C837C754-739D-4691-8643-27B61299086D"); }
         }
     }
 }

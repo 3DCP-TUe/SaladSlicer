@@ -23,6 +23,7 @@ namespace SaladSlicer.CodeGeneration
         #region fields
         private ProgramType _programType = ProgramType.Sinumerik;
         private InterpolationType _interpolationType = InterpolationType.Spline;
+        private bool isTangentialControlEnabled = false;
         private double _hotEndTemperature = -1;
         private double _bedTemperature = -1;
         #endregion
@@ -38,6 +39,7 @@ namespace SaladSlicer.CodeGeneration
             // string version = (int)info.GetValue("Version", typeof(string)); // <-- use this if the (de)serialization changes
             _programType = (ProgramType)info.GetValue("Program type", typeof(ProgramType));
             _interpolationType = (InterpolationType)info.GetValue("Interpolation type", typeof(InterpolationType));
+            isTangentialControlEnabled = (bool)info.GetValue("Tangential control", typeof(bool));
             _hotEndTemperature = (double)info.GetValue("Hot end temperature", typeof(double));
             _bedTemperature = (double)info.GetValue("Bed temperature", typeof(double));
         }
@@ -53,6 +55,7 @@ namespace SaladSlicer.CodeGeneration
             info.AddValue("Version", HelperMethods.GetVersionNumber(), typeof(string));
             info.AddValue("Program type", _programType, typeof(ProgramType));
             info.AddValue("Interpolation type", _interpolationType, typeof(InterpolationType));
+            info.AddValue("Tangential control", isTangentialControlEnabled, typeof(bool));
             info.AddValue("Hot end temperature", _hotEndTemperature, typeof(double));
             info.AddValue("Bed temperature", _bedTemperature, typeof(double));
         }
@@ -91,12 +94,42 @@ namespace SaladSlicer.CodeGeneration
         /// </summary>
         /// <param name="programType"> The program type. </param>
         /// <param name="interpolationType"> The interpolation type. </param>
+        /// <param name="tangentialControl"> Enables/disables tangential control. </param>
+        public PrinterSettings(ProgramType programType, InterpolationType interpolationType, bool tangentialControl)
+        {
+            _programType = programType;
+            _interpolationType = interpolationType;
+            isTangentialControlEnabled = tangentialControl;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the Printer Settings class.
+        /// </summary>
+        /// <param name="programType"> The program type. </param>
+        /// <param name="interpolationType"> The interpolation type. </param>
         /// <param name="hotEndTemperature"> The hot end temperature to be set. </param>
         /// <param name="bedTemperature"> The bed temperature to be set. </param>
         public PrinterSettings(ProgramType programType, InterpolationType interpolationType, double hotEndTemperature, double bedTemperature)
         {
             _programType = programType;
             _interpolationType = interpolationType;
+            _hotEndTemperature = hotEndTemperature;
+            _bedTemperature = bedTemperature;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the Printer Settings class.
+        /// </summary>
+        /// <param name="programType"> The program type. </param>
+        /// <param name="interpolationType"> The interpolation type. </param>
+        /// <param name="tangentialControl"> Enables/disables tangential control. </param>
+        /// <param name="hotEndTemperature"> The hot end temperature to be set. </param>
+        /// <param name="bedTemperature"> The bed temperature to be set. </param>
+        public PrinterSettings(ProgramType programType, InterpolationType interpolationType, bool tangentialControl, double hotEndTemperature, double bedTemperature)
+        {
+            _programType = programType;
+            _interpolationType = interpolationType;
+            isTangentialControlEnabled = tangentialControl;
             _hotEndTemperature = hotEndTemperature;
             _bedTemperature = bedTemperature;
         }
@@ -172,7 +205,11 @@ namespace SaladSlicer.CodeGeneration
                 programGenerator.Program.Add("G500; Zero frame");
                 programGenerator.Program.Add("SPCON; Position-controlled spindle ON");
                 programGenerator.Program.Add("G90; Absolute coordinates ");
-                programGenerator.Program.Add("G1 C90 F10000; Moves the C-axis tangent to y direction");
+
+                if (isTangentialControlEnabled)
+                {
+                    programGenerator.Program.Add("G1 C90 F10000; Moves the C-axis tangent to y direction");
+                }
             }
             else if (_programType == ProgramType.Marlin)
             {
@@ -196,8 +233,12 @@ namespace SaladSlicer.CodeGeneration
             {
                 programGenerator.Program.Add("BSPLINE; Bspline interpolation");
                 programGenerator.Program.Add("G642; Continuous-path mode with smoothing within the defined tolerances");
-                programGenerator.Program.Add("TANG(C, X, Y, 1)"); //TODO: Change with tangon/tangoff components
-                programGenerator.Program.Add("TANGON(C, 0)"); //TODO: Change with tangon/tangoff components
+
+                if (isTangentialControlEnabled)
+                {
+                    programGenerator.Program.Add("TANG(C, X, Y, 1)");
+                    programGenerator.Program.Add("TANGON(C, 0)"); 
+                }
             }
             else if (_interpolationType == InterpolationType.Linear)
             {
@@ -300,6 +341,15 @@ namespace SaladSlicer.CodeGeneration
         {
             get { return _interpolationType; }
             set { _interpolationType = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or tangential control is enabled.
+        /// </summary>
+        public bool IsTangentialControlEnabled
+        {
+            get { return isTangentialControlEnabled; }
+            set { isTangentialControlEnabled = value; }
         }
 
         /// <summary>
