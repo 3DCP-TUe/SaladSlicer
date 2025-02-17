@@ -226,10 +226,9 @@ namespace SaladSlicer.Slicers
                     // Add TANGOF for all layers but the first
                     if (i != 0)
                     {
-                        programGenerator.Program.Add("G1");
-
                         if (programGenerator.PrinterSettings.IsTangentialControlEnabled)
                         {
+                            programGenerator.Program.Add("G1");
                             programGenerator.Program.Add("TANGOF(C)");
                         }
                     }
