@@ -317,7 +317,11 @@ namespace SaladSlicer.Slicers
                     {
                         if (programGenerator.PrinterSettings.IsTangentialControlEnabled)
                         {
-                            programGenerator.Program.Add("G1");
+                            if (programGenerator.PrinterSettings.InterpolationType == InterpolationType.Spline)
+                            {
+                                programGenerator.Program.Add("G1");
+                            }
+
                             programGenerator.Program.Add("TANGOF(C)");
                         }
                     }
@@ -337,8 +341,11 @@ namespace SaladSlicer.Slicers
                             programGenerator.Program.Add("TANGON(C, 180)");
                         }
 
-                        programGenerator.Program.Add("BSPLINE");
-                        programGenerator.Program.Add("G642");
+                        if (programGenerator.PrinterSettings.InterpolationType == InterpolationType.Spline)
+                        {
+                            programGenerator.Program.Add("BSPLINE");
+                            programGenerator.Program.Add("G642");
+                        }
                     }
 
                     // Add the rest of the coordinates

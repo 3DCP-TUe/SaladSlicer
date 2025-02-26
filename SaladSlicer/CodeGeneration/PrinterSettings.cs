@@ -209,6 +209,12 @@ namespace SaladSlicer.CodeGeneration
                 if (isTangentialControlEnabled)
                 {
                     programGenerator.Program.Add("G1 C90 F10000; Moves the C-axis tangent to y direction");
+                    programGenerator.Program.Add("TANG(C, X, Y, 1)");
+                    programGenerator.Program.Add("TANGON(C, 0)");
+                }
+                else
+                {
+                    programGenerator.Program.Add("TANGOF(C)");
                 }
             }
             else if (_programType == ProgramType.Marlin)
@@ -222,6 +228,11 @@ namespace SaladSlicer.CodeGeneration
                 programGenerator.Program.Add("M82; Absolute extrusion mode");
                 programGenerator.Program.Add("G28; Move home");
                 programGenerator.Program.Add("G92 E2; Set current extruder position as 0");
+
+                if (isTangentialControlEnabled)
+                {
+                    throw new Exception("Tangential control is not supported in Marlin.");
+                }
             }
             else
             {
@@ -234,11 +245,6 @@ namespace SaladSlicer.CodeGeneration
                 programGenerator.Program.Add("BSPLINE; Bspline interpolation");
                 programGenerator.Program.Add("G642; Continuous-path mode with smoothing within the defined tolerances");
 
-                if (isTangentialControlEnabled)
-                {
-                    programGenerator.Program.Add("TANG(C, X, Y, 1)");
-                    programGenerator.Program.Add("TANGON(C, 0)"); 
-                }
             }
             else if (_interpolationType == InterpolationType.Linear)
             {
