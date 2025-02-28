@@ -23,7 +23,7 @@ namespace SaladSlicer.CodeGeneration
         #region fields
         private ProgramType _programType = ProgramType.Sinumerik;
         private InterpolationType _interpolationType = InterpolationType.Spline;
-        private bool isTangentialControlEnabled = false;
+        private bool _isTangentialControlEnabled = false;
         private double _hotEndTemperature = -1;
         private double _bedTemperature = -1;
         #endregion
@@ -39,7 +39,7 @@ namespace SaladSlicer.CodeGeneration
             // string version = (int)info.GetValue("Version", typeof(string)); // <-- use this if the (de)serialization changes
             _programType = (ProgramType)info.GetValue("Program type", typeof(ProgramType));
             _interpolationType = (InterpolationType)info.GetValue("Interpolation type", typeof(InterpolationType));
-            isTangentialControlEnabled = (bool)info.GetValue("Tangential control", typeof(bool));
+            _isTangentialControlEnabled = (bool)info.GetValue("Tangential control", typeof(bool));
             _hotEndTemperature = (double)info.GetValue("Hot end temperature", typeof(double));
             _bedTemperature = (double)info.GetValue("Bed temperature", typeof(double));
         }
@@ -55,7 +55,7 @@ namespace SaladSlicer.CodeGeneration
             info.AddValue("Version", HelperMethods.GetVersionNumber(), typeof(string));
             info.AddValue("Program type", _programType, typeof(ProgramType));
             info.AddValue("Interpolation type", _interpolationType, typeof(InterpolationType));
-            info.AddValue("Tangential control", isTangentialControlEnabled, typeof(bool));
+            info.AddValue("Tangential control", _isTangentialControlEnabled, typeof(bool));
             info.AddValue("Hot end temperature", _hotEndTemperature, typeof(double));
             info.AddValue("Bed temperature", _bedTemperature, typeof(double));
         }
@@ -99,7 +99,7 @@ namespace SaladSlicer.CodeGeneration
         {
             _programType = programType;
             _interpolationType = interpolationType;
-            isTangentialControlEnabled = tangentialControl;
+            _isTangentialControlEnabled = tangentialControl;
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace SaladSlicer.CodeGeneration
         {
             _programType = programType;
             _interpolationType = interpolationType;
-            isTangentialControlEnabled = tangentialControl;
+            _isTangentialControlEnabled = tangentialControl;
             _hotEndTemperature = hotEndTemperature;
             _bedTemperature = bedTemperature;
         }
@@ -142,6 +142,7 @@ namespace SaladSlicer.CodeGeneration
         {
             _programType = printerSettings.ProgramType;
             _interpolationType = printerSettings.InterpolationType;
+            _isTangentialControlEnabled = printerSettings.IsTangentialControlEnabled;
             _hotEndTemperature = printerSettings.HotEndTemperature;
             _bedTemperature = printerSettings.BedTemperature;
         }
@@ -206,7 +207,7 @@ namespace SaladSlicer.CodeGeneration
                 programGenerator.Program.Add("SPCON; Position-controlled spindle ON");
                 programGenerator.Program.Add("G90; Absolute coordinates ");
 
-                if (isTangentialControlEnabled)
+                if (_isTangentialControlEnabled)
                 {
                     programGenerator.Program.Add("G1 C90 F10000; Moves the C-axis tangent to y direction");
                     programGenerator.Program.Add("TANG(C, X, Y, 1)");
@@ -229,7 +230,7 @@ namespace SaladSlicer.CodeGeneration
                 programGenerator.Program.Add("G28; Move home");
                 programGenerator.Program.Add("G92 E2; Set current extruder position as 0");
 
-                if (isTangentialControlEnabled)
+                if (_isTangentialControlEnabled)
                 {
                     throw new Exception("Tangential control is not supported in Marlin.");
                 }
@@ -354,8 +355,8 @@ namespace SaladSlicer.CodeGeneration
         /// </summary>
         public bool IsTangentialControlEnabled
         {
-            get { return isTangentialControlEnabled; }
-            set { isTangentialControlEnabled = value; }
+            get { return _isTangentialControlEnabled; }
+            set { _isTangentialControlEnabled = value; }
         }
 
         /// <summary>
