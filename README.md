@@ -44,7 +44,7 @@ Salad Slicer is an open-source project that is developed and initiated by the [3
 We would like to acknowledge the authors of [Robot Components](https://github.com/RobotComponents/RobotComponents) for making their Grasshopper plugin available and open source. The code structure of Salad Slicer is heavily influenced by [Robot Components](https://github.com/RobotComponents/RobotComponents). As an acknowledgment, we have provided [Example Files](https://github.com/3DCP-TUe/SaladSlicer/tree/master/ExampleFiles) wherein we demonstrate how to use Salad Slicer in combination with [Robot Components](https://github.com/RobotComponents/RobotComponents). 
 
 ## Cite
-Salad Slicer is a free-to-use Grasshopper plugin, and we kindly ask you to cite it if used. Citing software helps recognize the work that went into developing it and allows us to track its usage, making it easier to secure funding for further improvements. More importantly, citing the software provides details on the tools used, ensuring that results can be reproduced. See [How to cite and describe software](https://software.ac.uk/how-cite-software) for more details and an in-depth discussion.
+Salad Slicer is a free-to-use Grasshopper plugin, and we kindly ask you to cite it if used. By citing the software, you recognize the work that went into its development and allow us to track its usage, making it easier to secure funding for further improvements. More importantly, citing the software and providing details on the tools used ensures that results can be reproduced. See [How to cite and describe software](https://software.ac.uk/how-cite-software) for more details and an in-depth discussion.
 
 To cite all versions of Salad Slicer - as a reference to the whole project -  in publications, use:
 
