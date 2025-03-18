@@ -25,10 +25,10 @@ Salad Slicer is an open-source Rhinoceros Grasshopper plugin developed for slici
 - Possibility to construct an NC program (G-code) for the sliced geometry. 
 - Possibility to convert all sliced objects to planes that can be used to construct programs for, for example, ABB and KUKA robots. 
 
-## Getting Started
-You can download the latest release directly from this repository's [releases page](https://github.com/3DCP-TUe/SaladSlicer/releases). Download the `SaladSlicer.gha` file and place it in your Grasshopper components folder (in GH, File > Special Folders > Components Folder). Make sure that the file is unblocked (right-click on the file and select `Properties` from the menu, click `Unblock` on the `General` tab). Restart Rhino and you are ready to go!
+## Installation
+You can install Salad Slicer directly via Rhino’s [Package Manager](https://www.rhino3d.com/features/package-manager/) (v7 and higher). Alternatively, download the latest release from this repository’s [releases page](https://github.com/3DCP-TUe/SaladSlicer/releases). Simply place the `SaladSlicer.gha` file in your Grasshopper components folder (*GH: File > Special Folders > Components Folder*). Ensure the file is unblocked (*right-click > Properties > General tab > Unblock*). Restart Rhino, and you're ready to go!  
 
-You can find a collection of example files demonstrating the main features of Salad Slicer in this repository in the folder [Example Files](https://github.com/3DCP-TUe/SaladSlicer/tree/master/ExampleFiles). 
+A collection of example files showcasing Salad Slicer’s main features is available in the [Example Files](https://github.com/3DCP-TUe/SaladSlicer/tree/master/ExampleFiles) folder in this repository.
 
 ## Contribute
 
