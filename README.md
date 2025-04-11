@@ -25,10 +25,10 @@ Salad Slicer is an open-source Rhinoceros Grasshopper plugin developed for slici
 - Possibility to construct an NC program (G-code) for the sliced geometry. 
 - Possibility to convert all sliced objects to planes that can be used to construct programs for, for example, ABB and KUKA robots. 
 
-## Getting Started
-You can download the latest release directly from this repository's [releases page](https://github.com/3DCP-TUe/SaladSlicer/releases). Download the `SaladSlicer.gha` file and place it in your Grasshopper components folder (in GH, File > Special Folders > Components Folder). Make sure that the file is unblocked (right-click on the file and select `Properties` from the menu, click `Unblock` on the `General` tab). Restart Rhino and you are ready to go!
+## Installation
+You can install Salad Slicer directly via Rhino’s [Package Manager](https://www.rhino3d.com/features/package-manager/) (v7 and higher). Alternatively, download the latest release from this repository’s [releases page](https://github.com/3DCP-TUe/SaladSlicer/releases). Simply place the `SaladSlicer.gha` file in your Grasshopper components folder (*GH: File > Special Folders > Components Folder*). Ensure the file is unblocked (*right-click > Properties > General tab > Unblock*). Restart Rhino, and you're ready to go!  
 
-You can find a collection of example files demonstrating the main features of Salad Slicer in this repository in the folder [Example Files](https://github.com/3DCP-TUe/SaladSlicer/tree/master/ExampleFiles). 
+A collection of example files showcasing Salad Slicer’s main features is available in the [Example Files](https://github.com/3DCP-TUe/SaladSlicer/tree/master/ExampleFiles) folder in this repository.
 
 ## Contribute
 
@@ -43,14 +43,16 @@ Salad Slicer is an open-source project that is developed and initiated by the [3
 
 We would like to acknowledge the authors of [Robot Components](https://github.com/RobotComponents/RobotComponents) for making their Grasshopper plugin available and open source. The code structure of Salad Slicer is heavily influenced by [Robot Components](https://github.com/RobotComponents/RobotComponents). As an acknowledgment, we have provided [Example Files](https://github.com/3DCP-TUe/SaladSlicer/tree/master/ExampleFiles) wherein we demonstrate how to use Salad Slicer in combination with [Robot Components](https://github.com/RobotComponents/RobotComponents). 
 
-## Cite Salad Slicer
-Salad Slicer is a free-to-use Grasshopper plugin and does not legally bind you to cite it. However, we have invested time and effort in creating Salad Slicer and would appreciate a citation if used. To cite all versions of Salad Slicer in publications use:
+## Cite
+Salad Slicer is a free-to-use Grasshopper plugin, and we kindly ask you to cite it if used. By citing the software, you recognize the work that went into its development and allow us to track its usage, making it easier to secure funding for further improvements. More importantly, citing the software and providing details on the tools used ensures that results can be reproduced. See [How to cite and describe software](https://software.ac.uk/how-cite-software) for more details and an in-depth discussion.
+
+To cite all versions of Salad Slicer - as a reference to the whole project -  in publications, use:
 
 ```
 Arjen Deetman, Derk Bos, Matthew Ferguson, & Jelle Versteege (2023). Salad Slicer: An open-source slicer toolkit for 3D concrete printing. Zenodo. https://doi.org/10.5281/zenodo.7818240
 ```
 
-Note that there are two reasons for citing the software used. One is giving recognition to the work done by others which we already addressed. The other is giving details on the system used so that experiments can be replicated. For this, you should cite the version of Salad Slicer used. On our [Zenodo page](https://doi.org/10.5281/zenodo.7818240) you can find how to cite specific versions. See [How to cite and describe software](https://software.ac.uk/how-cite-software) for more details and an in depth discussion.
+On our [Zenodo page](https://doi.org/10.5281/zenodo.7818240) you can find how to cite specific versions.
 
 ## Version numbering
 Salad Slicer uses the following [Semantic Versioning](https://semver.org/) scheme: 
