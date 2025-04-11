@@ -119,7 +119,8 @@ namespace SaladSlicer.CodeGeneration
         /// <param name="programGenerator"> The program generator. </param>
         public void ToProgram(ProgramGenerator programGenerator)
         {
-            programGenerator.Program.Add($"F{_feedRate:0.###} ; Feedrate in mm/min");
+            programGenerator.Program.Add($"F{_feedRate:0.###}; Feedrate in mm/min");
+            programGenerator.PrinterSettings.FeedRate = _feedRate;
         }
 
         /// <summary>

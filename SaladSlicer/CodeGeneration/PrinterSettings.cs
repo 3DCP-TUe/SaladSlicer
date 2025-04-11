@@ -26,6 +26,7 @@ namespace SaladSlicer.CodeGeneration
         private bool _isTangentialControlEnabled = false;
         private double _hotEndTemperature = -1;
         private double _bedTemperature = -1;
+        private double _feedRate = 10000;
         #endregion
 
         #region (de)serialization
@@ -42,6 +43,7 @@ namespace SaladSlicer.CodeGeneration
             _isTangentialControlEnabled = (bool)info.GetValue("Tangential control", typeof(bool));
             _hotEndTemperature = (double)info.GetValue("Hot end temperature", typeof(double));
             _bedTemperature = (double)info.GetValue("Bed temperature", typeof(double));
+            _feedRate = (double)info.GetValue("Feed rate", typeof(double));
         }
 
         /// <summary>
@@ -58,6 +60,7 @@ namespace SaladSlicer.CodeGeneration
             info.AddValue("Tangential control", _isTangentialControlEnabled, typeof(bool));
             info.AddValue("Hot end temperature", _hotEndTemperature, typeof(double));
             info.AddValue("Bed temperature", _bedTemperature, typeof(double));
+            info.AddValue("Feed rate", _feedRate, typeof(double));
         }
         #endregion
 
@@ -145,6 +148,7 @@ namespace SaladSlicer.CodeGeneration
             _isTangentialControlEnabled = printerSettings.IsTangentialControlEnabled;
             _hotEndTemperature = printerSettings.HotEndTemperature;
             _bedTemperature = printerSettings.BedTemperature;
+            _feedRate = printerSettings.FeedRate;
         }
 
         /// <summary>
@@ -210,11 +214,13 @@ namespace SaladSlicer.CodeGeneration
                 if (_isTangentialControlEnabled)
                 {
                     programGenerator.Program.Add("G1 C90 F10000; Moves the C-axis tangent to y direction");
+                    programGenerator.Program.Add($"F{_feedRate:0.###}; Feedrate in mm/min");
                     programGenerator.Program.Add("TANG(C, X, Y, 1)");
                     programGenerator.Program.Add("TANGON(C, 0)");
                 }
                 else
                 {
+                    programGenerator.Program.Add($"F{_feedRate:0.###}; Feedrate in mm/min");
                     programGenerator.Program.Add("TANGOF(C)");
                 }
             }
@@ -375,6 +381,15 @@ namespace SaladSlicer.CodeGeneration
         {
             get { return _bedTemperature; }
             set { _bedTemperature = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the current feed rate in mm/min.
+        /// </summary>
+        internal double FeedRate
+        {
+            get { return _feedRate; }
+            set { _feedRate = value; }
         }
         #endregion
     }
