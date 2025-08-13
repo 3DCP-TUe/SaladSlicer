@@ -4,6 +4,7 @@
 // LICENSE file, see <https://github.com/3DCP-TUe/SaladSlicer>.
 
 // System Libs
+using System;
 using System.IO;
 using System.Reflection;
 using System.Diagnostics;
@@ -26,6 +27,8 @@ namespace SaladSlicer.Utils
         /// </summary>
         /// <param name="obj"> The common object. </param>
         /// <returns> The byte array. </returns>
+        [Obsolete("This method is OBSOLETE and will be removed after it has been replaced with a modern standard. " +
+            "The current approach is not recommended and is deprecated in .NET Core/.NET 8.0.", false)]
         public static byte[] ObjectToByteArray(object obj)
         {
             if (obj == null) { return null; }
@@ -45,6 +48,8 @@ namespace SaladSlicer.Utils
         /// </summary>
         /// <param name="data"> The byte array. </param>
         /// <returns> The common object. </returns>
+        [Obsolete("This method is OBSOLETE and will be removed after it has been replaced with a modern standard. " +
+            "The current approach is not recommended and is deprecated in .NET Core/.NET 8.0.", false)]
         public static object ByteArrayToObject(byte[] data)
         {
             using (MemoryStream stream = new MemoryStream(data))
