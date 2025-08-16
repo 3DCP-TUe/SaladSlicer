@@ -1,451 +1,54 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{8D02B62A-118C-4117-ABBA-986F2784A645}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <TargetFramework>net48</TargetFramework>
     <RootNamespace>SaladSlicer.Gh</RootNamespace>
     <AssemblyName>SaladSlicer.Gh</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <TargetFrameworkProfile />
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
+    <OutputType>Library</OutputType>
+    <DocumentationFile>bin\SaladSlicer.Gh.xml</DocumentationFile>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
+    <IncludeSymbols>False</IncludeSymbols>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="Eto, Version=2.3.6591.18824, Culture=neutral, PublicKeyToken=552281e97c755530, processorArchitecture=MSIL">
-      <HintPath>..\packages\RhinoCommon.6.0.18016.23451\lib\net45\Eto.dll</HintPath>
-    </Reference>
-    <Reference Include="GH_IO, Version=6.0.18016.23451, Culture=neutral, PublicKeyToken=6a29997d2e6b4f97, processorArchitecture=MSIL">
-      <HintPath>..\packages\Grasshopper.6.0.18016.23451\lib\net45\GH_IO.dll</HintPath>
-    </Reference>
-    <Reference Include="GH_Util">
-      <HintPath>..\DLLs\GH_Util.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Grasshopper, Version=6.0.18016.23451, Culture=neutral, PublicKeyToken=dda4f5ec2cd80803, processorArchitecture=MSIL">
-      <HintPath>..\packages\Grasshopper.6.0.18016.23451\lib\net45\Grasshopper.dll</HintPath>
-    </Reference>
-    <Reference Include="Rhino.UI, Version=6.0.18016.23451, Culture=neutral, PublicKeyToken=552281e97c755530, processorArchitecture=MSIL">
-      <HintPath>..\packages\RhinoCommon.6.0.18016.23451\lib\net45\Rhino.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="RhinoCommon, Version=6.0.18016.23451, Culture=neutral, PublicKeyToken=552281e97c755530, processorArchitecture=MSIL">
-      <HintPath>..\packages\RhinoCommon.6.0.18016.23451\lib\net45\RhinoCommon.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Drawing" />
+    <None Include="..\..\SaladSlicer\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="RhinoCommon" Version="7.0.20314.3001" />
+    <PackageReference Include="Grasshopper" Version="7.0.20314.3001" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SaladSlicer\SaladSlicer.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="Components\CodeGeneration\AbsoluteCoordinateComponent.cs" />
-    <Compile Include="Components\CodeGeneration\CodeLineComponent.cs" />
-    <Compile Include="OBSOLETE\v0\PrinterSettingsComponent_OBSOLETE.cs" />
-    <Compile Include="Components\Geometry part 1\InterpolateCurvesComponent.cs" />
-    <Compile Include="Components\Nozzles\RectangularNozzleType2Component.cs" />
-    <Compile Include="OBSOLETE\v0\ProgramGeneratorComponent_OBSOLETE.cs" />
-    <Compile Include="Components\CodeGeneration\SetFeedRateComponent.cs" />
-    <Compile Include="Components\CodeGeneration\GroupProgramObjectsComponent.cs" />
-    <Compile Include="Components\CodeGeneration\MergeProgramObjectsComponent.cs" />
-    <Compile Include="Components\CodeGeneration\ProgramGeneratorComponent.cs" />
-    <Compile Include="Components\CodeGeneration\PrinterSettingsComponent.cs" />
-    <Compile Include="Components\CodeGeneration\SetTemperatureComponent.cs" />
-    <Compile Include="Components\CodeGeneration\UnGroupProgramObjectsComponent.cs" />
-    <Compile Include="Components\Deconstruct\DeconstructClosedPlanar2DSlicerComponent.cs" />
-    <Compile Include="Components\Deconstruct\DeconstructOpenPlanarMeshSlicerComponent.cs" />
-    <Compile Include="Components\Deconstruct\DeconstructClosedPlanarMeshSlicerComponent.cs" />
-    <Compile Include="Components\Deconstruct\DeconstructCurvesTransitionsSlicerComponent.cs" />
-    <Compile Include="Components\Deconstruct\DeconstructCurveSlicerComponent.cs" />
-    <Compile Include="Components\Deconstruct\DeconstructOpenPlanar2DSlicerComponent.cs" />
-    <Compile Include="Components\Geometry part 1\SurfaceContourMappingComponent.cs" />
-    <Compile Include="Components\Geometry part 1\TweenCurvesWithSamplingComponent.cs" />
-    <Compile Include="Components\Geometry part 1\TweenCurvesWithMatchingComponent.cs" />
-    <Compile Include="Components\Geometry part 2\AlignCurvesComponent.cs" />
-    <Compile Include="Components\Geometry part 2\AlignSeamsAlongCurveComponentcs.cs" />
-    <Compile Include="Components\Geometry part 2\AlignSeamsByClosestPointComponent.cs" />
-    <Compile Include="Components\Geometry part 2\AlternateCurvesComponent.cs" />
-    <Compile Include="Components\Geometry part 2\CurveFramesByCurvatureComponent.cs" />
-    <Compile Include="Components\Geometry part 2\CurveFramesByDistanceComponent.cs" />
-    <Compile Include="Components\Geometry part 2\JoinClosedContoursComponent.cs" />
-    <Compile Include="Components\Geometry part 2\JoinOpenContoursComponent.cs" />
-    <Compile Include="Components\Geometry part 2\SeamAtClosestPlaneIntersectionComponent.cs" />
-    <Compile Include="Components\Geometry part 2\SeamAtClosestPointComponent.cs" />
-    <Compile Include="Components\Geometry part 2\SeamAtLengthComponent.cs" />
-    <Compile Include="Components\Geometry part 2\SeamAtParamComponent.cs" />
-    <Compile Include="Components\Nozzles\RoundNozzleComponent.cs" />
-    <Compile Include="Components\Nozzles\RectangularNozzleType1Component.cs" />
-    <Compile Include="Components\Slicers\AddVariableComponent.cs" />
-    <Compile Include="Components\Slicers\ClosedPlanar2DSlicerComponent.cs" />
-    <Compile Include="Components\Slicers\GetDistancesAlongPathComponent.cs" />
-    <Compile Include="Components\Utilities\FilePathComponent.cs" />
-    <Compile Include="OBSOLETE\v0\GetPathComponent_OBSOLETE.cs" />
-    <Compile Include="Components\Slicers\OpenPlanarMeshSlicerComponent.cs" />
-    <Compile Include="Components\Slicers\ClosedPlanarMeshSlicerComponent.cs" />
-    <Compile Include="Components\Slicers\CurveSlicerComponent.cs" />
-    <Compile Include="Components\Slicers\ContoursTransitionsSlicerComponent.cs" />
-    <Compile Include="Components\Slicers\GetContoursComponent.cs" />
-    <Compile Include="Components\Slicers\GetCurvaturesComponents.cs" />
-    <Compile Include="Components\Slicers\GetDistancesAlongContoursComponent.cs" />
-    <Compile Include="Components\Slicers\GetDistanceToPreviousContoursComponent .cs" />
-    <Compile Include="Components\Slicers\GetEndFramesComponent.cs" />
-    <Compile Include="Components\Slicers\GetFramesComponent.cs" />
-    <Compile Include="OBSOLETE\v0\GetInterpolatedPathComponent_OBSOLETE.cs" />
-    <Compile Include="OBSOLETE\v0\GetLinearizedPathComponent_OBSOLETE.cs" />
-    <Compile Include="Components\Slicers\GetPathComponent.cs" />
-    <Compile Include="Components\Slicers\OpenPlanar2DSlicerComponent.cs" />
-    <Compile Include="Components\Utilities\ConvertVelocityMmminMmsComponent.cs" />
-    <Compile Include="Components\Utilities\ConvertVelocityMmsMmminComponent.cs" />
-    <Compile Include="Components\Utilities\InfoComponent.cs" />
-    <Compile Include="Components\Utilities\PlaneVisualizerComponent.cs" />
-    <Compile Include="Components\Geometry part 1\TransposeSurfaceComponent.cs" />
-    <Compile Include="Goos\CodeGeneration\GH_AbsoluteCoordinate.cs" />
-    <Compile Include="Goos\CodeGeneration\GH_PrinterSettings.cs" />
-    <Compile Include="Goos\CodeGeneration\GH_CodeLine.cs" />
-    <Compile Include="Goos\CodeGeneration\GH_SetTemperature.cs" />
-    <Compile Include="Goos\CodeGeneration\GH_SetFeedRate.cs" />
-    <Compile Include="Goos\CodeGeneration\GH_ProgramGroup.cs" />
-    <Compile Include="Goos\CodeGeneration\GH_ProgramObject.cs" />
-    <Compile Include="Goos\Slicers\GH_ClosedPlanar2DSlicer.cs" />
-    <Compile Include="Goos\Slicers\GH_ContoursTransitionsSlicer.cs" />
-    <Compile Include="Goos\Slicers\GH_OpenPlanarMeshSlicer.cs" />
-    <Compile Include="Goos\Slicers\GH_ClosedPlanarMeshSlicer.cs" />
-    <Compile Include="Goos\Slicers\GH_CurveSlicer.cs" />
-    <Compile Include="Goos\Slicers\GH_OpenPlanar2DSlicer.cs" />
-    <Compile Include="Goos\Slicers\GH_SlicerObject.cs" />
-    <Compile Include="Parameters\CodeGeneration\Param_AbsoluteCoordinate.cs" />
-    <Compile Include="Parameters\CodeGeneration\Param_PrinterSettings.cs" />
-    <Compile Include="Parameters\CodeGeneration\Param_CodeLine.cs" />
-    <Compile Include="Parameters\CodeGeneration\Param_SetTemperature.cs" />
-    <Compile Include="Parameters\CodeGeneration\Param_SetFeedRate.cs" />
-    <Compile Include="Parameters\CodeGeneration\Param_ProgramGroup.cs" />
-    <Compile Include="Parameters\CodeGeneration\Param_ProgramObject.cs" />
-    <Compile Include="Parameters\Slicers\Param_ClosedPlanar2DSlicer.cs" />
-    <Compile Include="Parameters\Slicers\Param_ContoursTransitionsSlicer.cs" />
-    <Compile Include="Parameters\Slicers\Param_OpenPlanarMeshSlicer.cs" />
-    <Compile Include="Parameters\Slicers\Param_ClosedPlanarMeshSlicer.cs" />
-    <Compile Include="Parameters\Slicers\Param_CurveSlicer.cs" />
-    <Compile Include="Parameters\Slicers\Param_OpenPlanar2DSlicer.cs" />
-    <Compile Include="Parameters\Slicers\Param_SlicerObject.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
+    <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="SaladSlicerIcon.cs" />
-    <Compile Include="SaladSlicerInfo.cs" />
-    <Compile Include="Utils\HelperMethods.cs" />
   </ItemGroup>
+
   <ItemGroup>
-    <ProjectReference Include="..\SaladSlicer\SaladSlicer.csproj">
-      <Project>{9cffc6ce-96af-4513-a4eb-9a2b00a2d6c9}</Project>
-      <Name>SaladSlicer</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
+    <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-    <None Include="Resources\DeconstructProgramObject_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\endFrames_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ExampleIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Frames_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\GetContours_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\GetDistancesAlongContours_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\GetDistancesBetweenContours_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\GetInterpolatedPath_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\GetLinearizedPath_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\GetPath_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\GroupProgramObjects_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Info_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\JoinClosedCurves_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\JoinOpenCurves_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\MergeProgramObject_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\OpenPlanar2DSlicer_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Param_AbsoluteCoordinate_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Param_ClosedPlanar2DSlicer_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Param_ClosedPlanar3DSlicer_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Param_CodeLine_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Param_CurveSlicer_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Param_OpenPlanar2DSlicer_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Param_ProgramGroup_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Param_ProgramObject_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Param_SetFeedRate_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Param_SlicerObject_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Parameter_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\PlaneVisualizer_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ProgramSettings_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\SaladLogo_Icon2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\SeamAtClosestPoint_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\SeamAtLength_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\SeamAtParameter_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\SeamsAtClosestPoint_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\SetFeedRate_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\TransposeSurface_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\UnGroupProgramObjects_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\2.5D.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\AbsoluteCoordinate_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\AddVariable_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\AlignCurves_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\AlignSeamsCurve_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\AlternateCurves_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ClosedPlanar2DSlicer_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ClosedPlanar3DSlicer_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\CodeGenerator_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\CodeGeneratorIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\CodeLine_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ConvertVelocityMmminMms_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ConvertVelocityMmsMmmin_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\CurveFramesByCurvature_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\CurveFramesByDistance_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\CurveSlicer_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\DeconstructClosedPlanar2DSlicer_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\DeconstructClosedPlanar3DSlicer_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\DeconstructCurveSlicer_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\DeconstructOpenPlanar2DSlicer_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\SeamaAtPlane_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\CurvesTransitionsSlicer_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\SeamaAt_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\GetCurvatures_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\DeconstructCurvesTransitionsSlicer_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Param_CurvesTransitionsSlicer_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\OpenPlanarMeshSlicer_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\DeconstructOpenPlanarMeshSlicer_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Param_OpenPlanarMeshSlicer_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ClosedPlanarMeshSlicer_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Param_ClosedPlanarMeshSlicer_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\DeconstructClosedPlanarMeshSlicer_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Param_SetTemperature_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Param_PrinterSettings_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\SetTemperature_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\TweenCurvesWithMatching_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\TweenCurvesWithSampling_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\SurfaceContourMapping_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\RectangularNozzle_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\RoundNozzle_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\FilePath_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\GetDistanceAlongPath_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\RectangularNozzleType2_Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\InterpolateCurves_Icon.png" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
+
+  <Target Name="Rename" AfterTargets="AfterBuild" Condition="'$(ContinuePackingAfterGeneratingNuspec)' != 'true'">
+    <Move SourceFiles="$(TargetPath)" DestinationFiles="$(TargetDir)$(Product).gha" />
   </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
-  <PropertyGroup>
-    <PostBuildEvent>Copy "$(TargetPath)" "$(TargetDir)$(ProjectName).gha"
-Erase "$(TargetPath)"</PostBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup>
-    <FallbackCulture>en-US</FallbackCulture>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <StartProgram>C:\Program Files\Rhino 6\System\Rhino.exe</StartProgram>
-    <StartArguments>
-    </StartArguments>
-    <StartAction>Program</StartAction>
-  </PropertyGroup>
-  <Import Project="..\packages\RhinoCommon.6.0.18016.23451\build\net45\RhinoCommon.targets" Condition="Exists('..\packages\RhinoCommon.6.0.18016.23451\build\net45\RhinoCommon.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\RhinoCommon.6.0.18016.23451\build\net45\RhinoCommon.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\RhinoCommon.6.0.18016.23451\build\net45\RhinoCommon.targets'))" />
-    <Error Condition="!Exists('..\packages\Grasshopper.6.0.18016.23451\build\net45\Grasshopper.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Grasshopper.6.0.18016.23451\build\net45\Grasshopper.targets'))" />
-  </Target>
-  <Import Project="..\packages\Grasshopper.6.0.18016.23451\build\net45\Grasshopper.targets" Condition="Exists('..\packages\Grasshopper.6.0.18016.23451\build\net45\Grasshopper.targets')" />
+  
 </Project>
