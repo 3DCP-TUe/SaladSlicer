@@ -58,6 +58,10 @@ namespace SaladSlicer.CodeGeneration
         { 
         }
 
+        /// <summary>
+        /// Initializes a new instance of the Set Temperature class by duplicating an existing Set Temperature instance. 
+        /// </summary>
+        /// <param name="setTemperature"> The Set Temperature instance to duplicate.</param>
         public SetTemperature(SetTemperature setTemperature)
         {
             _hotEndTemperature = setTemperature.HotEndTemperature;

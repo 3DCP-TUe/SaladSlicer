@@ -23,7 +23,7 @@ namespace SaladSlicer.Utils
         /// <summary>
         /// Serializes a common object to a byte array. 
         /// Typically used for serializing meshes and data inside Goo classes.
-        /// Taken from <https://github.com/RobotComponents/RobotComponents> (GPL v3).
+        /// Taken from https://github.com/RobotComponents/RobotComponents (GPL v3).
         /// </summary>
         /// <param name="obj"> The common object. </param>
         /// <returns> The byte array. </returns>
@@ -44,7 +44,7 @@ namespace SaladSlicer.Utils
         /// <summary>
         /// Deserializes a byte array to a common object. 
         /// Typically used for deserializing meshes and data inside Goo classes.
-        /// Taken from <https://github.com/RobotComponents/RobotComponents> (GPL v3).
+        /// Taken from https://github.com/RobotComponents/RobotComponents (GPL v3).
         /// </summary>
         /// <param name="data"> The byte array. </param>
         /// <returns> The common object. </returns>

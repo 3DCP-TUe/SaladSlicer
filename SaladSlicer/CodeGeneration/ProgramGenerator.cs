@@ -295,6 +295,7 @@ namespace SaladSlicer.CodeGeneration
         /// Returns the coordinate code lines including the added variables from an AddVariable instance.
         /// </summary>
         /// <param name="addVariable"> The added variable object to get the coorindate code lines from. </param>
+        /// <param name="printerSettings"> The printer settings the code lines are generated for. </param>
         /// <returns> The nested list code lines. </returns>
         public static List<List<string>> GetCoordinateCodeLines(IAddVariable addVariable, PrinterSettings printerSettings)
         {

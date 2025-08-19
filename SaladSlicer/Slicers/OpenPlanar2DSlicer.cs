@@ -534,6 +534,7 @@ namespace SaladSlicer.Slicers
             return distances;
         }
 
+        /// <summary>
         /// Returns a list with curvatures of the path at the frame location.
         /// </summary>
         /// <returns> The list with curvatures. </returns>

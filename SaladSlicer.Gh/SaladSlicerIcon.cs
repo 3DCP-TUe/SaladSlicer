@@ -5,8 +5,17 @@
 
 namespace SaladSlicer.Gh
 {
+    /// <summary>
+    /// Derive from this class if you wish to perform additional steps before any of your components are loaded. 
+    /// Any class in your project which inherits from GH_AssemblyPriority and which has an empty constructor
+    /// will be instantiated prior to any GH_Component or IGH_DocumentObject classes.
+    /// </summary>
     public class SaladSlicerCategoryIcon : Grasshopper.Kernel.GH_AssemblyPriority
     {
+        /// <summary>
+        /// This method will be called exactly once before any of the Components in your project are loaded.
+        /// </summary>
+        /// <returns> Loading instruction. </returns>
         public override Grasshopper.Kernel.GH_LoadingInstruction PriorityLoad()
         {
             Grasshopper.Instances.ComponentServer.AddCategoryIcon("Salad Slicer", Properties.Resources.SaladLogo_Icon2);

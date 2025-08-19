@@ -81,6 +81,7 @@ namespace SaladSlicer.Interfaces
         /// <returns> List with distaces. </returns>
         List<List<double>> GetDistanceToPreviousLayer(Plane plane, out List<List<double>> dx, out List<List<double>> dy, out List<List<double>> dz);
 
+        /// <summary>
         /// Returns a list with curvatures of the path at the frame location.
         /// </summary>
         /// <returns> The list with curvatures. </returns>

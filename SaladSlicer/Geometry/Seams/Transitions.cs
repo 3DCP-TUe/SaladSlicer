@@ -258,6 +258,7 @@ namespace SaladSlicer.Geometry.Seams
         /// </summary>
         /// <param name="curve"> Curve. </param>
         /// <param name="length"> Total length to be cut off. </param>
+        /// <param name="cut"> Part of the curve that was cut off. </param>
         /// <returns> Trimmed curve. </returns>
         public static Curve TrimCurveFromEnds(Curve curve, double length, out Curve cut)
         {
@@ -305,6 +306,7 @@ namespace SaladSlicer.Geometry.Seams
         /// </summary>
         /// <param name="curves"> List of curves. </param>
         /// <param name="length"> Total length to be cut off. </param>
+        /// <param name="cuts"> Parts of the curve that were cut off. </param>
         /// <returns></returns>
         public static List<Curve> TrimCurveFromEnds(IList<Curve> curves, double length, out List<Curve> cuts)
         {

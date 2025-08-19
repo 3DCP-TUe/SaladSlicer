@@ -115,6 +115,10 @@ namespace SaladSlicer.CodeGeneration
             }
         }
 
+        /// <summary>
+        /// Returns the Code Line object as a string
+        /// </summary>
+        /// <returns>The string</returns>
         public string ToSingleString()
         {
             return this.Code;

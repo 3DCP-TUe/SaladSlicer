@@ -52,6 +52,7 @@ namespace SaladSlicer.Slicers
         /// </summary>
         /// <param name="curve"> The curve. </param>
         /// <param name="distance"> The desired distance between two frames. </param>
+        /// <param name="transitions"> The transition curves. </param>
         public ContoursTransitionsSlicer(IList<Curve> curve, IList<Curve> transitions, double distance)
         {
             _contours = curve as List<Curve>;
@@ -365,6 +366,7 @@ namespace SaladSlicer.Slicers
             return distances;
         }
 
+        /// <summary>
         /// Returns a list with curvatures of the path at the frame location.
         /// </summary>
         /// <returns> The list with curvatures. </returns>
@@ -584,6 +586,9 @@ namespace SaladSlicer.Slicers
             get { return _contours; }
         }
 
+        /// <summary>
+        /// Gets the transition curves.
+        /// </summary>
         public List<Curve> Transitions
         {
             get { return _transitions; }

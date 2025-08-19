@@ -14,6 +14,9 @@ using SaladSlicer.Gh.Parameters.CodeGeneration;
 
 namespace SaladSlicer.Gh.Components.CodeGeneration
 {
+    /// <summary>
+    /// Represent a component that sets the temperature. 
+    /// </summary>
     public class SetTemperatureComponent : GH_Component
     {
         /// <summary>

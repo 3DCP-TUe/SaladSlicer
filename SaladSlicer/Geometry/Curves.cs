@@ -156,6 +156,7 @@ namespace SaladSlicer.Geometry
         /// <remarks>
         /// The length must be in the interior of the curve.
         /// </remarks>
+        /// <param name="curve"> The curve to split. </param>
         /// <param name="length"> The specified length. </param>
         /// <returns> The collection with split curves. </returns>
         public static Curve[] SplitAtLength(Curve curve, double length)
