@@ -119,7 +119,7 @@ namespace SaladSlicer.Gh.Components.Utilities
             {
                 Plane plane = _planes[i];
 
-                if (plane != null)
+                if (plane != Plane.Unset)
                 {
                     if (plane.IsValid == true)
                     {

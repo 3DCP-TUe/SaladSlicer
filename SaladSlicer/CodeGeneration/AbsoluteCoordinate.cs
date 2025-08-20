@@ -144,7 +144,7 @@ namespace SaladSlicer.CodeGeneration
         {
             get
             {
-                if (_plane == null) { return false; }
+                if (_plane == Plane.Unset) { return false; }
                 return true;
             }
         }

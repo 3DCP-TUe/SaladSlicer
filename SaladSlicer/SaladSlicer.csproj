@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net48</TargetFramework>
+    <TargetFrameworks>net48;net8.0</TargetFrameworks>
     <RootNamespace>SaladSlicer</RootNamespace>
     <AssemblyName>SaladSlicer</AssemblyName>
     <OutputType>Library</OutputType>
@@ -19,8 +19,12 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="RhinoCommon" Version="7.0.20314.3001" />
+  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+    <PackageReference Include="RhinoCommon" Version="7.0.20314.3001" ExcludeAssets="runtime" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+    <PackageReference Include="RhinoCommon" Version="8.21.25188.17001" ExcludeAssets="runtime" />
   </ItemGroup>
 
 </Project>

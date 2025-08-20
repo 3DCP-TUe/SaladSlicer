@@ -337,7 +337,7 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
         /// <param name="args"> Drawing arguments. </param>
         public void DrawViewportWires(GH_PreviewWireArgs args)
         {
-            if (this.Value.Plane.Origin != null)
+            if (this.Value.Plane.Origin != Point3d.Unset)
             {
                 args.Pipeline.DrawPoint(this.Value.Plane.Origin, args.Color);
             }

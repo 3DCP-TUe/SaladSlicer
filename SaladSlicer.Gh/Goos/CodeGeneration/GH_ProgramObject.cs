@@ -317,7 +317,7 @@ namespace SaladSlicer.Gh.Goos.CodeGeneration
                     args.Pipeline.DrawCurve(slicer.GetPath(), args.Color, args.Thickness);
                 }
 
-                if (slicer.PointAtStart != null)
+                if (slicer.PointAtStart != Point3d.Unset)
                 {
                     args.Pipeline.DrawPoint(slicer.PointAtStart, args.Color);
                 }
