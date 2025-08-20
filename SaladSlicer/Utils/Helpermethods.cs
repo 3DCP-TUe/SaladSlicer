@@ -4,12 +4,9 @@
 // LICENSE file, see <https://github.com/3DCP-TUe/SaladSlicer>.
 
 // System Libs
-using System;
-using System.IO;
 using System.Reflection;
 using System.Diagnostics;
 using System.Collections.Generic;
-using System.Runtime.Serialization.Formatters.Binary;
 // Salad Libs
 using SaladSlicer.Interfaces;
 
@@ -20,47 +17,6 @@ namespace SaladSlicer.Utils
     /// </summary>
     public static class HelperMethods
     {
-        /// <summary>
-        /// Serializes a common object to a byte array. 
-        /// Typically used for serializing meshes and data inside Goo classes.
-        /// Taken from https://github.com/RobotComponents/RobotComponents (GPL v3).
-        /// </summary>
-        /// <param name="obj"> The common object. </param>
-        /// <returns> The byte array. </returns>
-        [Obsolete("This method is OBSOLETE and will be removed after it has been replaced with a modern standard. " +
-            "The current approach is not recommended and is deprecated in .NET Core/.NET 8.0.", false)]
-        public static byte[] ObjectToByteArray(object obj)
-        {
-            if (obj == null) { return null; }
-
-            using (MemoryStream stream = new MemoryStream())
-            {
-                BinaryFormatter formatter = new BinaryFormatter();
-                formatter.Serialize(stream, obj);
-                return stream.ToArray();
-            }
-        }
-
-        /// <summary>
-        /// Deserializes a byte array to a common object. 
-        /// Typically used for deserializing meshes and data inside Goo classes.
-        /// Taken from https://github.com/RobotComponents/RobotComponents (GPL v3).
-        /// </summary>
-        /// <param name="data"> The byte array. </param>
-        /// <returns> The common object. </returns>
-        [Obsolete("This method is OBSOLETE and will be removed after it has been replaced with a modern standard. " +
-            "The current approach is not recommended and is deprecated in .NET Core/.NET 8.0.", false)]
-        public static object ByteArrayToObject(byte[] data)
-        {
-            using (MemoryStream stream = new MemoryStream(data))
-            {
-                BinaryFormatter formatter = new BinaryFormatter();
-                stream.Write(data, 0, data.Length);
-                stream.Seek(0, SeekOrigin.Begin);
-                return formatter.Deserialize(stream);
-            }
-        }
-
         /// <summary>
         /// Converts a velocity specified in mm/s to mm/min.
         /// </summary>

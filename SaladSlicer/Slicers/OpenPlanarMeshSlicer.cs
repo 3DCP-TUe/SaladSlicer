@@ -22,7 +22,6 @@ namespace SaladSlicer.Slicers
     /// <summary>
     /// Represents the Open Planar Mesh Slicer class.
     /// </summary>
-    [Serializable()]
     public class OpenPlanarMeshSlicer : IProgram, ISlicer, IGeometry, IAddVariable
     {
         #region fields
@@ -34,10 +33,6 @@ namespace SaladSlicer.Slicers
         private readonly List<List<Plane>> _framesByLayer = new List<List<Plane>>() { };
         private bool _reverse;
         private readonly Dictionary<string, List<List<string>>> _addedVariables = new Dictionary<string, List<List<string>>>() { };
-        #endregion
-
-        #region (de)serialisation
-        //TODO
         #endregion
 
         #region constructors

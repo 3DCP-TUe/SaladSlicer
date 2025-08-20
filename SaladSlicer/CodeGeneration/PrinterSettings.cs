@@ -5,19 +5,15 @@
 
 // System Libs
 using System;
-using System.Runtime.Serialization;
-using System.Security.Permissions;
 // Salad Libs
 using SaladSlicer.Interfaces;
 using SaladSlicer.Enumerations;
-using SaladSlicer.Utils;
 
 namespace SaladSlicer.CodeGeneration
 {
     /// <summary>
     /// Represents the Printer Settings
     /// </summary>
-    [Serializable()]
     public class PrinterSettings : IProgram
     {
         #region fields
@@ -27,41 +23,6 @@ namespace SaladSlicer.CodeGeneration
         private double _hotEndTemperature = -1;
         private double _bedTemperature = -1;
         private double _feedRate = 10000;
-        #endregion
-
-        #region (de)serialization
-        /// <summary>
-        /// Protected constructor needed for deserialization of the object.  
-        /// </summary>
-        /// <param name="info"> The SerializationInfo to extract the data from. </param>
-        /// <param name="context"> The context of this deserialization. </param>
-        protected PrinterSettings(SerializationInfo info, StreamingContext context)
-        {
-            // string version = (int)info.GetValue("Version", typeof(string)); // <-- use this if the (de)serialization changes
-            _programType = (ProgramType)info.GetValue("Program type", typeof(ProgramType));
-            _interpolationType = (InterpolationType)info.GetValue("Interpolation type", typeof(InterpolationType));
-            _isTangentialControlEnabled = (bool)info.GetValue("Tangential control", typeof(bool));
-            _hotEndTemperature = (double)info.GetValue("Hot end temperature", typeof(double));
-            _bedTemperature = (double)info.GetValue("Bed temperature", typeof(double));
-            _feedRate = (double)info.GetValue("Feed rate", typeof(double));
-        }
-
-        /// <summary>
-        /// Populates a SerializationInfo with the data needed to serialize the object.
-        /// </summary>
-        /// <param name="info"> The SerializationInfo to populate with data. </param>
-        /// <param name="context"> The destination for this serialization. </param>
-        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue("Version", HelperMethods.GetVersionNumber(), typeof(string));
-            info.AddValue("Program type", _programType, typeof(ProgramType));
-            info.AddValue("Interpolation type", _interpolationType, typeof(InterpolationType));
-            info.AddValue("Tangential control", _isTangentialControlEnabled, typeof(bool));
-            info.AddValue("Hot end temperature", _hotEndTemperature, typeof(double));
-            info.AddValue("Bed temperature", _bedTemperature, typeof(double));
-            info.AddValue("Feed rate", _feedRate, typeof(double));
-        }
         #endregion
 
         #region constructors

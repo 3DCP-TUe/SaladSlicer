@@ -21,7 +21,6 @@ namespace SaladSlicer.Slicers
     /// <summary>
     /// Represents the Planar 2D Slicer class.
     /// </summary>
-    [Serializable()]
     public class ContoursTransitionsSlicer : IProgram, ISlicer, IGeometry, IAddVariable
     {
         #region fields
@@ -33,10 +32,6 @@ namespace SaladSlicer.Slicers
         private readonly Dictionary<string, List<List<string>>> _addedVariables = new Dictionary<string, List<List<string>>>() { };
         private readonly List<List<Plane>> _framesInContours = new List<List<Plane>>() { };
         private readonly List<List<Plane>> _framesInTransitions = new List<List<Plane>>() { };
-        #endregion
-
-        #region (de)serialisation
-        //TODO
         #endregion
 
         #region constructors

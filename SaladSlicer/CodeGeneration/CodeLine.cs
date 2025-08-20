@@ -4,48 +4,19 @@
 // LICENSE file, see <https://github.com/3DCP-TUe/SaladSlicer>.
 
 // System Libs
-using System;
 using System.Runtime.Serialization;
-using System.Security.Permissions;
 // Salad Libs
 using SaladSlicer.Interfaces;
-using SaladSlicer.Utils;
 
 namespace SaladSlicer.CodeGeneration
 {
     /// <summary>
     /// Represents a custom (user definied) Code Line.
     /// </summary>
-    [Serializable()]
-    public class CodeLine : IProgram, ISerializable
+    public class CodeLine : IProgram
     {
         #region fields
         private string _code;
-        #endregion
-
-        #region (de)serialization
-        /// <summary>
-        /// Protected constructor needed for deserialization of the object.  
-        /// </summary>
-        /// <param name="info"> The SerializationInfo to extract the data from. </param>
-        /// <param name="context"> The context of this deserialization. </param>
-        protected CodeLine(SerializationInfo info, StreamingContext context)
-        {
-            // string version = (int)info.GetValue("Version", typeof(string)); // <-- use this if the (de)serialization changes
-            _code = (string)info.GetValue("Code", typeof(string));
-        }
-
-        /// <summary>
-        /// Populates a SerializationInfo with the data needed to serialize the object.
-        /// </summary>
-        /// <param name="info"> The SerializationInfo to populate with data. </param>
-        /// <param name="context"> The destination for this serialization. </param>
-        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue("Version", HelperMethods.GetVersionNumber(), typeof(string));
-            info.AddValue("Code", _code, typeof(string));
-        }
         #endregion
 
         #region constructors

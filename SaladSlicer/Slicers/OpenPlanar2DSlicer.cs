@@ -22,7 +22,6 @@ namespace SaladSlicer.Slicers
     /// <summary>
     /// Represents the Open Planar 2D Slicer class.
     /// </summary>
-    [Serializable()]
     public class OpenPlanar2DSlicer : IProgram, ISlicer, IGeometry, IAddVariable
     {
         #region fields
@@ -33,10 +32,6 @@ namespace SaladSlicer.Slicers
         private List<double> _heights = new List<double>();
         private readonly List<List<Plane>> _framesByLayer = new List<List<Plane>>() { };
         private readonly Dictionary<string, List<List<string>>> _addedVariables = new Dictionary<string, List<List<string>>>() { };
-        #endregion
-
-        #region (de)serialisation
-        //TODO
         #endregion
 
         #region constructors

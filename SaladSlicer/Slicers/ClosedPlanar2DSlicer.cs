@@ -22,7 +22,6 @@ namespace SaladSlicer.Slicers
     /// <summary>
     /// Represents the Closed Planar 2D Slicer class.
     /// </summary>
-    [Serializable()]
     public class ClosedPlanar2DSlicer : IProgram, ISlicer, IGeometry, IAddVariable
     {
         #region fields
@@ -37,10 +36,6 @@ namespace SaladSlicer.Slicers
         private double _seamLocation;
         private double _seamLength;
         private readonly Dictionary<string, List<List<string>>> _addedVariables = new Dictionary<string, List<List<string>>>() { };
-        #endregion
-
-        #region (de)serialisation
-        //TODO
         #endregion
 
         #region constructors
