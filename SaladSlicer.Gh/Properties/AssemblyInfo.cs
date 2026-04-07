@@ -1,7 +1,6 @@
-﻿// This file is part of SaladSlicer. SaladSlicer is licensed 
-// under the terms of GNU General Public License as published 
-// by the Free Software Foundation. For more information and the 
-// LICENSE file, see <https://github.com/3DCP-TUe/SaladSlicer>.
+﻿// SPDX-License-Identifier: GPL-3.0-or-later
+// Salad Slicer
+// Project: https://github.com/3DCP-TUe/SaladSlicer
 
 // System Libs
 using System.Reflection;
@@ -15,7 +14,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("3DCP Research Group at Eindhoven University of Technology")]
 [assembly: AssemblyProduct("Salad Slicer")]
-[assembly: AssemblyCopyright("Copyright © 2021-2025")]
+[assembly: AssemblyCopyright("Copyright © 2021-2026")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
