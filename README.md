@@ -38,22 +38,6 @@ A collection of example files showcasing Salad Slicer’s main features is avail
 
 **Code contributions**: We accept code contributions through [pull requests](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-requests). For this you have to [fork](https://help.github.com/en/github/getting-started-with-github/fork-a-repo) or [clone](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository) this repository. We only accept code contributions if they are commented. You can read more about this topic [here](https://docs.microsoft.com/en-us/dotnet/csharp/codedoc). If you want to make a significant contribution, please let us know what you want to add or change to avoid doing things twice. For questions or if you want to discuss your contribution you can reach out to one of the [developers](https://github.com/3DCP-TUe/SaladSlicer/graphs/contributors). 
 
-## Credits
-Salad Slicer is an open-source project that is developed and initiated by the [3D Concrete Printing Research Group at Eindhoven University of Technology](https://www.tue.nl/en/research/research-groups/structural-engineering-and-design/3d-concrete-printing/). The technical development is executed by the PhD and PDEng candidates who are listed [here](https://github.com/3DCP-TUe/SaladSlicer/graphs/contributors).
-
-We would like to acknowledge the authors of [Robot Components](https://github.com/RobotComponents/RobotComponents) for making their Grasshopper plugin available and open source. The code structure of Salad Slicer is heavily influenced by [Robot Components](https://github.com/RobotComponents/RobotComponents). As an acknowledgment, we have provided [Example Files](https://github.com/3DCP-TUe/SaladSlicer/tree/master/ExampleFiles) wherein we demonstrate how to use Salad Slicer in combination with [Robot Components](https://github.com/RobotComponents/RobotComponents). 
-
-## Cite
-Salad Slicer is a free-to-use Grasshopper plugin, and we kindly ask you to cite it if used. By citing the software, you recognize the work that went into its development and allow us to track its usage, making it easier to secure funding for further improvements. More importantly, citing the software and providing details on the tools used ensures that results can be reproduced. See [How to cite and describe software](https://software.ac.uk/how-cite-software) for more details and an in-depth discussion.
-
-To cite all versions of Salad Slicer - as a reference to the whole project -  in publications, use:
-
-```
-Arjen Deetman, Derk Bos, Matthew Ferguson, & Jelle Versteege (2023). Salad Slicer: An open-source slicer toolkit for 3D concrete printing. Zenodo. https://doi.org/10.5281/zenodo.7818240
-```
-
-On our [Zenodo page](https://doi.org/10.5281/zenodo.7818240) you can find how to cite specific versions.
-
 ## Version numbering
 Salad Slicer uses the following [Semantic Versioning](https://semver.org/) scheme: 
 
@@ -62,6 +46,29 @@ Salad Slicer uses the following [Semantic Versioning](https://semver.org/) schem
 x.0.x ---> MINOR version: functionality added in a backwards compatible manner.  
 x.x.0 ---> PATCH version: backwards compatible bug fixes.
 ```
+
+## Credits
+Salad Slicer is an open-source project that is developed and initiated by the [3D Concrete Printing Research Group at Eindhoven University of Technology](https://www.tue.nl/en/research/research-groups/structural-engineering-and-design/3d-concrete-printing/). The technical development is executed by the PhD and PDEng candidates who are listed [here](https://github.com/3DCP-TUe/SaladSlicer/graphs/contributors).
+
+We would like to acknowledge the authors of [Robot Components](https://github.com/RobotComponents/RobotComponents) for making their Grasshopper plugin available and open source. The code structure of Salad Slicer is heavily influenced by [Robot Components](https://github.com/RobotComponents/RobotComponents). As an acknowledgment, we have provided [Example Files](https://github.com/3DCP-TUe/SaladSlicer/tree/master/ExampleFiles) wherein we demonstrate how to use Salad Slicer in combination with [Robot Components](https://github.com/RobotComponents/RobotComponents). 
+
+## Cite
+Salad Slicer is a free-to-use Grasshopper plugin, and we kindly ask you to cite it if used. By citing the software, you recognize the work that went into its development and allow us to track its usage, making it easier to secure funding for further improvements. More importantly, citing the software and providing details on the tools used ensures that results can be reproduced. See [How to cite and describe software](https://software.ac.uk/how-cite-software) for more details and an in-depth discussion. 
+
+For general references to this software package, the Zenodo record can be cited. The BibTeX entry is provided below:
+
+```bibtex
+@misc{SaladSlicer_Zenodo,
+    author = {A. Deetman and D. Bos and M. Ferguson and J. Versteege},
+    title = {{S}alad {S}licer: {A}n open-source slicer toolkit for 3{D} concrete printing},
+    publisher = {Zenodo},
+    year = {2023-2025},
+    doi = {10.5281/zenodo.7818240},
+    note = {Zenodo. doi:10.5281/zenodo.7818240}
+}
+```
+
+On our [Zenodo page](https://doi.org/10.5281/zenodo.7818240), you can find how to cite specific versions of the software.
 
 ## Funding
 
