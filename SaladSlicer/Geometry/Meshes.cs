@@ -57,12 +57,7 @@ namespace SaladSlicer.Geometry
             while (stop == false)
             {
                 plane.OriginZ = min + (counter * distance);
-
-                #if NET48
-                Curve[] curves = Mesh.CreateContourCurves(mesh, plane);
-                #else
                 Curve[] curves = Mesh.CreateContourCurves(mesh, plane, 1e-7);
-                #endif
 
                 if (curves.Length != 0)
                 {
@@ -109,12 +104,7 @@ namespace SaladSlicer.Geometry
             for (int i = 0; i < heights.Count; i++)
             {
                 plane.OriginZ = min + heights[i];
-
-                #if NET48
-                Curve[] curves = Mesh.CreateContourCurves(mesh, plane);
-                #else
                 Curve[] curves = Mesh.CreateContourCurves(mesh, plane, 1e-7);
-                #endif
 
                 curves = Curve.JoinCurves(curves, 1.0);
 
@@ -143,11 +133,7 @@ namespace SaladSlicer.Geometry
 
             for (int i = 0; i < planes.Length; i++)
             {
-                #if NET48
-                Curve[] curves = Mesh.CreateContourCurves(mesh, planes[i]);
-                #else
                 Curve[] curves = Mesh.CreateContourCurves(mesh, planes[i], 1e-7);
-                #endif
 
                 if (curves.Length != 0)
                 {
