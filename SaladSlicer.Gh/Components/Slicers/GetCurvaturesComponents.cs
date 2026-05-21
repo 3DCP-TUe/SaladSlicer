@@ -5,7 +5,7 @@
 // Copyright (c) 2021-2026 Eindhoven University of Technology
 //
 // Authors:
-//  - Arjen Deetman (2021-2023)
+//  - Arjen Deetman (2021-2026)
 //  - Derk Bos (2021-2022)
 // 
 // For license details, see the LICENSE file in the project root.
