@@ -80,12 +80,16 @@ namespace SaladSlicer.Gh.Components.Slicers
             {
                 for (int i = 0; i < slicers.Branches.Count; i++)
                 {
+                    // Gets the current path of this branch
+                    GH_Path currentPath = slicers.Paths[i];
+
                     for (int j = 0; j < slicers.Branches[i].Count; j++)
                     {
                         ISlicer slicer = slicers.Branches[i][j].Value;
 
-                        GH_Path path = new GH_Path(i, j);
-                        path = path.AppendElement(0);
+                        GH_Path path = new GH_Path(currentPath);
+                        path = path.AppendElement(j); // Path index of object
+                        path = path.AppendElement(0); // Path index of layer
 
                         List<List<Vector3d>> temp = new List<List<Vector3d>>() { };
 
@@ -105,7 +109,7 @@ namespace SaladSlicer.Gh.Components.Slicers
                         for (int k = 0; k < temp.Count; k++)
                         {
                             curvatures.AppendRange(temp[k].ConvertAll(item => new GH_Vector(item)), path);
-                            path = path.Increment(path.Length - 1);
+                            path = path.Increment(path.Length - 1); // Update path index of layer
                         }
                     }
                 }

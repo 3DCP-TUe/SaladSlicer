@@ -75,17 +75,21 @@ namespace SaladSlicer.Gh.Components.Slicers
             // Fill the output tree
             for (int i = 0; i < slicers.Branches.Count; i++)
             {
+                // Gets the current path of this branch
+                GH_Path currentPath = slicers.Paths[i];
+
                 for (int j = 0; j < slicers.Branches[i].Count; j++)
                 {
                     ISlicer slicer = slicers.Branches[i][j].Value;
 
-                    GH_Path path = new GH_Path(i, j);
-                    path = path.AppendElement(0);
+                    GH_Path path = new GH_Path(currentPath);
+                    path = path.AppendElement(j); // Path index of object
+                    path = path.AppendElement(0); // Path index of layer
 
                     for (int k = 0; k < slicer.FramesByLayer.Count; k++)
                     {
                         planes.AppendRange(slicer.FramesByLayer[k].ConvertAll(item => new GH_Plane(item)), path);
-                        path = path.Increment(path.Length - 1);
+                        path = path.Increment(path.Length - 1); // Update path index of layer
                     }
                 }
             }
