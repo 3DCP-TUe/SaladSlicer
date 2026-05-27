@@ -2,10 +2,10 @@
 // Salad Slicer
 // Project: https://github.com/3DCP-TUe/SaladSlicer
 //
-// Copyright (c) 2021-2025 Eindhoven University of Technology
+// Copyright (c) 2021-2026 Eindhoven University of Technology
 //
 // Authors:
-//  - Arjen Deetman (2021-2023)
+//  - Arjen Deetman (2021-2026)
 //  - Derk Bos (2021)
 // 
 // For license details, see the LICENSE file in the project root.
@@ -102,4 +102,22 @@ namespace SaladSlicer.Enumerations
         Linear = 2,
     }
 
+    /// <summary>
+    /// Defines the output structure
+    /// </summary>
+    /// <remarks>
+    /// Typically used to set the structure of the datatrees in Grasshopper components.
+    /// </remarks>
+    public enum OutputStructure : int
+    {
+        /// <summary>
+        /// By layer
+        /// </summary>
+        ByLayer = 0,
+
+        /// <summary>
+        /// Spline interpolated path
+        /// </summary>
+        ByOject = 1
+    }
 }
