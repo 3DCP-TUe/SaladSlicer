@@ -147,7 +147,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("AEA874C9-4D80-4513-B3D9-91E6F1AD600E"); }
+            get { return new Guid("AC97BA9E-E5D7-409F-9571-AA2737901861"); }
         }
     }
 }

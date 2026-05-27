@@ -1,18 +1,14 @@
-﻿// SPDX-License-Identifier: GPL-3.0-or-later
-// Salad Slicer
-// Project: https://github.com/3DCP-TUe/SaladSlicer
-//
-// Copyright (c) 2021-2026 Eindhoven University of Technology
-//
-// Authors:
-//  - Arjen Deetman (2021-2026)
-//  - Derk Bos (2021-2023)
-//  - Matthew Ferguson (2021)
-// 
-// For license details, see the LICENSE file in the project root.
+﻿// This file is part of SaladSlicer. SaladSlicer is licensed 
+// under the terms of GNU General Public License as published 
+// by the Free Software Foundation. For more information and the 
+// LICENSE file, see <https://github.com/3DCP-TUe/SaladSlicer>.
 
 // System Libs
 using System;
+using System.ComponentModel;
+using System.Collections.Generic;
+// Rhino Libs
+using Rhino.Geometry;
 // Grasshopper Libs
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Types;
@@ -22,20 +18,21 @@ using SaladSlicer.Interfaces;
 using SaladSlicer.Gh.Parameters.Slicers;
 using SaladSlicer.Gh.Goos.Slicers;
 
-namespace SaladSlicer.Gh.Components.Slicers
+namespace SaladSlicer.Gh.Obsolete.v0
 {
     /// <summary>
-    /// Represent a component that gets the frames.
+    /// Represent a component that gets the curvatures.
     /// </summary>
-    public class GetFramesComponent : GH_Component
+    [Obsolete("This component is OBSOLETE and will be removed in the future.", false)]
+    public class GetCurvaturesComponent : GH_Component
     {
         /// <summary>
         /// Public constructor without any arguments.
         /// </summary>
-        public GetFramesComponent()
-          : base("Get Frames", // Component name
-              "F", // Component nickname
-              "Defines the frames of a sliced object.", // Description
+        public GetCurvaturesComponent()
+          : base("Get Curvatures", // Component name
+              "C", // Component nickname
+              "Defines the curvatures of the path at each frame of a sliced object.", // Description
               "Salad Slicer", // Category
               "Slicers") // Subcategory
         {
@@ -54,7 +51,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
-            pManager.AddPlaneParameter("Frames", "F", "Frames as a datatree with Planes.", GH_ParamAccess.tree);
+            pManager.AddVectorParameter("Curvatures", "K", "Curvatures as a datatree with Vectors.", GH_ParamAccess.tree);
         }
 
         /// <summary>
@@ -70,32 +67,46 @@ namespace SaladSlicer.Gh.Components.Slicers
             if (!DA.GetDataTree(0, out slicers)) return;
 
             // Initialize component output
-            GH_Structure<GH_Plane> planes = new GH_Structure<GH_Plane>();
+            GH_Structure<GH_Vector> curvatures = new GH_Structure<GH_Vector>();
 
             // Fill the output tree
-            for (int i = 0; i < slicers.Branches.Count; i++)
+            if (slicers.Branches.Count != 0)
             {
-                // Gets the current path of this branch
-                GH_Path currentPath = slicers.Paths[i];
-
-                for (int j = 0; j < slicers.Branches[i].Count; j++)
+                for (int i = 0; i < slicers.Branches.Count; i++)
                 {
-                    ISlicer slicer = slicers.Branches[i][j].Value;
-
-                    GH_Path path = new GH_Path(currentPath);
-                    path = path.AppendElement(j); // Path index of object
-                    path = path.AppendElement(0); // Path index of layer
-
-                    for (int k = 0; k < slicer.FramesByLayer.Count; k++)
+                    for (int j = 0; j < slicers.Branches[i].Count; j++)
                     {
-                        planes.AppendRange(slicer.FramesByLayer[k].ConvertAll(item => new GH_Plane(item)), path);
-                        path = path.Increment(path.Length - 1); // Update path index of layer
+                        ISlicer slicer = slicers.Branches[i][j].Value;
+
+                        GH_Path path = new GH_Path(i, j);
+                        path = path.AppendElement(0);
+
+                        List<List<Vector3d>> temp = new List<List<Vector3d>>() { };
+
+                        try
+                        {
+                            temp = slicer.GetCurvatures();
+                        }
+                        catch (WarningException w)
+                        {
+                            AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, w.Message);
+                        }
+                        catch (Exception e)
+                        {
+                            AddRuntimeMessage(GH_RuntimeMessageLevel.Error, e.Message);
+                        }
+
+                        for (int k = 0; k < temp.Count; k++)
+                        {
+                            curvatures.AppendRange(temp[k].ConvertAll(item => new GH_Vector(item)), path);
+                            path = path.Increment(path.Length - 1);
+                        }
                     }
                 }
             }
 
             // Assign the output parameters
-            DA.SetDataTree(0, planes);
+            DA.SetDataTree(0, curvatures);
         }
 
         /// <summary>
@@ -103,7 +114,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         public override GH_Exposure Exposure
         {
-            get { return GH_Exposure.tertiary; }
+            get { return GH_Exposure.hidden; }
         }
 
         /// <summary>
@@ -111,7 +122,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         public override bool Obsolete
         {
-            get { return false; }
+            get { return true; }
         }
 
         /// <summary>
@@ -119,7 +130,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         protected override System.Drawing.Bitmap Icon
         {
-            get { return Properties.Resources.GetFrames_Icon; }
+            get { return Properties.Resources.GetCurvatures_Icon; }
         }
 
         /// <summary>
@@ -128,7 +139,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("0DC6E2F7-DA4E-4E37-93BA-3786D2B327E0"); }
+            get { return new Guid("F7A8639B-1B70-42E5-9B64-AB753D324A16"); }
         }
     }
 }

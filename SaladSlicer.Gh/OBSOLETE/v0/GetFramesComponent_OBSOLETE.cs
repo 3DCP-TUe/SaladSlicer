@@ -1,15 +1,7 @@
-﻿// SPDX-License-Identifier: GPL-3.0-or-later
-// Salad Slicer
-// Project: https://github.com/3DCP-TUe/SaladSlicer
-//
-// Copyright (c) 2021-2026 Eindhoven University of Technology
-//
-// Authors:
-//  - Arjen Deetman (2021-2026)
-//  - Derk Bos (2021-2023)
-//  - Matthew Ferguson (2021)
-// 
-// For license details, see the LICENSE file in the project root.
+﻿// This file is part of SaladSlicer. SaladSlicer is licensed 
+// under the terms of GNU General Public License as published 
+// by the Free Software Foundation. For more information and the 
+// LICENSE file, see <https://github.com/3DCP-TUe/SaladSlicer>.
 
 // System Libs
 using System;
@@ -22,11 +14,12 @@ using SaladSlicer.Interfaces;
 using SaladSlicer.Gh.Parameters.Slicers;
 using SaladSlicer.Gh.Goos.Slicers;
 
-namespace SaladSlicer.Gh.Components.Slicers
+namespace SaladSlicer.Gh.Obsolete.v0
 {
     /// <summary>
     /// Represent a component that gets the frames.
     /// </summary>
+    [Obsolete("This component is OBSOLETE and will be removed in the future.", false)]
     public class GetFramesComponent : GH_Component
     {
         /// <summary>
@@ -75,21 +68,17 @@ namespace SaladSlicer.Gh.Components.Slicers
             // Fill the output tree
             for (int i = 0; i < slicers.Branches.Count; i++)
             {
-                // Gets the current path of this branch
-                GH_Path currentPath = slicers.Paths[i];
-
                 for (int j = 0; j < slicers.Branches[i].Count; j++)
                 {
                     ISlicer slicer = slicers.Branches[i][j].Value;
 
-                    GH_Path path = new GH_Path(currentPath);
-                    path = path.AppendElement(j); // Path index of object
-                    path = path.AppendElement(0); // Path index of layer
+                    GH_Path path = new GH_Path(i, j);
+                    path = path.AppendElement(0);
 
                     for (int k = 0; k < slicer.FramesByLayer.Count; k++)
                     {
                         planes.AppendRange(slicer.FramesByLayer[k].ConvertAll(item => new GH_Plane(item)), path);
-                        path = path.Increment(path.Length - 1); // Update path index of layer
+                        path = path.Increment(path.Length - 1);
                     }
                 }
             }
@@ -103,7 +92,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         public override GH_Exposure Exposure
         {
-            get { return GH_Exposure.tertiary; }
+            get { return GH_Exposure.hidden; }
         }
 
         /// <summary>
@@ -111,7 +100,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         public override bool Obsolete
         {
-            get { return false; }
+            get { return true; }
         }
 
         /// <summary>
@@ -128,7 +117,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("0DC6E2F7-DA4E-4E37-93BA-3786D2B327E0"); }
+            get { return new Guid("5633DCEE-C741-4FFF-AB58-44C48384FC4E"); }
         }
     }
 }
