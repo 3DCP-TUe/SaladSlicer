@@ -13,6 +13,7 @@
 // System Libs
 using System;
 using System.Drawing;
+using System.Text.RegularExpressions;
 // Grasshopper Libs
 using Grasshopper;
 using Grasshopper.Kernel;
@@ -31,8 +32,9 @@ namespace SaladSlicer.Gh.Utils
         /// <param name="component">Component to connect to</param>
         /// <param name="inputIndex">Index of the input to connect the list to</param>
         /// <param name="enumType">Enumeration to take values from</param>
-        /// <returns></returns>
-        public static bool CreateValueList(GH_Component component, int inputIndex, Type enumType)
+        /// <param name="addSpaces">If true, inserts spaces between words in enum names (e.g., "ByLayer" becomes "By Layer")</param>
+        /// <returns>Returns true if created.</returns>
+        public static bool CreateValueList(GH_Component component, int inputIndex, Type enumType, bool addSpaces = false)
         {
             if (component.Params.Input[inputIndex].SourceCount == 0)
             {
@@ -48,8 +50,17 @@ namespace SaladSlicer.Gh.Utils
                 string[] names = Enum.GetNames(enumType);
                 int[] values = (int[])Enum.GetValues(enumType);
 
+
                 for (int i = 0; i < names.Length; i++)
                 {
+                    if (addSpaces)
+                    {
+                        obj.ListItems.Add(new GH_ValueListItem(Regex.Replace(names[i], "(?<=[a-z])([A-Z])", " $1"), values[i].ToString()));
+                    }
+                    else
+                    {
+
+                    }
                     obj.ListItems.Add(new GH_ValueListItem(names[i], values[i].ToString()));
                 }
 

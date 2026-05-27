@@ -19,8 +19,10 @@ using Grasshopper.Kernel.Types;
 using Grasshopper.Kernel.Data;
 // Salad Slicer Libs
 using SaladSlicer.Interfaces;
+using SaladSlicer.Enumerations;
 using SaladSlicer.Gh.Parameters.Slicers;
 using SaladSlicer.Gh.Goos.Slicers;
+using SaladSlicer.Gh.Utils;
 
 namespace SaladSlicer.Gh.Components.Slicers
 {
@@ -47,6 +49,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
             pManager.AddParameter(new Param_SlicerObject(), "Slicer Object", "SO", "Slicer object.", GH_ParamAccess.tree);
+            pManager.AddIntegerParameter("Structure", "S", "Sets the output datatree structure; frames by layer (0) or by object (1).", GH_ParamAccess.item, 0);
         }
 
         /// <summary>
@@ -63,11 +66,27 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// <param name="DA">The DA object can be used to retrieve data from input parameters and to store data in output parameters.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
+            // Creates the input value list and attachs it to the input parameter
+            if (this.Params.Input[1].SourceCount == 0)
+            {
+                HelperMethods.CreateValueList(this, 1, typeof(OutputStructure), true);
+                this.ExpireSolution(true);
+            }
+
             // Input variables
             GH_Structure<GH_SlicerObject> slicers;
+            int outputStructure = 0;
 
             // Catch the input data
             if (!DA.GetDataTree(0, out slicers)) return;
+            if (!DA.GetData(1, ref outputStructure)) { return; }
+
+            // Check input
+            if (outputStructure != 0 & outputStructure != 1)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "The set datatree structure type is not valid; set equal to 0 for frames by layer or 1 for frames by object.");
+                return;
+            }
 
             // Initialize component output
             GH_Structure<GH_Plane> planes = new GH_Structure<GH_Plane>();
@@ -84,12 +103,21 @@ namespace SaladSlicer.Gh.Components.Slicers
 
                     GH_Path path = new GH_Path(currentPath);
                     path = path.AppendElement(j); // Path index of object
-                    path = path.AppendElement(0); // Path index of layer
+
+                    // Stores the frames of each layer in its own datatree branch
+                    if (outputStructure == 0)
+                    {
+                        path = path.AppendElement(0); // Path index of layer
+                    }
 
                     for (int k = 0; k < slicer.FramesByLayer.Count; k++)
                     {
                         planes.AppendRange(slicer.FramesByLayer[k].ConvertAll(item => new GH_Plane(item)), path);
-                        path = path.Increment(path.Length - 1); // Update path index of layer
+                        
+                        if (outputStructure == 0)
+                        {
+                            path = path.Increment(path.Length - 1); // Update path index of layer
+                        }
                     }
                 }
             }
