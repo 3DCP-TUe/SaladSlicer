@@ -6,7 +6,7 @@
 //
 // Authors:
 //  - Derk Bos (2021)
-//  - Arjen Deetman (2021-2024)
+//  - Arjen Deetman (2021-2026)
 // 
 // For license details, see the LICENSE file in the project root.
 
@@ -23,7 +23,7 @@ namespace SaladSlicer.Gh.Utils
     /// <summary>
     /// Represents general helper methods
     /// </summary>
-    public static class HelperMethods
+    internal static class HelperMethods
     {
         /// <summary>
         /// Creates a Grasshopper value list and returns true if it's created
