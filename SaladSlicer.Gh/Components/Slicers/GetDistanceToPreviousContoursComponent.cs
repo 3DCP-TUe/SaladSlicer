@@ -53,7 +53,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
             pManager.AddParameter(new Param_SlicerObject(), "Slicer Object", "SO", "Slicer object.", GH_ParamAccess.tree);
-            pManager.AddPlaneParameter("Plane", "P", "Plane (printbed) to calculate distance to for the frames in the first layer.", GH_ParamAccess.tree, Plane.WorldXY);
+            pManager.AddPlaneParameter("Plane", "P", "Plane (printbed) to calculate distance to for the frames in the first layer.", GH_ParamAccess.item, Plane.WorldXY);
             pManager.AddIntegerParameter("Structure", "S", "Sets the output datatree structure; frames by layer (0) or by object (1).", GH_ParamAccess.item, 0);
         }
 
@@ -83,12 +83,12 @@ namespace SaladSlicer.Gh.Components.Slicers
 
             // Input variables
             GH_Structure<GH_SlicerObject> slicers;
-            GH_Structure<GH_Plane> planes;
+            Plane plane = Plane.WorldXY;
             int outputStructure = 0;
 
             // Catch the input data
             if (!DA.GetDataTree(0, out slicers)) return;
-            if (!DA.GetDataTree(1, out planes)) return;
+            if (!DA.GetData(1, ref plane)) return;
             if (!DA.GetData(2, ref outputStructure)) { return; }
 
             // Check input
@@ -105,40 +105,16 @@ namespace SaladSlicer.Gh.Components.Slicers
             GH_Structure<GH_Number> dz = new GH_Structure<GH_Number>();
 
             // Fill the output tree
-            int maxBranches = Math.Max(slicers.Branches.Count, planes.Branches.Count);
-
-            // Leading datatree
-            bool slicersIsLeading = slicers.Branches.Count == slicers.Branches.Count;
-
-            for (int i = 0; i < maxBranches; i++)
+            for (int i = 0; i < slicers.Branches.Count; i++)
             {
-                int iSlicer = Math.Min(i, slicers.Branches.Count - 1);
-                int iPlane = Math.Min(i, planes.Branches.Count - 1);
-
                 GH_Path currentPath;
 
                 // Gets the current path of this branch
-                if (slicersIsLeading)
+                currentPath = slicers.Paths[i];
+
+                for (int j = 0; j < slicers.Branches[i].Count; j++)
                 {
-                    currentPath = slicers.Paths[i];
-                }
-                else
-                {
-                    currentPath = planes.Paths[i];
-                }
-
-                List<GH_SlicerObject> slicerBranch = slicers.Branches[iSlicer];
-                List<GH_Plane> planeBranch = planes.Branches[iPlane];
-
-                int maxBranchLength = Math.Max(slicerBranch.Count, planeBranch.Count);
-
-                for (int j = 0; j < maxBranchLength; j++)
-                {
-                    int jSlicer = Math.Min(j, slicerBranch.Count - 1);
-                    int jPlane = Math.Min(j, planeBranch.Count - 1);
-
-                    ISlicer slicer = slicerBranch[jSlicer].Value;
-                    Plane plane = planeBranch[jPlane].Value;
+                    ISlicer slicer = slicers.Branches[i][j].Value;
 
                     GH_Path path = new GH_Path(currentPath);
                     path = path.AppendElement(j); // Path index of object
