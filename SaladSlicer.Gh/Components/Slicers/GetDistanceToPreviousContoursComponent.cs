@@ -23,8 +23,10 @@ using Grasshopper.Kernel.Types;
 using Grasshopper.Kernel.Data;
 // Salad Slicer Libs
 using SaladSlicer.Interfaces;
+using SaladSlicer.Enumerations;
 using SaladSlicer.Gh.Parameters.Slicers;
 using SaladSlicer.Gh.Goos.Slicers;
+using SaladSlicer.Gh.Utils;
 
 namespace SaladSlicer.Gh.Components.Slicers
 {
@@ -52,6 +54,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         {
             pManager.AddParameter(new Param_SlicerObject(), "Slicer Object", "SO", "Slicer object.", GH_ParamAccess.tree);
             pManager.AddPlaneParameter("Plane", "P", "Plane (printbed) to calculate distance to for the frames in the first layer.", GH_ParamAccess.tree, Plane.WorldXY);
+            pManager.AddIntegerParameter("Structure", "S", "Sets the output datatree structure; frames by layer (0) or by object (1).", GH_ParamAccess.item, 0);
         }
 
         /// <summary>
@@ -71,13 +74,29 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// <param name="DA">The DA object can be used to retrieve data from input parameters and to store data in output parameters.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
+            // Creates the input value list and attachs it to the input parameter
+            if (this.Params.Input[2].SourceCount == 0)
+            {
+                HelperMethods.CreateValueList(this, 2, typeof(OutputStructure), true);
+                this.ExpireSolution(true);
+            }
+
             // Input variables
             GH_Structure<GH_SlicerObject> slicers;
             GH_Structure<GH_Plane> planes;
+            int outputStructure = 0;
 
             // Catch the input data
             if (!DA.GetDataTree(0, out slicers)) return;
             if (!DA.GetDataTree(1, out planes)) return;
+            if (!DA.GetData(2, ref outputStructure)) { return; }
+
+            // Check input
+            if (outputStructure != 0 & outputStructure != 1)
+            {
+                AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "The set datatree structure type is not valid; set equal to 0 for frames by layer or 1 for frames by object.");
+                return;
+            }
 
             // Initialize component output
             GH_Structure<GH_Number> dist = new GH_Structure<GH_Number>();
@@ -88,10 +107,25 @@ namespace SaladSlicer.Gh.Components.Slicers
             // Fill the output tree
             int maxBranches = Math.Max(slicers.Branches.Count, planes.Branches.Count);
 
+            // Leading datatree
+            bool slicersIsLeading = slicers.Branches.Count == slicers.Branches.Count;
+
             for (int i = 0; i < maxBranches; i++)
             {
                 int iSlicer = Math.Min(i, slicers.Branches.Count - 1);
                 int iPlane = Math.Min(i, planes.Branches.Count - 1);
+
+                GH_Path currentPath;
+
+                // Gets the current path of this branch
+                if (slicersIsLeading)
+                {
+                    currentPath = slicers.Paths[i];
+                }
+                else
+                {
+                    currentPath = planes.Paths[i];
+                }
 
                 List<GH_SlicerObject> slicerBranch = slicers.Branches[iSlicer];
                 List<GH_Plane> planeBranch = planes.Branches[iPlane];
@@ -106,8 +140,14 @@ namespace SaladSlicer.Gh.Components.Slicers
                     ISlicer slicer = slicerBranch[jSlicer].Value;
                     Plane plane = planeBranch[jPlane].Value;
 
-                    GH_Path path = new GH_Path(i, j);
-                    path = path.AppendElement(0);
+                    GH_Path path = new GH_Path(currentPath);
+                    path = path.AppendElement(j); // Path index of object
+                    
+                    // Stores the frames of each layer in its own datatree branch
+                    if (outputStructure == 0)
+                    {
+                        path = path.AppendElement(0); // Path index of layer
+                    }
 
                     List<List<double>> tempDist = new List<List<double>>() { };
                     List<List<double>> tempX = new List<List<double>>() { };
@@ -133,7 +173,11 @@ namespace SaladSlicer.Gh.Components.Slicers
                         dx.AppendRange(tempX[k].ConvertAll(item => new GH_Number(item)), path);
                         dy.AppendRange(tempY[k].ConvertAll(item => new GH_Number(item)), path);
                         dz.AppendRange(tempZ[k].ConvertAll(item => new GH_Number(item)), path);
-                        path = path.Increment(path.Length - 1);
+
+                        if (outputStructure == 0)
+                        {
+                            path = path.Increment(path.Length - 1); // Update path index of layer
+                        }
                     }
                 }
             }
@@ -175,7 +219,7 @@ namespace SaladSlicer.Gh.Components.Slicers
         /// </summary>
         public override Guid ComponentGuid
         {
-            get { return new Guid("941B95AE-3F20-47DB-B81D-B7F8A2600EDA"); }
+            get { return new Guid("B92E7623-8994-43D2-A389-EA7B8FAE6F44"); }
         }
     }
 }
