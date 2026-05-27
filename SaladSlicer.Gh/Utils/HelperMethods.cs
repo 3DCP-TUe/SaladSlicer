@@ -59,9 +59,8 @@ namespace SaladSlicer.Gh.Utils
                     }
                     else
                     {
-
+                        obj.ListItems.Add(new GH_ValueListItem(names[i], values[i].ToString()));
                     }
-                    obj.ListItems.Add(new GH_ValueListItem(names[i], values[i].ToString()));
                 }
 
                 // Make point where the valuelist should be created on the canvas
